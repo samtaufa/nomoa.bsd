@@ -1,0 +1,406 @@
+### SSH Client Tips and Tricks
+
+<div style="float:right">
+
+Table of Contents
+
+<ul>
+  <li><a href="#ssh">Remote Access with ssh</a> 
+    <ul>
+      <li><a href="#sshconfig">Configuring ssh</a></li>
+    </ul>
+  </li>
+  <li><a href="#sshd">sshd - your ssh server daemon</a> 
+    <ul>
+      <li><a href="#sshd.disableRoot">Disable Root Login</a></li>
+    </ul>
+  </li>
+  <li><a href="#scp">Copying a file through SSH</a></li>
+  <li><a href="#sshLinks" class="anchBlue">SSH Links</a></li>
+  <li><a href="#author">Author</a><a href=""></a></li>
+</ul>
+
+</div>
+
+Veterans know their way back, forward, up, down, sideways, and the rest of us just need pointers here
+and there to reading the documentation.
+
+<ul>
+    <li> <a href="#nopassword">SSH Login without a Password</a>
+    <li> <a href="#tunnel">SSH Tunnel</a>
+    <li> <a href="#tunnel.smb">SSH Tunnel SMB</a>
+    <li> <a href="#limitbandwidth"> Limit Bandwidth used</a>
+</ul>
+
+### <a name="ssh"></a>Remote Access with ssh
+
+<p class="pFileReference">[ref: ssh(1) |
+<a href="http://www.openbsd.org/faq/faq4.html">OpenBSD FAQ4</a>]</p>
+
+<p>When the itch arrives and you just have to get a 'console' connection to that 
+server, telnet is asking for someone to sniff your password and <a href="http://www.openbsd.com" class="anchBlue">OpenBSD's</a> 
+<a href="www.openssh.com" class="anchBlue">OpenSSH</a> is the preferred, secureable 'terminal' 
+access system. Ssh is the preferred method of remote access with OpenBSD. There 
+are many features of ssh including the ability to provide a tunnel for other 
+services. The clear advantage of ssh is the full encryption of all communications 
+between the localhost and the remote host.</p>
+
+<p> For the MS Windows fans amongst us there are even ssh clients Windows can 
+  run as a terminal window or from the command-prompt.</p>
+  
+<p>Communicating with a remote host is usually in the form shown below:</p>
+
+<table width="80%" border="0" class="pScreenOutput">
+  <tr> 
+    <td nowrap class="Code">$ <b>ssh user-id@remotehost.example.com</b></td>
+  </tr>
+</table>
+
+<p>If you don't specify the user-id you wish to login as, then ssh will send the 
+current user-id in which you started ssh (ie. if you are currently logged into 
+your host as johndoe, then ssh remotehost.example.com will attempt to make the 
+connection using your user-id, johndoe)</p>
+  
+### <a name="sshconfig"></a>Configuring ssh
+
+<p class="pFileReference">[Ref: ssh(1)]</p>
+
+<p>ssh checks for its configuration from the command-line, then the user's configuration 
+  file ($HOME/.ssh/config), then the system-wide configuration file (/etc/ssh/ssh_config) 
+  The files are text files.</p>
+  
+<p>Below is an excerpt of what I choose to include in the system wide /etc/ssh_config 
+  file </p>
+  
+<p class="pFileReference">File: /etc/ssh/ssh_config</p>
+
+<table width="80%" border="0" class="pScreenOutput">
+  <tr> 
+    <td nowrap class="pScreenOutput">UseRsh no<br>
+      FallBackToRsh no<br>
+      ForwardX11 no<br>
+      KeepAlive no<br>
+      Protocol 2,1 </td>
+  </tr>
+</table>
+
+<p>More documentation can be found in the man pages (ssh(1).) I choose not to 
+  UseRsh or FallBackToRsh because I want secure communications or none. I don't 
+  want to be forwarding X11 because I don't run X11 on the servers I'm connecting 
+  to. I don't want keepalive 'cause if I'm not doing something with the connection 
+  I would prefer it to dump me.</p>
+  
+### <a name="sshd"></a> sshd - your ssh server daemon
+
+<p class="pFileReference">[ref: sshd(8)]</p>
+
+<table width="80%" border="0" class="pScreenOutput">
+  <tr> 
+    <td class="pScreenOutput">From the man page: sshd is the daemon that listens 
+      for connections from clients. It is normally started at boot from /etc/rc. 
+      It forks a new daemon for each incoming connection. The forked daemons handle 
+      key exchange, encryption, authentication, command execution, and data exchange. 
+      This implementation of sshd supports both SSH protocol version 1 and 2 simultaneously.</td>
+  </tr>
+</table>
+<p>System configuration is normally controlled by the /etc/ssh/sshd_config. Below 
+  is an excerpt of the config file </p>
+<p class="pFileReference"></p>
+<p class="pFileReference">File: /etc/ssh/sshd_config</p>
+<table width="80%" border="0" class="pScreenOutput">
+  <tr> 
+    <td nowrap class="pScreenOutput">Port 22<br>
+      ListenAddress 0.0.0.0 <br>
+      ListenAddress ::<br>
+      HostKey /etc/ssh_host_key<br>
+      ServerKeyBits 1664</td>
+  </tr>
+  <tr> 
+    <td nowrap class="Code"><b>PermitRootLogin yes</b></td>
+  </tr>
+</table>
+<p>The Port directive specifies to listen on the ssh port (22,) obviously this 
+  line implies that you can specify a different port to listen to (or add additional 
+  ports) </p>
+<p>ListenAddress is specifying to listen on all active interfaces (both IPv4 and 
+  IPv6).</p>
+<p>HostKey specifies the location where the hosts key is to be located. /etc/ssh_host_key 
+  is the default location.</p>
+<p>ServerKeyBits specifies the size of the key to be generated, the number above 
+  is larger than the 568 normally used (is this more secure ?)</p>
+### <a name="sshd.disableRoot"></a>Disable Root Login
+<p>The afterboot(8) man page recommends that you disable direct login to root 
+  through the ssh daemon.</p>
+<table width="80%" border="0" class="pScreenOutput">
+  <tr> 
+    <td class="pScreenOutput">For security reasons, it is bad practice to log 
+      in as root during regular use and maintenance of the system. Instead, administrators 
+      are encouraged to add a &quot;regular&quot; user, add said user to the &quot;wheel&quot; 
+      group, then use the su and sudo commands when root privieges are required.</td>
+  </tr>
+</table>
+<p class="pFileReference">Edit the /etc/sshd_config file:</p>
+<table width="80%" border="0" class="pScreenOutput">
+  <tr> 
+    <td nowrap class="Code"><b>PermitRootLogin No</b></td>
+  </tr>
+</table>
+<p>Check through the /etc/ssh/sshd_config for what looks interesting, and look 
+  through the man page for further information.</p>
+### <a name="scp"></a>Copying a file through SSH
+<p class="pFileReference">[Ref: scp(1)]</p>
+<p>scp is a utility that allows you to copy files between hosts using the ssh 
+  transport. With ssh2 there is also support for gzip style compression of files 
+  for transmission.</p>
+<table width="80%" border="0" class="pScreenOutput">
+  <tr> 
+    <td nowrap class="Code">$ scp files user-id@host.example.com:path</td>
+  </tr>
+</table>
+    
+    
+<a name="nopassword"></a>
+
+### SSH Login without a Password
+
+<ul>
+    <li> Generate SSH keys
+    <li> Copy to Destination Host
+    <li> Set up agent
+    <li> Connect
+</ul>
+
+### Generate SSH keys
+
+Use ssh-keygen to generate authentication keys.
+
+<pre class="config-file">
+ssh-keygen(1) 
+     ssh-keygen generates, manages and converts authentication keys for
+     ssh(1).  ssh-keygen can create RSA keys for use by SSH protocol version 1
+     and RSA or DSA keys for use by SSH protocol version 2.  The type of key
+     to be generated is specified with the -t option.  If invoked without any
+     arguments, ssh-keygen will generate an RSA key for use in SSH protocol 2
+     connections.
+
+     ssh-keygen is also used to generate groups for use in Diffie-Hellman
+     group exchange (DH-GEX).  See the MODULI GENERATION section for details.
+
+     Normally each user wishing to use SSH with RSA or DSA authentication runs
+     this once to create the authentication key in ~/.ssh/identity,
+     ~/.ssh/id_dsa or ~/.ssh/id_rsa.  Additionally, the system administrator
+     may use this to generate host keys, as seen in /etc/rc.
+
+     Normally this program generates the key and asks for a file in which to
+     store the private key.  The public key is stored in a file with the same
+     name but ``.pub'' appended. 
+</pre>
+
+To generate our authentication keys at:
+
+- ~/.ssh/id_rsa : private key
+
+- ~/.ssh/id_rsa.pub : public key
+
+<pre class="command-line">
+ssh-keygen -b 4096 -t rsa    
+</pre>
+<pre class="config-file">
+ -b bits
+         Specifies the number of bits in the key to create.  For RSA keys,
+         the minimum size is 768 bits and the default is 2048 bits.  Gen-
+         erally, 2048 bits is considered sufficient.  DSA keys must be ex-
+         actly 1024 bits as specified by FIPS 186-2.
+ -t type
+         Specifies the type of key to create.  The possible values are
+         ``rsa1'' for protocol version 1 and ``rsa'' or ``dsa'' for proto-
+         col version 2.
+
+</pre>
+
+### Copy to Destination Host
+
+For ssh authentication keys to work, the SSH Daemon on the remote host needs to
+have access to the public key generated above. This file is usually located in ~/.ssh
+as authorized_keys.
+
+<pre class="command-line">
+ssh user@remotehost mkdir ~/.ssh
+ssh user@remotehost chmod 0700 ~/.ssh
+cat ~/.ssh/id_rsa.pub | ssh user@remotehost "cat - >> ~/.ssh/authorized_keys"
+ssh user@remotehost chmod 0600 ~/.ssh/authorized_keys
+</pre>
+
+### Set up Agent
+
+To set up login, such that you only have to enter your ssh authentication password (not your
+remotehost password) and for that authentication to persist whilst your desktop session is
+active, we use an 'agent' to securely hold your credentials.
+
+- agent to store credentials
+
+- add credentials to store
+
+<pre class="command-line">
+eval `ssh-agent`
+</pre>
+<pre class="config-file">
+ssh-agent(1) 
+
+ssh-agent is a program to hold private keys used for public key authentication 
+(RSA, DSA).  The idea is that ssh-agent is started in the beginning of an 
+X-session or a login session, and all other windows or programs are started 
+as clients to the ssh-agent program.  Through use of environment variables 
+the agent can be located and automatically used for authentication when logging 
+in to other machines using ssh(1).
+
+ksh(8)
+
+ eval command ...
+         The arguments are concatenated (with spaces between them) to form
+         a single string which the shell then parses and executes in the
+         current environment.
+</pre>
+
+Add the credentials to the agent store using `ssh-add`
+
+<pre class="command-line">
+ssh-add
+</pre>
+<pre class="config-file">
+ssh-add(1)
+
+ssh-add adds RSA or DSA identities to the authentication agent,
+ssh-agent(1).  When run without arguments, it adds the files
+~/.ssh/id_rsa, ~/.ssh/id_dsa and ~/.ssh/identity.  Alternative file names
+can be given on the command line.  If any file requires a passphrase,
+ssh-add asks for the passphrase from the user.  The passphrase is read
+from the user's tty.  ssh-add retries the last passphrase if multiple
+identity files are given.
+
+The authentication agent must be running and the SSH_AUTH_SOCK 
+environment variable must contain the name of its socket for ssh-add to work.
+</pre>
+
+### Connect
+
+You should now be able to connect to the remote host without need to enter your
+HOST password
+
+<pre class="command-line">
+ssh user@remotehost
+</pre>
+
+<a name="tunnel"></a>
+
+### SSH Tunnel
+
+SSH Tunnels are simpler to execute using authentication keys.
+
+<ul>
+    <li> <a href="#portforwarding">Port Forwarding</a>
+    <li> <a href="#remoteportforwarding">Remote Port Fowarding</a>
+</ul>
+    
+<a name="portfowarding"></a>
+
+### Port Forwarding
+
+Local Host to Remote Host
+
+<pre class="command-line">
+ssh -4 -f -L1125:127.0.0.1:110 $REMOTEHOST -N
+</pre>
+
+or
+
+<pre class="command-line">
+ssh -4 -f user@REMOTEHOST -L1125:$REMOTEHOST -N
+</pre>
+
+Local Host to Intermediate Host to Remote Host
+
+<pre class="command-line">
+ssh -4 -f -A $INTERMEDIATE  -L 1109:127.0.0.1:1109 "ssh -4 -L 1109:127.0.0.1:110 $REMOTEHOST -N"
+</pre>
+
+<pre class="config-file">
+ssh(1)
+
+ -4      Forces ssh to use IPv4 addresses only.
+ 
+ -A      Enables forwarding of the authentication agent connection.  This
+         can also be specified on a per-host basis in a configuration
+         file.
+
+         Agent forwarding should be enabled with caution.  Users with the
+         ability to bypass file permissions on the remote host (for the
+         agent's Unix-domain socket) can access the local agent through
+         the forwarded connection.  An attacker cannot obtain key material
+         from the agent, however they can perform operations on the keys
+         that enable them to authenticate using the identities loaded into
+         the agent.
+
+ -f      Requests ssh to go to background just before command execution.
+         This is useful if ssh is going to ask for passwords or passphras-
+         es, but the user wants it in the background.  This implies -n.
+         The recommended way to start X11 programs at a remote site is
+         with something like ssh -f host xterm.
+
+         If the ExitOnForwardFailure configuration option is set to
+         ``yes'', then a client started with -f will wait for all remote
+         port forwards to be successfully established before placing it-
+         self in the background.
+
+ -L [bind_address:]port:host:hostport
+         Specifies that the given port on the local (client) host is to be
+         forwarded to the given host and port on the remote side.  This
+         works by allocating a socket to listen to port on the local side,
+         optionally bound to the specified bind_address.  Whenever a con-
+         nection is made to this port, the connection is forwarded over
+         the secure channel, and a connection is made to host port
+         hostport from the remote machine.  Port forwardings can also be
+         specified in the configuration file.  IPv6 addresses can be spec-
+         ified with an alternative syntax: [bind_address/]port/host/host-
+         port or by enclosing the address in square brackets.  Only the
+         superuser can forward privileged ports.  By default, the local
+         port is bound in accordance with the GatewayPorts setting.  How-
+         ever, an explicit bind_address may be used to bind the connection
+         to a specific address.  The bind_address of ``localhost'' indi-
+         cates that the listening port be bound for local use only, while
+         an empty address or `*' indicates that the port should be avail-
+         able from all interfaces.
+
+ -N      Do not execute a remote command.  This is useful for just for-
+         warding ports (protocol version 2 only).
+</pre>
+
+<a name="remoteportforwarding"></a>
+
+### Remote Port Forwading
+
+<pre class="command-line">
+
+</pre>
+
+<a name="tunnel.smb"></a>
+
+### SSH Tunnel SMB
+
+- <a href="http://www.reviewingit.com/index.php/content/view/57/">Windows XP</a>
+
+- <a href="http://social.technet.microsoft.com/Forums/en-US/itprovistanetworking/thread/d30d3c98-58c5-47f6-b5a5-f5620882020d/#page:2">Vista</a>
+
+<a name="limitbandwidth"></a>
+
+### Limit Bandwidth used
+
+Limit the bandwidth used for file transfers
+
+<pre class="command-line">
+scp -l SIZE SRC DST
+</pre>
+<pre class="screen-output">
+-l limit
+         Limits the used bandwidth, specified in Kbit/s.
+</pre>

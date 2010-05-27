@@ -1,0 +1,802 @@
+﻿
+##  Client connections using dovecot imap, pop, sasl 
+
+<div style="float:right">
+    <p> Table of Contents: </p>
+    <ul>
+        <li><a href="#install">Installation and Configuration</a></li>
+        <ul>
+        <li>Specify the SSL Configuration</li>
+        <li>Generate Certificates</li>
+        <li>Testing Installation</li>
+        <li>Configure automatic start during boot</li>
+        </ul>
+        <li>Configuring for MySQL Authentication</li>
+        <ul><li>Modify /etc/dovecot.conf</li>
+        <li>Create a MySQL account for the dovecot server</li>
+        <li>Testing our Configuration</li></ul>
+        <li>Reading Virtual Mail through pop3/imap requests</li>
+        <ul><li>Testing the POP3 Server</li>
+            <li>Testing the IMAP Server</li></ul>
+    </ul>
+</div>
+
+[OpenBSD 4.0, Dovecot 1.0rc15]
+
+Some people are singing the praises of [dovecot](http://ww.dovecot.org)
+as an imap, pop3, sasl server for its speed and security features.
+
+I can't really add anything to the discussion of whether this is better or 
+not, but I hope this guide will help you in using it with 
+[our postfix guide](postfix.html)
+
+These instructions were tested with OpenBSD 4.0 Stable and dovecot rc15, a 
+packaged port released after the OpenBSD 4.0 release.
+
+### Installing and Configuring
+
+Although we will be testing dovecot installation from basic install we are 
+installing are more complete package to ensure further enhancements later in the 
+documentation.
+
+<pre class="command-line">
+# cd /usr/ports/mail/dovecot
+</pre>
+<pre class="command-line">
+# env FLAVOR="ldap mysql" make package
+</pre>
+<pre class="screen-output"> 
+===&gt; Building package for 
+dovecot-1.0.rc15-ldap-mysql
+Switching to /usr/ports/mail/dovecot/pkg/PFRAG.shared
+Link to /usr/ports/packages/i386/ftp/dovecot-1.0.rc15-ldap-mysql.tgz
+Link to /usr/ports/packages/i386/cdrom/dovecot-1.0.rc15-ldap-mysql.tgz
+</pre>
+
+<pre class="command-line">pkg_add dovecot-1.0.rc15-ldap-mysql
+</pre>
+<pre class="screen-output">
+dovecot-1.0.rc15-ldap-mysql: complete
+--- dovecot-1.0.rc15-ldap-mysql -------------------
+Files to facilitate the generation of a self-signed
+certificate and key for Dovecot have been installed:
+/etc/ssl/dovecot-openssl.cnf (Edit this accordingly!)
+/usr/local/sbin/dovecot-mkcert.sh
+
+If this has been or will be accomplished by other means,
+use the following paths for the files:
+/etc/ssl/dovecotcert.pem
+/etc/ssl/private/dovecot.pem
+
+If you wish to have Dovecot started automatically at boot time,
+simply add the follow lines to /etc/rc.local:
+
+if [ -x /usr/local/sbin/dovecot ]; then
+    echo -n ' dovecot'; /usr/local/sbin/dovecot
+fi
+</pre>
+
+Following through on the installation instructions from the dovecot package
+
+-   Specify SSL Configuration
+-   Generate Certificates
+-   Configure automatic start during boot
+
+#### Specify the SSL Configuration
+
+The dovecot ports/package provides a simplified approach for generating the 
+SSL certificates. The configuration file is at /etc/ssl/dovecot-openssl.cnf, 
+while the configuration tool is /usr/local/sbin/dovecot-mkcert.sh.
+
+<p class="pFileReference">File Fragment: /etc/ssl/dovecot-openssl.cnf</p>
+
+<pre class="config-file">
+[ req_dn ]
+# country (2 letter code)
+#C=FI
+# State or Province Name (full name)
+#ST=# Locality Name (eg. city)
+#L=Helsinki# Organization (eg. company)
+#O=Dovecot
+# Organizational Unit Name (eg. section)
+#OU=Imap Server
+ 
+# Common Name (*.example.com is also possible)
+#CN=imap.example.com
+# E-mail contact
+#emailAddress=postmaster@example.com
+</pre>
+
+
+There are some unspecified options from above that may be interesting to you 
+at a later stage.
+
+If you've never used certificates before, or are just using these 
+instructions on a test server, then just work with the sample configuration 
+above. If you are ready to deploy your system, then please read the man pages 
+and make some further reviews of your certificate files. The full openssl 
+configuration file example in OpenBSD is stored as /etc/ssl/openssl.cnf
+
+#### Generate Certificates
+
+The ports supplied /usr/local/sbin/dovecot-mkcert is a nice shell script to 
+generate your SSL certificates using the source information provided in the 
+above configuration file. Just run the script to generate your certificates
+
+<pre class="command-line">
+# /usr/local/sbin/dovecot-mkcert.sh
+</pre>
+
+The first part of the script generates the private 
+key using /etc/ssl/dovecot-openssl.cnf
+
+<pre class="screen-output">
+Generating a 1024 bit RSA private key
+...++++++
+.................++++++
+writing new private key to '/etc/ssl/private/dovecot.pem'
+-----
+</pre>
+
+The second part of the script just outputs the signature from the 
+generated key to assure us that it executed corrected (i.e. if you didn't get 
+the second part, then things failed badly.)
+
+<pre class="screen-output">
+subject= (information text from above configuration file)
+MD5 Fingerprint=(long fingerprint)
+</pre>
+
+As shown in the ports documentation, you can manually generate your own 
+configuration/certificate files so long as you place the resulting files into a 
+'known' location:
+
+<pre class="screen-output">
+/etc/ssl/dovecotcert.pem
+/etc/ssl/private/dovecot.pem   
+</pre>
+
+The location, and naming of the *.pem files are specified in your /etc/dovecot.conf 
+file for the key/value pairs of ssl_cert_file and ssl_key_file.
+
+#### Modify /etc/dovecot.conf
+
+We will test pop3 and imap so let us ensure this is configured for dovecot in 
+the /etc/dovecot.conf file. Edit the dovecot.conf file to ensure protocols is 
+enabled and we are allowing at least imap and pop3.
+
+<p class="pFileReference">File Fragment: /etc/dovecot.conf</p>
+
+<pre class="config-file">
+# Protocols we want to be serving: imap imaps pop3 pop3s
+# If you only want to use dovecot-auth, you can set this to "none".
+protocols = imap imaps pop3 pop3s
+</pre>
+
+#### Testing Installation
+
+Before continuing, let's just check to make sure we've got at least these 
+parts working and not causing a conflict.
+
+The default installation of OpenBSD dovecot packages supports 
+[authentication through the password file](
+http://wiki.dovecot.org/AuthDatabase/Passwd) 
+so we will need at least one valid system user 
+account for testing the dovecot install. 
+
+We will first start the dovecot program and take a quick look to see whether 
+it is responding to services the default configuration allows (pop3, and imap)
+
+<pre class="command-line">
+# /usr/local/sbin/dovecot
+</pre>
+
+Check for error messages by looking at /var/log/maillog (using tail -f /var/log/maillog) 
+and you should get a message such as the following
+
+<p class="pFileReference">File Fragment: /var/log/maillog</p>
+
+<pre class="screen-output">
+dovecot: Dovecot v1.0.rc15 starting up</pre>
+
+Now, we can check basic POP3 and IMAP services to see if they respond to 
+access to their ports.
+
+POP3 we'll just connect with my system-user account (samt) and check to see 
+if it responds.
+
+<p class="ScreenSession">Screen Session</p>
+
+<pre class="command-line">$ telnet localhost pop3
+</pre>
+<pre class="screen-output">
+Trying ::1...
+telnet: connect to address ::1: Connection refused
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
++OK Dovecot ready.
+</pre>
+
+<pre class="command-line">USER<strong> samt</strong>
+</pre>
+<pre class="screen-output">+OK
+</pre>
+<pre class="command-line">PASS <strong> mypassword</strong>
+</pre>
+<pre class="screen-output">+OK Logged in.
+</pre>
+<pre class="command-line">LIST
+</pre>
+<pre class="screen-output">
++OK 0 messages:
+.
+</pre>
+<pre class="command-line">QUIT
+</pre>
+<pre class="screen-output">
++OK Logging out.
+Connection closed by foreign host.
+</pre>
+
+/var/log/maillog: Reviewing the successful log file should reveal something 
+like the below just after the user/pass have been passed to dovecot
+
+<pre class="screen-output">
+dovecot: pop3-login: Login: user=&lt;samt&gt;, method=PLAIN, 
+rip=127.0.0.1, lip=127.0.0.1, secured
+</pre>
+
+/var/log/maillog: and on disconnection you should receive a disconnect log 
+item.
+
+<pre class="screen-output">
+dovecot: POP3(samt): Disconnected: Logged out top=0/0, retr=0/0, del=0/0, size=0
+</pre>
+
+A list of [common POP3 commands](http://sol4.net/telnetpop3.shtml)
+courtesy of SOL4.net
+
+<table style="width: 70%" class="style6" align="center">
+	<tr>
+		<td style="width: 182px" class="style5">
+        <strong>Command </strong></td>
+		<td style="width: 668px" class="style7">
+        <strong>Functional Description</strong></td>
+	</tr>
+	<tr>
+		<td style="width: 182px" class="style9">
+        <strong>LIST </strong></td>
+		<td style="width: 668px" class="style8">
+        Lists the messages in the mailbox together with their sizes. also 
+		can be used with the message number to return specific message sizes.</td>
+	</tr>
+	<tr>
+		<td style="width: 182px" class="style10">
+        <strong>RETR messageID</strong></td>
+		<td style="width: 668px" class="style11">
+        Retrieve the message specified by messageID, displays it to the 
+		screen.</td>
+	</tr>
+	<tr>
+		<td style="width: 182px" class="style10">
+        <strong>DELE messageID</strong></td>
+		<td style="width: 668px" class="style11">
+        Delete the message specified by messageID.</td>
+	</tr>
+	<tr>
+		<td style="width: 182px" class="style10">
+        <strong>RSET </strong></td>
+		<td style="width: 668px" class="style11">
+        Undo any changes made.</td>
+	</tr>
+	<tr>
+		<td style="width: 182px" class="style10">
+        <strong>STAT </strong></td>
+		<td style="width: 668px" class="style11">
+        List the number of messages and the total mailbox size.</td>
+	</tr>
+	<tr>
+		<td style="width: 182px" class="style12">
+        <strong>QUIT </strong></td>
+		<td style="width: 668px" class="style13">
+        Close the connection.</td>
+	</tr>
+</table>
+
+The same basic look test with IMAP
+
+<p class="ScreenSession">Screen Session</p>
+
+<pre class="command-line">
+# telnet localhost imap
+</pre>
+<pre class="screen-output">
+Trying ::1...
+telnet: connect to address ::1: Connection refused
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+* OK Dovecot ready.
+</pre>
+<pre class="command-line">
+a1 login samt mypassword
+</pre>
+<pre class="screen-output">
+a1 OK Logged in
+</pre>
+<pre class="command-line">
+a2 select inbox
+</pre>
+<pre class="screen-output">
+* FLAGS (\Answered \Flagged \Deleted \Seen \Draft)
+* OK [PERMANENTFLAGS (\Answered \Flagged \Deleted \Seen \Draft \*)] Flags permitted.
+* 0 EXISTS
+* 0 RECENT
+* OK [UIDVALIDITY 1165837992] UIDs valid
+* OK [UIDNEXT 2] Predicted next UID
+</pre>
+<pre class="screen-output">a2 OK [READ-WRITE] Select completed.
+</pre>
+<pre class="command-line">a3 logout
+</pre>
+<pre class="screen-output">
+* BYE Logging out
+a3 OK Logout completed.
+Connection closed by foreign host.
+</pre>
+
+Again, we review /var/log/maillog for dovecot's messages and after 
+successfully entering the correct user/password combination we should get a log 
+entry similar to the below.
+
+<p class="pFileReference">File Fragment: /var/log/maillog</p>
+
+<pre class="screen-output">
+dovecot: imap-login: Login: user=&lt;samt&gt;, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, secured
+</pre>
+
+Likewise, on QUITting, we should get the disconnect log entry.
+
+<p class="pFileReference">File Fragment: /var/log/maillog</p>
+
+<pre class="screen-output">
+dovecot: IMAP(samt): Disconnected: 
+Logged out
+</pre>
+
+It seems our server is working correctly.
+
+#### Configure automatic start during boot
+
+Configuring for auto-start of dovecot during reboot is a little more 
+complicated with this option than it may need to be. Essentially, this 
+configuration will depart by setting and looking for an enabling option in the 
+/etc/rc.conf.local file.
+
+Add the following option in the rc.conf.local file.
+
+<p class="pFileReference">File Fragment: /etc/rc.conf.local</pre>
+<pre class="config-file">
+dovecot=YES
+</pre>
+
+Add the following to your /etc/rc.local file.
+
+<p class="pFileReference">File Fragment: /etc/rc.local</p>
+
+<pre class="config-file">
+if [ X"${dovecot}" != X"NO" -a -x /usr/local/sbin/dovecot ]; 
+then
+   echo -n ' dovecot'; /usr/local/sbin/dovecot
+fi
+</pre>
+
+Our addition to /etc/rc.local looks to see whether we've enabled dovecot in 
+rc.conf.local and then starts dovecot.
+
+At this point, you should be able to service IMAP and POP3 without any 
+difficulty using this dovecot configuration. Before using this configuration you 
+should at least check the [dovecot documentation](
+http://wiki.dovecot.org) and in particular the [Client issues](
+http://wiki.dovecot.org/Clients) and configuration.
+
+A few minor configuration file tweaks that should be mostly relevant for 
+OpenBSD servers. The configuration file is well documented and should explain 
+why these changes may be useful.
+
+<p class="pFileReference">File Fragment: /etc/dovecot.conf</p>
+
+<pre class="command-line">first_valid_uid = 1000
+</pre>
+<pre class="command-line">last_valid_uid = 32766
+</pre>
+
+first_valid_uid would normally be 1000 when using dovecot for system user 
+accounts only. If you will be using dovecot to exclusively handle virtual user 
+accounts, then first and last uid should be set to the UID you specify for 
+postfix. In our scenario we would  use '901' which is our example 
+configuration setting for using postfix with virtual user accounts.
+
+### <a name="pop"></a>Configuring for MySQL Authentication
+
+[ref:
+[Virtual Users and Domains with Courier-IMAP and MySQL](
+http://postfix.wiki.xs4all.nl/index.php?title=Virtual_Users_and_Domains_with_Courier-IMAP_and_MySQL#dovecot-mysql.conf) 
+]
+
+Now, we are getting into a little more complicated, if things do not work out 
+well, a good suggestion to enable more 
+verbose logging, such as:
+
+<pre class="config-file">
+auth_verbose = yes
+auth_debug = yes
+auth_debug_passwords = yes
+</pre>
+
+Two log files that become critical in verifying your configuration are /var/log/maillog 
+and /var/mysql/myhost.log.
+
+The above dovecot.conf settings will show more verbose information from 
+dovecot into the standard mail log (/var/log/maillog) while watching 
+transactions to the mysql server through /var/mysql/myhost.log can also provide 
+more information on server behaviour.
+
+Use two screens dedicated to maillog and /var/mysql/myhost.log
+
+<pre class="command-line">
+# tail -f /var/log/maillog
+</pre>
+
+#### Modify /etc/dovecot.conf
+
+The /etc/dovecot.conf has a lot of the available settings commented out 
+(using # at the beginning of the line) so it would seem best to look through the 
+configuration file and make changes in place.
+
+The following changes are to tell dovecot to use :
+
+-   a maildir location such as we've selected for 
+    [our postfix installation](postfix.html)
+-   sql as the authenticating mechanism
+-   our sql configuration will be in a text file /etc/dovecot-mysql.conf
+
+<p class="pFileReference">File Fragment: /etc/dovecot.conf</p>
+
+<pre class="config-file">
+mail_location = maildir:/var/spool/postfix/vmail/%d/%u
+</pre>
+
+<pre class="command-line">
+passdb sql {
+        args = /etc/dovecot-mysql.conf
+  }
+  
+userdb sql {
+        args = /etc/dovecot-mysql.conf
+  }
+</pre>
+
+An important note about the mail_location variable is that you should select 
+one that is compatible with the settings that you will use in both
+[our postfix configuration](postfix.html) and our
+[PostfixAdmin configuration](postfix/admin.html).
+
+##### SQL Configuration File: /etc/dovecot-mysql.conf
+
+Our SQL configuration file will contain key/value pairs for how dovecot will 
+access the sql provider.
+
+<p class="pFileReference">File : /etc/dovecot-mysql.conf</p>
+
+<pre class="config-file">
+# Database driver: mysql, pgsql
+driver = mysql
+
+# Currently supported schemes include PLAIN, PLAIN-MD5, DIGEST-MD5, and CRYPT.
+default_pass_scheme = CRYPT
+
+# Database options
+connect = host=localhost dbname=mail user=dovecot password=dovecotpassword
+
+password_query = SELECT password FROM mailbox WHERE username = '%u' AND active = '1'
+user_query = SELECT maildir, 901 AS uid, 901 AS gid FROM mailbox WHERE 
+username = '%u' AND active = '1'
+
+# eof</pre>
+
+Notes:
+
+-   The uid, gid of 901 shown above is referring to [our postfix 
+	configuration](postfix.html).
+-   As at 1.0rc15 there seems to be some difficulty with dovecot connecting 
+	to mysql which is explained by  Mischa at [this link](    http://postfix.wiki.xs4all.nl/index.php?title=Virtual_Users_and_Domains_with_Courier-IMAP_and_MySQL#database)
+    , as resolvable, the instructions below resolve connectivity issues
+-   default_pass_scheme = CRYPT  matches what we will use by [postfixadmin](postfix/admin.html)
+	$CONF['encrypt'] = 'system';
+
+
+For mysql servers running post 4.1 releases (i.e. this includes 5.x releases)
+<a href="http://dev.mysql.com/doc/refman/5.0/en/old-client.html">there is a 
+difference</a> in the libraries which essentially means that mysql's
+<a href="http://mysqld.active-venture.com/Password_hashing.html">password 
+function creates a different (longer) result in post 4.1 releases than pre 4.1 
+releases.</a>
+
+Dovecot's 1.0rc15 (and earlier) releases seem to be using libraries of the 
+MySQL pre-4.1 era, so if you are using a later version of MySQL, then we have to 
+add the following 'hacks' to your portfolio.
+
+We will first create a user account for our dovecot daemon to access our 
+MySQL server, and because we are using a post 4.1 release, we will also ensure a 
+shorter/older passphrase by using the old_password command.
+
+Enter the mysql client and enter the following commands
+
+<p class="ScreenSession">Screen Session</p>
+<pre class="command-line"># mysql -u root -p</pre>
+<pre class="screen-output">
+Welcome to the MySQL monitor. Commands end with ; or \g.
+Your MySQL connection id is 12 to server version: 5.0.24a-log
+
+Type 'help;' or '\h' for help. Type '\c' to clear the buffer.
+
+mysql&gt;</pre>
+<pre class="command-line">
+mysql&gt; grant select on mail.* to 'dovecot'@'localhost' identified by 'dovecotpassword';</pre>
+<pre class="screen-output">Query OK, 0 rows affected (0.00 sec)</pre>
+<pre class="command-line">
+mysql&gt; set password for 'dovecot'@'localhost' = old_password('dovecotpassword');</pre>
+<pre class="screen-output">Query OK, 0 rows affected (0.00 sec)</pre>
+<pre class="command-line">
+mysql&gt; flush privileges;</pre>
+<pre class="screen-output">Query OK, 0 rows affected (0.02 sec)
+</pre>
+
+Using the above changes the longer hashed 'dovecotpassword' to an 'older 
+format' shorter hash of 'dovecotpassword'.
+
+Note:
+
+The database 'mail' references the same database 
+used by [our postfix installation](postfix.html), 
+and also the same 
+database for [our postfixadmin installation](postfix/admin.html).
+
+#### Testing our configuration
+
+It's time to test and see whether we've configured our system correctly. We 
+will kill the current dovecot and start a new connection.
+
+<pre class="command-line">
+# pkill -HUP dovecot
+</pre>
+
+Our maillog file should give us an idea if our mysql configuration is mostly 
+good.
+
+<p class="pFileReference">File Fragment: /var/log/maillog</p>
+
+<pre class="screen-output">
+dovecot: SIGHUP received - reloading configuration
+dovecot: auth-worker(default): mysql: Connected to localhost (mail)
+</pre>
+
+'mail' above refers to our MySQL database, so 
+if you have an error with this 'auth-worker' you might check whether the 
+password is correct, or whether the database is correctly entered above.
+
+Another reference point would be the MySQL log file /var/mysql/myhost.log, 
+which should have something like the below:
+
+<p class="pFileReference">File Fragment: /var/mysql/myhost.log</p>
+
+<pre class="screen-output">Connect dovecot@localhost on mail
+</pre>
+
+<a name="pop2"></a>
+
+### Reading Virtual Mail through pop3/imap requests
+ 
+#### Testing the Pop3 Server
+
+<p class="pFileReference">
+[ref: The Network People, Inc. [Mail Server Testing](
+http://www.tnpi.biz/internet/mail/forge.shtml) ] </p>
+
+If you've successfully installed dovecot with mysql above, and have gone 
+through the Configuring a Virtual Email Service - MySQL in [our postfix 
+installation guide](postfix.html), (or you have installed your own MySQL virtual user accounts) 
+then we can perform some testing, validating whether our configuration actually 
+works.
+
+<p class="ScreenSession">Screen Session</p>
+
+<pre class="command-line">
+$ telnet localhost pop3
+</pre>
+<pre class="screen-output">
+Trying ::1...
+telnet: connect to address ::1: Connection refused
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
++OK Dovecot ready.
+</pre>
+<pre class="command-line">
+user charlie@alpha.example.org
+</pre>
+<pre class="screen-output">
++OK
+</pre>
+<pre class="command-line">pass charlie
+</pre>
+<pre class="screen-output">
++OK Logged in.
+</pre>
+<pre class="command-line">list
+</pre>
+<pre class="screen-output">
++OK 3 messages:
+1 503
+2 445
+3 503
+.
+</pre>
+<pre class="command-line">retr 3
+</pre>
+<pre class="screen-output">
++OK 503 octets
+Return-Path: &lt;samt@example.org&gt;
+X-Original-To: charlie@alpha.example.org
+Delivered-To: charlie@alpha.example.org
+Received: from example.org (unknown [IPv6:::1])
+by myhost.example.org (Postfix) with ESMTP id 9A6165A950;
+Fri, 9 Feb 2007 13:50:26 +1300 (TOT)
+Subject: Welcome MySQL based virtual users
+Message-Id: &lt;20070209005037.9A6165A950@myhost.example.org&gt;
+Date: Fri, 9 Feb 2007 13:50:26 +1300 (TOT)
+From: samt@example.org
+To: undisclosed-recipients:;
+
+Hopefully you've received this email message without fault ?
+
+
+.
+</pre>
+<pre class="command-line">QUIT
+</pre>
+<pre class="screen-output">
++OK Logging out.
+Connection closed by foreign host.
+</pre>
+
+The maillog file should show success similar to the below
+
+<p class="pFileReference">File Fragment: /var/log/maillog</p>
+
+<pre class="screen-output">
+pop3-login: Login: user=&lt;charlie@alpha.example.org&gt;, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, secured
+POP3(charlie@alpha.example.org): Disconnected: Logged out top=0/0, retr=1/519, del=0/3, size=1451
+</pre>
+
+Again, a review of the mysql transaction log can be helpful in diagnosing 
+errors.
+
+<p class="pFileReference">File Fragment: /var/mysql/myhost.log</p>
+
+<pre class="screen-output">
+Connect dovecot@localhost on mail
+Query SELECT password FROM mailbox WHERE username = 'charlie@alpha.example.org' AND active = '1'
+Query SELECT maildir, 901 AS uid, 901 AS gid FROM mailbox WHERE username = 
+'charlie@alpha.example.org' AND active = '1'
+</pre>
+
+##### Simple Errors -ERR Authentication failed.
+
+You get an Authentication failed even though you know and swear that you have 
+entered the correct password?
+
+-   Check the /var/mysql/myhost.log file to ensure that the correct query is 
+	sent by dovecot to the MySQL Server (i.e. SELECT 
+	password FROM mailbox WHERE username = 'VIRTUALACCOUNT@VIRTUALDOMAIN' AND 
+	active = '1')
+-   Check that your dovecot configuration is using the same encryption 
+	method for creating/reading passwords, as postfixadmin. For example, in our 
+	exercise we are using CRYPT: default_pass_scheme = 
+	CRYPT.
+  
+
+#### Testing the IMAP server
+
+We use telnet on the localhost to test imap's configuration
+
+<p class="ScreenSession">Screen Session</p>
+<pre class="command-line">$ telnet localhost imap
+</pre>
+<pre class="screen-output">
+Trying ::1...
+telnet: connect to address ::1: Connection refused
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+* OK Dovecot ready.
+</pre>
+<pre class="command-line">a1 login charlie@alpha.example.org charlie
+</pre>
+<pre class="screen-output">a1 OK Logged in.
+</pre>
+<pre class="command-line">a2 select inbox
+</pre>
+<pre class="screen-output">
+* FLAGS (\Answered \Flagged \Deleted \Seen \Draft)
+* OK [PERMANENTFLAGS (\Answered \Flagged \Deleted \Seen \Draft \*)] Flags permitted.
+* 3 EXISTS
+* 0 RECENT
+* OK [UNSEEN 1] First unseen.
+* OK [UIDVALIDITY 1170991431] UIDs valid
+* OK [UIDNEXT 4] Predicted next UID
+a2 OK [READ-WRITE] Select completed.
+</pre>
+<pre class="command-line">a3 fetch 3 body[text]
+</pre>
+<pre class="screen-output">
+* 3 FETCH (BODY[TEXT] {66}
+Hopefully you've received this email message without fault ?
+
+
+)
+a3 OK Fetch completed.
+</pre>
+<pre class="command-line">a4 close
+</pre>
+<pre class="screen-output">a4 OK Close completed.
+</pre>
+<pre class="command-line">a5 logout
+</pre>
+<pre class="screen-output">
+* BYE Logging out
+a5 OK Logout completed.
+Connection closed by foreign host.
+</pre>
+
+Note:
+
+<p>a1, a2, .., a5 are randomly selected unique leaders (in 
+this case we're just making things sequential)</p>
+
+-   "<strong>a3 fetch </strong>3<strong> body[text]</strong>", 
+
+the number '3' refers to the '3_ EXISTS_' in 
+the list returned by '<strong>a2 select inbox'</strong>
+
+Your maillog file is your friend and will give you clues to where you can 
+check for other errors.
+
+<p class="pFileReference">File Fragment: /var/log/maillog</p>
+
+<pre class="screen-output">
+auth-worker(default): mysql: Connected to localhost (mail)
+imap-login: Login: user=&lt;charlie@alpha.example.org&gt;, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, secured
+IMAP(charlie@alpha.example.org): Disconnected: Logged out
+</pre>
+
+Likewise the mysql transaction log should give further assistance should the 
+installation be having problems.
+
+<p class="pFileReference">File Fragment: /var/mysql/myhost.log</p>
+
+<pre class="screen-output">
+Connect dovecot@localhost on mail
+Query SELECT password FROM mailbox WHERE username = 'charlie@alpha.example.org' 
+AND active = '1'
+Query SELECT maildir, 901 AS uid, 901 AS gid FROM mailbox WHERE username = 
+'charlie@alpha.example.org' AND active = '1'
+</pre>
+
+### Reference Resources
+
+sol4.net's [POP3 Access using Telnet](http://sol4.net/telnetpop3.shtml) 
+
+The Network People, Inc. [Mail Server Testing](http://www.tnpi.biz/internet/mail/forge.shtml)

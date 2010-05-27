@@ -1,0 +1,61 @@
+# Standardised OpenBSD Install Notes
+
+## Introduction
+
+We seek with these guidelines a systematic process to maximise consistency of
+build quality that is documented, repeatable and based on best practises.
+
+The host build process incorporates a number of different aspects to maximise
+functionality, stability, maintainability and security. 
+All important facets of the distributed hosts.
+
+Key aspects of this process include:
+
+<ul>
+        <li>Hardware Test
+        <li>Opearing System Install
+        <li>Access Control (User Accounts etc.)
+        <li>Apps/Services, Post Build Testing
+</ul>
+
+## Hardware Testing
+
+<a href="openbsd/hardware_test.html">Hardware burn-in</a> 
+involves hardware resource stress, burn-in testing to disqualify
+hardware prior to deployment where detectable defects exist.
+
+Existing tests include:
+
+<ul>
+    <li> Ram with memtest86 (i386) or memtest++(amd64)
+    <li> HDD bonnie++ et. al.
+    <li> Network Interfaces with tcpbench, tcpblast
+    <li> System Wide stress from ports/sysutils
+</ul>
+
+## OS Install, Build Testing
+
+During the process of <a href="openbsd/osinstall.html">installing the Operating System</a>, 
+improve security configuring best-practice systematic lock-down and verification.
+
+Basic configurations include:
+
+<ul>
+    <li>Base OS Install
+    <li>User Creation, Management
+    <li>Log Rotation Policy
+    <li>Publicly available resources (e.g. inetd)
+    <li>Local email delivery
+    <li>OpenSSH
+    <li>sudoers
+</ul>
+
+## Apps/Services, Post Build Testing
+
+<a href="openbsd/apptest.html">Application and Service Tests</a> are not
+readily packaged into software toolkits. Where available, repeatable tests
+to validate an applications expected behaviour prior to deployment.
+
+Validation tests can be significant and may evolve into their own documentation
+tree including build instructions for the software system, together with 
+validation tests.

@@ -1,0 +1,76 @@
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="stylesheet" type="text/css" href="openbsd.css">
+</head>
+<pre class="command-line">#!/bin/sh
+#	based on $OpenBSD: ndc.sh,v 1.11 1998/07/07 22:05:15 millert Exp $</pre>
+<pre class="command-line">USAGE='echo \
+	&quot;usage: $0 \
+ (start|stop|restart) \
+	 ... \
+	&quot;; exit 1'</pre>
+<pre class="command-line">PATH=/usr/sbin:/bin:/usr/bin:/usr/ucb:$PATH</pre>
+<pre class="command-line">RUNNINGS=0
+RUNNINGN=0
+PID=0
+SMBD_CMD=&quot;/usr/local/libexec/smbd -D&quot;
+NMBD_CMD=&quot;/usr/local/libexec/nmbd -D&quot;
+PS=&quot;Unknown&quot;</pre>
+<pre class="command-line">if [ `ps ax | grep smbd | grep -v grep | wc -l` ]; then
+        RUNNINGS=1
+        PIDS=`ps ax | grep smbd | grep -v grep | awk '{ print $1 }'`
+        PS=&quot;Samba is Running&quot;
+else
+	PS=&quot;Samba is NOT Running&quot;
+fi</pre>
+<pre class="command-line">if [ `ps ax | grep nmbd | grep -v grep | wc -l` ]; then
+        RUNNINGN=1
+        PIDN=`ps ax | grep nmbd | grep -v grep | awk '{ print $1 }'`
+        PS=&quot;Samba is Running&quot;
+fi</pre>
+<pre class="command-line">for ARG
+do
+	case $ARG in
+	start|stop|restart)
+		;;
+	*)
+		[ $RUNNINGS -eq 0 -a $RUNNINGN -eq 0 ] &amp;&amp; {
+			echo &quot;$PS&quot;
+			exit 1
+		}
+	esac</pre>
+<pre class="command-line">	case $ARG in
+	status)	echo &quot;$PS pid($PIDS $PIDN)&quot;;;
+	start)
+		[ $RUNNINGS -eq 1 -a $RUNNINGN -eq 1 ] &amp;&amp; {
+			echo &quot;$0: start: Samba (pid $PIDS $PIDN) already running&quot;
+			continue
+		}</pre>
+<pre class="command-line">               $NMBD_CMD &amp;&amp; $SMBD_CMD &amp;&amp; {
+			sleep 5
+			echo Samba Server Started
+		}
+		;;
+	stop)
+		[ $RUNNINGS -eq 0 -a $RUNNINGN -eq 0] &amp;&amp; {
+			echo &quot;$0: stop: named not running&quot;
+			continue
+		}
+		kill $PIDS &amp;&amp; kill $PIDN &amp;&amp; {
+			sleep 5
+			echo Samba Server Stopped
+		}
+		;;
+	restart)
+		[ $RUNNINGN -eq 1 -a $RUNNINGS -eq 1 ] &amp;&amp; {
+			kill $PIDS &amp;&amp; kill $PIDN &amp;&amp; sleep 5
+		}
+		$SMBD_CMD &amp;&amp; $NMBD_CMD &amp;&amp; {
+			echo Samba Server Restarted
+		}
+		;;
+	*)	eval &quot;$USAGE&quot;;;
+	esac
+done
+test -z &quot;$ARG&quot; &amp;&amp; eval &quot;$USAGE&quot;</pre>
+<pre class="command-line">exit 0</pre>

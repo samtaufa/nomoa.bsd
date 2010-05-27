@@ -1,0 +1,54 @@
+SETUP :
+
+- Each remote host must have the user account "${SYNCBACK_USER}" created, which has
+  a valid shell, and the public part of an SSH key which the central backup
+  host uses to connect and pull the latest backup tar file.
+
+  Remote hosts should then be configured to create a tar file once a day,
+  which includes all the paths and files that should be backed up on a
+  regular basis.
+
+- The central host should have a user which the backup system is run as
+  (${SYNCBACK_USER} is fine here as well).  This user needs to have the private
+  part of the SSH key for which the public part is used on the remote
+  hosts.
+
+  The central host should be configured to run once day, N hours after the
+  remote hosts are configured to create their tar files - where N is a
+  figure that ensures any successful tar has been completed.
+
+  The central host also needs to have a canonical baseline tar file for
+  each host to be sync'd.  These baselines represent the "accepted" state
+  of a machine, and each nightly sync is tested against it's baseline to
+  identify the following things (raised as warnings if found),
+
+    - If any of the files in the sync'd archive have changed, if so how
+
+    - If any new files have been introduced into the sync'd archive
+
+- Any warnings are emailed back to the administrator, who can then either
+  revert the changes on the remote host, or accept the changes into the
+  accepted repository.  If a warning is raised, the sync'd tarfile is
+  retained.
+
+- The filesystem structure needed is as follows,
+
+    - Remote Host
+    
+    /var/syncback => Contains latest backup tar file
+    
+    Permissions for the directory is 770 for root:${SYNCBACK_USER}
+
+    - Central Host
+    
+    /var/syncback/approved => Contains the canonical approved trees of
+    files for each host
+
+    /var/syncback/sync => The path to which the syncs are pulled
+
+    /var/syncback/tmp => The path to which the syncs are unpacked for
+    comparison with the approved tree
+    
+    /var/syncback.local => Contains latest backup tar file for localhost
+
+    Permissions for the directory are 770 for root:${SYNCBACK_USER}

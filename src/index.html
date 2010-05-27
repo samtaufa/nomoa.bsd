@@ -1,0 +1,120 @@
+
+$!tpl_relatedsites!$
+
+
+$!OpenBSD!$ 
+is a __fun platform__ to immerse in networking principals, software, 
+security, and Operating Systems (if you're delusional, into 
+gratification through pain and deprivation ;) It is well documented 
+through Unix $!manpage("man")!$(ual) pages, with a lucid online 
+[Frequently Asked Questions](http://www.openbsd.org/faq/)(FAQ) 
+
+   
+<blockquote>
+The most dangerous part in a car, is the nut 
+loose behind the wheel (the driver.) These notes are not going to 
+show you how to setup a secure server, and they just might give 
+you suggestions that will make your setup insecure.
+
+_author unknown_
+</blockquote>
+
+These notes reference how we got  $!OpenBSD!$ up and running. 
+Verify our knowledge
+on the $!OpenBSD!$ mailing lists, Internet and practise safe 
+Computing.
+
+-   Build and Consistency
+-   Communications Systems
+-   Configuration Maintenance
+-   Gateway, Border Systems
+-   Monitoring it all
+
+<a name="index.build"></a>
+
+### Build and Consistency
+
+Putting together an OpenBSD box is fun and easy, although
+there are a few hurdles that can seem daunting for the new
+user, the process is well defined and documented. Take a look
+here for a few areas that might be interesting to review
+before a system install (especially for new users.)
+
+Likewise, we try to put here general issues to consider when
+planning to roll-out OpenBSD to your critical infrastructure.
+
+<a name="index.comms"></a>
+
+### Secured Communications
+
+Your first step in connecting your new OpenBSD box, to anything, is
+to read the [OpenBSD FAQ 6 - Networking](http://www.openbsd.org/faq/faq6.html)
+document. And then, read it again.
+
+Afterwards,  we explore some useful notes for sharing and 
+securing communications services.
+
+<a name="index.mail"></a>
+
+#### Mail Server
+
+E-mail may just be the lifeblood of the Internet, 
+unless you're younger than 25. 
+Various tools come together to provide what is generally termed an E-mail Server, 
+and we bring together some of these key tools on $!OpenBSD!$.
+
+-   an SMTP Server, using [Sendmail](comms/mail.html) or
+    [Postfix](comms/mail/postfix.html)
+-   Client access (POP3, IMAP, TLS server) using [Dovecot](
+    comms/mail/dovecot.html)
+
+<a name="index.gateways"></a>
+
+### Gateways and Perimeter Systems
+
+$!OpenBSD!$ is a great tool for securing your borders and gateways
+and comes pre-configured with tools for 
+[High Availability](borders/highavailability.html)
+through redundancy and Load Balancing.
+
+
+
+<a name="index.monitoring"></a>
+
+### Monitoring 
+
+Monitoring involves passive accumulation of events, and the
+decision process from these. We review process and tools for
+monitoring for the security of our configurations.
+
+<a name="index.configuration"></a>
+
+### Configuration Maintenance
+
+When you need to patch or quickly rebuild machines in production, then 
+a sane methodology for securing distributed configurations
+is mandatory.
+
+
+
+##  Off Topic
+
+These notes are an evolution of offline notes required to initiate
+an underfunded school network/internet connectivity. Few schools 
+have the funds to spend on quality staff, let alone quality hardware
+or software. With this problem in mind, and a desire to experiment 
+with new software, old hardware, we embarked on downloading, installing, 
+reformatting and reinstalling a bunch of tools from the Internet 
+in the hope to providing students with an exciting learning environment 
+while at the same time limiting the cost blow-outs from buying new 
+hardware and unnecessary software licenses.
+
+Initially with limited Internet connectivity we struggled for information/documentation 
+on how to participate in this information revolution. These notes 
+will go a long way to helping find the reference resources on the 
+'NET, and hopefully answer many of the general questions for installing 
+and maintaining services. 
+
+It's between lean times between working with $!OpenBSD!$ servers, and
+now that I'm back managing hosts we hope to keep these notes more up
+to date.

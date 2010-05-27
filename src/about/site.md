@@ -1,0 +1,86 @@
+## Putting the Site Together
+
+Nomoa.com's $!OpenBSD!$ notes are built on ...
+
+-   [Countershape](http://github.com/samtaufa/countershape) from 
+    [Nullcube](http://dev.nullcube.com) is used for converting  
+    marked-up text files into a static HTML website.
+-   [Notepad ++](http://notepad-plus.sourceforge.net/) and 
+    [ScITE](http://scintilla.com) are the general text
+    editors. ScITE for it's cross-platform support.
+-   [dia](http://projects.gnome.org/dia/), 
+    is a cross-platform diagram creation program used for the 
+    majority of the diagrams on these pages.
+    [windows install](http://dia-installer.de/index_en.html) 
+    
+### Markups - cleaning up the text
+
+Focus on the text, and less on HTML.
+
+Through countershape, we're pursuing use of various Markup's 
+methods for page production.
+
+-   [reStructuredText](http://docutils.sourceforge.net/) ReST
+    using docutils
+-   [Markdown](http://daringfireball.net/projects/markdown/)
+    using [python-markdown2](http://code.google.com/p/python-markdown2/) 
+
+#### reStructuredText Markup Specification
+
+reStructuredText is plaintext that uses simple and intuitive constructs 
+to indicate the structure of a document. These constructs are equally 
+easy to read in raw and processed forms. This document is itself an 
+example of reStructuredText (raw, if you are reading the text file, or 
+processed, if you are reading an HTML document, for example). The 
+reStructuredText parser is a component of [Docutils](http://docutils.sourceforge.net).
+
+Simple, implicit markup is used to indicate special constructs, 
+such as section headings, bullet lists, and emphasis. The markup 
+used is as minimal and unobtrusive as possible. Less often-used 
+constructs and extensions to the basic reStructuredText syntax may 
+have more elaborate or explicit markup.
+
+
+#### MarkDown
+
+[Markdown](http://daringfireball.net/projects/markdown/) is a text-to-HTML 
+conversion tool for web writers. Markdown allows you to write using an
+easy-to-read, easy-to-write plain text format, then convert it to 
+structurally valid XHTML (or HTML).
+
+Thus, "Markdown" is two things: (1) a plain text formatting syntax; and (2) 
+a software tool, written in Perl, that converts the plain text formatting to
+ HTML. See the Syntax page for details pertaining to Markdown's formatting [syntax](http://daringfireball.net/projects/markdown/syntax). You can try 
+ it out, right now, using the online Dingus.
+    
+The above two methods let's me edit the files as simple text
+with minimal requirements to use html.
+    
+There's varied discussions on the benefits and failings of these markups, but the significant
+advantage for nomoa.com/bsd's page production is cleaning-up the actual text,
+so it is (in itself) readable, and more importantly, maintainable.
+
+These pages have aged, and not very well, hopefully we can now begin
+keeping the text closer to relevant releases.
+
+#### Markup Files - md, text, txt, textish
+
+This means, that with the '.html' version of the website, you can normally
+view the 'source' for the page text by using the extension 'filename.md'
+or .text, .txt, .textish, depending on which one I'm using for that page.
+
+For example, change the Address bar URL for this page from 'site.html' to
+['site.md'](site.md) and hit enter you can read the 'markdown' version 
+of the page content. (Your browser may interpret the page as partial html,
+so some of the embedded html may not show up correctly.)
+
+### Workflow - Freedom to choose
+
+Using __countershape__ allows me to update knowledge for the site in
+a disconnected environment. There are no requirements to be connected to
+a database.
+
+
+__Countershape__ gives me independence of the markup language (so I don't have to
+know anymore than I don't, and it gives macros, such as $_!OpenBSD!_$ to always
+give me the $!OpenBSD!$ text and url embedded.

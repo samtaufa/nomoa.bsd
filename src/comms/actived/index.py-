@@ -1,0 +1,14 @@
+from countershape.doc import *
+this.markup = "markdown"
+
+ns.docTitle = "Active Directory"
+
+pages = [   
+        Page("samba.html", 
+        title="Samba", 
+        pageTitle="Samba"),
+
+        Page("squid.html", 
+        title="Squid", 
+        pageTitle="Squid"),
+]

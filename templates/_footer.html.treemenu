@@ -1,0 +1,9 @@
+<script type="text/javascript">
+
+//ddtreemenu.createTree(treeid, enablepersist, opt_persist_in_days (default is 1))
+ddtreemenu.createTree("treemenu", true, 5)
+
+</script>
+
+<a href="javascript:ddtreemenu.flatten('treemenu', 'expand')">Expand All</a> 
+<a href="javascript:ddtreemenu.flatten('treemenu', 'contract')">Contract All</a>

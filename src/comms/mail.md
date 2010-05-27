@@ -1,0 +1,117 @@
+## Serving e-mail
+
+<div style="float:right">
+
+Table of Contents
+
+<ul>
+    <li>The DNS Server</li>
+    <li>The Mail Transport Agent (MTA)</li>
+        <ul>
+            <li><a href="mail/sendmail.html">Sendmail</a> installed with the Base OpenBSD OS
+            <li><a href="mail/postfix.html">Postfix</a> available in the Ports Collection
+        </ul>
+    <li>POP3, IMAP Server for clients</li>
+        <ul>
+            <li><a href="mail/dovecot.html">Dovecot</a> in the Ports Collection for POP3, IMAP, TLS.
+        </ul>
+    
+</ul>
+
+</div>
+ 
+E-mail may just be the lifeblood of the Internet, unless you're younger than 25.
+
+Various tools come together to provide what is generally termed an E-mail Server, 
+and we bring together some of these key tools on OpenBSD.
+
+<div style="">
+    <img src='@!urlTo("media/images/mail/mailserver.png")!@' title="Serving Electronic Mail">
+</div>
+
+We've also had the opportunity to deploy task specific configurations, such as Proxy 
+Servers and sites using Virtual User Accounts (both using Postfix) and we document
+them here also.
+
+<ul>
+    <li><a href="mail/postfix/proxy.html">Proxy Server</a>
+    <li><a href="mail/postfix/virtual.html">Virtual User Accounts</a>
+</ul>
+
+
+Optional items, depending on your requirements may include:
+
+<ul>
+	<li>Authentication Database</li>
+	<li>GUI Management Tool</li>
+</ul>
+
+
+###  The DNS Server
+
+[ <a href="http://www.kernel-panic.it/openbsd/dns/">OpenBSD as a domain name server</a> | 
+<a href="http://bind8nt.meiway.com/itsaDNSmess.cfm">Is my DNS a mess</a>]
+
+A key infrastructure for email delivery, is the Global DNS. 
+We do not show you how to configure your DNS so 
+email can go to your box, or email is accepted from your box, but there are
+good tips on the Internet on what to do.
+
+The Mail Server will need connection to a DNS server, to find out where to send
+e-mails, and it needs to be listed on the DNS system (so other Mail Servers can 
+forward e-mail to your server.)
+
+When you can ping your mail host, but can't connect with SMTP,
+check your DNS setting (either /etc/$!manpage("resolv.conf")!$ or 
+/var/spool/postfix/etc/$!manpage("resolv.conf")!$)
+
+###  The Mail Transport Agent (MTA)
+
+With OpenBSD 4.6, OpenBSD released the beginnings of an MTA developed 
+with the objectives and priorities of the project. SMTPD(8) (Simple Mail
+Transfer Protocol Daemon is developing with each OS release.
+
+More commonly referred as the mail 'server', two major MTA's documented here are:
+
+  - <a href="mail/sendmail.html">sendmail</a> (included with the default OpenBSD install), and 
+  
+  - <a href="mail/postfix.html">postfix</a> (a well regarded mail server, included with the OpenBSD
+ports collection.)
+
+The MTA manages the storage and forwarding of messages. Delivery can be local (to local users)
+or by forwarding the message to another MTA listed in DNS as responsible for the target e-mail account.
+
+Remote Clients 'push' their e-mail to MTA's for delivery. The Remote Client can either
+be Mail User Agents (MUA, such as your e-mail client software, Outlook or Thunderbird) or
+another MTA.
+
+###  POP3, IMAP Server for client access
+
+Two major protocols for retrieving e-mail from a server is POP3 and IMAP. Again,
+various options are available with the default base install, and further alternatives are
+provided in the ports collection.
+
+The <a href="mail/dovecot.htm">dovecot</a> notes are especially useful for
+configurations using alternate Authentication Databases, as well as virtual accounts.
+
+Clients 'pull' their e-mail from MTA's using POP3 or IMAP.
+
+###  Authentication Database
+
+For a mail system servicing a small number of static users, it is sane to maintain
+user account details using text/hash database files. Large installations, with higher
+frequency of user changes will benefit from using a a database server for flexibility.
+
+###  GUI Management Tool
+
+Various tools exist to simplify an administrators workload through GUI toolsets.
+
+postfixadmin is a wonderful Web GUI tool for managing your postfix 
+installation.
+
+This sample installation should work tested without the 
+need for postfixadmin. I would advise installing postfixadmin for a simplified 
+mechanism for managing virtual user accounts.
+
+<p> Our documentation for installing and configuring postfixadmin
+<a href="mail/postfix/admin.html">follows the link postfix/admin.html</a></p>

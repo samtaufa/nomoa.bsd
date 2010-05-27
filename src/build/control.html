@@ -1,0 +1,68 @@
+# Archive / Monitoring Box Configurations
+---------------
+
+To have smokeping start at boot time, you have to adapt
+/etc/smokeping/config and insert the following into /etc/rc.local.
+
+<pre class="command-line">
+if [ X"smokeping" != X"NO" -a -x /usr/local/bin/smokeping ]; then
+        install -d -o _smokeping /var/run/smokeping
+        echo -n ' smokeping';   /usr/local/bin/smokeping
+fi
+</pre>
+
+--- nagios-3.0.3-chroot -------------------
+
+Sample configuration files and web server configuration can be found in
+/usr/local/share/examples/nagios.
+
+
+Beware that Nagios might or might not work correctly on 64bit machines.
+
+To start nagios automatically, add these lines to /etc/rc.local
+
+<pre class="command-line">
+if [ X"nagios" != X"NO" -a -x /usr/local/sbin/nagios ]; then
+        install -d -o _nagios /var/run/nagios
+        echo -n ' nagios'; /usr/local/sbin/nagios -d /etc/nagios/nagios.cfg
+fi
+</pre>
+
+--- nagios-plugins-1.4.11 -------------------
+
+The check_dhcp and check_icmp plugins need to run with superuser
+privileges. For security reasons they are not installed suid root
+by default. If you want to use them, you have to either change
+their mode manually or use systrace's privilege elevation feature.
+
+For further details see /usr/local/share/doc/nagios-plugins/README.OpenBSD.
+
+--- smstools-3.0.9p1 -------------------
+
+To have smsd start at boot time, you have to adapt
+/etc/smsd.conf and insert the following into /etc/rc.local.
+
+<pre class="command-line">
+if [ X"smsd" != X"NO" -a -x /usr/local/bin/smsd ]; then
+        install -d -o _smsd /var/run/smsd
+        echo -n ' smsd';        /usr/local/bin/smsd
+fi
+</pre>
+
+smsd needs access to the serial port; this can be done by adding
+the _smsd user to 'dialer' in /etc/group.
+
+--- net-snmp-5.4.1.1p1 -------------------
+
+To have snmpd start at boot time, you must edit /etc/snmp/snmpd.conf
+and add the following lines to /etc/rc.local:
+
+<pre class="command-line">
+if [ -x /usr/local/sbin/snmpd ]; then
+        echo -n ' snmpd';       /usr/local/sbin/snmpd
+fi
+</pre>
+
+This will start snmpd and use /etc/snmp/snmpd.conf for the configuration. 
+The snmpconf tool can be used to help edit your configuration files.  See 
+snmpconf(1), snmpd(8), and snmpd.conf(5) for more options.

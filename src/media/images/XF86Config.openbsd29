@@ -1,0 +1,152 @@
+# $Id: XF86Config.openbsd29,v 1.1.1.1 2002/06/10 02:10:00 samt Exp $
+#
+# XF86Config (XFree86 4.0.2) file for Toshiba Satellite Pro 4600.
+#
+# This is a Trident CyberBlade XP graphics card with 16 MByte memory.
+# SVGA graphics is supported up to 1600x1200 @ 85 Hz.
+# The LCD is a 15 inch 1024x768 TFT.
+#
+# The card is not recognised by the trident driver, and the vga driver
+# gives only 320x200 pixels.  So the generic vesa driver is used, which
+# supports up to 1280x1024.
+#
+# This file is bascially created with xf86config for an unsupported VGA card.
+# However, then the Driver was changed from "vga" to "vesa", the DefaultDepth
+# from 8 bpp to 16 bpp, and the Modes list reduced to "1024x768" only.
+#
+# If you add a "1280x1024" mode at the end of the Modes line,
+# you will have a 640x480 viewport on that size of screen, scrolled by
+# mouse movement.  If you put that mode in front of "1024x768" you will
+# have a 1024x768 viewport on a 1280x1024 screen, but cannot scroll to
+# the right or bottom edge.
+#
+# 24 bpp and 32 bpp do not work, I suspect the card does not support
+# 24 bpp and the vesa driver does not support more than 24 bpp.
+#
+# This file is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# (C) 2001 United Kingdom Astronomy Technology Centre.
+# Horst Meyerdierks <hme@roe.ac.uk>.
+# Some sections courtesy of Helmut Bluhm.
+#
+# 2001/03/03: Original version.
+# 2001/03/04: Modified keyboard section, minor addition to mouse section.
+# 2001/03/08: Minor tweaking of keyboard section.
+# 2001/04/27: Remove references to pc101 in keyboard section,
+#             to make my UK keyboard work with Red Hat 7.1 XFree86 4.0.3.
+# 2001/05/23: Dual mouse sections for simultaneous use of PS/2 and USB mice,
+#             also both with IMPS/2 and ZAxisMapping.
+# 2001/06/01: Swap InputDevice lines in ServerLayout to initialise USB mouse
+#             last (after keyboard).
+
+Section "Module"
+    Load        "dbe"   # Double buffer extension
+    SubSection  "extmod"
+      Option    "omit xfree86-dga"   # don't initialise the DGA extension
+    EndSubSection
+    Load        "type1"
+    Load        "freetype"
+EndSection
+
+Section "Files"
+    RgbPath    "/usr/X11R6/lib/X11/rgb"
+    FontPath   "/usr/X11R6/lib/X11/fonts/local/"
+    FontPath   "/usr/X11R6/lib/X11/fonts/misc/"
+    FontPath   "/usr/X11R6/lib/X11/fonts/75dpi/:unscaled"
+    FontPath   "/usr/X11R6/lib/X11/fonts/100dpi/:unscaled"
+    FontPath   "/usr/X11R6/lib/X11/fonts/Type1/"
+    FontPath   "/usr/X11R6/lib/X11/fonts/Speedo/"
+    FontPath   "/usr/X11R6/lib/X11/fonts/75dpi/"
+    FontPath   "/usr/X11R6/lib/X11/fonts/100dpi/"
+    FontPath   "/usr/local/AbiSuite/fonts/"
+EndSection
+
+Section "ServerFlags"
+EndSection
+
+Section "InputDevice"
+    Identifier  "Keyboard1"
+    Driver      "Keyboard"
+    Option "AutoRepeat"  "500 30"
+    Option "LeftAlt"     "Meta"
+    Option "RightAlt"    "Meta"
+    Option "ScrollLock"  "Compose"
+    Option "RightCtl"    "Control"
+    Option "XkbKeycodes" "xfree86"
+    Option "XkbTypes"    "default"
+    Option "XkbCompat"   "default"
+    Option "XkbRules"    "xfree86"
+    Option "XkbLayout"   "gb"
+EndSection
+
+Section "InputDevice"
+    Identifier  "USBMouse"
+    Driver      "mouse"
+    Option "Protocol"    "wsmouse"
+    Option "Device"      "/dev/wsmouse1"
+    Option "Emulate3Buttons"
+    Option "Emulate3Timeout" "150"
+    Option "ZAxisMapping" "4 5"
+EndSection
+
+Section "InputDevice"
+    Identifier  "Internal"
+    Driver      "mouse"
+    Option "Protocol"    "wsmouse"
+    Option "Device"      "/dev/wsmouse0"
+    Option "Emulate3Buttons"
+    Option "Emulate3Timeout" "150"
+    Option "ZAxisMapping" "4 5"
+EndSection
+
+Section "Monitor"
+    Identifier  "Tosh 4600 LCD"
+    HorizSync   31.5 - 82.0
+    VertRefresh 50-90
+EndSection
+
+Section "Device"
+    Identifier  "Standard VGA"
+    VendorName  "Unknown"
+    BoardName   "Unknown"
+#   Chipset     "generic"
+    Driver      "vga"
+#   BusID       "PCI:0:10:0"
+#   VideoRam     256
+#   Clocks       25.2 28.3
+EndSection
+
+Section "Device"
+    Identifier  "Trident XP"
+    Driver      "vesa"
+        # unsupported card
+    #VideoRam    16384
+    # Insert Clocks lines here if appropriate
+EndSection
+
+Section "Screen"
+    Identifier  "Screen 1"
+    Device      "Trident XP"
+    Monitor     "Tosh 4600 LCD"
+    DefaultDepth 16
+    Subsection "Display"
+        Depth       8
+        Modes       "1024x768"
+        ViewPort    0 0
+    EndSubsection
+    Subsection "Display"
+        Depth       16
+        Modes       "1024x768"
+        ViewPort    0 0
+    EndSubsection
+EndSection
+
+Section "ServerLayout"
+    Identifier  "Simple Layout"
+    Screen      "Screen 1"
+    InputDevice "Internal"  "CorePointer"
+    InputDevice "Keyboard1" "CoreKeyboard"
+    InputDevice "USBMouse"  "SendCoreEvents"
+EndSection

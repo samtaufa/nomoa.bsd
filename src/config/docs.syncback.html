@@ -1,0 +1,58 @@
+## The syncback cycle
+
+- A canonical tree of data is established locally by the root user (this allows
+  us to preserve permissions and ownership IDs) for each host to participate in
+  the system
+
+- A nightly job is run on each host that participates in the system which
+  generates a local archive of all the files / dirs to be backed up.  This is
+  scheduled to be earlier than the central syncback script is run by
+  approximately an hour ensuring there are no collisions
+
+- A nightly job is run on the central syncback host that performs the following
+  process for each host:
+
+    = Pull down a copy of the remote archive
+    = Unpack the archive locally into a tmp directory
+    = Perform the following difference tests between the current canonical
+      tree and the latest sync'd archive:
+
+        #= Stat test (ownerships, mode, size)
+
+        #= EXTENSION TESTS FOR FILES
+            #= Content diff test
+
+        == If no changes are detected, purge the sync
+
+        == If changes are detected, rename the sync file to be
+        <hostname>.<timestamp>.<canonical-hash>.tgz for posterity
+
+            - do we ever purge these and on what basis would we ?
+            - how to we order the tagged canonical archives ?
+
+
+## Canonical tree update process
+
+- Unpack the latest sync you want to update from to a tmp location as root (to
+  preserve permissions etc)
+
+- Using `cp -p <newfile> <oldfile>` update individual files by coping the new
+  version over the existing versions in the canonical tree
+
+- We want to be able to tag and snapshot each canonical branch for posterity,
+  how do we do this ? how do we order the snapshots (a timestamp?) ?
+
+- Make sure to purge your tmp tree that you updated from
+
+
+## Handling CARP groups with only one shared IP
+-----------------------------------------------
+
+    - The CARP hosts should sync their backups between themselves to make sure
+      they both have a copy of the other's backup tgz file.  This means we
+      never have to mess around figuring out who is who, and how to get
+      through/past the active primary host to the secondary host.
+
+    - We then setup an entry for the same IP, but with a different hostname,
+      since the hostnames are what we use to figure out what the tgz's prefix
+      will be.

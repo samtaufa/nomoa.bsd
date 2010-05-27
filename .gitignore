@@ -1,0 +1,9 @@
+# Python object files
+*.py[cd]
+# Vim swap files
+*.swp
+*.swo
+# Dia Temp Files
+*.dia~
+*.dia.autosave
+/rendered
