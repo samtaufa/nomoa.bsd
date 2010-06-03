@@ -3,23 +3,23 @@ from countershape.doc import *
 this.markup = "markdown"
 
 pages = [
-    Page("sendmail.md",
+    Page("sendmail.mdtext",
         title="Sendmail",
         pageTitle=""),
 
-    Page("dovecot.md",
+    Page("dovecot.mdtext",
         title="Client Access",
         pageTitle="'dovecot' POP3, IMAP Connection"),
         
-    Page("web.md",
+    Page("web.mdtext",
         title="Web",
         pageTitle="Web Clients"),
         
-    Page("test.md",
+    Page("test.mdtext",
         title="Tests",
         pageTitle="Testing Connectivity"),
         
-    Page("postfix.md",
+    Page("postfix.mdtext",
         title="Postfix",
         pageTitle="Postfix Mail Server"),
         

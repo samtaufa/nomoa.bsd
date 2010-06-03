@@ -1,0 +1,64 @@
+$!OpenBSD!$ 
+is a **fun platform** to immerse in software, networking, security, 
+and Operating Systems principals,  . Even more so if you're delusional, 
+into gratification through pain and deprivation. $!OpenBSD!$'s not too 
+shaby filling in as a General Purpose Operating System (GPOS) with some 
+fine features to stand-in as your Firewall, Gateway Servers. 
+
+It is well documented through Unix $!manpage("man")!$(ual) pages, 
+with a lucid online [Frequently Asked Questions](http://www.openbsd.org/faq/)(FAQ) 
+   
+These notes reference how we got/keep  $!OpenBSD!$ up and running. 
+Verify what you read here through the $!OpenBSD!$ mailing lists, Internet 
+and practise safe Computing.
+
+-   Build and Consistency
+-   Communications Systems
+-   Configuration Maintenance
+-   Gateway, Border Systems
+-   Monitoring it all
+
+### Build and Consistency
+
+Putting together an OpenBSD box is fun and easy, although
+there are a few hurdles that can seem daunting for the new
+user, the process is well defined and documented. Take a look
+here for a few areas that might be interesting to review
+before a system install (especially for new users.)
+
+Likewise, we try to put here general issues to consider when
+planning to roll-out OpenBSD to your critical infrastructure.
+
+### Secured Communications
+
+Your first step in connecting your new OpenBSD box, to anything, is
+to read the [OpenBSD FAQ 6 - Networking](http://www.openbsd.org/faq/faq6.html)
+document. And then, read it again.
+
+Afterwards,  we explore some useful notes for sharing and 
+securing communications services.
+
+#### Mail Server
+
+E-mail may just be the lifeblood of the Internet, unless you're younger than 25. 
+Various tools come together to provide what is generally termed an E-mail Server, 
+and we bring together some of these key tools on $!OpenBSD!$.
+
+-   an SMTP Server, using [Sendmail](comms/mail.html) or
+    [Postfix](comms/mail/postfix.html)
+-   Client access (POP3, IMAP, TLS server) using [Dovecot](
+    comms/mail/dovecot.html)
+
+### Gateways and Perimeter Systems
+
+$!OpenBSD!$ is a great tool for securing your borders and gateways
+and comes pre-configured with tools for 
+[High Availability](borders/highavailability.html)
+through redundancy and Load Balancing.
+
+### Monitoring 
+
+Maintenance involves a lot of monitoring, not only monitoring your
+host resources, but other factors that together define the 
+service delivery you wish to supply. Monitoring involves passive 
+accumulation of events, and the decision process from these. 

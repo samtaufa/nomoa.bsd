@@ -1,0 +1,410 @@
+## First Time - Removable Storage
+
+<div style="float:right">
+
+Table of Contents
+
+<ul>
+<li><a href="#instFSTable">The File System Table (/etc/fstab)</a></li>
+<li><a href="#instMountPoints">Mount Points for Removable Media (nodes)</a></li>
+<li><a href="#instEX">Example CDs, and SCSI</a>
+<ul>
+  <li><a href="#instEXMountPoints">The Mount Points / nodes</a></li>
+  <li><a href="#instEXManualTest">Manually Testing for a Connection</a></li>
+  <li><a href="#instEXupdateFSTable">Updating the File System Table</a></li>
+</ul></li>
+<li>Fast Forward - doing it correctly?
+    <ul>
+        <li>$!manpage("dmesg",1)!$ - discovering attached devices</li>
+        <li>disklabel - discovering device filesystems</li>
+        <li>mount - connecting device filesystems</li>
+    </ul>
+</li>
+</ul></li>
+
+</div>
+
+Ref: /etc/$!manpage("fstab")!$ | $!manpage("mount",8)!$ | $!manpage("mount_cd9660",8)!$ |
+[FAQ 14 - Disk Setup](http://www.openbsd.org/faq/faq14.html) 
+
+(e.g. CD Drives, External Drives, etc.) 
+ 
+To simplify my installation process (low bandwidth people) I need
+to configure access to my CD-ROM drive. Use 
+
+`dmesg | less`
+
+or
+
+`cat /var/run/dmesg.boot`
+
+to look for the device name detected as the cdrom drive. 
+
+CD drives are often detected as device cd# (like cd0 or cd1). '$!manpage("dmesg",1)!$' is a
+command-line program in OpenBSD that lists boot-time information (such
+as what OpenBSD detects as devices on your system during startup.) less
+is another command-line program, this program lets you browse through a
+file by using space (next page) up-arrow, down-arrow, and "q" for quit.
+
+From the manpage $!manpage("dmesg")!$:
+
+<pre clas="screen-output">
+<b>dmesg</b> displays the contents of the system message buffer.  It is most
+     commonly used to review system startup messages.
+</pre>
+
+#### <a name="instFSTable"></a>The File System Table - $!manpage("fstab")!$
+
+I edit the /etc/fstab file to tell OpenBSD that I have the cdrom
+drive setup and this helps simplify my mounting command. The /etc/fstab
+file contains information about the filesystem.
+
+File: /etc/fstab 
+
+<pre class="screen-output">
+# "#" starts comments
+# 
+# fs_spec fs_file fs_vfstype fs_mntops fs_freq fs_passno
+# 
+/dev/wd0a  /            ffs      auto,rw  1 1
+# The following is an example of what you may need to add 
+# 
+/dev/cd0a  /mnt/cdrom   cd9660   noauto,ro    0
+/dev/fd0a  /mnt/floppy  msdos    noauto,rw    0
+</pre>
+
+From the manpage $!manpage("fstab")!$ the format, as show above, is: 
+
+<pre class="screen-output">
+fs_spec fs_file fs_vfstype fs_mntops fs_freq fs_passno
+
+fs_spec, is the block special device, or remote filesystem 
+    to be mounted.
+
+    e.g. /dev/cd0c, /dev/wd0a
+    
+fs_file, describes the mount point for the filesystem.
+
+    e.g. /mnt, /cdrom
+
+fs_vfstype, describes the type of the filesystem.
+    e.g. cd9660, ffs, msdos, nfs, udf
+
+fs_mntops, describes the mount options associated with 
+    the filesystem.
+    e.g. auto, noauto, userquota, groupquota
+    
+fs_freq, is used by the -W and -w options of dump(8) to
+    recommend which filesystems should be backed up.
+    
+fs_passno, is used by the fsck(8) program to determine
+    the order in which filesystem checks are done at reboot time.    
+    e.g. 0, 1, 2
+</pre>
+
+Although the CDROM device is detected by the kernel during each
+boot, and during installation the device is not automatically
+configured for use. 
+
+Included in the above example, is an example configuration for a floppy
+disk device (assuming /dev/fd0 is the controller and /dev/fd0a is the a
+drive.) I specify msdos file format since I mostly work with msdos
+floppy drives (Winx) and have no need to transfer any other format
+floppies. 
+
+####  <a name="instMountPoints"></a>Mount Points for Removable Media (nodes)
+
+I now create the nodes (mount points) for where the file systems can
+be mounted by issuing the following commands:
+
+<pre class="command-line">
+# <b>mkdir /mnt </b>
+# <b>mkdir /mnt/cdrom</b>
+# <b>mkdir /mnt/floppy</b>
+</pre>
+
+We can now access a CD in the CD-ROM drive by entering the below command at
+the system prompt.
+
+<pre class="command-line">
+# <b>mount /mnt/cdrom</b>
+</pre>
+
+You will receive a read error if a CD is not in the drive. 
+
+Mount doesn't configure a device but attempts to find 
+the file-system specified on the device to mount that 
+filesystem to the 'mount-point'. To correctly mount a 
+device, we require a valid file-system on that device.
+
+For our cdrom device above, we are specifying that the 
+filesystem is on partition 'a', for the floppy device
+we again say the filesystem is on partition 'a'.
+
+Similarly you can access a floppy disk in the the floppy drive.
+
+#### <a name="instEX"></a>Example : CDs, and SCSI 
+
+[Reference System: iwill motherboard with
+ATAPI IDE CD, SCSI CDR and SCSI Zip drive]
+
+I have 2 CDRoms on this machine, and a SCSI card with 
+external storage connected to it (similar in purpose to
+today's USB Thumb Drives.) $!manpage("dmesg")!$ outputs a lot of junk 
+with the below information included that
+seems valid for removable devices.
+
+<pre class="screen-output">
+cd0 at scsibus0 targ 1 lun 0: &lt;E-IDE, CD-ROM 45X, 32&gt; SCSI0 5/cdrom removable
+cd1 at scsibus1 targ4 lun 0: &lt;PLEXTOR, CD-R PX-R412C, 1.04&gt; SCSI25/cdrom removable
+sd0: 96MB, 96 cyl, 64 head, 32 sec, 512 bytes/sec, 196608 sec total
+fd0 at fdc0 drive 0: 1.44MB 80 cyl, 2 head, 18 sec 
+</pre>
+
+The command "<b>dmesg | less</b>" lets us navigate up and down the
+list (using arrow keys) and I can quit "less" by typing in "q" to quit.
+
+##### <a name="instEXMountPoints"></a>The Mount Points / nodes
+
+I test the ability to access the devices by first creating the
+'node' or directory to mount the devices and using the mount command to
+check where the 'fs_spec, the block special device ' is located.
+
+
+<pre class="config-file">
+/mnt/cdrom  - for the E-IDE CDROM (filesystem: cd9660)
+/mnt/cdr    - for the CDR (filesystem: cd9660) 
+/mnt/floppy - for the floppy drive (filesystem: msdos) 
+/mnt/zip    - for the Iomega SCSI ZIP drive (filesystem:msdos)
+</pre>
+
+We're choosing cd9660 as the filesystem for CD drives as this is
+OpenBSD's name for ISO-9660 CDROM filesystem. We use msdos in this
+example since all my other machines sharing zip disks and floppies are
+MSWin platforms which share MSDOS FAT filesystems (fat16, fat32).
+
+<pre class="command-line">
+# <b>mkdir /mnt</b>
+# <b>mkdir /mnt/cdrom</b>
+# <b>mkdir /mnt/cdr</b>
+# <b>mkdir /mnt/floppy</b>
+# <b>mkdir /mnt/zip</b> 
+</pre>
+
+##### <a name="instEXManualTest"></a>Manually Testing for a Connection
+
+We start looking at the devices from /dev/???a ... b ... c ... until
+we find it. Where ??? is the device we are reviewing. We need to make
+sure we have a valid media (disk) inside each drive for the mount
+process to find the file-system on the disk we want to mount. 
+Put a CD with valid music or data into the CD Drive and/or floppies 
+into floppy etc. 
+
+We use the "-v Verbose mode" option so we can get some debugging 
+output on the console from the mount command.
+
+<pre class="command-line">
+# <b>mount -v -t cd9660 /dev/cd0a /mnt/cdrom</b> 
+</pre>
+<pre class="screen-output">
+/dev/cd0a on /mnt/cdrom type cd9660 (local, read-only)
+</pre>
+<pre class="command-line">
+# <b>mount -v -t cd9660 /dev/cd1a /mnt/cdr</b>
+</pre>
+<pre class="screen-output">
+/dev/cd1a on /mnt/cdr type cd9660 (local, read-only)
+</pre>
+<pre class="command-line">
+# <b>mount -v -t msdos /dev/fd0a /mnt/floppy </b>
+</pre>
+<pre class="screen-output">
+/dev/fd0a on /mnt/floppy type msdos (rw, local, uid=0, gid=0, mask=0755) 
+</pre>
+
+The above three devices seemed to work easily with the first
+'device' but the mounted zip took a little while longer to find as
+shown with the testing below.
+
+<pre class="command-line">
+# <b>mount -v -t msdos /dev/sd0a /mnt/zip</b> </pre>
+<pre class="screen-output">
+mount_msdos: /dev/sd0aon /mnt/zip: Device not configured </pre>
+<pre class="command-line">
+# <b>mount -v -t msdos /dev/sd0b /mnt/zip </b></pre>
+<pre class="screen-output">
+mount_msdos: /dev/sd0a on /mnt/zip: Device not configured </pre>
+<pre class="command-line">
+# <b>mount -v -t msdos /dev/sd0c /mnt/zip</b> </pre>
+<pre class="screen-output">/dev/sd0c on /mnt/zip
+type msdos (rw, local, uid=0, gid=0, mask=0755)
+</pre>
+
+
+##### <a name="instEXupdateFSTable"></a>Updating the File System Table
+
+We now know where the devices can be located and can confidently
+specify our devices into the /etc/fstab file system table.
+
+Edit the file: /etc/fstab
+
+<pre class="config-file">
+# device    mount-point   filesystem  mount_options   check-priority    pass-number
+  /dev/cd0a /mnt/cdrom    cd9660      ro,noauto         0                   0
+  /dev/cd1a /mnt/cdr      cd9660      rw,noauto         0                   0
+  /dev/sd0c /mnt/zip      msdos       rw,noauto         0                   0
+  /dev/fd0a /mnt/floppy   msdos       rw,noauto         0                   0
+</pre>
+      
+Now, all we need to do to access one of the devices above is to use
+"mount /mnt/????" (where ???? is the directory created above) and mount
+will look up the device setting/file system from the /etc/fstab file.
+
+Sharing files through the FAT file system?
+- Read $!manpage("mount_msdos") about support for long filenames.
+- MSDOS Partitions may sometimes be found on partition 'i'
+- CD9660 data partitions may sometimes be better read on partition 'c'
+
+#### Fast Forward - doing it correctly?
+
+After more years of misadventure, and the basic system above working, 
+it seems that I haven't been doing it correctly, and there's a better
+way of discovering and mounting attached storage devices(e.g. hard-disks,
+flash-disks etc.)
+
+##### dmesg - discovering attached devices
+
+[ Host: Soekris net4801, OpenBSD 4.6 i386 ]
+
+As per previous discussions, '$!manpage("dmesg")!$' is our friend for discovering 
+information about attached devices. When you plug a new device onto an
+OpenBSD box, it is either recognised at startup or recognised at insertion
+time. Use '$!manpage("dmesg")!$' to find out how it has been recognised.
+
+/var/run/dmesg.boot contains the dmesg at boot time.
+
+Sample 'dmesg' output for a few USB External Storage Devices.
+
+[ Device: Generic USB Thumbdrive 2GB]
+
+<pre class="screen-output">
+umass0 at uhub0 port 1 configuration 1 interface 0 "SMI Corporation USB DISK" rev 2.00/11.00 addr 2
+umass0: using SCSI over Bulk-Only
+scsibus0 at umass0: 2 targets, initiator 0
+sd0 at scsibus0 targ 1 lun 0: <USB, Flash Disk, 1100> SCSI0 0/direct removable
+sd0: 1983MB, 512 bytes/sec, 4062208 sec total
+</pre>
+
+We discover that the device is recognised at 'sd0'
+
+[ Device: Generic Micro-SD 'Nokia' 128 MB ]
+
+<pre class="screen-output">
+umass0 at uhub0 port 1 configuration 1 interface 0 "SanDisk MobileMate Micro" rev 2.00/94.07 addr 2
+umass0: using SCSI over Bulk-Only
+scsibus0 at umass0: 2 targets, initiator 0
+sd0 at scsibus0 targ 1 lun 0: <Generic, STORAGE DEVICE, 9407> SCSI0 0/direct removable
+sd0: 121MB, 512 bytes/sec, 248320 sec total
+</pre>
+
+We discover that the device is recognised at 'sd0'
+
+[ Device: External USB Chassis with Samsung 3.5" HDD 120GB ]
+
+<pre class="screen-output">
+umass0 at uhub0 port 1 configuration 1 interface 0 "Prolific Technology Inc. Mass Storage Device" rev 2.00/1.00 addr 2
+umass0: using SCSI over Bulk-Only
+scsibus0 at umass0: 2 targets, initiator 0
+sd0 at scsibus0 targ 1 lun 0: <SAMSUNG, HM120JC, YL10> SCSI0 0/direct fixed
+sd0: 114473MB, 512 bytes/sec, 234441648 sec total
+</pre>
+
+We discover that the device is recognised at 'sd0'
+
+Not surprising discovery, since I only have one USB port on Soekris Net4801.
+The point being, that finding exactly which device is attached, is not
+a difficult ornerous job.
+
+##### disklabel - discovering device filesystems
+
+With the above devices connected, we run disklabel
+
+[ Device: Generic USB Thumbdrive 2GB]
+
+<pre class="command-line">
+disklabel sd0
+</pre>
+<pre class="screen-output">
+# /dev/rsd0c:
+16 partitions:
+#                size           offset  fstype [fsize bsize  cpg]
+  c:          4062208                0  unused
+  i:          4062145               63   MSDOS
+</pre>
+
+We've discovered partition 'c' as the marker for all of the device, and partition 'i' is an
+MSDOS partition.
+
+[ Device: Generic Micro-SD 'Nokia' 128 MB ]
+
+<pre class="command-line">
+disklabel sd0
+</pre>
+<pre class="screen-output">
+# /dev/rsd0c:
+16 partitions:
+#                size           offset  fstype [fsize bsize  cpg]
+  a:           240912               63  4.2BSD   2048 16384    1
+  c:           248320                0  unused
+</pre>
+
+We've discovered partition 'c' as the marker for all of the device, and partition 'a' is a
+4.2BSD partition.
+
+[ Device: External USB Chassis with Samsung 3.5" HDD 120GB ]
+
+<pre class="command-line">
+disklabel sd0
+</pre>
+<pre class="screen-output">
+# /dev/rsd0c:
+16 partitions:
+#                size           offset  fstype [fsize bsize  cpg]
+  c:        234441648                0  unused
+  i:        234436608             2048    NTFS
+</pre>
+
+We've discovered partition 'c' as the marker for all of the device, and partition 'i' is an
+NTFS partition.
+
+Of the three sample devices, 1 has the same file system used by OpenBSD (4.2BSD), 
+1 has an MSDOS partition, and 1 has an NTFS partition.
+
+##### mount - connecting device filesystems
+
+[ ref: $!manpage("mount",2)!$ ]
+
+As per the manpage, the 'mount' program uses the -t (type) to indicate the file system
+type to be mounted (the default is FFS (aka 4.2BSD)
+
+Sample invocations of mount to connect the partitions on the above noted drives
+when physically connected include:
+
+[ Device: Generic USB Thumbdrive 2GB - MSDOS]
+
+<pre class="command-line">
+mount -t msdos /dev/sd0i /mnt
+</pre>
+
+[ Device: Generic Micro-SD 'Nokia' 128 MB - 4.2BSD]
+
+<pre class="command-line">
+mount -t ffs /dev/sd0a /mnt
+</pre>
+
+[ Device: External USB Chassis with Samsung 3.5" HDD 120GB - NTFS]
+
+Mounting NTFS partitions isn't supported in the GENERIC kernel,
+basically implying that you don't want to connect to the
+partition. Plug the drive into a proper NTFS box, and transfer
+the files through some other means.

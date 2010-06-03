@@ -1,44 +1,39 @@
 from countershape.doc import *
+import countershape
+
+this.layout = ns.tpl_layout
 this.markup = "markdown"
+
+ns.blk_sidemenu = countershape.widgets.SiblingPageIndex(
+                '/comms/mail.html',
+        )
+ 
 ns.docTitle = "VPN"
 
 pages = [
-       
-           
-    Page("ftp.md", 
-        title="FTP",
-        pageTitle="File Transfer Proxy"),
-
-    Page("samba.md", 
-        title="File Sharing",
-        pageTitle=""),
-
-    Page("ssh.md", 
-        title="SSH Client",
-        pageTitle=""),    
-   
-    Page("mysql.md", 
-        title="SQL Database",
-        pageTitle="MySQL Database"),
-
-    #~ Page("./actived/actived.md", 
+    #~ Page("./actived/actived.mdtext", 
         #~ title="ADS", 
         #~ pageTitle="Active Directory"),
     #~ Directory("actived"),
 
-    Page("mail.md", 
+    Page("mail.mdtext", 
         title="Mail",
         pageTitle="Electronic Mail Service"),
     Directory("mail"),
     
-    Page("openvpn.md", 
+    Page("openvpn.mdtext", 
         title="OpenVPN", 
         pageTitle="OpenVPN"),
     Directory("openvpn"),
 
-    Page("www.md", 
+    Page("www.mdtext", 
         title="Web", 
         pageTitle="WWW Access - Apache"),
     Directory("www"),
 
+    Page("misc.mdtext", 
+        title="Miscellaneous",
+        pageTitle="Miscellaneous Servers"),
+    Directory("misc"),
+    
 ]

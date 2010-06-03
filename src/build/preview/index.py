@@ -3,23 +3,43 @@ this.markup="markdown"
 ns.docTitle = "Installation Preview"
 
 pages = [
-    Page("first.md",
-        title="First Timer", 
-        pageTitle="First Time Installer"),
+    Page("partitioning.mdtext",
+        title="1. Partitioning", 
+        pageTitle="Drive Partitioning"),
         
-    Page("multiboot.md",
+    Page("removablestorage.mdtext",
+        title="2. Removable", 
+        pageTitle="Removable Storage"),
+        
+    Page("packagemanagement.mdtext",
+        title="3. Packages", 
+        pageTitle="Package Management"),
+        
+    Page("usermanagement.mdtext",
+        title="4. Users", 
+        pageTitle="User Management"),
+        
+    Page("afterboot.mdtext",
+        title="5. After Boot", 
+        pageTitle="After Boot"),
+        
+    Page("misc.mdtext",
+        title="6. Miscellaneous", 
+        pageTitle="Miscellaneous"),
+        
+    Page("multiboot.mdtext",
         title="Dual Boot", 
         pageTitle="Dual Boot"),
         
-    Page("rc.conf.md",
+    Page("rc.conf.mdtext",
         title="Start Up", 
-        pageTitle="Start Up"),
+        pageTitle="Start Up Configuration"),
         
-    Page("hardware.md",
+    Page("hardware.mdtext",
         title="Hardware Tests", 
         pageTitle="Hardware Tests"),
         
-    Page("cryptpart.md",
+    Page("cryptpart.mdtext",
         title="Cyphered Disks", 
         pageTitle="Encrypting Partitions"),
         

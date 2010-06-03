@@ -5,12 +5,12 @@ ns.docTitle = "High Availability"
 this.markdown = "textish"
 
 pages = [
-    Page("carp.md",
+    Page("carp.mdtext",
         title="Hot Failover",
         pageTitle="Hot Failover"
         ),
         
-    Page("relayd.md",
+    Page("relayd.mdtext",
         title="Load Balancing",
         pageTitle="Load Balancing"
         ),

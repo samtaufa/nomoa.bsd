@@ -3,23 +3,23 @@ from countershape.doc import *
 ns.docTitle = "Firewall with OpenBSD Packet Filter (PF)"
 
 pages = [
-    Page("flow.md", 
+    Page("flow.mdtext", 
         title="Traffic Flow",
         pageTitle=""),
         
-    Page("performance.md", 
+    Page("performance.mdtext", 
         title="Performance",
         pageTitle=""),
         
-    Page("ruleset.md", 
+    Page("ruleset.mdtext", 
         title="Ruleset",
         pageTitle=""),
 
-    Page("other.md", 
+    Page("other.mdtext", 
         title="Tools",
         pageTitle=""),
         
-    Page("validation.md", 
+    Page("validation.mdtext", 
         title="Validation",
         pageTitle=""),
     

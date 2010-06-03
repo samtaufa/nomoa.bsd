@@ -1,11 +1,9 @@
 @charset "UTF-8";
 /* CSS Document */
 
-/***** nav bar *****/
-
 #navBar {
 	width: 100%;
-	height: 40px;
+	height: 60px;
 }
 
 #navBarContent {
@@ -14,7 +12,7 @@
 	margin-right: auto;
 	margin-bottom: 0;
 	margin-left: auto;
-	height: 40px;
+	height: 55px;
 	/* background-image: url(../images/bg_navBar.gif); */
 	background-repeat: repeat-x;
 	background-position: top;
@@ -35,17 +33,17 @@
 }
 
 #navBarContent #navBarContactDetails a:link {
-	/* color: #999999; */
+	color: #999999;
 	text-decoration: none;
 }
 
 #navBarContent #navBarContactDetails a:visited {
-	/* color: #999999; */
+	color: #999999;
 	text-decoration: none;
 }
 
 #navBarContent #navBarContactDetails a:hover {
-	/* color: #fff; */
+	color: #fff;
 	text-decoration: none;
 }
 
@@ -62,28 +60,29 @@
 	display: inline;
 	margin-left: 15px;
 	font-size: 11px;
-	/* color: #999999; */
+	color: #999999;
 }
 
 .navBarLineOne {
 	padding-top: 10px;
-	width: 600px;
-	float: right;
-	text-align: right;
+	/* width: 600px; */
+	/* float: left; */
+	text-align: left;
+    background-color: #FFE1CD;
 }
 
 #navBarContent .navBarLineOne a:link {
-	/* color: #999999; */
+	color: #999999;
 	text-decoration: none;
 }
 
 #navBarContent .navBarLineOne a:visited {
-	/* color: #999999; */
+	color: #999999;
 	text-decoration: none;
 }
 
 #navBarContent .navBarLineOne a:hover {
-    /* color: #fff; */
+    color: #fff;
     text-decoration: none;
 }
 
@@ -100,28 +99,30 @@
 	display: inline;
 	margin-left: 15px;
 	font-size: 13px;
-	/* color: #999999; */
+	color: #999999;
 }
 
 .navBarLineTwo {
-	padding-top: 10px;
-	width: 900px;
-	float: right;
-	text-align: right;
+	/* padding-top: 10px; */
+	/* width: 900px; */
+    padding-bottom: 10px;
+	/* float: left; */
+    background-color: #D2FFCD;
+	text-align: left;
 }
 
 #navBarContent .navBarLineTwo a:link {
-	/* color: #999999; */
+	color: #999999;
 	text-decoration: none;
 }
 
 #navBarContent .navBarLineTwo a:visited {
-	/* color: #999999; */
+	color: #999999;
 	text-decoration: none;
 }
 
 #navBarContent .navBarLineTwo a:hover {
-    /* color: #fff; */
+    color: #fff;
     text-decoration: none;
 }
 
@@ -138,7 +139,7 @@
 	display: inline;
 	margin-left: 15px;
 	font-size: 13px;
-	/* color: #999999; */
+	color: #999999;
 }
 
 #navBarContent .navBarLineOne li.active a {
@@ -147,5 +148,3 @@
 #navBarContent .navBarLineTwo li.active a {
     color: #0099cc;
 }
-
-

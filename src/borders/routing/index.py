@@ -4,11 +4,11 @@ ns.docTitle = "Routing"
 
 pages = [
 
-    Page("bgp.md", 
+    Page("bgp.mdtext", 
         title="BGP", 
         pageTitle="OpenBSD BGPD"),
         
-    Page("cisco.md", 
+    Page("cisco.mdtext", 
         title="Cisco", 
         pageTitle="Cisco Routers/Switches"),
     Directory("cisco"),

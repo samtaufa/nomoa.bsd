@@ -1,0 +1,33 @@
+## Communications.Servers
+
+It's a wild place out on the Internet, OpenBSD is a great platform for
+sharing resources. 
+
+The [OpenBSD FAQ 6 - Networking](http://www.openbsd.org/faq/faq6.html)
+is required reading when:
+
+- 1st getting your box connected
+- staying connected to anything
+
+The FAQ is a good guide and foundation knowledge that will serve
+you well as most services your configure or install will
+need Network access.
+
+OpenBSD is at the forefront of standardising secured communications
+between hosts. The most public of these forays has been the
+<a href="http://www.openssh.org">OpenSSH Project.</a> We reference
+some useful notes here, together with notes on other mechanisms
+for securing communciations such as:
+
+-   Remote Client, Site access using [OpenVPN Encrypted VPN](comms/openvpn.html) 
+-   [File Sharing](comms/misc/samba.html) with Microsoft Windows, using Samba
+-   Secured Links using [OpenSSH Client](comms/ssh.html)
+-   Setting Access Policies for [Web Access](comms/www/squid.html) using squid
+-   [Web Content Filtering](comms/www/dansguardian.html), with dansguardian and squid
+-   Securing Web Traffic using [SSL Certificates](comms/www/ssl.html), and OpenSSL
+
+We've also had the opportunity to deploy Mail specific configurations, such as Proxy 
+Servers and sites using Virtual User Accounts (both using Postfix) :
+
+-   [Proxy Server](mail/postfix/proxy.html)
+-   [Virtual User Accounts](mail/postfix/virtual.html)

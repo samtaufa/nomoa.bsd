@@ -1,20 +1,27 @@
 from countershape.doc import *
+import countershape
+
+this.layout = ns.tpl_layout
 this.markup = "markdown"
 
+ns.blk_sidemenu = countershape.widgets.SiblingPageIndex(
+                '/borders/pf.html',
+    )
+ 
 ns.docTitle = "Gateway Services"
 
 pages = [
-    Page("highavailability.md", 
+    Page("highavailability.mdtext", 
         title="High Availability",
         pageTitle=""),
     Directory("highavailability"),
     
-    Page("pf.md", 
+    Page("pf.mdtext", 
         title="Firewall",
         pageTitle="PF Firewall"),
     Directory("pf"),
 
-    Page("routing.md", 
+    Page("routing.mdtext", 
         title="Routing",
         pageTitle=""),
     Directory("routing"),
