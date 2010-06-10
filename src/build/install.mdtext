@@ -261,6 +261,7 @@ $ grep -v "^#" /etc/ssh/sshd_config | grep -v "^$"
 <pre class="config-file">
 Protocol 2
 PermitRootLogin no
+PasswordAuthentication no
 Subsystem       sftp    /usr/libexec/sftp-server
 </pre>
 

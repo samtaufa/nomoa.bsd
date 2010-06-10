@@ -12,8 +12,10 @@ ns.blk_banner  = template.File(None, "../templates/_banner.html")
 ns.blk_navigate = template.File(None, "../templates/_navigate.html")
 ns.blk_relatedsites = template.File(None, "../templates/_relatedsites.html")
 ns.blk_footer  = template.File(None, "../templates/_footer.html")
+ns.blk_rss = template.File(None, "../templates/_rss.html")
 
 ns.tpl_layout = countershape.Layout("../templates/_layout.html")
+ns.tpl_bloglayout = countershape.Layout("../templates/_blog.html")
 ns.tpl_frontpage = countershape.Layout("../templates/_frontpage.html")
 this.layout = ns.tpl_frontpage
 
@@ -32,6 +34,7 @@ ns.blk_submenu = ""
 ns.submenuTitle = ""
 ns.homelink=model.UrlTo("/index.html")
 ns.readFrom = readFrom
+ns.rssXML=model.UrlTo("/rss.xml")
 this.stdHeaders = [
     model.UrlTo("media/css/reset.css"),
     model.UrlTo("media/css/docstyle.css"),
@@ -103,18 +106,34 @@ def section(fname, dirname, title, pageTitle):
             pageTitle = pageTitle,
     )
     page.namespace["blk_submenu"] = menu
-    # page.namespace["submenuTitle"] = title
+    page.namespace["submenuTitle"] = title
     directory = Directory(dirname)
     directory.namespace["blk_submenu"] = menu
     return [page, directory]
 
 
-blog = blog.Blog(
+ns.blog = blog.Blog(
         blogname="{; !nomoa", 
         blogdesc="Cacophony of Sound", 
         url="http://www.nomoa.com/bsd/", 
-        base="soapbox", 
+        base="messages", 
         src="../posts")
+
+blogindex = ns.blog.index("log.messages.html", "log/messages")
+blogindex.namespace["blk_submenu"] = countershape.widgets.ExtendedParentPageIndex(
+    '/log.messages.html',
+    depth = 1,
+    divclass = "navBarLineTwo",
+    currentActive = True
+)
+blogindex.namespace["submenuTitle"] = "log"
+#blogindex.layout = ns.tpl_bloglayout
+blogindex.markup = "markdown"
+blogdir = Directory("log")
+blogdir.namespace["blk_submenu"] = blogindex.namespace["blk_submenu"]
+blogdir.namespace["submenuTitle"] = blogindex.namespace["submenuTitle"]
+blogdir.layout = ns.tpl_bloglayout
+blogdir.markup = "markdown"
 
 pages = [    
 ]
@@ -148,10 +167,12 @@ pages += section(
             "Monitoring and Maintenance"
         )
 
-# pages += [
-    # blog(),
-    # blog.index("news.html", "Soapbox"),
-# ]
+pages.extend(
+    [
+        blogindex, blogdir,
+        ns.blog.rss("rss.xml", "Nomoa.com/bsd"),
+    ]
+)
 
 # This should be factored out into a library and tested...
 class ShowSrc:
