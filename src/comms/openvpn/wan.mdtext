@@ -1,6 +1,6 @@
 ## Wide Area Network - WAN
 
-<div style="float:right">
+<div class="toc">
 
     Table of contents
         
@@ -20,15 +20,12 @@ The following discusses the configurations on the Central Host server.
 
 Our network scenario is:
 
-- Central Office has a server subnet we want to share
-with remote sites
+-   Central Office has a server subnet we want to share
+    with remote sites
+-   Remote Site #1 has a subnet we want to share with 
+    Central Office
 
-- Remote Site #1 has a subnet we want to share with 
-Central Office
-
-<div style="text-align: center">
-    $!Image("WAN.png", title="Wide Area Network Diagram")!$
-</div>
+$!Image("WAN.png", title="Wide Area Network Diagram", klass="center")!$
 
 Configuration:
 
@@ -99,9 +96,7 @@ client-config-dir /etc/openvpn/ccd
 
 ### 00. Virtual Private Network Subnet.
 
-<div style="text-align: center">
-    $!Image("WAN_virtual.png", title="Wide Area Network - Virtual Network")!$
-</div>
+$!Image("WAN_virtual.png", title="Wide Area Network - Virtual Network", klass="center")!$
 
 <pre class="config-file">
 server 172.16.1.0 255.255.255.0
@@ -177,9 +172,7 @@ traffic.
 -   Specify a pre-determined IP address for the client
 -   Route the client-side subnet to the above IP address
 
-<div style="text-align: center">
-    $!Image("WAN_virtual_ccd.png", title="Wide Area Network - Virtual Network with CCD")!$
-</div>
+$!Image("WAN_virtual_ccd.png", title="Wide Area Network - Virtual Network with CCD", klass="center")!$
 
 File: /etc/openvpn/ccd/Remote1
 

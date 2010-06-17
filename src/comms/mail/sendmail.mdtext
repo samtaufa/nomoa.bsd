@@ -1,7 +1,7 @@
 ﻿
 ##  Serving with sendmail 
  
-<div style="float:right">
+<div class="toc">
     <p> Table of Contents: </p>
     <ul>
       <li> <a href="#smtp">Process Queued Mail and Recieve incoming Mail</a>
@@ -77,17 +77,15 @@ File: /etc/rc.conf.local
 Add the below lines mentioned in the /etc/rc.conf file to your rc.conf.local file.
 
 
-<pre class="screen-output">
+<pre class="config-file">
 # For normal use: &quot;-L sm-mta -bd -q30m&quot;, and note there is a cron job
 sendmail_flags=&quot;-L sm-mta -C/etc/mail/localhost.cf -q30m"
 </pre>
 
 And make the change as shown below (i.e. add the &quot;-bd&quot;)
 
-<pre class="screen-output">
+<pre class="config-file">
 # For normal use: &quot;-L sm-mta -bd -q30m&quot;, and note there is a cron job
-</pre>
-<pre class="command-line">
 sendmail_flags=&quot;-L sm-mta -C/etc/mail/localhost.cf <strong>-bd </strong>-q30m&quot;
 </pre>
 
@@ -119,8 +117,7 @@ is a cron job </strong> from the /etc/rc.conf file.</span>
 Run the crontab utility as root to edit the cron jobs 
 for the system and edit the following line referencing sendmail.
 
-
-<pre class="screen-output">
+<pre class="config-file">
 #minute hour mday month wday command
 #
 # sendmail clientmqueue runner
@@ -329,16 +326,23 @@ mail-server.
 
 [package: courier-imap-3.0.5p1 or imap-uw-2004.352-plaintext]
 
-Install the package courier-imap and follow the installation instructions. If you missed the instructions, then you can view them again by going to the directory /var/db/[package-name], e.g. /var/db/pkg/courier-imap-3.0.5p1 and looking at the file +DISPLAY 
+Install the package courier-imap and follow the installation instructions. 
+If you missed the instructions, then you can view them again by going to 
+the directory /var/db/[package-name], e.g. /var/db/pkg/courier-imap-3.0.5p1 
+and looking at the file +DISPLAY 
 
-You could alternatively use the imap-uw release, and in this context we/I am using the plaintext flavor because it will not be made available externally (i.e. will only be used by a web mail client running on the host.)
+You could alternatively use the imap-uw release, and in this context we/I 
+am using the plaintext flavor because it will not be made available externally 
+(i.e. will only be used by a web mail client running on the host.)
 
 #### Testing the IMAP Server
 
 ref: [How I test an imap server](http://aplawrence.com/SCOFAQ/FAQ_scotec4testimap.html);
 The Network People, Inc. [Mail Server Testing](http://www.tnpi.biz/internet/mail/forge.shtml)
 
-IF you are having problems, remember to review the log file /var/log/maillog for any error messages that might assist your diagnostics and if that isn't enough dig in with tcpdump.
+IF you are having problems, remember to review the log file /var/log/maillog for 
+any error messages that might assist your diagnostics and if that isn't enough 
+dig in with tcpdump.
 
 Courier-Imap
 

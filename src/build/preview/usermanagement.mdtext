@@ -1,6 +1,6 @@
 ## First Time - User Management
 
-<div style="float:right">
+<div class="toc">
 
 Table of Contents
 
@@ -41,7 +41,8 @@ says that 'most people' use bash, strange how they don't make it the
 default though.
 
 
-<pre class="screen-output">Enter home directory (full path)
+<pre class="screen-output">
+Enter home directory (full path)
 [/home/bricker]: <b>&lt;hit ENTER&gt;</b>
 Uid [1002]: <b>&lt;hit ENTER&gt;</b>
 </pre>
@@ -52,7 +53,8 @@ offered by the program unless you have good knowledge of previously
 granted ID numbers.
 
 
-<pre class="screen-output">Enter login class: default []: <b>&lt;hit ENTER&gt;</b> 
+<pre class="screen-output">
+Enter login class: default []: <b>&lt;hit ENTER&gt;</b> 
 </pre>
 
 The login class allows you to set up resource limits for groups of

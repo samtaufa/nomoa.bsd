@@ -1,0 +1,41 @@
+Validating a firewall involves generating structured test
+traffic that can be externally and internally monitored for conformance
+to a set of requirements (most commonly placed in the firewall ruleset.)
+
+It is important to recall, that the Packet Filter ($!manpage("pf")!$ is
+only one component of the 'stack' required for a firewall. Other important
+components include ip forwarding, routing.
+
+$!Image("fw/validate_rules.png", title="Test Lab for Validating Firewall Traffic Flow", klass="center")!$
+
+Pre-deployment validation of your firewall minimises trial and error
+on production systems. The above test configuration builds a simulated
+environment of the minimal traffic flow to test and verify.
+
+In our diagram we divide segments of traffic flow from an "internal"
+to an "external" host, where these labels are just to simplify the 
+view of the layout, not necessarily being external versus internal hosts.
+
+Major components for flow simulation include:
+
+1.  External Host
+2.  Firewall Gateway (where necessary, as CARP sets)
+3.  Internal Host
+4.  Admin / Control Host
+
+The External/Internal Hosts are isolated hosts because during the validation,
+test process we will need to make numerous changes to IP settings and
+routing. The sanest way to make these network stack changes, is to 
+perform system restarts to ensure all previous stack changes are completely
+flushed.
+
+For instance, each packet flow involves an "internal" host communicating
+with an "external" host. We may need to simulated 2 or more "internal" hosts
+connecting with 2 or more "external" hosts. With each change of IP Addresses
+we risk the side-effect of routes and arp configured for an old IP Address
+have a side-effect on the traffic flow behaviour.
+
+The Admin/Control Host provides a gateway from our workstations into the
+test lab.
+
+$!Image("fw/validate_monitors.png", title="Test Lab Monitoring Traffic Flow", klass="center")!$

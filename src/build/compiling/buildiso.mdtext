@@ -20,7 +20,7 @@ OpenBSD's install process presumes a certain layout and it is good to
 maintain that consistency in our custom CDs such that files are stored
 in a hierarchy as below.
 
-<pre class="screen-output">
+<pre class="manpage">
 cd-root
 +$version
  -$architecture
@@ -114,7 +114,7 @@ The above dmesg indicates our device is located at /dev/cd0 with partitions a ..
 ### Record the ISO file to CDR(W)
 
 <pre class="command-line">
-__cdio -v -f cd0c tao__ file-to-burn.iso
+cdio -v -f cd0c tao file-to-burn.iso
 </pre>
 
 <pre class="screen-output">

@@ -1,6 +1,6 @@
 ## User Administration
     
-<div style="float:right">
+<div class="toc">
 
 Table of Contents
 
@@ -43,7 +43,7 @@ Table of Contents
 
 From the man pages <i>adduser(8)</i>:
 
-<pre class="screen-output">
+<pre class="manpage">
 <b>DESCRIPTION</b>
     The <b>adduser</b> program adds new users to the system. The <b>rmuser</b> 
     program removes users from the system. When not passed any arguments, 
@@ -140,7 +140,8 @@ You will be asked for the user's password twice and it will not be displayed.
 Afterwards, it will display all of the user's information and ask if it is correct. 
 
     
-<pre class="screen-output">Name:&nbsp;&nbsp;&nbsp;&nbsp; bricker 
+<pre class="screen-output">
+Name:&nbsp;&nbsp;&nbsp;&nbsp; bricker 
 Password: **** 
 Fullname: Sven De La Palmer 
 Uid:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1000 
@@ -232,13 +233,14 @@ by Chris Coleman
   
 From the man page <i>$!manpage("userdel",8)!$</i>
 
-<pre class="screen-output">The userdel utility removes a user from the system, 
+<pre class="manpage">
+The userdel utility removes a user from the system, 
 optionally removing that user's home diretory and any subdirectories.
 </pre>
 
 The main options are used during account deletion.
 
-<pre class="screen-output">
+<pre class="manpage">
 <b>userdel [-prv]</b> <i>user</i>
 
 The following command line options are recognised:
@@ -354,7 +356,8 @@ We can simply add bricker using <i>usermod -G</i> (or <i>user mod -G</i>).
 </pre>
 <pre class="command-line"># group info computerstaff | grep &quot;^members&quot;
 </pre>
-<pre class="screen-output">members bricker
+<pre class="screen-output">
+members bricker
 </pre>
 
 <a name="instRoot"></a>
@@ -531,9 +534,9 @@ root
 </pre>
 
     
-From the man page su(1):
+From the man page $!manpage("su",1)!$:
 
-<pre class="screen-output">
+<pre class="manpage">
 If group 0 (normally ``wheel'') has users 
 listed then only those users
 can su to ``root''. It is not sufficient to change a user's /etc/passwd
@@ -544,7 +547,7 @@ anyone who knows the root password is permitted to su to ``root''.
 
       
 For a more granular control of what applications you allow users to perform, 
-take a look at the <a href="sudo.htm">sudo command</a>.
+take a look at the $!manpage("sudo")!$ command.
 
 #### Relative Reference
 

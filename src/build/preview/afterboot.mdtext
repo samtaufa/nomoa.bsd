@@ -1,6 +1,6 @@
 ## First Time - After Boot
 
-<div style="float:right">
+<div class="toc">
 
 Table of Contents
 
@@ -135,9 +135,9 @@ the corresponding hostname file will be <b>/etc/hostname.le0</b>
 Example: ifconfig -a displays the following ethernet device on my
 compaq with a HP network card.
 
-<pre class="screen-output">le1:
-flags=8863 &lt;UP,BROADCAST,NOTRAILERS,RUNNING,SIMPLEX,MULTICAST&gt; mtu 1500 inet
-192.168.101.130 netmask 0xffffff00 broadcast 192.168.101.255
+<pre class="screen-output">
+le1: flags=8863 &lt;UP,BROADCAST,NOTRAILERS,RUNNING,SIMPLEX,MULTICAST&gt; mtu 1500 
+    inet 192.168.101.130 netmask 0xffffff00 broadcast 192.168.101.255
 inet6 fe80::260:b0ff:fea4:18d3%le1 prefixlen 64 scopeid 0x1 </span>
 </pre>
 
@@ -145,7 +145,7 @@ inet6 fe80::260:b0ff:fea4:18d3%le1 prefixlen 64 scopeid 0x1 </span>
 The related hostname file is /etc/hostname.le1 which contains the
 lines
 
-<pre class="screen-output">
+<pre class="config-file">
 inet 192.168.101.130 255.255.255.0 NONE 
 inet alias 207.124.66.156
 </pre>
@@ -158,7 +158,6 @@ for configuring the network card are read from the
 /etc/hostname.interface file during the boot sequence.
 
 An example output for the loopback device will look like:
-
 
 <pre class="screen-output">
 lo0: flags=8009&lt;UP,LOOPBACK,MULTICAST&gt; mtu 32972
@@ -180,7 +179,8 @@ you will see this additional information for many network devices.
 We can check the network routing using <b>netstat -r -n</b>
 
 <pre class="command-line">
-# <b>netstat -r -n</b></pre>
+# <b>netstat -r -n</b>
+</pre>
 <pre class="screen-output">
 Routing tables
 

@@ -1,6 +1,6 @@
 ## Validating connectivity, performance, configuration
 
-<div style="float:right">
+<div class="toc">
 
     Table of Content
     
@@ -53,9 +53,7 @@ As a conglomeration of various services, there are a
 number of separate tests that can be carried out to 
 confirm, validate a systems activity, performance.
 
-<div style="text-align: center">
-    $!Image("mail/mailserver.png", title="Serving Electronic Mail")!$
-</div>
+$!Image("mail/mailserver.png", title="Serving Electronic Mail", klass="center")!$
 
 General Remote/Local connections are through the standard protocols 
 ( smtp, pop3, and imap ) whereas service behaviour have some other
@@ -173,7 +171,7 @@ disconnect from localhost[::1]
 
 From the manpage: '$!manpage('tail',1)!$' 
 
-<pre class="screen-output">
+<pre class="manpage">
     The tail utility displays the contents of file or, by default, its
     standard input, to the standard output.
 
@@ -242,7 +240,7 @@ supports the use of a screen 'pager' such as 'more' so that we can scroll
 through longer messages.
 
 From the manpage: $!manpage('mail',1)!$
-<pre class="screen-output">
+<pre class="manpage">
 Reading mail
     In normal usage, mail is given no arguments and checks your mail out of
     the post office, then prints out a one line header of each message found.
@@ -526,9 +524,7 @@ messages as quick as possible.
 -   Server
 -   Client
 
-<div style="text-align: center">
-    $!Image("mail/smtp_benchmark.png", title="SMTP Benchmark - Traffic Flow")!$
-</div>
+$!Image("mail/smtp_benchmark.png", title="SMTP Benchmark - Traffic Flow", klass="center")!$
 
 ##### smtp-benchmark: smtpsink
 

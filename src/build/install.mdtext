@@ -1,6 +1,6 @@
 ## Standardised Install Notes
 
-<div style="float:right">
+<div class="toc">
 
 Table of Contents
 
@@ -282,7 +282,7 @@ have a broken public-key/private-key combination.
 Basic syntax configuration changes can be validated with the -t
 command-line option
 
-<pre class="screen-output">
+<pre class="manpage">
 -t      Test mode.  Only check the validity of the configuration file and
          sanity of the keys.  This is useful for updating sshd reliably as
          configuration options may change.

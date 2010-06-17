@@ -1,0 +1,29 @@
+## Border and Gateway Systems
+
+OpenBSD is a known (quality) quantity for Border Systems (between 
+your organisation and the outside world.) Border Systems tend to
+be your first line of defence between your information infrastructure
+and the marauding barbarians, an apt place to be placing $!OpenBSD!$.
+
+To serve as your Border/Gateway host, OpenBSD provides some
+nice features, well known is it's [high availability](gateway/highavailability.html)
+[hot failover](gateway/highavailability/carp.html) firewall mechanism based on:
+
+-   OpenBSD's [PF Packet Filter](gateway/pf.html) Firewall,
+-   Common Access Redundancy Protocol [CARP](gateway/highavailability/carp.html), and
+-   [Border Gateway Protocol (BGP)](gateway/routing/bgp.html) daemon
+
+Lesser known tools are not discussed here, but $!OpenBSD!$'s continued 
+vigilance maximimises your security with tools such as:
+
+-   bind9 DNS Server
+-   [Apache 1.3x Web Server](comms/www.html)
+-   [OpenBGPD](gateway/routing.html)
+-   OpenSSH
+
+You will also find other border/gateway tools in the [Communications section](comms.html) of
+our notes.
+
+These notes will not help you build a secure system, there are much better resources
+out there for you. Hopefully we can add to the conversation and provide you some 
+early direction for build strategy, monitoring, and debugging your configuration.

@@ -1,6 +1,6 @@
 ## MultiBoot - OpenBSD and FAT/NTFS Windows
     
-<div style="float:right">
+<div class="toc">
 
 Table of Contents
 
@@ -200,7 +200,9 @@ size]
 <p>Now, we create the OpenBSD partition by editing an available partition. We're 
   just picking 1, the next available partition slot from the above diagram.</p>
   
-<pre class="screen-output">fdisk: 1&gt; <b>e 1</b></pre>
+<pre class="screen-output">
+fdisk: 1&gt; <b>e 1</b>
+</pre>
 
 <p>For the partition type we specify A6 (for OpenBSD). We will not edit the Cylinder/Head/Sector 
   (CHS) mode. For tha partition offset we will use our calculated number above. 
@@ -227,7 +229,8 @@ fdisk:*1&gt;</pre>
   we typed in something wrong. If you make a mistake you can go back by using 
   "e" edit again, or just "exit" without saving changes.</p>
   
-<pre class="screen-output">fdisk:*1&gt; <b>p</b>
+<pre class="screen-output">
+fdisk:*1&gt; <b>p</b>
 Disk: wd0       geometry: 790/255/63 [12691350 
 sectors]
 Offset: 0       Signatures: 0xAA55,0x2F342F33
@@ -367,7 +370,8 @@ with easy navigation.
   
 <b>Warning</b> from the Readme File:</p>
 
-<pre class="screen-output">Currently os-bs uses WITHOUT ASKING(!) the sectors 
+<pre class="screen-output">
+Currently os-bs uses WITHOUT ASKING(!) the sectors 
 2, 3, 4, 5 on cylinder 0, head 0 on the first disk. On almost all disks 
 I ever saw these sectors (and the whole first track, except sector 1 which 
 contains the Master Boot Record) are unused. (BTW, the reason why some boot 
