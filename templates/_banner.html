@@ -1,29 +1,24 @@
-
+<!-- _banner -->
+<div id="navBar">
     <div id="navBarContent">   
-        <div id="navBarContactDetails">
-            <div id="navBarContactDetailsContent">
-
-<div style="float:left">
-    <a href="$!homelink!$" 
-        onMouseOver="changeImages('openbsd', '@!urlTo("media/images/openbsd-over.gif")!@' ); return true;"
-        onMouseOut="changeImages('openbsd', '@!urlTo("media/images/openbsd.gif")!@' ); return true;"
-        onMouseDown="changeImages('openbsd', '@!urlTo("media/images/openbsd-down.gif")!@' ); return true;"
-        onMouseUp="changeImages('openbsd', '@!urlTo("media/images/openbsd-over.gif")!@' ); return true;">
-        $!bannerIMG!$
-    </a>
-</div>
-            </div>
-        </div>        
+        <a href="$!homelink!$" style="float:right"
+            onMouseOver="changeImages('openbsd', '@!urlTo("media/images/banner/openbsd.hover.gif")!@' ); return true;"
+            onMouseOut="changeImages('openbsd', '@!urlTo("media/images/banner/openbsd.gif")!@' ); return true;"
+            onMouseDown="changeImages('openbsd', '@!urlTo("media/images/banner/openbsd.click.gif")!@' ); return true;"
+            onMouseUp="changeImages('openbsd', '@!urlTo("media/images/banner/openbsd.gif")!@' ); return true;">
+            <img src= '@!urlTo("media/images/banner/openbsd.gif")!@' alt="OpenBSD ... The Only way to Go ..."
+                border="0" height="50"  width="368" />
+        </a>
         <!-- Navigation Line One -->
         <div id="navBarLineOne"> 
-            @!menubar!@ 
+            @!blk_menubar!@ 
+        </div>
+        <div class="clear"></div>
+        <!-- Navigation Line Two -->
+        <div id="navBarLineTwo"> 
+            @!blk_submenu!@ 
         </div>
     </div>
-
     <div class="clear"></div>
-
-    <div id="navBarContent">
-        <!-- Navigation Line Two -->
-        <div id="navBarLineTwo"> @!submenu!@ </div>
-    </div>
-    <div class="clear"></div>
+</div>
+<!-- !_banner -->

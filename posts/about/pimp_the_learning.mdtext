@@ -1,0 +1,58 @@
+Pimp The Learning
+time: 2010-06-10 12:11
+short: Sometimes things are just waay to interesting to way-it
+
+More importantly, maybe I don't actually know what it is
+I'm talking about, and some one out there can either
+learn more from my errors, or learn because of my errors.
+
+This whole publishing process, of the OpenBSD notes is
+still not where it's supposed to be, but the workflow
+is cleaning up nicely and in the meanwhile am learning quite
+a few things.
+
+One missing item in my menagere, is that I'm supposed to
+use rsync to copy these text files onto my site, but since the
+site is generated using **countershape**, the generated
+files are always timestamp'd later than what is on the actual
+web server.
+
+The solution, was to have a git repository of the work on
+the server, when I've finished updating the work on my
+workstation, I push the updates to the repository on
+the server, and an automated script (together with countershape)
+would regenerate the site onto the 'live' server.
+
+Unfortunately, the site is so old that too many old versions
+of things are on it, and I can't use this mechanism (yet.)
+
+### sshd and passwords
+
+Updated the notes on sshd, for some reason I've stated
+to only allow publickey authentication, but then the example
+I had didn't explicitly show 'disabling password authenticaiton'
+
+`PasswordAuthentication no`
+
+Now I have to check the servers I had my offsider build
+to verify that disabling has been set up.
+
+Bam bam.
+
+### update
+
+Fortunately, my offsider/sidekick is smarter than I. He doesn't
+cut-n-paste, so figured that the monologue meant that he was 
+to look for it (PasswordAuthentication) and lock it down himself.
+
+Smart dude.
+
+More fortunately, only one of the hosts had PasswordAuthentication
+at yes (but that host was behind a firewall that did not pass
+through ssh.) The only means of accessing that machine was
+through the single service it supported, or by first logging
+onto the firewall (PasswordAuthentication no as well as having a whitelist
+in pf of source hosts allowed to access ssh) then jump from
+there.
+
+Whew

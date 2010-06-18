@@ -4,15 +4,15 @@ from countershape.doc import *
 ns.docTitle = "Postfix"
 
 pages = [
-    Page("admin.md",
+    Page("admin.mdtext",
         title="GUI Admin",
         pageTitle="Postfix GUI Administration"),
         
-    Page("virtual.md",
+    Page("virtual.mdtext",
         title="Virtual Users",
         pageTitle="Virtual Accounts"),
         
-    Page("proxy.md",
+    Page("proxy.mdtext",
         title="Proxy",
         pageTitle="Mail Proxy"),
 

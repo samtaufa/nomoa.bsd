@@ -1,0 +1,326 @@
+## Traffic Flow
+
+In most cases, firewalls function as a gateway between two end-points.
+Network traffic flows through the firewall.
+
+- IN, traffic coming into a firewall interface
+- OUT, traffic going out a firewall interface
+
+$!Image("fw/fw_traffic_flow.png", title="Firewall - Traffic Flow", klass="center")!$
+
+Our objective pre-deployment, and during investigations, is to validate
+that our understanding of a given ruleset behaves as expected.
+Implementing a **block by default** ruleset, simplifies the *flow
+validation* process: 
+
+**match ruleset design** are:
+
+- passed as expected and 
+- blocked otherwise.
+ 
+Corporate Policies are embedded as our firewall "ruleset". Two tools
+very useful in generating and monitoring traffic flow are:
+
+-   [netcat](#netcat) (nc)
+-   [tcpdump](#tcpdump)
+
+### Test Environment
+
+Tests should be engineered to:
+
+-   validate behaviour for positive rule match and 
+-   validate behaviour for negative rule match negative
+
+The Test environment needs to simulate the traffic flow
+through the firewall, and as such we need hosts on either
+side of the gateway to both generate, and recieve IP traffic. 
+At minimum the environment will require three hosts representing:
+
+1.  The firewall/gateway set
+2.  Hosts to *one side (internal)* of the firewall/gateway
+3.  Hosts on the *other side (external0* of the firewall/gateway
+
+$!Image("fw/fw_flow_lab.png", title="Firewall - Traffic Flow", klass="center")!$
+
+An optional control / administration host simplifies the
+IP Address / Routing configuration for the *internal* and *external*
+hosts. Isolating the External/Internal Hosts are prevents NIC configuration
+commonly pushed out by DHCP on networks from effecting network tests.
+
+The sanest way to prepare hosts for network stack changes, is to 
+flush/delete previous network configurations before recreating the
+new network configuration. In some cases, this may require restarting
+hosts.
+
+For instance, each packet flow involves an "internal" host communicating
+with an "external" host. We may need to simulate 2 or more "internal" hosts
+connecting with 2 or more "external" hosts.
+
+### Writing Tests
+
+Presume the two networks we are connecting is our *internal* Local Area Network (LAN)
+and the *external* Internet.
+
+Tests are gleaned from the proposed firewall rules, as moving betweeen 
+rule symantics into flow semantics.
+
+from ruleset: 
+<pre class="config-file">
+pass in on $internal_if inet proto tcp from &lt;lan> to any port smtp
+pass out on $external_if
+</pre>
+
+evolves to flow routes
+
+<pre class="manpage">
+&lt;lan> to Internet port 25 {tcp}
+</pre>
+
+We configure our simulation 
+
+-   *internal* host to IP Address in our LAN
+-   *external* host to IP Address of our 'default gateway'
+    - *external* host Alias IP Address for another IP
+    - *external* host ip forwarding enabled
+
+After the above, we are now ready to generate traffic and monitor
+whether it passes through, and if it does not to determine where
+in the flow it fials.
+
+### Monitoring flow
+
+There are various points in an IP Packet Flow that lends itself
+for monitoring and review.
+
+$!Image("fw/validate_monitors.png", title="Test Lab Monitoring Traffic Flow", klass="center")!$
+
+The above diagram shows 5 points of interest where we can confirm and 
+review traffic flow. 
+
+-   *internal host* network interface
+-   *gateway* internal network interface
+-   *gateway* firewall log interface
+-   *gateway* external network interface
+-   *external host* network interface
+
+As the network stack involves a number of
+different technologies, such as packet filtering, routing, many
+points of interest is the sane way for discovering actual
+causes for traffic being blocked, or not being routed.
+
+In practise, we use multiple monitors and multiple remote
+terminal connections for displaying the network traffic
+live.
+
+#### Internal Host
+
+On the *internal host*, watch traffic passing in and out of the network
+interface.
+
+<pre class="command-line">
+tcpdump -nettti eth0 *host ip-address and port port-address*
+</pre>
+
+Narrow the displayed informationg by being specific about the host
+being investigated, and the specific port.
+
+#### Firewall Gateway Host
+
+On the firewall/gateway there are various points where traffic can
+be monitored.
+
+-   *Internal NIC eth0*, traffic coming in and out of the *internal* NIC
+-   PF log interface *pflog0*
+-   *External NIC eth1*, traffic coming in and out of the *external* NIC
+
+We use something similar to the above tcpdump command.
+
+#### External Host
+
+On the receiving host, monitor traffic passing in and out of the network
+interface.
+
+Use something similar to the above tcpdump command.
+
+#### Summary
+
+Problem:
+
+Traffic enters an interface, but no corresponding traffic is 
+observed. (e.g. echo request comes in, but no echo response is viewed)
+
+Answer:
+
+The packet is blocked by the firewall, the route either does not exist, 
+or routing is through a different interface.
+
+1.  Packet Filter is blocking above request. Ensure you
+    have "block log all" in your firewall ruleset and check the *pflog0* 
+    interface to view whether the packet is being blocked.
+2.  Host does not have valid routing information to return the response.
+    Verify the host has a valid route to respond, and whether that route
+    is on the same interface you are monitoring.
+3.  Host does not have a valid forwarding information for the packet
+    to reach it's preferred destination (for the response.) Check that
+    net.inet.ip.forwarding is enabled for this host if appropriate.
+
+### <a name="netcat">netcat - generating controlled traffic packets</a>
+
+nc(1) - netcat utility, push and listen to TCP/UDP connections on interfaces
+
+**Generating** and **Recieving** traffic using netcat provides an environment for
+controlled traffic flow that can be monitored, validated.
+
+<blockquote>
+The nc (or netcat) utility is used for just about anything under the sun
+involving TCP or UDP.  It can open TCP connections, send UDP packets,
+listen on arbitrary TCP and UDP ports, do port scanning, and deal with
+both IPv4 and IPv6.  Unlike telnet(1), nc scripts nicely, and separates
+error messages onto standard error instead of sending them to standard
+output, as telnet(1) does with some.
+</blockquote>
+
+The simplest test of traffic flow is to run netcat on a 'client' to one side of the firewall and a recieving/
+listening netcat 'server' on the opposite side of the firewall.
+
+#### TCP packets
+
+We use the _destination-ip_ and the _port-number_ explicitly to allow us to
+use aliases on the destination host (simplifies testing)
+
+Server
+<pre class="command-line">
+nc -4kl destination-ip port-number
+</pre>
+
+
+Client
+
+<pre class="command-line">
+nc -4vvvu destination-ip port-number
+</pre>
+
+
+#### UDP packets
+
+There seems to be something perculiar with using -k. When using -k be explicit in the destination ip. When destination-ip is not
+explicit, then it may not as work expected with -k.
+
+Server
+<pre class="command-line">
+nc -4vvvvvklu destination-ip port-number
+</pre>
+
+Client
+<pre class="command-line">
+nc -4vvvvvu destination-ip port-number
+</pre>
+
+
+### <a name="tcpdump">tcpdump - monitoring logged packets</a>
+
+PF can record network packet headers and data when the log key word is used with a rule. 
+When a packet matches a rule with the log key word, the headers
+and packet body are sent to the pflog pseudo-device. Once a packet is logged to the pflog 
+pseudo-device, The tcpdump utility can be used to print the packet's contents in real time:
+
+<pre class="command-line">
+sudo tcpdump -netttvvi pflog0
+</pre>
+
+<pre class="screen-output">
+Dec 03 15:31:17.263703 rule 5/(match) [uid 0, pid 24100] 
+  block in on em1: 192.168.18.19.1055 > 192.168.18.255.1100: udp 99 (ttl 128, id 12204, len 127)
+</pre>
+
+
+### Configuring NICs
+
+A common problem while evaluating host configuration changes, 
+is the state of routing tables. Misunderstanding about the 
+current state of the routing table can lead to redherrings.
+(false redirections.)
+
+Here's a sequence of activities for clearing the various 
+related routing 'buffers'.
+
+*   flush the routes
+*   delete arp table
+*   delete the interface _eth0_ configuration
+
+<pre class="command-line">
+sudo route flush -inet
+sudo arp -ad
+sudo ifconfig eth0 delete
+</pre>
+
+Then you can re-enable things again.
+
+* configure the interface
+* configure the route
+
+<pre class="command-line">
+sudo ifconfig eth0 __.__.__.__  netmask __.__.__.__
+sudo route add default __.__.__.__
+</pre>
+
+#### netstat
+
+[ base ]
+
+Use netstat to watch the packets, reviewing Input and Output errors.
+
+<pre class="command-line">
+$ netstat -i | grep -v "^lo" | grep -v "Link" \
+    | awk '{ print $1"\t"$3"\t"$5"\t"$6"\t"$7"\t"$8 }' 
+</pre>
+
+### Traffic Generators
+
+#### tcpbench
+
+[ base ]
+
+<blockquote>
+tcpbench(1) is a small tool that performs throughput benchmarking and con-
+current sampling of kernel network variables.
+
+tcpbench is run as a client/server pair.  The server must be invoked with
+the -s flag, which will cause it to listen for incoming connections.  The
+client must be invoked with the hostname of a listening server to connect
+to.
+</blockquote>
+
+On the Server
+<pre class="command-line">
+# tcpbench -s -v -p 12345
+</pre>
+
+On clients
+<pre class="command-line">
+# tcpbench -p 12345 SERVERIP
+</pre>
+
+#### iperf
+
+<blockquote>
+<a href="">iperf</a> is a tool for measuring maximum TCP and UDP bandwidth, reminiscent
+of ttcp and nettest. It has been written to overcome the shortcomings of
+those aging tools.
+
+Iperf allows the user to set various parameters that can be used for testing a network, or 
+alternately for optimizing or tuning a network. Iperf has a client and server functionality, 
+and can measure the throughput between the two ends, either unidirectonally or bi-directionally. 
+It is open source software and runs on various platforms including Linux, Unix and Windows.
+It is supported by the National Laboratory for Applied Network Research.
+</blockquote>
+
+On the Server
+<pre class="command-line">
+# iperf -s
+</pre>
+
+On clients
+<pre class="command-line">
+# iperf -i 1 -t 30 -c serverhostname    
+</pre>

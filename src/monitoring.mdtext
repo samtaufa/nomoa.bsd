@@ -1,0 +1,29 @@
+Several tools are used for monitoring hosts.
+
+
+
+-   Announcements
+-   Nagios
+-   Smokeping
+
+### Announcements
+
+Unfortunately, for the general populace, the only way to find out
+about vulnerabilities is to monitor annoucements made through
+public forums, such as project mailing lists, or press-releases
+from various researchers and vendors.
+
+As the diversity of your portfolio or IT services increase, we 
+have to increase the number of information sources to monitor
+looking for new knowledge, applications related to security and
+stability of installed systems.
+ 
+### Nagios
+
+Nagios live monitors systems for different details, including 
+disk capacity utilisation.
+
+### Smokeping
+
+Smokeping has a number of features, including the visual display 
+of latency between the monitoring host and the target server.

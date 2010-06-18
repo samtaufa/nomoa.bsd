@@ -5,23 +5,23 @@ ns.docTitle = "WWW"
 
 pages = [
        
-    Page("squid.md", 
+    Page("squid.mdtext", 
         title="Caching",
         pageTitle="Web Caching with Squid"),
     
-    Page("dansguardian.md", 
+    Page("dansguardian.mdtext", 
         title="Content Filter",
         pageTitle="Web Content Filter with Dansguardian"),
 
-    Page("portal.md", 
+    Page("portal.mdtext", 
         title="Portal",
         pageTitle="Portal"),    
         
-    Page("ssl.md", 
+    Page("ssl.mdtext", 
         title="SSL Certificates",
         pageTitle="SSL Certificates"),    
         
-    Page("test.md",
+    Page("test.mdtext",
         title="Validation",
         pageTitle="Validating Connectivity"),
 ]

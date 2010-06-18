@@ -5,19 +5,19 @@ ns.docTitle = "OpenVPN"
 
 pages = [
    
-    Page("certificates.md", 
+    Page("certificates.mdtext", 
         title="Certificates",
         pageTitle=""),
         
-    Page("server.md", 
+    Page("server.mdtext", 
         title="Server",
         pageTitle=""),
 
-    Page("wan.md", 
+    Page("wan.mdtext", 
         title="WAN",
         pageTitle="Wide Area Network"),
         
-    Page("winclient.md", 
+    Page("winclient.mdtext", 
         title="Win Clients",
         pageTitle="Windows Clients"),
         

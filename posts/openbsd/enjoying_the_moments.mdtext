@@ -1,0 +1,17 @@
+Enjoying the moments
+time: 2010-06-09 16:57
+short: Sometimes the moments keep adding up
+
+Enjoy it while it lasts.
+
+We've got a number of upgrades going on, which means that since
+subtle changes are occurring, that we have to perform complete
+tests on these systems (i.e. not the hardware, but our software
+configurations.)
+
+This week I'm building a tiny lab of six machines to test
+a roll out of OpenBSD 4.7 on one of our redundant (carp)
+firewalls. Since rule changes are really a good excuse
+to revisit how you've written your previous version,
+then it is a good time do a thorough review (test
+in and out activity etc.)

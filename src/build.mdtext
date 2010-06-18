@@ -1,0 +1,39 @@
+## Standardised Install
+
+Because we tend to make avoidable mistakes, an installation 'procedure'
+is a start to build quality and consistency. The $!OpenBSD!$ team have 
+built a great OS, so let's not be the weak link
+in the chain (point of failure.)
+
+This section of the notes covers some areas for installing 
+OpenBSD onto your system.
+
+### [Preview](preview.html) / Pre Install
+
+Some things to help you, before installing OpenBSD.
+
+For the first time installer, the $!OpenBSD!$ INSTALL instructions
+are clear. There's a TEXT version on the FTP sites (one for each
+hardware platform) a [HTML version](http://www.openbsd.org/faq/faq4.html) 
+for the web browsers. 
+
+For the pre-disposed to printed matter? [Buy the Project CD](http://www.openbsd.org/orders.html) 
+and get your install instructions printed on glossy paper, with stickers!!
+
+### OS Install
+
+Consistency comes not from magical alignments of the stars, but
+through discipline. A practised discipline to documentation (oops, my bad)
+and your installation serves you well for future maintainance, updates,
+and discovery of your system capabilities.
+
+Some things to help you, during an OpenBSD install.
+
+### Compiling
+
+Sometimes, you just need to build the operating system
+from source code.
+
+### Diagnostics
+
+What do we do to confirm everything's as we chose?
