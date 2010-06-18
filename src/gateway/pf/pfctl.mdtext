@@ -44,25 +44,29 @@ Feeding the PF Engine is simplified using pfctl's "-f" option
 for specifying the file, which can be further modified such as:
 
 <pre class="command-line">
-# pfctl -f /etc/pf.conf     Load the pf.conf file
-# pfctl -nf /etc/pf.conf    Parse the file, but don't load it
-# pfctl -Nf /etc/pf.conf    Load only the NAT rules from the file
-# pfctl -Rf /etc/pf.conf    Load only the filter rules from the file
+-f /etc/pf.conf     Load the pf.conf file
+-nf /etc/pf.conf    Parse the file, but don't load it
+-Nf /etc/pf.conf    Load only the NAT rules from the file
+-Rf /etc/pf.conf    Load only the filter rules from the file
 </pre>
 
 Similarly, because of Unix's piping capabilities, we are also able
-to inject a new configuration directly from the command line such as:
+to verify and inject a new PF directive from the command line such as:
 
 <pre class="command-line">
-# echo "pass in on eth0 from any to any port 80" | pfctl -nf -
-# echo "pass in on eth0 from any to any port 80" | pfctl -f -
+# echo "pass on eth0 from any to any port 80" | pfctl -nf -
+</pre>
+<pre class="screen-output">
+stdin:1: port only applies to tcp/udp
+stdin:1: skipping rule due to errors
+stdin:1: rule expands to no valid combination
+</pre>
+# echo "pass on eth0 proto tcp from any to any port 80" | pfctl -nf -
+</pre>
+<pre class="screen-output">
 </pre>
 
 #### Showing current state
-
-You create your rules following the manual pages $!manpage("pf.conf")!$ and the
-FAQ, but you are still uncertain that you and the Packet Filter understand the
-same thing from manuals.
 
 We can view PF's interpretation, by using the "-s rules"
 
@@ -70,18 +74,25 @@ We can view PF's interpretation, by using the "-s rules"
 -s modifier
     Show the filter parameters specified by modifier (may be
     abbreviated):
-    -s rules    Show the currently loaded filter rules.  When used
-                together with -v, the per-rule statistics (number
-                of evaluations, packets and bytes) are also shown.
-                Note that the ``skip step'' optimization done
-                automatically by the kernel will skip evaluation
-                of rules where possible.  Packets passed
-                statefully are counted in the rule that created
-                the state (even though the rule isn't evaluated
-                more than once for the entire connection).
 </pre>
 
-To use the default ruleset (/etc/pf.conf) as an example
+You create rules following the manual pages $!manpage("pf.conf")!$ and the
+FAQ, but you are still uncertain that you and the Packet Filter understand the
+same thing from manuals.
+
+<pre class="manpage">
+-s rules    Show the currently loaded filter rules.  When used
+            together with -v, the per-rule statistics (number
+            of evaluations, packets and bytes) are also shown.
+            Note that the ``skip step'' optimization done
+            automatically by the kernel will skip evaluation
+            of rules where possible.  Packets passed
+            statefully are counted in the rule that created
+            the state (even though the rule isn't evaluated
+            more than once for the entire connection).
+</pre>
+
+For an example, to use the default ruleset (/etc/pf.conf) as an example
 
 <pre class="config-file">
 set skip on lo
@@ -150,12 +161,12 @@ data for the PF Engine. pfctl provides some useful invocations to let
 you monitor and manage tables.
 
 <pre class="command-line">
-# pfctl -s Tables                    Show Tables
-# pfctl -T show -t table-name        Display entries in table 'table-name'
-# pfctl -T show -vt table-name       Display table counters for 'table-name'
-# pfctl --vs Tables                  Display global information
-# pfctl -T add -t table-name ip-address      Add an 'ip-address' to table 'table-name'
-# pfctl -T delete -t table-name ip-address   Delete an 'ip-address' from table 'table-name'
+-s Tables                            Show Tables
+-T show -t table-name                Display entries in table 'table-name'
+-T show -vt table-name               Display table counters for 'table-name'
+--vs Tables                          Display global information
+-T add -t table-name ip-address      Add an 'ip-address' to table 'table-name'
+-T delete -t table-name ip-address   Delete an 'ip-address' from table 'table-name'
 </pre>
 
 #### Flushing Configuration

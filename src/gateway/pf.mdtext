@@ -11,11 +11,7 @@ Table of Contents
             <li><a href="#verify">Verify</a></li>
         </ul>
     </li>
-    <li><a href="pf/ruleset.html">Ruleset Review</a>
-        <ul>
-            <li>$!manpage("pfctl",8)!$  - control the packet filter (PF) device</li>
-        </ul>
-    </li>
+    <li><a href="pf/pfctl.html">Ruleset Review</a></li>
 </ul>
 
 </div>

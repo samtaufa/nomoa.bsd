@@ -37,6 +37,13 @@ using CARP, refer to [Ryan McBride](http://kerneltrap.org/node/2873)'s
 [Firewall Failover with pfsync and CARP](http://www.countersiege.com/doc/pfsync-carp/) 
 the [Related Links](#related) below and the [$!manpage("man")!$(ual)] pages.
 
+In practise? We use $!manpage("carp")!$ on our firewalls to provide 
+high-availability and:
+
+1.  Augment high-end servers with commodity desktops
+2.  Replace expensive equipment (closed/hugely expensive solutions) with
+    (affordable) commodity desktops
+
 Always refer to the [$!manpage("man")!$(ual)] pages.
 
 ###  Sample Configuration
