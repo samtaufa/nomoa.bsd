@@ -171,8 +171,8 @@ you monitor and manage tables.
 
 #### Flushing Configuration
 
-The general invocation of pfctl to reload rules is `pfctl -F rules -f /etc/pf.conf`
-which instructs pfctl to "Flush" the existing 'rules' before parsing
+The general invocation of pfctl to reload the ruleset is `pfctl -F rules -f /etc/pf.conf`
+which instructs pfctl to "Flush" the existing 'filter rules' before parsing
 the ruleset in "-f /etc/pf.conf". This helps in destroying all rules,
 including those that may conflict, cause anomalies with the new
 rules to be loaded.
@@ -192,7 +192,11 @@ But we can flush and remove other items from the PF Engine.
 -F all      Flush all of the above            
 </pre>
 
-Remember that you don't want to flush without loading a new set
+As in the above table, when you've made changes to /etc/pf.conf and are
+reloading the ruleset, make sure you flush the appropriate rules (whether
+they're changes you've made to nat or filter rules etc.)
+
+**Remember** that you don't want to flush without loading a new set
 of replacements.
 
 #### Killing State
