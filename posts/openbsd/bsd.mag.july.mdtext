@@ -1,0 +1,24 @@
+BSD Magazine for July is out
+time: 2010-07-08 16:17
+
+[BSD Magazine](http://bsdmag.org) has grown from strength to strength with really well written,
+edited articles.
+
+[This month is dedicated to OpenBSD,](http://bsdmag.org/magazine/1267-openbsd) 
+what ever dedication means, but in essence you have some nice articles targetting
+OpenBSD specific installs.
+
+- Floppy Systems
+- OpenBSD Mail Server
+
+It's always good to get more documentation out there, maybe they
+can work together with the BSD Certification group aggregate 
+where we can push all our documentation so that quality can
+be raised for everyone (writer and reader.)
+
+Follow the link and "educate yourself" (Blinkly -- Lilo and Stitch)
+
+Documentation Updates:
+
+- CARP 
+- Firewall Validation methodologies
