@@ -2,6 +2,7 @@
 
 
 body {
+	/*
 	scrollbar-3dlight-color: #ccdcDD;
 	scrollbar-arrow-color: Black;
 	scrollbar-base-color: #ffdc7A;
@@ -9,14 +10,15 @@ body {
 	scrollbar-face-color: #ffdccc;
 	scrollbar-highlight-color: #dcdcDD;
 	scrollbar-shadow-color: #a0dc66;
+	scrollbar-3d-light-color : #CCFFFF;
+	scrollbar-dark-shadow-color : #dcdc66;
+	*/
 	background-color: #FFFACD;
 	margin-top : 0;
 	margin-left : 3px;
 	margin-right : 3px;
 	font-family : Verdana, Geneva, Arial, Helvetica, sans-serif;
 	font-size : small;
-	scrollbar-3d-light-color : #CCFFFF;
-	scrollbar-dark-shadow-color : #dcdc66;
 }
 
 h1  { 
@@ -361,4 +363,52 @@ a:visited:hover {
     font-weight : bold;	
     letter-spacing : 1pt;	
     text-decoration : none;
+<<<<<<< Updated upstream
+=======
+}
+
+/* ------- rss feed -------- */
+a.rss {
+	height: 32px;
+	padding-left: 24px;
+	padding-bottom: 5px;
+	background-image: url(../images/24x24/rss.png);
+	background-repeat: no-repeat; 
+}
+a.rss:hover {
+	height: 32px;
+	padding-left: 24px;
+	padding-bottom: 5px;
+	background-image: url(../images/24x24/rss_blue.png);
+	background-repeat: no-repeat; 
+}
+
+a.rss:visited {
+	height: 32px;
+	padding-left: 24px;
+	padding-bottom: 5px;
+	background-image: url(../images/24x24/rss_green.png);
+	background-repeat: no-repeat; 
+}
+
+a.rss:visited:hover {
+	height: 32px;
+	padding-left: 24px;
+	padding-bottom: 5px;
+	background-image: url(../images/24x24/rss.png);
+	background-repeat: no-repeat; 
+}
+
+.toc {
+	padding: 10px 5px 10px 15px;
+	border-style: solid dotted solid dotted;
+	border-width: 2px;
+	text-align: left;
+	float: right;
+	width: 300px;
+	background-color : #EBFFCD;
+}
+
+.toc p {
+	font-weight: strong;
 }
