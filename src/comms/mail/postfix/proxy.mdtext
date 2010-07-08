@@ -7,9 +7,7 @@ Customising the base Postfix installation to serve as a Proxy smtp server.
 There is no discussion here with regards to further security measures available to
 Postfix such as SPAM or Antivirus filtering etc.
 
-<div style="text-align: center">
-    $!Image("mail/smtp_proxy.png", title="SMTP Proxy")!$
-</div>
+$!Image("mail/smtp_proxy.png", title="SMTP Proxy", klass="center")!$
 
 Installing a "Mail Proxy" between the remote client and your Corporate Mail Server is an 
 added layer of defence between potentially malicious external users and the internal mail system.
@@ -118,7 +116,7 @@ Note: after changing this value, reload Postfix configuration.
 
 From the manpage:
 
-<pre class="screen-output">
+<pre class="manpage">
 mynetworks (default: see postconf -d output)
 
 The  list  of "trusted" SMTP clients that have more privi-
@@ -178,7 +176,7 @@ configuration to send 'root' messages to a local user '__monitor'.
 
 From the manpage:
 
-<pre class="screen-output">
+<pre class="manpage">
 alias_maps (default: see postconf -d output)
 
 The alias databases that are used for  local(8)  delivery.
@@ -194,7 +192,7 @@ necessary DBM or DB file.
 
 From the manpage:
 
-<pre class="screen-output">
+<pre class="manpage">
 alias_database (default: see postconf -d output)
 
 The alias databases for local(8) delivery that are updated
@@ -251,7 +249,7 @@ Internal Mail Server.
 
 From the manpage:
 
-<pre class="screen-output">
+<pre class="manpage">
 relay_domains (default: $mydestination)
 
 What destination domains  (and  subdomains  thereof)  this
@@ -306,7 +304,7 @@ inbound e-mail messages.
 
 From the manpage:
 
-<pre class="screen-output">
+<pre class="manpage">
 transport_maps (default: empty)
 
 Optional   lookup  tables  with  mappings  from  recipient

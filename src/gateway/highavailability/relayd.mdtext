@@ -1,13 +1,25 @@
 ## Load Balancing
 
-OpenBSD supports load balancing in two scenarios:
+$!OpenBSD!$ base OS support's load-balancing traffic in and out, 
+using CARP and pfsync in an active-active firewall, such that it can 
+'share' traffic processing amongst servers. Likewise, the base $!manpage("relayd")!$
+allows $!OpenBSD!$ to load-balance traffic coming into an $!OpenBSD!$  $!manpage("relayd")!$
+gateway to distribute the traffic amongst off-host servers.
 
--   $!manpage("carp")!$'d hosts
--   off-host addresses's
+$!Image("ha_relayd.png", title="High Availability - Load Balancing", klass="center")!$
+
+Traffic 'sharing' is transparent to the source and destination. The
+the interdepence of those servers determine the complexity required 
+for deployment. For example, services with no interdepence between 
+multiple servers (such as static web sites, download servers, MX Proxies) 
+can be readily scaled through adding more boxes to the service pool.
     
-In practise we use load-balancing such that we can use
-commodity desktop machines to provide high availability for
-MX Proxying, DNS Proxying, NTP Proxying    
+In practise we use $!manpage("relayd")!$ load-balancing such that we can use
+commodity desktop machines to provide high availability for:
+
+-   [MX / Mail Server](../../comms/www.html)
+-   DNS Server
+-   NTP Server
 
 ### Load Balancing on $!manpage("carp")!$ 'd hosts
     
@@ -28,18 +40,15 @@ of Firewalls (OpenBSD 4.6 onwards) on carp interfaces using
 In this context, we are referring to a Man in the Middle host, load
 balancing services provisioned on other hosts.
 
-<div style="text-align: center">
-    $!Image("ha_loadbalance.png", title="High Availability - Load Balancing")!$
-</div>
+$!Image("ha_relayd.png", title="High Availability - Load Balancing", klass="center")!$
 
 OpenBSD's base install supports ISO Level 7 load balancing using 
 $!manpage("relayd",8)!$  (http, tcp, other)
     
 Open Source tools for load balancing include:
 
--   [kamailio/OpenSER](http://www.kamailio.org/) - 
-    <a title="Session Initiation Protocol - used in Voice Over IP">SIP
-    </a>
+-   [kamailio/OpenSER](http://www.kamailio.org/ 
+    "Session Initiation Protocol - used in Voice Over IP") - SIP
 -   [haproxy](http://haproxy.1wt.eu) - tcp, http
 -   [nginx](http://nginx.org/ title "Engine X") - http, https, pop3, imap, smtp
 

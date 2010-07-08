@@ -1,6 +1,6 @@
 ## Serving with Postfix
 
-<div style="float:right">
+<div class="toc">
 
 Table of Contents
 
@@ -191,7 +191,7 @@ the known ip addresses on your servers configuration.
 [Parent domain matches sub-domains](
 http://www.postfix.org/postconf.5.html#parent\_domain\_matches\_subdomains)
 
-<pre class="screen-output">
+<pre class="manpage">
 <strong>parent_domain_matches_subdomains</strong> 
 (default: see 'postconf -d' output)
 What Postfix features match subdomains of 'domain.tld' automatically, instead of 
@@ -241,7 +241,7 @@ Explaining the '-a /var/spool/postfix/dev/log' (from the man pages)
 
 $!manpage("syslogd",8)!$
 
-<pre class="screen-output"> 
+<pre class="manpage"> 
 syslogd reads and logs messages to the system console, 
 log files, other machines and/or users as specified by its configuration file.
 
@@ -254,7 +254,7 @@ log files, other machines and/or users as specified by its configuration file.
 
 Explaining Sendmail -bd (from the man pages)
 
-<pre class="screen-output">
+<pre class="manpage">
 Sendmail(8)
 -bd     Run as a daemon. Sendmail will fork and run 
     in the background listening on socket 25 for incoming SMTP connections. By 
@@ -289,7 +289,9 @@ need or want to go back to Sendmail.) We use 'crontab -e' and add '#' hashes to
 Take a look at your /etc/postfix/aliases file which will contain some default 
 aliases that you should manage.
 
-<pre class="screen-output">alias_database = hash:/etc/postfix/aliases</pre>
+<pre class="screen-output">
+alias_database = hash:/etc/postfix/aliases
+</pre>
 
 For a basic, test install then there shouldn't be any real need to change 
 this file. You should remember when you're ready for a full install then you 
@@ -346,10 +348,9 @@ We want to force the Sendmail program to die, from the man page
 
 $!manpage("kill")!$
 
-<pre class="screen-output">
-The pkill command searches the process table on the 
-running system and signals all processes that match the criteria given on the 
-command line.
+<pre class="manpage">
+The pkill command searches the process table on the running system 
+and signals all processes that match the criteria given on the command line.
 </pre>
 
 The default signal TERM is sent when no other signal is specified, so we're 
@@ -379,7 +380,8 @@ The first quick test can be performed using the postfix command
 
 $!manpage("postfix")!$
 
-<pre class="screen-output">The following commands are implemented:
+<pre class="manpage">
+The following commands are implemented:
 		
 <strong>check </strong>Warn about bad directory/file ownership or 
 permissions, and create missing directories.
@@ -395,7 +397,7 @@ utility' , from the man pages
 
 $!manpage("postconf")!$
 
-<pre class="screen-output">
+<pre class="manpage">
 <strong>-n </strong>Print parameter settings that are not left at 
 		their built-in default value, because they are explicitly specified in 
 		main.cf.
@@ -407,7 +409,6 @@ example, an output could look like this.
 <pre class="command-line">
 <strong># postconf </strong>| grep ^my</pre>
 
-        
 <pre class="screen-output">
 mydestination = $myhostname, localhost.$mydomain, localhost
 mydomain = example.org
@@ -460,30 +461,47 @@ on the system)
 <pre class="command-line"><strong>$ telnet localhost smtp </strong> </pre>
 
 <pre class="screen-output">
-		Trying ::1...
+Trying ::1...
 Connected to localhost.
 Escape character is '^]'.
 220 myhost.example.org ESMTP Postfix
 </pre>
 
-<pre class="command-line"><strong>EHLO example.org</strong></pre>
+<pre class="command-line">
+<strong>EHLO example.org</strong>
+</pre>
 
-<pre class="screen-output">250-myhost.example.org 
+<pre class="screen-output">
+250-myhost.example.org 
 250-PIPELINING 
 250-SIZE 10240000 
 250-VRFY 
 250-ETRN 
 250-ENHANCEDSTATUSCODES 
 250-8BITMIME 
-250 DSN </pre>
+250 DSN 
+</pre>
 
-<pre class="command-line"><strong>MAIL FROM: &lt;samt@example.org&gt;</strong></pre>
-<pre class="screen-output">250 2.1.0 Ok </pre>
-<pre class="command-line"><strong>RCPT TO: &lt;samt@example.org&gt;</strong></pre>
-<pre class="screen-output">250 2.1.5 Ok </pre>
-<pre class="command-line">DATA</strong></pre>
-<pre class="screen-output">354 Enter mail, end with '.' on a line by itself</pre>
-<pre class="command-line">Subject: This is my subject line
+<pre class="command-line">
+<strong>MAIL FROM: &lt;samt@example.org&gt;</strong>
+</pre>
+<pre class="screen-output">
+250 2.1.0 Ok 
+</pre>
+<pre class="command-line">
+<strong>RCPT TO: &lt;samt@example.org&gt;</strong>
+</pre>
+<pre class="screen-output">
+250 2.1.5 Ok 
+</pre>
+<pre class="command-line">
+<strong>DATA</strong>
+</pre>
+<pre class="screen-output">
+354 Enter mail, end with '.' on a line by itself
+</pre>
+<pre class="command-line">
+Subject: This is my subject line
 
 I continue writing until I'm out of interesting things to say
 which is not that far away

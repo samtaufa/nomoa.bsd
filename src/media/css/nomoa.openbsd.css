@@ -35,7 +35,7 @@ h1  {
 h2	{ 
     font-family:Verdana, Geneva, Arial, Helv, Helvetica, sans-serif;
     font-weight: bold;
-    font-size: 150% 
+    font-size: 150%; 
     margin-top:12.0pt;
     margin-right:0cm;
     margin-bottom:3.0pt;
@@ -88,8 +88,7 @@ p {
 	margin-left: 5px;
 }	
 
-p.Code
-	{
+p.Code {
 	margin-top:0cm;
 	margin-right : 4em;
 	margin-bottom:0cm;
@@ -101,8 +100,7 @@ p.Code
 	color: Black;
 	background-color : #DCDCDC;
 }
-p.CodeSmall
-	{
+p.CodeSmall {
 	margin-top:0cm;
 	margin-right : 4em;
 	margin-bottom:0cm;
@@ -113,8 +111,7 @@ p.CodeSmall
 	color: Black;
 	background-color : #DCDCDC;
 }
-p.pFileReference
-	{
+p.pFileReference {
 	margin:0cm;
 	margin-top:12pt;
 	margin-bottom:.0001pt;
@@ -128,8 +125,7 @@ p.pFileReference
 	background-color:#006699;
     max-width: 90%;
 }
-p.ScreenSession
-	{
+p.ScreenSession {
 	margin:0cm;
 	margin-top:12pt;
 	margin-bottom:.0001pt;
@@ -142,8 +138,7 @@ p.ScreenSession
 	vertical-align : top;
 	background-color:#006655;
 }
-p.manReference
-	{
+p.manReference {
 	margin-top:6pt;
 	margin-right : 4em;
 	margin-bottom:0cm;
@@ -155,8 +150,7 @@ p.manReference
 	font-weight:bold;
 	background-color : #FFE4E1;
 }
-p.pScreenOutput
-	{
+p.pScreenOutput {
 	margin-top:0cm;
 	margin-right : 4em;
 	margin-bottom:0cm;
@@ -363,8 +357,11 @@ a:visited:hover {
     font-weight : bold;	
     letter-spacing : 1pt;	
     text-decoration : none;
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
+=======
+>>>>>>> master
 }
 
 /* ------- rss feed -------- */
@@ -400,6 +397,7 @@ a.rss:visited:hover {
 }
 
 .toc {
+<<<<<<< HEAD
 	padding: 10px 5px 10px 15px;
 	border-style: solid dotted solid dotted;
 	border-width: 2px;
@@ -411,4 +409,10 @@ a.rss:visited:hover {
 
 .toc p {
 	font-weight: strong;
+=======
+	text-align: left;
+	float: right;
+	width: 300px;
+	background-color : #FFFACD;
+>>>>>>> master
 }

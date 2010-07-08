@@ -1,3 +1,4 @@
+## Performance Measurement
 
 Performance measurement serves two purposes, to monitor current performance for 
 irregularities and to push the boundaries of existing systems to review acceptable
@@ -129,7 +130,7 @@ service of inetd.
 
 Maintainer: The OpenBSD ports mailing-list &lt;ports@openbsd.org>
 
-<pre class="screen-output">
+<pre class="manpage">
 usage: tcpblast [-4] [-6] destination nblkocks
 blocksize: 1024 bytes 1
 </pre>
@@ -194,7 +195,7 @@ work signature graph can be created by graphing time  ver-
 sus  bits per second.  Sample gnuplot(1) commands for such
 a graph would be
 
-<pre class="screen-output">
+<pre class="config-file">
 set logscale x
 
 plot "NetPIPE.out" using 1:2
@@ -204,7 +205,7 @@ The more traditional throughput versus  block  size  graph
 can  be  created by graphing bytes versus bits per second.
 Sample gnuplot(1) commands for such a graph would be
 
-<pre class="screen-output">
+<pre class="config-file">
 set logscale x
 
 plot "NetPIPE.out" using 4:2

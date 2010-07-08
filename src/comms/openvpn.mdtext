@@ -43,9 +43,7 @@ that is well-targeted for the SME and enterprise markets.
     </li>
 </ul>
 
-<div style="text-align: center">
-    $!Image("openvpn/vpn.diagram.png", title="VPN Diagram")!$
-</div>
+$!Image("openvpn/vpn.diagram.png", title="VPN Diagram", klass="center")!$
 
 <a href="http://openvpn.net/index.php/open-source/documentation/miscellaneous/79-management-interface.html">Management Interface</a>
 

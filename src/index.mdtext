@@ -6,7 +6,8 @@ shaby filling in as a General Purpose Operating System (GPOS) with some
 fine features to stand-in as your Firewall, Gateway Servers. 
 
 It is well documented through Unix $!manpage("man")!$(ual) pages, 
-with a lucid online [Frequently Asked Questions](http://www.openbsd.org/faq/)(FAQ) 
+with a lucid online [Frequently Asked Questions](http://www.openbsd.org/faq/ "
+rational, easily understood, shining")(FAQ) 
    
 These notes reference how we got/keep  $!OpenBSD!$ up and running. 
 Verify what you read here through the $!OpenBSD!$ mailing lists, Internet 
@@ -20,27 +21,31 @@ and practise safe Computing.
 
 ### Build and Consistency
 
-Putting together an OpenBSD box is fun and easy, although
+Putting together an $!OpenBSD!$ box is fun and easy, although
 there are a few hurdles that can seem daunting for the new
-user, the process is well defined and documented. Take a look
-here for a few areas that might be interesting to review
+user. The installation process is well defined and documented. 
+We include here a few areas that might be interesting to review
 before a system install (especially for new users.)
 
 Likewise, we try to put here general issues to consider when
-planning to roll-out OpenBSD to your critical infrastructure.
+planning to roll-out $!OpenBSD!$ to your critical infrastructure.
 
 ### Secured Communications
 
-Your first step in connecting your new OpenBSD box, to anything, is
+Your first step in connecting your new $!OpenBSD!$ box, to anything, is
 to read the [OpenBSD FAQ 6 - Networking](http://www.openbsd.org/faq/faq6.html)
 document. And then, read it again.
 
-Afterwards,  we explore some useful notes for sharing and 
-securing communications services.
+Afterwards,  we explore sharing and securing communications services.
+
+-   File Sharing with Windows clients
+-   FTP Server
+-   Mail Services
+-   Virtual Private Networks
 
 #### Mail Server
 
-E-mail may just be the lifeblood of the Internet, unless you're younger than 25. 
+For example, e-mail may just be the lifeblood of the Internet, unless you're younger than 25. 
 Various tools come together to provide what is generally termed an E-mail Server, 
 and we bring together some of these key tools on $!OpenBSD!$.
 
@@ -52,9 +57,14 @@ and we bring together some of these key tools on $!OpenBSD!$.
 ### Gateways and Perimeter Systems
 
 $!OpenBSD!$ is a great tool for securing your borders and gateways
-and comes pre-configured with tools for 
-[High Availability](borders/highavailability.html)
-through redundancy and Load Balancing.
+and comes pre-configured with foundation tools for such services.
+
+With the base install of $!OpenBSD!$ you can readily configure
+border services such as a Packet Filtering Firewall ($!manpage("pf")!$), 
+Encrypted VPNs ($!manpage("ipsec")!$), and routing gateways ($!manpage("bgpd")!$).
+
+In this section, we review facilities in $!OpenBSD!$ common in 
+our border system deployments such as redundancy.
 
 ### Monitoring 
 

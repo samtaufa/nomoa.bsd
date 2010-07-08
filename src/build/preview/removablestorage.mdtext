@@ -1,6 +1,6 @@
 ## First Time - Removable Storage
 
-<div style="float:right">
+<div class="toc">
 
 Table of Contents
 
@@ -48,7 +48,7 @@ file by using space (next page) up-arrow, down-arrow, and "q" for quit.
 
 From the manpage $!manpage("dmesg")!$:
 
-<pre clas="screen-output">
+<pre class="manpage">
 <b>dmesg</b> displays the contents of the system message buffer.  It is most
      commonly used to review system startup messages.
 </pre>
@@ -61,7 +61,7 @@ file contains information about the filesystem.
 
 File: /etc/fstab 
 
-<pre class="screen-output">
+<pre class="config-file">
 # "#" starts comments
 # 
 # fs_spec fs_file fs_vfstype fs_mntops fs_freq fs_passno
@@ -75,7 +75,7 @@ File: /etc/fstab
 
 From the manpage $!manpage("fstab")!$ the format, as show above, is: 
 
-<pre class="screen-output">
+<pre class="manpage">
 fs_spec fs_file fs_vfstype fs_mntops fs_freq fs_passno
 
 fs_spec, is the block special device, or remote filesystem 
@@ -236,7 +236,8 @@ mount_msdos: /dev/sd0aon /mnt/zip: Device not configured </pre>
 mount_msdos: /dev/sd0a on /mnt/zip: Device not configured </pre>
 <pre class="command-line">
 # <b>mount -v -t msdos /dev/sd0c /mnt/zip</b> </pre>
-<pre class="screen-output">/dev/sd0c on /mnt/zip
+<pre class="screen-output">
+/dev/sd0c on /mnt/zip
 type msdos (rw, local, uid=0, gid=0, mask=0755)
 </pre>
 

@@ -6,7 +6,7 @@ These notes are a direct RIP from the above notes, and others
 aggregated here to help my depleting memory cells.
 
 OpenBSD supports the Border Gateway Protocol with it's base tool
-<pre class="screen-output">
+<pre class="manpage">
 is a Border Gateway Protocol (BGP) daemon which manages the network
 routing tables.  Its main purpose is to exchange information concerning
 "network reachability" with other BGP systems.  bgpd uses the Border
@@ -34,9 +34,7 @@ Basic diagnostic bgpctl commands to monitor an bgpd session include:
         </ul>
 </ul>
 
-<div style="text-align: center">
-    $!Image("bgpd_network.png", title="BGPD Network Diagram")!$
-</div>
+$!Image("bgpd_network.png", title="BGPD Network Diagram", klass="center")!$
 
 ### Am I up and Running
 

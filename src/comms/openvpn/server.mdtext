@@ -2,7 +2,7 @@
 
 Verified on OpenBSD 4.4 amd64 with OpenVPN 2.1 rc7; OpenBSD 4.6 i386 with OpenVPN 2.1rc22
 
-<div style="float:right">
+<div class="toc">
     <ol>
         <li>Install
             <ul>

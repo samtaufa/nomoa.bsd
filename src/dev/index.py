@@ -2,7 +2,7 @@ import countershape
 this.layout = ns.tpl_bloglayout
 
 ns.blk_sidemenu = countershape.widgets.SiblingPageIndex(
-                '/log/index.html'
+                '/dev/null.html'
     )
  
 pages = [

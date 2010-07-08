@@ -1,6 +1,6 @@
 ## The <a href="http://www.openbsd.org">OpenBSD</a> Packet Filter 
 
-<div style="float:right">
+<div class="toc">
 
 Table of Contents
 
@@ -11,32 +11,7 @@ Table of Contents
             <li><a href="#verify">Verify</a></li>
         </ul>
     </li>
-    <li><a href="pf/ruleset.html">Ruleset Review</a>
-        <ul>
-            <li>$!manpage("pfctl",8)!$  - control the packet filter (PF) device</li>
-        </ul>
-    </li>
-    <li><a href="pf/performance.html">Performance / Throughput</a>
-        <ul>
-            <li>tcpbench from base</li>
-            <li> tcpblast from ports/benchmarks</li>
-        </ul>
-    </li>
-    <li><a href="pf/flow.html">Traffic Flow</a>
-        <ul>
-            <li> nc(1) - netcat utility, push and listen to TCP/UDP connections on interfaces</li>
-            <li> route, arp tables</li>
-            <li>tcpdump(8) - watch the traffic behaviour on route-flow interfaces
-                <ul>
-                    <li> pflog0</li>
-                    <li> Interface/CARP-in</li>
-                    <li> Interface/CARP-out</li>
-                    <li> source host</li>
-                    <li> destination host</li>
-                </ul>
-            </li>
-        </ul></li>
-    <li><a href="pf/other.html">Other Tools</a></li>
+    <li><a href="pf/pfctl.html">Ruleset Review</a></li>
 </ul>
 
 </div>
@@ -66,14 +41,14 @@ Prior versions, with PF, need to be enabled by adding "pf=YES"
 in the file: /etc/$!manpage("rc.conf.local",8)!$:
 (default post 4.6)
 
-<pre class="screen-output">
+<pre class="config-file">
 pf=YES
 </pre>
 
 When the system is started, the above instructs OpenBSD to
 enable PF, and load the default rulset (/etc/pf.conf)
 
-You can also manually activate and deactivate PF by using the pfctl(8) program: 
+You can also manually activate and deactivate PF by using the $!manpage("pfctl",8)!$ program: 
 
 <pre class="command-line">
 # pfctl -e

@@ -2,7 +2,7 @@
 
 [OpenBSD 4.6]
 
-<div style="float:right">
+<div class="toc">
 
 Table of Contents
 
@@ -70,7 +70,7 @@ Where DEVICE_PARTITION is a device partition such as sd0d or sd2f.
 
 Create a new filesystem on the encrypted node
     
-<pre class="screen-output">
+<pre class="command-line">
 newfs /dev/DEVICE_PARTITION
 </pre>
 

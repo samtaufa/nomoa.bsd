@@ -1,7 +1,7 @@
 ﻿
 ##  Client connections using dovecot imap, pop, sasl 
 
-<div style="float:right">
+<div class="toc">
     <p> Table of Contents: </p>
     <ul>
         <li><a href="#install">Installation and Configuration</a></li>

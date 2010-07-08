@@ -5,7 +5,7 @@ this.layout = ns.tpl_layout
 this.markup = "markdown"
 
 ns.blk_sidemenu = countershape.widgets.SiblingPageIndex(
-                '/borders/pf.html',
+                '/gateway/pf.html',
     )
  
 ns.docTitle = "Gateway Services"

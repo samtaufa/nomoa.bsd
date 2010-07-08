@@ -1,7 +1,7 @@
 
 ## Hardware Tests
 
-<div style="float:right">
+<div class="toc">
 
     <ul>
         <li><a href="#memory">Memory</a>: memtest86, memtest++, memtester
@@ -68,7 +68,7 @@ memtester version 4.0.8 (64-bit)
 Copyright (c) 2007 Charles Cazabon.
 </pre>
 
-<pre class="screen-output">
+<pre class="manpage">
 EXIT CODE
     memtester's exit code is 0 when everything works properly.
     Otherwise, it is the logical OR of the following values:
@@ -102,7 +102,8 @@ system by specifying two CPU-bound processes, one I/O-bound process, and one mem
 <pre class="command-line">
 $ stress --cpu 2 --io 1 --vm 1 --vm-bytes 128M \
     --timeout 10s --verbose
-</pre><pre class="screen-output">
+</pre>
+<pre class="screen-output">
    stress: info: [9372] dispatching hogs: 2 cpu, 1 io, 1 vm, 0 hdd
    stress: dbug: [9372] (243) using backoff sleep of 12000us
    stress: dbug: [9372] (262) setting timeout to 10s
@@ -184,6 +185,7 @@ On clients
 
 #### iperf
 
+<blockquote>
 <a href="">iperf</a> is a tool for measuring maximum TCP and UDP bandwidth, reminiscent
 of ttcp and nettest. It has been written to overcome the shortcomings of
 those aging tools.
@@ -193,7 +195,7 @@ alternately for optimizing or tuning a network. Iperf has a client and server fu
 and can measure the throughput between the two ends, either unidirectonally or bi-directionally. 
 It is open source software and runs on various platforms including Linux, Unix and Windows.
 It is supported by the National Laboratory for Applied Network Research.
-
+</blockquote>
 
 On the Server
 <pre class="command-line">
