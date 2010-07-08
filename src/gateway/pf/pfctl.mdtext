@@ -13,7 +13,6 @@ DESCRIPTION
      configuration and retrieval of status information from the packet filter.
 </pre>
 
-<<<<<<< HEAD
 <div class="toc">
 
 Table of Contents
@@ -35,8 +34,6 @@ Table of Contents
 
 </div>
 
-=======
->>>>>>> master
 As your curiosity level with $!manpage("pf")!$ increases, (also known as
 "not knowing, what's going on") $!manpage("pfctl")!$ is the tool to use for
 inspecting how $!manpage("pf")!$ has viewed your ruleset (-s rules)
@@ -45,16 +42,12 @@ and discover active details about the packet filter.
 -   rules
 -   tables
 
-<<<<<<< HEAD
-=======
-
 Work in Progress --- 
 
 1.  What are some very basic commands
 2.  What are very commonly used commands
 3.  What are some additional interesting commands
 
->>>>>>> master
 ### Basic Invocation
 
 1.  Start: **pfctl -e**
@@ -88,18 +81,13 @@ stdin:1: port only applies to tcp/udp
 stdin:1: skipping rule due to errors
 stdin:1: rule expands to no valid combination
 </pre>
-<<<<<<< HEAD
-<pre class="command-line">
-# echo "pass on eth0 proto tcp from any to any port 80" | pfctl -nf -
-</pre>
 
-No output indicates success.
-=======
 # echo "pass on eth0 proto tcp from any to any port 80" | pfctl -nf -
 </pre>
 <pre class="screen-output">
 </pre>
->>>>>>> master
+
+No output indicates success.
 
 #### Showing current state
 

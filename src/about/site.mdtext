@@ -70,16 +70,22 @@ so it is (in itself) readable, and more importantly, maintainable.
 These pages have aged, and not very well, hopefully we can now begin
 keeping the text closer to relevant releases.
 
-#### Markup Files - md, text, txt, textish
+#### Markup Files - md, mdtext, rst, rstext, textish
 
-This means, that with the '.html' version of the website, you can normally
-view the 'source' for the page text by using the extension 'filename.mdtext'
-or .text, .txt, .textish, depending on which one I'm using for that page.
+By using marked text files converted to HTML with the usual '.html' 
+file extension, you can normally view the page 'original source' 
+by changing the url file extension to the marked text file extension
+such as: 'filename.mdtext'.
 
 For example, change the Address bar URL for this page from 'site.html' to
 ['site.mdtext'](site.mdtext) and hit enter you can read the 'markdown' version 
 of the page content. (Your browser may interpret the page as partial html,
 so some of the embedded html may not show up correctly.)
+
+The majority of pages on this site have been written in Markdown 2
+text format, with a convention of the text file having the extension
+'.mdtext'. The original files are copied onto the site together with 
+the generated '.html' file.
 
 ### Workflow - Freedom to choose
 

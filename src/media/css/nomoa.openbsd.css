@@ -357,11 +357,6 @@ a:visited:hover {
     font-weight : bold;	
     letter-spacing : 1pt;	
     text-decoration : none;
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> master
 }
 
 /* ------- rss feed -------- */
@@ -397,7 +392,6 @@ a.rss:visited:hover {
 }
 
 .toc {
-<<<<<<< HEAD
 	padding: 10px 5px 10px 15px;
 	border-style: solid dotted solid dotted;
 	border-width: 2px;
@@ -409,10 +403,5 @@ a.rss:visited:hover {
 
 .toc p {
 	font-weight: strong;
-=======
 	text-align: left;
-	float: right;
-	width: 300px;
-	background-color : #FFFACD;
->>>>>>> master
 }

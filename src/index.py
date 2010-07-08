@@ -4,11 +4,7 @@ from countershape import Page, Directory, model, template, state, blog
 
 this.markup = "markdown"
 this.titlePrefix = "=8> nomoa.com/bsd/ "
-<<<<<<< HEAD
-ns.footer = "When it pores, run!!"
-=======
 
->>>>>>> master
 ns.blk_banner  = template.File(None, "../templates/_banner.html")
 ns.blk_relatedsites = template.File(None, "../templates/_relatedsites.html")
 ns.blk_footer  = template.File(None, "../templates/_footer.html")
@@ -128,7 +124,7 @@ pages = [
 pages += section(
             fname="index.mdtext", 
             dirname="about", 
-            title="OhBSD",
+            title="O'BSD",
             pageTitle="OpenBSD Guides"
     )
     
