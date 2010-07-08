@@ -1,98 +1,33 @@
-Validating traffic flow through a firewall involves:
+Validating a firewall configuration involves tests on a number of areas
+such as a fundamental review the firewall ruleset, performance throughput,
+and validation that traffic flows as expected (and where possible prevented
+where expected.)
 
--   generating structured test traffic that can be 
--   monitored for conformance to a set of routing 
--   requirements (most commonly placed in the firewall ruleset.)
-
-It is important to recall, that the Packet Filter ($!manpage("pf")!$ is
-only one component of the 'stack' required for a firewall. Other important
-components include ip forwarding, routing.
-
-$!Image("fw/validate_rules.png", title="Test Lab for Validating Firewall Traffic Flow", klass="center")!$
-
-Pre-deployment validation of your firewall minimises trial and error
-on production systems. The above test configuration builds a simulated
-environment of the minimal traffic flow to test and verify.
-
-In our diagram we divide segments of traffic flow from an "internal"
-to an "external" host, where these labels are just to simplify the 
-view of the layout, not necessarily being external versus internal hosts.
-
-Devolving from our validation requirements, we need at least the 
-Routing Requirements from which the traffic flow analysis can be
-benchmarked. From there we can plan our traffic generation, and 
-monitoring requirements.
-
--   Routing Requirements
--   Traffic Generator
--   Traffic Monitoring
-
-### Routing Requirements
-
-We specify the routing requirements
-
-### Traffic Generator
-
-### Traffic Monitoring
-
-
-## Test Lab Configuration
-
-Minimal components for flow simulation include:
-
-1.  External Host
-2.  Firewall Gateway (where necessary, as CARP sets)
-3.  Internal Host
-4.  Admin / Control Host
-
-The External/Internal Hosts are isolated hosts because during the validation,
-test process we will need to make numerous changes to IP settings and
-routing. The sanest way to make these network stack changes, is to 
-perform system restarts to ensure all previous stack changes are completely
-flushed.
-
-For instance, each packet flow involves an "internal" host communicating
-with an "external" host. We may need to simulated 2 or more "internal" hosts
-connecting with 2 or more "external" hosts. With each change of IP Addresses
-we risk the side-effect of routes and arp configured for an old IP Address
-have a side-effect on the traffic flow behaviour.
-
-The Admin/Control Host provides a gateway from our workstations into the
-test lab.
-
-$!Image("fw/validate_monitors.png", title="Test Lab Monitoring Traffic Flow", klass="center")!$
-
-## Toolkit
-
-Readily available tools in $!OpenBSD!$ include:
-
-- $!manpage('netcat')!$
-- $!manpage('tcpdump')!$
-
-Task specific tools available from the Internet include
-
-- [FTest](http://dev.inversepath.com/trac/ftester/)
-
-<blockquote>
-The Firewall Tester (FTester) is a tool designed for testing firewalls filtering 
-policies and Intrusion Detection System (IDS) capabilities. 
-
-The tool consists of two perl scripts, a packet injector (ftest) and the listening
-(ftestd). The first script injects custom packets, defined in ftest.conf, with a 
-signature in the data part while the sniffer listens for such marked packets. 
-The scripts both write a log file which is in the same form for both scripts. A 
-diff of the two produced files (ftest.log and ftestd.log) shows the packets that 
-were unable to reach the sniffer due to filtering rules if these two scripts are ran 
-on hosts placed on two different sides of a firewall. Stateful inspection firewalls 
-are handled with the 'connection spoofing' option. A script called freport is also 
-available for automatically parse the log files. 
-
-Of course this is not an automated process, ftest.conf must be crafted for 
-every different situation. Examples and rules are included in the attached 
-configuration file. 
-</blockquote>
-
-## Related Links
-
--   [PF: Testing your Firewall](http://undeadly.org/cgi?action=article&sid=20060928081238) 
-    by Daniel Hartmei. A great read.
+<ul>
+    <li>Firewall Ruleset Review
+        <ul>
+            <li>pfctl
+        </ul>
+    </li>
+    <li> Performance / Throughput
+        <ul>
+            <li>tcpbench from base
+            <li> tcpblast from ports/benchmarks
+        </ul>
+    </li>
+    <li>Traffic Flow
+        <ul>
+            <li> netcat from base
+            <li> route, arp tables
+            <li>tcpdump
+                <ul>
+                    <li> pflog0
+                    <li> Interface/CARP-in
+                    <li> Interface/CARP-out
+                    <li> source host
+                    <li> destination host
+                </ul>
+            </li>
+        </ul>
+    <li> nmap from ports/net
+</ul>

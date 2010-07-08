@@ -2,11 +2,8 @@ import os, os.path, subprocess
 import countershape, pygments
 from countershape import Page, Directory, model, template, state, blog
 
-#this.markdown = "textish"
 this.markup = "markdown"
-#this.markup = "textish"
 this.titlePrefix = "=8> nomoa.com/bsd/ "
-ns.copyright = "Samiuela LV Taufa, 2010"
 ns.footer = "When it pores, run!!"
 ns.blk_banner  = template.File(None, "../templates/_banner.html")
 ns.blk_navigate = template.File(None, "../templates/_navigate.html")
@@ -141,7 +138,7 @@ pages = [
 pages += section(
             fname="index.mdtext", 
             dirname="about", 
-            title="Home",
+            title="OhBSD",
             pageTitle="OpenBSD Guides"
     )
     
@@ -158,7 +155,7 @@ pages += section(
         )
 
 pages += section(
-            "borders.mdtext", "borders", "Gateway",
+            "gateway.mdtext", "gateway", "Gateway",
             "Border, Gateway Systems"
         )
 
