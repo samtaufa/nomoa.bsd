@@ -5,15 +5,15 @@ from countershape import Page, Directory, model, template, state, blog
 this.markup = "markdown"
 this.titlePrefix = "=8> nomoa.com/bsd/ "
 
-ns.blk_banner  = template.File(None, "../templates/_banner.html")
-ns.blk_relatedsites = template.File(None, "../templates/_relatedsites.html")
-ns.blk_footer  = template.File(None, "../templates/_footer.html")
-ns.blk_rss = template.File(None, "../templates/_rss.html")
-ns.blk_copyright = template.File(None, "../templates/_copyright.html")
+ns.blk_banner  = template.File(None, "../templates/_banner.tpl")
+ns.blk_relatedsites = template.File(None, "../templates/_relatedsites.tpl")
+ns.blk_footer  = template.File(None, "../templates/_footer.tpl")
+ns.blk_rss = template.File(None, "../templates/_rss.tpl")
+ns.blk_copyright = template.File(None, "../templates/_copyright.tpl")
 
-ns.tpl_layout = countershape.Layout("../templates/_layout.html")
-ns.tpl_bloglayout = countershape.Layout("../templates/_blog.html")
-ns.tpl_frontpage = countershape.Layout("../templates/_frontpage.html")
+ns.tpl_layout = countershape.Layout("../templates/_layout.tpl")
+ns.tpl_bloglayout = countershape.Layout("../templates/_blog.tpl")
+ns.tpl_frontpage = countershape.Layout("../templates/_frontpage.tpl")
 this.layout = ns.tpl_frontpage
 
 
