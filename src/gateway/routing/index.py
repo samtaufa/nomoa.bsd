@@ -6,10 +6,10 @@ pages = [
 
     Page("bgp.mdtext", 
         title="BGP", 
-        pageTitle="OpenBSD BGPD"),
+        pageTitle="Routing with OpenBSD BGPD"),
         
     Page("cisco.mdtext", 
         title="Cisco", 
-        pageTitle="Cisco Routers/Switches"),
+        pageTitle="Routing with Cisco Routers/Switches"),
     Directory("cisco"),
 ]

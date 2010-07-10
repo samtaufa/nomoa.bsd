@@ -15,13 +15,15 @@ DESCRIPTION
 
 <div class="toc">
 
+<p>
 Table of Contents
+</p>
 
 <ul>
 	<li>Basic Invocation</li>
 	<li>Common Invocations
 		<ul>
-			<li>Loading Rulesets</li>
+			<li>Load/Parse Rulesets</li>
 			<li>Showing current state</li>
 			<li>Show more details</li>
 			<li>Tables</li>
@@ -56,12 +58,24 @@ Work in Progress ---
 4.  Check ruleset **pfctl -nf /etc/pf.conf**
 5.  Reload ruleset file **pfctl -F rules -f /etc/pf.conf**
 
-### Commonly used Invocations
+### Common Invocations
 
-#### Loading rulesets
+Below are the more common uses of pfctl in my context
+
+#### Load/Parse rulesets
 
 Feeding the PF Engine is simplified using pfctl's "-f" option
-for specifying the file, which can be further modified such as:
+for specifying a file with PF rules.
+
+<pre class="manpage">
+-f file
+	 Load the rules contained in file.  This file may contain macros,
+	 tables, options, and normalization, queueing, translation, and
+	 filtering rules.  With the exception of macros and tables, the
+	 statements must appear in that order.
+</pre>
+
+Common invocations using "-f" include:
 
 <pre class="command-line">
 -f /etc/pf.conf     Load the pf.conf file
@@ -70,8 +84,12 @@ for specifying the file, which can be further modified such as:
 -Rf /etc/pf.conf    Load only the filter rules from the file
 </pre>
 
-Similarly, because of Unix's piping capabilities, we are also able
-to verify and inject a new PF directive from the command line such as:
+As such, my most common invocation is to 'parse' a modified ruleset
+using "pfctl -nf /etc/pf.conf" where the rules are not loaded but
+are checked for syntax and some logic.
+
+Similarly, because of Unix's piping capabilities, we can
+verify and inject a new PF directive from the command line such as:
 
 <pre class="command-line">
 # echo "pass on eth0 from any to any port 80" | pfctl -nf -
@@ -82,12 +100,18 @@ stdin:1: skipping rule due to errors
 stdin:1: rule expands to no valid combination
 </pre>
 
-# echo "pass on eth0 proto tcp from any to any port 80" | pfctl -nf -
+The above shows pfctl parsing the console input, and finding
+errors, which can be corrected in the below update to the 
+rule (read: add "proto tcp").
+
+<pre class="command-line">
+# echo "pass on eth0 <strong>proto tcp</strong> from any to any port 80" | pfctl -nf -
 </pre>
 <pre class="screen-output">
+&nbsp;
 </pre>
 
-No output indicates success.
+Note: No output indicates success.
 
 #### Showing current state
 
@@ -282,9 +306,4 @@ by explicitly using the "-k | -K" pfctl option.
 
 ### Interesting Invocations
 
-
-Work in Progress --- Fix it
-
-
-
-
+Obviously there are some cooler uses of pfctl, want to share?

@@ -7,13 +7,6 @@ multiple hosts.
 
 $!Image("fw/carp_basic.png", title="Basic CARP Diagram", klass="center")!$
 
-<blockquote>
-Essentially, CARP provides the ability for one host to assume the network
-identity of an other, and a mechanism to decide when that's necessary.
-
--- Ryan McBride (dev lead)
-</blockquote>
-
 <div class=toc>
 
 Table of Contents
@@ -46,6 +39,15 @@ Table of Contents
 </ul>
 
 </div>
+
+<blockquote>
+<p>
+Essentially, CARP provides the ability for one host to assume the network
+identity of an other, and a mechanism to decide when that's necessary.
+</p>
+
+-- Ryan McBride (dev lead)
+</blockquote>
 
 Applications (or services) that can share their state data between 
 separate hosts can now use multiple hosts to service clients over

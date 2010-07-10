@@ -13,17 +13,17 @@ ns.docTitle = "Gateway Services"
 pages = [
     Page("highavailability.mdtext", 
         title="High Availability",
-        pageTitle=""),
+        pageTitle="High Availability Gateways"),
     Directory("highavailability"),
     
     Page("pf.mdtext", 
         title="Firewall",
-        pageTitle="PF Firewall"),
+        pageTitle="Firewalls with Packet Filter PF"),
     Directory("pf"),
 
     Page("routing.mdtext", 
         title="Routing",
-        pageTitle=""),
+        pageTitle="Gateways and Routing"),
     Directory("routing"),
     
 ]

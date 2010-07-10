@@ -5,21 +5,21 @@ ns.docTitle = "Firewall with OpenBSD Packet Filter (PF)"
 pages = [
     Page("pfctl.mdtext", 
         title="1. pfctl",
-        pageTitle=""),
+        pageTitle="pfctl PF Userland Control Tool"),
 
     Page("flow.mdtext", 
         title="2. Traffic Flow",
-        pageTitle=""),
+        pageTitle="Firewall Traffic Flow"),
         
     Page("performance.mdtext", 
         title="3. Performance",
-        pageTitle=""),
+        pageTitle="Firewall Performance Review"),
         
     Page("validation.mdtext", 
         title="4. Validation",
-        pageTitle=""),
+        pageTitle="Firewall Ruleset Validation"),
     
     Page("other.mdtext", 
         title="5. Tools",
-        pageTitle=""),
+        pageTitle="Firewall - Ancilliary Tools"),
 ]

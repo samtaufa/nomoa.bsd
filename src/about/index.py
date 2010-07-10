@@ -15,5 +15,5 @@ pages = [
         
     Page("directions.mdtext",
         title="Directions",
-        pageTitle="Directions"),
+        pageTitle="Futuer Site Directions"),
 ]

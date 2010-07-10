@@ -5,5 +5,5 @@ ns.docTitle = "OpenBSD"
 pages = [
     Page("buildiso.mdtext", 
         title="Build ISO", 
-        pageTitle=""),
+        pageTitle="Building an Install ISO"),
 ]
