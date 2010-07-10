@@ -39,7 +39,7 @@ h2	{
     margin-top:12.0pt;
     margin-right:0cm;
     margin-bottom:3.0pt;
-    margin-left: 5 px;
+    margin-left: 0 px;
     background-color : FFCDD2;
 	}
 	  
@@ -50,7 +50,7 @@ h3	{
 	margin-top:12.0pt;
 	margin-right: 20px;
 	margin-bottom:3.0pt;
-	margin-left:5px;
+	margin-left: 0 px;
 	background-color : #FFE1CD;
 }
 
@@ -394,7 +394,7 @@ a.rss:visited:hover {
 .toc {
 	padding: 10px 5px 10px 15px;
 	border-style: solid dotted solid dotted;
-	border-width: 2px;
+	border-width: 4px 2px;
 	text-align: left;
 	float: right;
 	width: 300px;
