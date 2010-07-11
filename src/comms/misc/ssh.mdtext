@@ -1,4 +1,4 @@
-### SSH Client Tips and Tricks
+## SSH Client Tips and Tricks
 
 <div class="toc">
 
@@ -26,20 +26,19 @@ Veterans know their way back, forward, up, down, sideways, and the rest of us ju
 and there to reading the documentation.
 
 <ul>
-    <li> <a href="#nopassword">SSH Login without a Password</a>
-    <li> <a href="#tunnel">SSH Tunnel</a>
-    <li> <a href="#tunnel.smb">SSH Tunnel SMB</a>
-    <li> <a href="#limitbandwidth"> Limit Bandwidth used</a>
+    <li> <a href="#nopassword">SSH Login without a Password</a></li>
+    <li> <a href="#tunnel">SSH Tunnel</a></li>
+    <li> <a href="#tunnel.smb">SSH Tunnel SMB</a></li>
+    <li> <a href="#limitbandwidth"> Limit Bandwidth used</a></li>
 </ul>
 
 ### <a name="ssh"></a>Remote Access with ssh
 
-<p class="pFileReference">[ref: ssh(1) |
-<a href="http://www.openbsd.org/faq/faq4.html">OpenBSD FAQ4</a>]</p>
+Ref: $!manpage("ssh",1)!$ | [OpenBSD FAQ4](http://www.openbsd.org/faq/faq4.html)
 
 <p>When the itch arrives and you just have to get a 'console' connection to that 
-server, telnet is asking for someone to sniff your password and <a href="http://www.openbsd.com" class="anchBlue">OpenBSD's</a> 
-<a href="www.openssh.com" class="anchBlue">OpenSSH</a> is the preferred, secureable 'terminal' 
+server, telnet is asking for someone to sniff your password and $!OpenBSD!$'s 
+[OpenSSH](http://www.openbsd.org) is the preferred, secureable 'terminal' 
 access system. Ssh is the preferred method of remote access with OpenBSD. There 
 are many features of ssh including the ability to provide a tunnel for other 
 services. The clear advantage of ssh is the full encryption of all communications 

@@ -6,14 +6,35 @@ Table of Contents
 
 <ul>
 	<li><a href="#confirm">Confirmation</a></li>
-	<li><a href="#verify">Verifiability</a></li>
+	<li><a href="#verify">Verifiability</a>
+        <ul>
+            <li><a href="#policy">Specific Policy</a></li>
+            <li><a href="#strategy">Strategy</a></li>
+        </ul>
+    </li>
+    <li><a href="#notes">Side Notes</a></li>
 </ul>
 
 </div>
 
-OpenBSD's Firewall is based on the Packet Filter Engine $!manpage("pf",4)!$  and 
+Building an OpenBSD Firewall is based on the Packet Filter Engine $!manpage("pf",4)!$  and 
 is well documented in manpages, with additional project documentation
 in the [PF FAQ](http://www.openbsd.org/faq/pf/index.html).
+
+These notes assist in the maintenance, monitoring of PF.
+
+At this point, do not be ashamed to purchase a book on Packet Filtering and
+OpenBSD. You can learn from your own mistakes, and make your own investigations
+on the Internet and on these pages, but you can also save yourself a lot
+of grief by buying the knowledge of those who've spent some quality effort
+to document real-life use of PF, with experience in diverse applications.
+
+What ever you do from here, you really do need to read a series of free resources
+published by Daniel Hartmeier on Undeadly:
+
+-	[PF: Testing your Firewall](http://undeadly.org/cgi?action=article&sid=20060928081238), 
+-	[Firewall Rule Optimization](http://undeadly.org/cgi?action=article&sid=20060927091645), 
+-	[Firewall Management](http://undeadly.org/cgi?action=article&sid=20060929080943)
 
 <div class="image">
     $!Image("fw/fw_traffic_flow.png", title="Firewall - Traffic Flow")!$
@@ -31,28 +52,12 @@ no longer supported. </p>
 -- <a href="http://www.openbsd.org/faq/pf/index.html">PF FAQ</a>
 </blockquote>
 
-These notes assist in the maintenance, monitoring of PF.
-
-At this point, do not be ashamed to purchase a book on Packet Filtering and
-OpenBSD. You can learn from your own mistakes, and make your own investigations
-on the Internet and on these pages, but you can also save yourself a lot
-of grief by buying the knowledge of those who've spent some quality effort
-to document real-life use of PF, with experience in diverse applications.
-
-What ever you do from here, you really do need to read a series of free resources
-published by Daniel Hartmeier on Undeadly:
-
--	[PF: Testing your Firewall](http://undeadly.org/cgi?action=article&sid=20060928081238), 
--	[Firewall Rule Optimization](http://undeadly.org/cgi?action=article&sid=20060927091645), 
--	[Firewall Management](http://undeadly.org/cgi?action=article&sid=20060929080943)
-
-
 ### <a name="confirm">Confirmation</a>
 
 To verify that PF is operational, use pfctl such as:
 
 <pre class="command-line">
-$ sudo pfctl -s info
+sudo pfctl -s info
 </pre>
 
 <pre class="screen-output">
@@ -70,7 +75,7 @@ metrics for your firewall.
 -   Specific Policy
 -   Strategy
 
-#### Specific Policy
+#### <a name="policy">Specific Policy</a>
 
 To verify our firewalls performance, is to presume a clear understanding/definition of what is
 acceptable behaviour, and what is not. Vagaries makes verification exponentially more
@@ -87,22 +92,7 @@ executed by a machine. In order to write a program, you need to define what it s
 Daniel Hartmeier's <a href="http://undeadly.org/cgi?action=article&sid=20060928081238">PF: Testing your Firewall</a>
 </blockquote>
 
-#### Strategy
-
-Our strategy involves securing an environment to verify our verification/testing policy. The
-rest of these notes covers these strategies.
-
--   Using pfctl to parse and inspect PFE states
--   Using tcpdump to inspect traffic flow
--   Using other tools to inject traffic
-
-The test environment is generally as in the below diagram.
-
-<div class="image">
-    $!Image("fw/fw_flow_lab.png", title="Firewall - Traffic Flow")!$
-</div>
-
-### Side Notes:
+### <a name="notes">Side Notes</a>:
 
 -   The [Packet Filter FAQ](http://www.openbsd.org/faq/pf/index.html) always documents RELEASE
 -	Daniel Hartmeier's articles on PF @ Undeadly 
