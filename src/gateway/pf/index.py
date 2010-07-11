@@ -22,4 +22,8 @@ pages = [
     Page("other.mdtext", 
         title="5. Tools",
         pageTitle="Firewall - Ancilliary Tools"),
+        
+    Page("environment.mdtext", 
+        title="Environment",
+        pageTitle="Firewall - Test Environment"),
 ]

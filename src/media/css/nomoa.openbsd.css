@@ -405,3 +405,7 @@ a.rss:visited:hover {
 	font-weight: strong;
 	text-align: left;
 }
+
+.image {
+	text-align: center;
+}

@@ -1,4 +1,4 @@
-## Ruleset Evaluation
+## pfctl - Packet Filter Engine, userland tool
 
 The userland tool for injecting and inspecting data in the Packet Filter
 is $!manpage("pfctl",8)!$.
@@ -56,7 +56,7 @@ Work in Progress ---
 2.  Stop: **pfctl -d**
 3.  Start with a ruleset file **pfctl -ef /etc/pf.conf**
 4.  Check ruleset **pfctl -nf /etc/pf.conf**
-5.  Reload ruleset file **pfctl -F rules -f /etc/pf.conf**
+5.  Reload ruleset file **pfctl -f /etc/pf.conf**
 
 ### Common Invocations
 
@@ -112,6 +112,21 @@ rule (read: add "proto tcp").
 </pre>
 
 Note: No output indicates success.
+
+**Warning**: note that "-f" loads the ruleset to replace the existing ruleset. If you 
+intend to use the command-line to *"add rules"*, consider something as the below:
+
+- Insert a new rule at *the beginning* of the existing ruleset
+
+<pre class="command-line">
+(echo "block all"; pfctl -sr) | pfctl -f -
+ </pre>
+
+-   Insert a new rule at *the end* of the current ruleset
+
+<pre class="command-line">
+(pfctl -sr; echo "pass quick on lo0") | pfctl -f -
+</pre>
 
 #### Showing current state
 
@@ -218,13 +233,22 @@ you monitor and manage tables.
 
 #### Flushing Configuration
 
-The general invocation of pfctl to reload the ruleset is `pfctl -F rules -f /etc/pf.conf`
-which instructs pfctl to "Flush" the existing 'filter rules' before parsing
-the ruleset in "-f /etc/pf.conf". This helps in destroying all rules,
-including those that may conflict, cause anomalies with the new
-rules to be loaded.
+The general invocation of pfctl to reload the ruleset is 
 
-But we can flush and remove other items from the PF Engine.
+<pre class="command-line">
+pfctl -f /etc/pf.conf
+</pre>
+
+pfctl instructs the PF Engine to load a new ruleset from */etc/pf.conf*
+and on completion switch from the existing ruleset to the newly
+loaded ruleset.
+
+Noted practises use **-F rules -f /etc/pf.conf** which, noted by
+dhartmei's article [PF Firewall Management](http://undeadly.org/cgi?action=article&sid=20060929080943)
+introduces a moment (between Flusing the rules, and the kernel loading
+the new rules) where no rules exist.
+
+We can flush and remove other items from the PF Engine.
 
 <pre class="command-line">
 -F nat      Flush the NAT rules
@@ -248,19 +272,15 @@ of replacements.
 
 #### Killing State
 
+Ref: [PF Firewall Management](http://undeadly.org/cgi?action=article&sid=20060929080943)
+
 When refreshing firewall rules, you can kill state information 
 by explicitly using the "-k | -K" pfctl option.
 
 <pre class="manpage">
 -K host | network
-    Kill all of the source tracking entries originating from the
-    specified host or network.  A second -K host or -K network option
-    may be specified, which will kill all the source tracking entries
-    from the first host/network to the second.
 
 -k host | network | label | id
-    Kill all of the state entries matching the specified host,
-    network, label, or id.
 
     For example, to kill all of the state entries originating from
     ``host'':
@@ -273,11 +293,6 @@ by explicitly using the "-k | -K" pfctl option.
     ``host2'':
 
         # pfctl -k host1 -k host2
-
-    To kill all states originating from 192.168.1.0/24 to
-    172.16.0.0/16:
-
-        # pfctl -k 192.168.1.0/24 -k 172.16.0.0/16
 
     A network prefix length of 0 can be used as a wildcard.  To kill
     all states with the target ``host2'':
