@@ -3,27 +3,19 @@ from countershape.doc import *
 ns.docTitle = "Firewall with OpenBSD Packet Filter (PF)"
 
 pages = [
-    Page("pfctl.mdtext", 
-        title="1. pfctl",
-        pageTitle="pfctl PF Userland Control Tool"),
+    Page("valid.mdtext", 
+        title="1. Test",
+        pageTitle="Ruleset: Validate and Test"),
+    Directory("valid"),
 
-    Page("flow.mdtext", 
-        title="2. Traffic Flow",
-        pageTitle="Firewall Traffic Flow"),
+    Page("maint.mdtext", 
+        title="2. Maintenance",
+        pageTitle="Firewall: Maintenance"),
+    Directory("maint"),
         
-    Page("performance.mdtext", 
-        title="3. Performance",
-        pageTitle="Firewall Performance Review"),
-        
-    Page("validation.mdtext", 
-        title="4. Validation",
-        pageTitle="Firewall Ruleset Validation"),
-    
-    Page("other.mdtext", 
-        title="5. Tools",
-        pageTitle="Firewall - Ancilliary Tools"),
-        
-    Page("environment.mdtext", 
-        title="Environment",
-        pageTitle="Firewall - Test Environment"),
+    Page("manage.mdtext", 
+        title="3. Management",
+        pageTitle="Firewall Management"),
+    Directory("manage"),
+
 ]
