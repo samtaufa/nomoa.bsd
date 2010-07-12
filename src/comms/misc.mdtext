@@ -1,3 +1,17 @@
-## Servers without Borders
+## Miscellaneous
 
-Miscellaneous Servers not otherwise categorised
+Miscellaneous Applications not otherwise categorised
+
+Some communications are near ubiquitous, though possibly not
+fitting well into our current categorisation system.
+
+[FTP](misc/ftp.html) - is one of the oldest mechanisms for sharing files on the Internet.
+
+[File Sharing using Samba](misc/samba.html) is the simplest way to share files with
+other Microsoft Windows hosts on your network.
+
+[SSH Client](misc/ssh.html) are some doodles as we learn more
+about using SSH for secured/encrypted terminal connections.
+
+[SQL Database](misc/mysql.html) using MySQL are some notes on installing this
+popular Database Server.
