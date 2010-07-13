@@ -6,13 +6,10 @@ Table of Contents
 
 <ul>
 	<li><a href="#confirm">Confirmation</a></li>
-	<li><a href="#verify">Verifiability</a>
-        <ul>
-            <li><a href="#policy">Specific Policy</a></li>
-            <li><a href="#strategy">Strategy</a></li>
-        </ul>
-    </li>
+    <li><a href="#policy">Firewall Policy</a></li>
+	<li><a href="#verify">Verifiability</a></li>
     <li><a href="#notes">Side Notes</a></li>
+    <li><a href="#reference">References</a></li>
 </ul>
 
 </div>
@@ -66,23 +63,14 @@ Status: Enabled for 453 days 00:57:16         Debug: Urgent
 ...
 </pre>
 
-### <a name="verify">Verifiability</a>
-
-These notes evolve our experience with developing and deploying OpenBSD firewalls. The critical
-components for verifiability, testability of your firewalls performance is setting some fundamental
-metrics for your firewall.
-
--   Specific Policy
--   Strategy
-
-#### <a name="policy">Specific Policy</a>
+### <a name="policy">Firewall Policy</a>
 
 To verify our firewalls performance, is to presume a clear understanding/definition of what is
 acceptable behaviour, and what is not. Vagaries makes verification exponentially more
 difficult if not impossible to define conformance ?
 
 <blockquote>
-<h3>A well-defined filtering policy</h3>
+<h4>A well-defined filtering policy</h4>
 
 <p>The filtering policy is an informal specification of what the firewall is supposed to do. 
 A ruleset, like a program, is the implementation of a specification, a set of formal instructions 
@@ -92,15 +80,64 @@ executed by a machine. In order to write a program, you need to define what it s
 Daniel Hartmeier's <a href="http://undeadly.org/cgi?action=article&sid=20060928081238">PF: Testing your Firewall</a>
 </blockquote>
 
+In our context the Policy document serves as a communications tool:
+
+1. Between Firewall Administrators and the business, outlining in a broad brush 
+    of how the firewalls will persist as a gateway between the organisation and external IT services.
+2.  Between the design team and testers, implementors, maintainers of specifics to be addressed by the Firewall.
+3.  Between the IT organisation and auditors.
+4.  For the Change Management Process.
+
+In practise, our Firewall Policy document is divided into these major groups:
+
+#### Broad Description
+
+A Broad description of flow and gateway design and the function/purpose of the firewall / gateway to
+be described in the document.  The description will also document the functions and purpose of 
+various zones between which the Firewall will police activity.
+
+#### Policies
+
+A brief description of the general policies in place, under which are specific descriptions of which
+IP Traffic flow is approved, acceptable.
+
+#### Implementation - Production Ruleset
+
+Required for the Change Management Process
+
+#### Standard Change
+
+There should be a list of specific operational activities that should be pre-approved changes for the
+Firewall Rules. 
+
+For instance:
+
+Where you have list of approved destination sites, encapsulated in your rules as a table, it may be
+appropriate to pre-approve additions to the table (using another mechanism other than the
+change committee(s).)
+
+A specific example where the above occurred for us, is the addition of redundant services.
+When we decided to add an extra MX Proxy to our infrastructure, we added a new host
+which we allowed through the Firewall by adding the new IP to the Firewall without needing
+to pass the document through the Change Committees.
+
+### <a name="verify">Verifiability</a>
+
+These notes evolve our experience evolving a deployment that is verifiable for policy and
+performance compliance. 
+
 ### <a name="notes">Side Notes</a>:
 
--   The [Packet Filter FAQ](http://www.openbsd.org/faq/pf/index.html) always documents RELEASE
--	Daniel Hartmeier's articles on PF @ Undeadly 
-	[PF: Testing your Firewall](http://undeadly.org/cgi?action=article&sid=20060928081238), 
-	[Firewall Rule Optimization](http://undeadly.org/cgi?action=article&sid=20060927091645), 
-	[Firewall Management](http://undeadly.org/cgi?action=article&sid=20060929080943)
 -   *keep state* became default rule behavior circa release 4.1
 -   nat/rdr/binat rules are evaluated before pass rules (up to 4.6)
 -   4.7+ nat/rdr/binat rules are now 'actions' on regular rules, separate execution no longer exists.
+
+### <a name="reference">References</a>:
+
+-   The [Packet Filter FAQ](http://www.openbsd.org/faq/pf/index.html) always documents RELEASE
+-	Daniel Hartmeier's articles on PF @ Undeadly 
+	[PF: Testing your Firewall](http://undeadly.org/cgi?action=article&sid=20060928081238) | 
+	[Firewall Rule Optimization](http://undeadly.org/cgi?action=article&sid=20060927091645) |
+	[Firewall Management](http://undeadly.org/cgi?action=article&sid=20060929080943)
 -   [Book: Building Firewalls with OpenBSD and PF, 2nd ed.](http://www.amazon.com/Building-Firewalls-OpenBSD-PF-2nd/product-reviews/8391665119)
 -	[Book: Absolute OpenBSD: UNIX for the Practical Paranoid](http://www.amazon.com/Absolute-OpenBSD-UNIX-Practical-Paranoid/dp/1886411999/ref=cm_cr_pr_sims_t)
