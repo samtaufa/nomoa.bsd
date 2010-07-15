@@ -92,18 +92,54 @@ In practise, our Firewall Policy document is divided into these major groups:
 
 #### Broad Description
 
-A Broad description of flow and gateway design and the function/purpose of the firewall / gateway to
-be described in the document.  The description will also document the functions and purpose of 
-various zones between which the Firewall will police activity.
+As a communications tool, the Policy Document will many times sit in front 
+of non-technical people with little or no technology background, let alone
+understanding of what a Firewall does.
+
+A brief, broad description, at the beginning of each of our Policy Documents
+draws a generalised overview of the the function and purpose of a firewall
+for the benefit of non-technical staff.
+
+The description covers the non-technical overview of a firewall, as well
+as outlining the major categories of source and destination traffic.
+
+For example;
+
+<blockquote>
+<p>blurb ... blurb</p>
+
+<p>By default, our Firewall blocks all traffic not explicitly approved.</p>
+
+<p>The below Policies specify which IP Traffic is allowed through the 
+firewall, and the rationale for it's approval.</p>
+</blockquote>
 
 #### Policies
 
-A brief description of the general policies in place, under which are specific descriptions of which
-IP Traffic flow is approved, acceptable.
+A brief description of the general policies in place, under which are specific 
+descriptions of which IP Traffic flow is approved, acceptable.
+
+As per Daniel's recommendations above, the text is descriptive and sufficient to
+develop firewall rulesets, without being a full syntax. 
+
+For example:
+
+<blockquote>
+<p>Local Area Network Interface (tag: LAN_DMZ)<p>
+<p>Policy: Allow from Exchange Server to MX Proxies on tcp on port smtp</p>
+<p>Rationale: Allow smtp (mail submission) to the MX Proxy from the Corporate
+Exchange Server. This service is to allow our e-mail out.</p>
+</blockquote>
 
 #### Implementation - Production Ruleset
 
-Required for the Change Management Process
+Required for the Change Management Process.
+
+The actual ruleset, periodically downloaded from the live server.
+
+<pre class="config-file">
+pass in on $lan_if inet proto tcp from <ms_exchange> to <mx_proxies> port smtp
+</pre>
 
 #### Standard Change
 
