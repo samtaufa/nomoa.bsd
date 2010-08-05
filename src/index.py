@@ -1,8 +1,8 @@
 import os, os.path, subprocess
 import countershape, pygments
-from countershape import Page, Directory, model, template, state, blog
+from countershape import Page, Directory, model, template, state, blog, markup
 
-this.markup = "markdown"
+this.markup = markup.Markdown()
 this.titlePrefix = "=8> nomoa.com/bsd/ "
 
 ns.blk_banner  = template.File(None, "../templates/_banner.tpl")
@@ -111,12 +111,12 @@ blogindex.namespace["blk_submenu"] = countershape.widgets.ExtendedParentPageInde
 )
 blogindex.namespace["submenuTitle"] = "log"
 #blogindex.layout = ns.tpl_bloglayout
-blogindex.markup = "markdown"
+blogindex.markup = markup.Markdown()
 blogdir = Directory("dev")
 blogdir.namespace["blk_submenu"] = blogindex.namespace["blk_submenu"]
 blogdir.namespace["submenuTitle"] = blogindex.namespace["submenuTitle"]
 blogdir.layout = ns.tpl_bloglayout
-blogdir.markup = "markdown"
+blogdir.markup = markup.Markdown()
 
 pages = [    
 ]

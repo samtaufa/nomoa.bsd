@@ -79,6 +79,11 @@ outline:
 - The Regulations
 - The Controls
 
+
+<div class="image">
+    $!Image("fw/fw_policy.png", title="Firewall - Traffic Flow")!$
+</div>
+
 <blockquote><h5>A well-defined filtering policy</h5>
 
 <p>The filtering policy is an informal specification of what the firewall is supposed to do. 

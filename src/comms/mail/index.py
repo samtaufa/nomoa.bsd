@@ -1,6 +1,7 @@
 from countershape.doc import *
+from countershape import  markup
 
-this.markup = "markdown"
+this.markup = markup.Markdown()
 
 pages = [
     Page("sendmail.mdtext",

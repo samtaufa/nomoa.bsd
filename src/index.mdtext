@@ -1,11 +1,11 @@
 $!OpenBSD!$ 
 is a **fun platform** to immerse in software, networking, security, 
-and Operating Systems principals,  . Even more so if you're delusional, 
+and Operating Systems principals. Even more so if you're delusional, 
 into gratification through pain and deprivation. $!OpenBSD!$'s not too 
 shaby filling in as a General Purpose Operating System (GPOS) with some 
 fine features to stand-in as your Firewall, Gateway Servers. 
 
-It is well documented through Unix $!manpage("man")!$(ual) pages, 
+$!OpenBSD!$ is well documented through Unix $!manpage("man")!$(ual) pages, 
 with a lucid online [Frequently Asked Questions](http://www.openbsd.org/faq/ "
 rational, easily understood, shining")(FAQ) 
    
