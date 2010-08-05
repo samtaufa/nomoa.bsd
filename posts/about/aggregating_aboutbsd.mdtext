@@ -1,0 +1,46 @@
+Aggregating the BSD blogosphere
+time: 2010-07-28 18:00
+short: An another hurdle tumbles
+
+Point your RSS Aggregator to [AboutBSD](http://aboutbsd.net) and
+join the conversation, get some education on what's happening in
+the BSD Community, more of them. Participate in the broader
+community. If you have no idea what I just said, then for BSD
+related information, book mark [AboutBSD](http://aboutbsd.net) as
+a destination you need to visit on a regular basis.
+
+Another one of those 'artificial' hurdles we of the SysAdmin priesthood place between
+ourselves and the unwashed masses is disappearing slowly, the locked foundary of information
+secured behind 'leet but arcane(sic) stores such as formal papers, printed books (what's
+that?) and mailing lists (now that at least can be search engined?) 
+
+Don't even go anywhere near source-code when trying to explore BSD
+technology with 'the great unwashed.' Patch by updating your source tree?
+What source tree? 
+
+New System Administrators seem to be conditioned to expect a nice GUI 'click-click-click' to solve
+their problem, or a web forum where someone out there is dedicated to 
+answering their questions, ASAP and at no cost.
+
+Hey, it's not our fault that some people out there are just lazy, and if
+they're lazy with basic investigation, do we really think they should
+be entrusted with the data/information system of any organisation?
+
+The Internet is a great repository of knowledge and disinformation, and other 
+Operating Systems have used this (explicitly and by shear darn luck) to
+proseletise and augment, fix their OSs. BSD has been behind, from the perspective
+of desktop endusers.
+
+Dru Lavigne has earned her credibility in the BSD community and maintains
+blogs i've been following closely for the past year. Dru has a new project in place to 
+assist **more people** explore the world of BSD Operating Systems.
+
+Lavigne's new project: [AboutBSD](http://aboutbsd.net) helps the
+uninitiated by bringing together aggregated knowledge disseminations from
+the various BSD related sites, for example: [undeadly](http://undeadly.org) 
+publishing on the [OpenBSD](http://www.openbsd.org) space, others
+publishing on NetBSD. This is great news, especially for those of us who have tunnel visioned by
+primarily focussing on a single technological path/project. With [AboutBSD](http://aboutbsd.net) 
+the antennaes are out again for us hangers on.
+
+Let knowledge bring us closer, let enlightment make a better community (sic)
