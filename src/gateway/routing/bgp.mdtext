@@ -151,6 +151,13 @@ BGP neighbor is 172.20.10.1, remote AS 6666
   Remote host:          172.20.10.1, Remote port:   179
 </pre>
 
+Things to look-out for include;
+
+- **Neighbor IP Address mismatch**, are the src/dst IP addresses on the
+	neighbor servers correct (vis-a-vis).
+- **AS numbers are correct**, are the src/dst AS numbers on the
+	neighbor servers correct (vis-a-vis).
+	
 <a name="run_tellme"></a>
 
 ### What are my neighbours telling me?
