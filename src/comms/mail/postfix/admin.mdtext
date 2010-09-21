@@ -28,7 +28,7 @@
 
 [OpenBSD 4.0, postfixadmin 2.1.0]
 
-[Postfixadmin](http://www.high5.net) is a web front end for 
+[Postfixadmin](http://postfixadmin.sourceforge.net) is a web front end for 
 managing a MySQL database, that is normally configured for use by your postfix 
 installation.
 
@@ -40,10 +40,10 @@ software requirements before continuing.
 If you have not already done so, please install and verify your
 <a href="mysql.htm">mysql</a> configuration with php support.
 
-You can download postfixadmin from <a href="http://high5.net">
-http://high5.net</a> or grab the current source using svn, instructions at
-<a href="http://high5.net">http://high5.net</a>. If you can follow through the 
-INSTALL.TXT file, go ahead and install from there. Otherwise, read that file 
+You can download [postfixadmin](http://postfixadmin.sourceforge.net) from 
+[Sourceforge](http://postfixadmin.sourceforge.net) or grab the current source 
+using svn, instructions at [http://postfixadmin.sourceforge.net](http://postfixadmin.sourceforge.net). 
+If you can follow through the INSTALL.TXT file, go ahead and install from there. Otherwise, read that file 
 first before continuing further.
 
 For our purposes, we will assume that you have already unarchived the 
@@ -52,12 +52,13 @@ postfixadmin files available in the
 
 ### <a name="2ConfiguringMySQL"></a>Configuring MySQL
 
-The simplest way to configure your mysql server is to use the 
-DATABASE_MYSQL.TXT that holds the database schema as well as sample data for our 
-postfixadmin.
+Postfixadmin's installation instruction are in the INSTALL file.
 
-We actually want to make some modifications to the file, as customisations 
-for our own installation.
+The simplest way to configure your mysql server is to use the 
+following DB configuration file.
+
+The DB configuration is based on SVN release 2010.08.25 and may
+differ from your version of Postfixadmin.
 
 #### <a name="2.1Creating the Database"></a>Creating the Database
 

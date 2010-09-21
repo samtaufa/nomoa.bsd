@@ -6,14 +6,21 @@ ns.docTitle = "Postfix"
 pages = [
     Page("admin.mdtext",
         title="GUI Admin",
-        pageTitle="Postfix GUI Administration"),
-        
-    Page("virtual.mdtext",
-        title="Virtual Users",
-        pageTitle="Virtual Accounts"),
-        
+        pageTitle="GUI Administration"),
+               
     Page("proxy.mdtext",
-        title="Proxy",
+        title="Mail Proxy",
         pageTitle="Mail Proxy"),
 
-]
+    Page("instances.mdtext",
+        title="Mult Instances",
+        pageTitle="Multiple Instances"),
+
+    Page("virtual_accounts.mdtext",
+        title="Virtual Accounts",
+        pageTitle="Virtual Accounts"),
+        
+    Page("virtual_domains.mdtext",
+        title="Virtual Domains",
+        pageTitle="Multiple Virtual Domains"),
+ ]

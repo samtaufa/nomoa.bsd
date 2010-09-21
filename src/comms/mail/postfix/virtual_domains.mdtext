@@ -167,16 +167,13 @@ File Fragment: /etc/postfix/main.cf</td>
 
 <pre class="config-file">
 mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain,
-                       
-mail.$mydomain, www.$mydomain, ftp.$mydomain, 
+                mail.$mydomain, www.$mydomain, ftp.$mydomain
 
 virtual_mailbox_base = /var/spool/postfix/vmail
 virtual_mailbox_domains = hash:/etc/postfix/virtual/mailbox/domains
 virtual_mailbox_maps = hash:/etc/postfix/virtual/mailbox/alpha.example.org,
-                                  
-hash:/etc/postfix/virtual/mailbox/beta.example.org, 
-                                  
-hash:/etc/postfix/virtual/mailbox/gamma.example.org
+		hash:/etc/postfix/virtual/mailbox/beta.example.org, 
+		hash:/etc/postfix/virtual/mailbox/gamma.example.org
 virtual_minimum_uid = 900
 virtual_transport = virtual
 virtual_uid_maps = static:901
@@ -185,7 +182,7 @@ virtual_gid_maps = static:901
 
 Notes:
 
--   The <a href="http://www.postfix.org/postconf.5.html#virtual_minimum_uid">virtual\_minimum\_uid</a>
+-   The [virtual_minimum_uid](http://www.postfix.org/postconf.5.html#virtual_minimum_uid)
     has to be less than or equal to 
 	<a href="http://www.postfix.org/postconf.5.html#virtual_uid_maps">virtual\_uid\_maps</a> and 
 	<a href="http://www.postfix.org/postconf.5.html#virtual_gid_maps">virtual\_gid\_maps</a>, 
@@ -211,7 +208,6 @@ as the basis (ignoring the simpler database solution reviewed later.)
 		<li>file: common</li>
 	</ul>
     </li>
-
 	<li>./mailbox - for virtual mailbox files
 	<ul>
 		<li>file: domains</li>
@@ -222,7 +218,6 @@ as the basis (ignoring the simpler database solution reviewed later.)
 </ul>
     
 Screen Session
-</p>
 
 <pre class="command-line">
 mv /etc/postfix/virtual /etc/postfix/virtual_aliases
@@ -244,14 +239,12 @@ We specify for postfix which virtual domains we want it to receive email with
 the following configuration option:
 
 File Fragment: /etc/postfix/main.cf
-</p>
 
 <pre class="screen-output">
 virtual_mailbox_domains = hash:/etc/postfix/virtual/domains
 </pre>
 
 File:/etc/postfix/virtual/mailbox/domains
-</p>
 
 <pre class="config-file">
 alpha.example.org      IGNORED_PARAMETER
@@ -340,10 +333,11 @@ chou@beta.example.org       beta.example.org/chou/
 </pre>
 
 After creating or making any changes to the above 
-beta.example.org file, recreate the hash database using postmap</p>
+beta.example.org file, recreate the hash database using postmap
 
-    # /usr/local/sbin/postmap 
-    /etc/postfix/virtual/mailbox/beta.example.org
+<pre class="command-line">
+# /usr/local/sbin/postmap /etc/postfix/virtual/mailbox/beta.example.org
+</pre>
 
 ###### Virtual Accounts - gamma.example.org
 
