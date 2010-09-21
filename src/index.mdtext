@@ -21,6 +21,9 @@ and practise safe Computing.
 
 ### Build and Consistency
 
+[Preview](build\preview.html) | [Install](build\install.html) | 
+[Compiling](build\compiling.html) | [Consistency](build\consistency.html)
+
 Putting together an $!OpenBSD!$ box is fun and easy, although
 there are a few hurdles that can seem daunting for the new
 user. The installation process is well defined and documented. 
@@ -31,6 +34,8 @@ Likewise, we try to put here general issues to consider when
 planning to roll-out $!OpenBSD!$ to your critical infrastructure.
 
 ### Secured Communications
+
+[Mail](comms/mail.html) | [VPN](comms/openvpn.html) | [Web](comms/www.html) | [Miscellaneous](comms/misc.html)
 
 Your first step in connecting your new $!OpenBSD!$ box, to anything, is
 to read the [OpenBSD FAQ 6 - Networking](http://www.openbsd.org/faq/faq6.html)
@@ -55,6 +60,8 @@ and we bring together some of these key tools on $!OpenBSD!$.
     comms/mail/dovecot.html)
 
 ### Gateways and Perimeter Systems
+
+[High Availability](gateway\highavailability.html) | [Firewall](gateway\firewall.html) | [Routing](gateway\routing.html)
 
 $!OpenBSD!$ is a great tool for securing your borders and gateways
 and comes pre-configured with foundation tools for such services.
