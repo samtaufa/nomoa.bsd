@@ -416,7 +416,8 @@ a.rss:visited:hover {
 }
 .post .posthead {
 }
-H1.posttitle { 
+/* H1.posttitle { */
+DIV.post DIV.posthead H1 { 
     background : none;    
     border : none;	
 	font-family:Verdana, Geneva, Arial, Helv, Helvetica, sans-serif;
@@ -429,7 +430,7 @@ H1.posttitle {
     background-color : FFCDD2;
 
 	}
-H2.posttime {
+DIV.post DIV.posthead H2 {
     font-family:Verdana, Geneva, Arial, Helv, Helvetica, sans-serif;
     font-weight: bold;
 	font-size:100%;
