@@ -5,33 +5,35 @@
 Table of Contents
 
 <ul>
-	<li>Base Install</li>
-	<li>MTA Instances
+	<li><a href="#base.install">Base Install</a></li>
+	<li><a href="#mta.instances">MTA Instances</a>
 		<ul>
-			<li>Replicate Configuration Paths</li>
-			<li>Modify Base Configuration</li>
-			<li>Create and Modify Relevant Paths</li>
+			<li><a href="#replicate.paths">Replicate Configuration Paths</a></li>
+			<li><a href="#modify.base">Modify Base Configuration</a></li>
+			<li><a href="#create.paths">Create and Modify Relevant Paths</a></li>
 		</ul></li>
-	<li>External Mail - Configuration
+	<li><a href="#external.configuration">External Mail - Configuration</a>
 		<ul>
-			<li>HELO restrictions</li>
-			<li>Sender restrictions</li>
-			<li>Recipient restrictions</li>
-			<li>SPF and greylisting</li>
+			<li><a href="#helo.restrictions">HELO restrictions</a></li>
+			<li><a href="#sender.restrictions">Sender restrictions</a></li>
+			<li><a href="#recipient.restrictions">Recipient restrictions</a></li>
+			<li><a href="#spf.greylisting">SPF and greylisting</a></li>
 		</ul>
 	</li>
-	<li>Internal Mail - Configuration
+	<li><a href="#internal.configuration">Internal Mail - Configuration</a>
 	</li>
 </ul>
 
 </div>
 
 Mail flow evolves and as our use increases, so evolves requirements for our mail flow.
-To manage our email, we currently deploy 3 segments:
+To manage our email, we currently deploy 3 segmented hosts, prioritising on performing 
+their tasks while maintaining high availability to clients.:
 
-- 	Internal Mail Server
--	Mail Filtering Server
--	MX Proxy
+- 	Internal Mail Server. Serving internal user clients.
+-	Mail Filtering Server. Sits between the Internal Mail Server and the MX Proxy.
+-	MX Proxy. Sits at the Corporate Perimeter, is the most sensitive of the 
+	devices, being directly accessible to the outside world.
 
 The mail chain diagram looks as:
 
@@ -42,27 +44,40 @@ $!Image("mail/mailchain.png", title="SMTP Proxy", klass="center")!$
 </strong>
 </pre>
 
-Our problem is that some filtering is better managed at the 
-receipt [ MX Proxy ]  of messages from the {Internet}
+By, single task responsibilities, task isolation, we can have specialised tools at each
+of the three mail flow points. Unfortunately, there are some mail filtering activities
+that are best implemented, at the Internal Mail Server, or MX Proxy. Specifically, the
+MX Proxy can improve our mail filtering success.
 
-The solution for improved filtering of Internet messages to our Mail Filter is either a 
+To implement filtering on the MX Proxy, the MX Proxy needs to differentiate between
+traffic sourced internally, and sourced externally. To provide this, we can either 
+install: 
 
--	2nd [ MX Proxy ] host, or 
--	2nd MTA instance on the same host.
+-	a 2nd [ MX Proxy ] host, or 
+-	a 2nd MTA instance on the same host.
 
-The goal for the MX Proxy update is:
+The priority of the MX Proxy is to provide another layer of security between the
+Internet and Internal users while ensuring no incoming mail is lost. Thus, any 
+filtering on the MX Proxy must meet the following goals:
 
-1. 	Apply filters best performed at message entry point (MX Proxy.) 
-2. 	Document and use mechanisms with known good security.
-3. 	Approve by default, reject connections through known [UCE]("Unsolicited Commercial Email") 
-	vectors. Approve connections known to be consistent configuration errors..
+1. 	Best performed at message entry point (MX Proxy.) If it can be performed as
+	effectively elsewhere, do not use it on the MX Proxy.
+2.	Low-cost performance, resource utilisation. Implementation of the filter(s) cannot
+	degrade servic.
+3. 	Failover pass-through. Filtering to defer to allowing e-mail through
+	and not reject mail when inconclusive or good probability of generating
+	false-positive denial of legitimate email. In effect, this denies, at minimum,
+	content-filtering.
+4. 	No hacks. All implemented filtering must be well documented (and likewise
+	documented here) and generally deployed as 'best-practise.'
 
-All other filtering, scanning, is delayed for
-the internal **[mail filter]** appliance.
+All other filtering, scanning, is delayed for the **[mail filter]** server.
 
 The *2nd MTA Instance* is a better resource utilisation.
 
 $!Image("mail/instances.png", title="SMTP Proxy", klass="center")!$
+
+<a name="base.install"></a>
 
 ### 1. Base Install
 
@@ -79,6 +94,8 @@ and the default path for mail/queue file in */var/spool/postfix*
 
 We keep the base install untouched (pristine) and build our
 solution around two new configurations (instances.)
+
+<a name="mta.instances"></a>
 
 ### 2. MTA Instances
 
@@ -112,7 +129,9 @@ config_directory=/etc/postfix-int
 queue_directory=/var/spool/postfix-int
 </pre>
 
-### 1. Replicate Configuration Paths
+<a name="replicate.paths"></a>
+
+##### 1. Replicate Configuration Paths
 
 <pre class="command-line">
 cp -rp /etc/postfix /etc/postfix-ext
@@ -124,9 +143,11 @@ Subsequently, any other instance is replicated
 cp -rp /etc/postfix /etc/postfix-int
 </pre>
 
-### 2. Modify Base Configurations
+<a name="modify.base"></a>
 
-#### External Instance
+##### 2. Modify Base Configurations
+
+###### External Instance
 
 File excerpt: /etc/postfix-ext/main.cf
 
@@ -150,7 +171,7 @@ File exerpt: /etc/postfix-int/master.cf
 smtp 		inet		n		-		-		-		-		smtpd
 </pre>
 
-#### Internal Instance
+###### Internal Instance
 
 File exerpt: /etc/postfix-int/master.cf
 
@@ -162,7 +183,9 @@ Modify the below commented line, using the 2 new additional lines
 127.0.0.1:smtp	inet	n		-		-		-		-		smtpd
 </pre>
 
-### 3. Create and Modify Relevant Paths
+<a name="create.paths"></a>
+
+##### 3. Create and Modify Relevant Paths
 
 Create the relevant paths:
 
@@ -183,11 +206,15 @@ touch /etc/postfix-ext/transport
 
 Subsequently, any other instance is replicated
 
+<a name="external.configuration"></a>
+
 ### 3. External Mail - Configuration
 
 Ref: [Postfix Howtos and FAQs](http://www.postfix.org/docs.html) | 
 [Filtering Spam with Postfix](http://honeypot.net/filtering-spam-postfix) |
 [RFC 821 Simple Mail Transfer Protocol](http://www.faqs.org/rfcs/rfc821.hml)
+
+<a name="helo.restrictions"></a>
 
 #### HELO restrictions
 
@@ -221,7 +248,11 @@ smtpd_helo_restrictions =
 	permit
 </pre>
 
-<b>smtpd_delay_reject</b> because enough clients are just plain broken.
+<pre class="config-file">
+smtpd_delay_reject = yes
+</pre>
+
+Because enough clients are just plain broken.
 
 <pre class="manpage">
 <b>smtpd_delay_reject (default: yes) </b>
@@ -238,8 +269,12 @@ smtpd_helo_restrictions =
 	that it is possible to find out whose mail is being rejected.
 </pre>
 
-<b>smtpd_helo_required</b> enforces the RFC standards requiring clients to 'identify'
-themselves before transactions may continue.
+<pre class="config-file">
+smtpd_helo_required = yes
+</pre>
+
+Enforce the RFC standards requiring clients to 'identify' themselves before 
+transactions may continue.
 
 <pre class="manpage">
 <b>smtpd_helo_required (default: no)</b>
@@ -251,7 +286,11 @@ Example:
 	smtpd_helo_required = yes
 </pre>
 
-<b>smtpd_helo_restrictions</b> to allow greater granularity of control.
+<pre class="config-file">
+smtpd_helo_restrictions =
+</pre>
+
+Fine-tune the access controls during the HELO (initial communications conversation.)
 
 <pre class="manpage">
 <b>smtpd_helo_restrictions (default: empty)</b>
@@ -268,32 +307,20 @@ Example:
 	
 	The following restrictions are specific to the hostname information received 
 	with the HELO or EHLO command.
-
-	<b>permit_mynetworks</b> permit the request when the client IP address matches any
-		network or network address in $mynetworks
-		
-	<b>check_helo_access type:tableSearch</b> the specified access(5) database for the 
-		HELO or EHLO hostname or parent domains, and execute the corresponding action. 
-
-	<b>reject_invalid_helo_hostname</b> (with Postfix < 2.3: reject_invalid_hostname)
-		Reject the request when the HELO or EHLO hostname syntax is invalid. 
-		The invalid_hostname_reject_code specifies the response code for rejected 
-		requests (default: 501).
-		
-		501 Syntax error in parameters or arguments
-		
-	<b>reject_non_fqdn_helo_hostname</b> (with Postfix < 2.3: reject_non_fqdn_hostname)
-		Reject the request when the HELO or EHLO hostname is not in fully-qualified 
-		domain form, as required by the RFC. The non_fqdn_reject_code parameter 
-		specifies the response code for rejected requests (default: 504).
-		
-		504 Command parameter not implemented
-
-	<b>permit</b>
-		Permit the request. This restriction is useful at the end of a restriction list, to make 
-		the default policy explicit.
 </pre>
 
+<pre class="config-file">
+	permit_mynetworks,
+</pre>
+
+<pre class="manpage">
+	<b>permit_mynetworks</b> permit the request when the client IP address matches any
+		network or network address in $mynetworks
+</pre>
+
+<pre class="config-file">
+	check_helo_access hash:/etc/postfix-ext/helo_access,
+</pre>
 
 <b>check_helo_access</b> In the hash table /etc/postfix-ext/helo_access specify 
  *WHITElist*, **BLACKlist** hosts
@@ -318,15 +345,56 @@ files.
 /usr/local/sbin/postfix reload
 </pre>
 
-<b>reject_invalid_helo_hostname</b> Desktop clients might get this wrong, but we generally
-do not get emails directly from desktop clients. If you're server fails to 
-identify itself, then there are other problems.
-	
+<pre class="manpage">
+	<b>check_helo_access type:tableSearch</b> the specified access(5) database for the 
+		HELO or EHLO hostname or parent domains, and execute the corresponding action. 
+</pre>
+
+<pre class="config-file">
+	reject_non_fqdn_helo_hostname,
+</pre>
+
 <b>reject_non_fqdn_helo_hostname</b> Be explicity with RFC standard requirements. If 
 external partners have problems, use the error code 504 as an identifier for where the
 partner's mail server configurations need to be reviewed.
 
-##### Verification
+<pre class="manpage">
+	<b>reject_non_fqdn_helo_hostname</b> (with Postfix < 2.3: reject_non_fqdn_hostname)
+		Reject the request when the HELO or EHLO hostname is not in fully-qualified 
+		domain form, as required by the RFC. The non_fqdn_reject_code parameter 
+		specifies the response code for rejected requests (default: 504).
+		
+		504 Command parameter not implemented
+</pre>
+<pre class="config-file">
+	reject_invalid_helo_hostname,
+</pre>
+
+<b>reject_invalid_helo_hostname</b> Desktop clients might get this wrong, but we generally
+do not get emails directly from desktop clients. If you're server fails to 
+identify itself, then there are other problems.
+
+<pre class="manpage">
+	<b>reject_invalid_helo_hostname</b> (with Postfix < 2.3: reject_invalid_hostname)
+		Reject the request when the HELO or EHLO hostname syntax is invalid. 
+		The invalid_hostname_reject_code specifies the response code for rejected 
+		requests (default: 501).
+		
+		501 Syntax error in parameters or arguments
+</pre>
+<pre class="config-file">
+	permit
+</pre>
+
+Any communications that passes all the above access controls, is permitted to continue.
+
+<pre class="manpage">
+	<b>permit</b>
+		Permit the request. This restriction is useful at the end of a restriction list, to make 
+		the default policy explicit.
+</pre>
+
+###### Verification
 
 You can test, verify, behaviour of the above options by using the <b>warn_if_reject</b>
 to increase verbosity in your log file.
@@ -376,6 +444,7 @@ it should try again later. How much later depends on each server’s settings.
 The 500 level commands tell the remote server that it is a permanent failure, 
 and it should not try again later. 
 
+<a name="sender.restrictions"></a>
 
 #### Sender restrictions
 
@@ -394,6 +463,12 @@ smtpd_sender_restrictions =
 	permit
 </pre>
 
+Rationale ?
+
+<pre class="config-file">
+smtpd_sender_restrictions =
+</pre>
+
 <pre class="manpage">
 smtpd_sender_restrictions (default: empty) 
 
@@ -409,51 +484,20 @@ in the order as specified; the first restriction that matches wins.
 
 The following restrictions are specific to the sender address received with 
 the MAIL FROM command.
- 
-	<b>check_sender_access type:table</b>
+</pre>
 
-	Search the specified access(5) database for the MAIL FROM address, domain, 
-	parent domains, or localpart@, and execute the corresponding action.
-	 
-	<b>reject_non_fqdn_sender</b>
+<pre class="config-file">
+	permit_sasl_authenticated
+</pre>
 
-	Reject the request when the MAIL FROM address is not in fully-qualified domain 
-	form, as required by the RFC. The non_fqdn_reject_code parameter specifies 
-	the response code for rejected requests (default: 504). 
+Not relevant to our MX Proxy configuration, but put here because someone's
+going to copy and paste to a non-proxy configuration.
 
-	<b>reject_unknown_sender_domain</b>
+<pre class="config-file">
+	reject_unauth_destination,
+</pre>
 
-	Reject the request when Postfix is not final destination for the sender address, 
-	and the MAIL FROM address has no DNS A or MX record, or when it has a malformed 
-	MX record such as a record with a zero-length MX hostname (Postfix version 2.3 
-	and later). 
-	
-	The unknown_address_reject_code parameter specifies the numerical response code 
-	for rejected requests (default: 450). The response is always 450 in case of a 
-	temporary DNS error. 
-	
-	The unknown_address_tempfail_action parameter specifies the action after a temporary 
-	DNS error (default: defer_if_permit). 
-
-	<b>reject_unverified_sender</b>
-
-	Reject the request when mail to the MAIL FROM address is known to bounce, or when 
-	the sender address destination is not reachable. Address verification information 
-	is managed by the verify(8) server; see the ADDRESS_VERIFICATION_README file for 
-	details. 
-	
-	The unverified_sender_reject_code parameter specifies the numerical response code 
-	when an address is known to bounce (default: 450, change into 550 when you are 
-	confident that it is safe to do so).
-	
-	The unverified_sender_defer_code specifies the numerical response code when an 
-	address address probe failed due to a temporary problem (default: 450). 
-	 
-	The unverified_sender_tempfail_action parameter specifies the action after address 
-	probe failure due to a temporary problem (default: defer_if_permit). 
-	
-	This feature is available in Postfix 2.1 and later. 
-	
+<pre class="manpage">	 
 	<b>reject_unauth_destination</b>
 	
 	Reject the request unless one of the following is true: 
@@ -467,14 +511,43 @@ the MAIL FROM command.
 		(user@elsewhere@domain).
 </pre>
 
-<b>permit_sasl_authenticated</b>
 
-Not relevant to our MX Proxy configuration, but put here because someone's
-going to copy and paste to a non-proxy configuration.
+<pre class="config-file">
+	reject_non_fqdn_sender,
+</pre>
 
-<b>reject_non_fqdn_sender</b> A quick and easy check.
 
-<b>check_sender_access type:table</b>
+<pre class="manpage">	 
+	<b>reject_non_fqdn_sender</b>
+
+	Reject the request when the MAIL FROM address is not in fully-qualified domain 
+	form, as required by the RFC. The non_fqdn_reject_code parameter specifies 
+	the response code for rejected requests (default: 504). 
+</pre>
+
+<pre class="config-file">
+	reject_unknown_sender_domain,
+</pre>
+
+<pre class="manpage">	 
+	<b>reject_unknown_sender_domain</b>
+
+	Reject the request when Postfix is not final destination for the sender address, 
+	and the MAIL FROM address has no DNS A or MX record, or when it has a malformed 
+	MX record such as a record with a zero-length MX hostname (Postfix version 2.3 
+	and later). 
+	
+	The unknown_address_reject_code parameter specifies the numerical response code 
+	for rejected requests (default: 450). The response is always 450 in case of a 
+	temporary DNS error. 
+	
+	The unknown_address_tempfail_action parameter specifies the action after a temporary 
+	DNS error (default: defer_if_permit). 
+</pre>
+
+<pre class="config-file">
+	check_sender_access hash:/etc/postfix-ext/sender_access
+</pre>
 
 Because we get a lot of emails purporting to be from internal, it's important to
 verify this before relaying mail. Remember that this instance, will only recieve
@@ -493,7 +566,34 @@ subdomain.example.com	REJECT forged account
 /usr/local/sbin/postfix reload
 </pre>
 
-<b>reject_unknown_sender_domain</b> Another quick check, low cost to process.
+##### Unknown Cost/Value
+
+The **reject_unverified_sender** is another anti-spam feature that will reject
+a large number of UCE, but at a cost that needs to be verified before 
+enabled in your configuration.
+
+<pre class="manpage">	 
+	<b>reject_unverified_sender</b>
+
+	Reject the request when mail to the MAIL FROM address is known to bounce, or when 
+	the sender address destination is not reachable. Address verification information 
+	is managed by the verify(8) server; see the ADDRESS_VERIFICATION_README file for 
+	details. 
+	
+	The unverified_sender_reject_code parameter specifies the numerical response code 
+	when an address is known to bounce (default: 450, change into 550 when you are 
+	confident that it is safe to do so).
+	
+	The unverified_sender_defer_code specifies the numerical response code when an 
+	address address probe failed due to a temporary problem (default: 450). 
+	 
+	The unverified_sender_tempfail_action parameter specifies the action after address 
+	probe failure due to a temporary problem (default: defer_if_permit). 
+	
+	This feature is available in Postfix 2.1 and later. 	
+</pre>
+
+<a name="recipient.restrictions"></a>
 
 #### Recipient restrictions
 
@@ -525,6 +625,11 @@ copy paste them across as I get them working correctly within my environment.)
 	check_policy_service inet:127.0.0.1:10023
 </pre>
 
+<a name="spf.greylisting"></a>
+
 #### SPF and greylisting
 
+<a name="internal.configuration"></a>
+
 ### 4. Internal Mail - Configuration
+

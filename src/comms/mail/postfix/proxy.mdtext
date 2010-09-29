@@ -2,17 +2,17 @@
 
 [OpenBSD 4.7, Postfix 2.7]
 
-Customising the base Postfix installation to serve as a Generic Proxy smtp server.
+A Mail Proxy provides your mail flow with another layer/fence of defence against
+remote intrusion attacks. The Mail Proxy normally stands at your perimeter, 
+between the world/internet and your internal services (mail server.)
 
-This guide configures a basic MX Proxy, with no filtering. For a more 'profound'
-MX Proxy, refer to the [MX Proxy Extended, using Multiple Instances](instances.html).
+Postfix is comparatively simple to configure as an MX Proxy. This guide configures a 
+basic MX Proxy, with no filtering. For a more 'profound' MX Proxy, refer to the 
+[MX Proxy Extended, using Multiple Instances](instances.html).
 
 $!Image("mail/smtp_proxy.png", title="SMTP Proxy", klass="center")!$
 
-Installing a "Mail Proxy" between remote users and your Corporate Mail Server is an 
-added layer of defence between potentially malicious external users and the internal mail system.
-
-For a mail proxy server, effected configuration files include:
+For a our mail proxy server, the effected configuration files are:
 
 [ref: postconf(5)]
 
@@ -42,11 +42,11 @@ transport_maps=hash:/etc/postfix/transport
 message_size-limit=20480000
 </pre>
 
-The configurations settings directly set in the main configuration file:
+In the configuration we explicit set the following:
 
-- myhostname
-- mydomain
-- message_size_limit
+- 	myhostname
+- 	mydomain
+- 	message_size_limit
 
 #### myhostname
 
@@ -61,11 +61,7 @@ Example main.cf entry:
 myhostname=jupiter.example.com
 </pre>
 
-Note: after changing this value, reload Postfix configuration.
-
-We specify the FQDN (Fully Qualified Domain Name) here.
-Being explicit is just a nice way of allowing 'postconf -n' 
-to show you the changes specific to this host.
+Note: after changing main.cf, reload Postfix configuration.
 
 <pre class="command-line">
 /usr/local/sbin/postfix reload
@@ -90,6 +86,10 @@ Note: after changing this value, reload Postfix configuration.
 <pre class="command-line">
 /usr/local/sbin/postfix reload
 </pre>
+
+We specify the FQDN (Fully Qualified Domain Name) here.
+Being explicit is just a nice way of allowing 'postconf -n' 
+to show you the changes specific to this host.
 
 #### message_size_limit
 
