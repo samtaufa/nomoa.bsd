@@ -1,4 +1,3 @@
-<body bgcolor="#fffacd" onLoad="preloadImages();">
 <div id="doc2" class="yui-t5"> 
     <div id="hd" role="banner">
 		$!blk_banner!$

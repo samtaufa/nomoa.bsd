@@ -1,4 +1,3 @@
-<body bgcolor="#fffacd" onLoad="preloadImages();">
 <div class="yui-t4" id="doc2">
     <div style="" id="hd">
         $!blk_banner!$
@@ -15,4 +14,3 @@
         $!blk_footer!$
     </div>
 </div>
-</body>
