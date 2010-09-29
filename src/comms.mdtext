@@ -1,20 +1,12 @@
-## Communications Servers
+## Communication Services
 
 [Mail](comms/mail.html) | [VPN](comms/openvpn.html) | 
 [Web](comms/www.html) | [Miscellaneous](comms/misc.html)
 
-It's a wild place out on the Internet, OpenBSD is a great platform for
-sharing resources. 
-
-The [OpenBSD FAQ 6 - Networking](http://www.openbsd.org/faq/faq6.html)
-is required reading when:
-
-- 1st getting your box connected
-- staying connected to anything
-
-The FAQ is a good guide and foundation knowledge that will serve
-you well as most services your configure or install will
-need Network access.
+Communication Services on the Internet include the perennial Web Presence,
+as well as the mundane Mail Service to Secured Virtual Private Networks (VPN) over
+the Public Internet. But the Internet is a wild 'dangerous' place and OpenBSD
+is a great platform for securing communication resources. 
 
 OpenBSD is at the forefront of standardising security focused methodologies
 of whole-system development. The most public communications tool from
@@ -27,10 +19,13 @@ for securing communciations such as:
 We've also had the opportunity to deploy Mail specific configurations, such as Proxy 
 Servers and sites using Virtual User Accounts (both using Postfix) :
 
+-	[Sendmail](comms/mail/sendmail.html) the internet standard MTA, in your base install
+-	[Client Access](comms/mail/dovecot.html) getting at your e-mail
+-	[Validation/Diagnostics](comms/mail/validate.html) 
 -   [Proxy Server](comms/mail/postfix/proxy.html)
--   [Virtual User Accounts](comms/mail/postfix/virtual.html)
+-   [Virtual User Accounts](comms/mail/postfix/virtual_accounts.html)
 
-### VPN
+### VPN using [OpenVPN](comms/openvpn.html)
 
 -   Remote Client, Site access using [OpenVPN Encrypted VPN](comms/openvpn.html) 
 -   Remote Client access [using OpenSSH](comms/ssh.html)

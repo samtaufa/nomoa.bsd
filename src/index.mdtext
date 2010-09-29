@@ -1,13 +1,15 @@
 $!OpenBSD!$ 
 is a **fun platform** to immerse in software, networking, security, 
 and Operating Systems principals. Even more so if you're delusional, 
-into gratification through pain and deprivation. $!OpenBSD!$'s not too 
-shaby filling in as a General Purpose Operating System (GPOS) with some 
-fine features to stand-in as your Firewall, Gateway Servers. 
+into gratification through pain, deprivation, self-learning. Although
+many users choose to use it for their desktop, and it's not too 
+shaby filling in as the foundation for Border (Edge) Systems such as
+Firewalls and Gateway Servers.
 
-$!OpenBSD!$ is well documented through Unix $!manpage("man")!$(ual) pages, 
-with a lucid online [Frequently Asked Questions](http://www.openbsd.org/faq/ "
-rational, easily understood, shining")(FAQ) 
+The $!OpenBSD!$ focus on quality documentation in $!manpage("man")!$(ual) pages, 
+and online [Frequently Asked Questions](http://www.openbsd.org/faq/ "
+rational, easily understood, shining")(FAQ) is a foundation for experimentation,
+and maintenance.
    
 These notes reference how we got/keep  $!OpenBSD!$ up and running. 
 Verify what you read here through the $!OpenBSD!$ mailing lists, Internet 
@@ -79,3 +81,17 @@ Maintenance involves a lot of monitoring, not only monitoring your
 host resources, but other factors that together define the 
 service delivery you wish to supply. Monitoring involves passive 
 accumulation of events, and the decision process from these. 
+
+## The Other Road
+
+It's important to re-iterate that the $!OpenBSD!$ project extends a good
+effort to documenting it's toolkit. The [OpenBSD FAQ 6 - Networking](
+http://www.openbsd.org/faq/faq6.html) is required reading. When you know
+your sh*t, you can refer back to the FAQ to
+
+- Get your box up and running, and keeping it that way
+- Get your box connected, and stay that way
+
+The FAQ is a good guide and foundation knowledge that will serve
+you well as most services your configure or install will
+need Network access.
