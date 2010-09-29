@@ -3,7 +3,8 @@ from countershape import  markup
 
 this.markup = markup.Markdown()
 
-ns.docTitle = "High Availability"
+this.titlePrefix = ns.titlePrefix + "[Gateway | High Availability] "
+
 this.markdown = "textish"
 
 pages = [
