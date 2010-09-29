@@ -1,7 +1,7 @@
 from countershape.doc import *
 import countershape
 
-ns.docTitle = "Miscellaneous"
+this.titlePrefix = ns.titlePrefix + "[Communications | Miscellaneous] "
 
 pages = [
 

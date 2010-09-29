@@ -1,6 +1,6 @@
 from countershape.doc import *
 
-ns.docTitle = "Consistency"
+this.titlePrefix = ns.titlePrefix + "[Build | Consistency] "
 
 pages = [
             

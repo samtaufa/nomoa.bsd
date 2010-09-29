@@ -1,6 +1,6 @@
 from countershape.doc import *
 
-ns.docTitle = "Firewall with OpenBSD Packet Filter (PF)"
+this.titlePrefix = ns.titlePrefix + "[Gateway | Firewall | Validation] "
 
 pages = [
     Page("pfctl.mdtext", 

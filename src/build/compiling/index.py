@@ -1,6 +1,7 @@
 from countershape.doc import *
 
-ns.docTitle = "OpenBSD"
+this.titlePrefix = ns.titlePrefix + "[Build | Compile] "
+
 
 pages = [
     Page("buildiso.mdtext", 

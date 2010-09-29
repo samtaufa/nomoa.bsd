@@ -8,7 +8,8 @@ this.layout = ns.tpl_layout
 ns.blk_sidemenu = countershape.widgets.SiblingPageIndex(
                 '/monitoring/nagios.html',
         )
-ns.docTitle = "Monitoring Systems"
+
+this.titlePrefix = ns.titlePrefix + "[Monitoring] "
 
 pages = [
                

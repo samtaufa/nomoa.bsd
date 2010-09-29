@@ -1,6 +1,6 @@
 from countershape.doc import *
 
-ns.docTitle = "OpenBSD"
+this.titlePrefix = ns.titlePrefix + "[Build | Install] "
 
 pages = [
 

@@ -1,6 +1,6 @@
 from countershape.doc import *
 
-ns.docTitle = "Cisco"
+this.titlePrefix = ns.titlePrefix + "[Gateway | Routing | Cisco] "
 
 pages = [
     Page("intro.mdtext", "Introduction"),

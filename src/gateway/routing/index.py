@@ -1,6 +1,6 @@
 from countershape.doc import *
 
-ns.docTitle = "Routing"
+this.titlePrefix = ns.titlePrefix + "[Gateway | Routing] "
 
 pages = [
 

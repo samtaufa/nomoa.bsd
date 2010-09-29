@@ -9,7 +9,8 @@ ns.blk_sidemenu = countershape.widgets.SiblingPageIndex(
                 '/build/consistency.html',
         )
 
-ns.docTitle = "Build Consistency"
+this.titlePrefix = ns.titlePrefix + "[Build Consistency] "
+
 
 pages = [
        

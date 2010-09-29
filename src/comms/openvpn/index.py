@@ -3,7 +3,7 @@ from countershape import  markup
 
 this.markup = markup.Markdown()
 
-ns.docTitle = "OpenVPN"
+this.titlePrefix = ns.titlePrefix + "[Communications | OpenVPN] "
 
 pages = [
    

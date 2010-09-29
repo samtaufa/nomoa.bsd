@@ -9,7 +9,7 @@ ns.blk_sidemenu = countershape.widgets.SiblingPageIndex(
                 '/gateway/pf.html',
     )
  
-ns.docTitle = "Gateway Services"
+this.titlePrefix = ns.titlePrefix + "[Gateway Services] "
 
 pages = [
     Page("highavailability.mdtext", 

@@ -1,20 +1,24 @@
 import countershape.widgets
 from countershape.doc import *
 
-ns.docTitle = "Postfix"
+this.titlePrefix = ns.titlePrefix + "[Mail | Postfix] "
 
 pages = [
     Page("admin.mdtext",
         title="GUI Admin",
-        pageTitle="GUI Administration"),
+        pageTitle="GUI Administration - PostfixAdmin"),
                
+    Page("server.mdtext",
+        title="Mail Server",
+        pageTitle="Mail Server"),
+
     Page("proxy.mdtext",
-        title="Mail Proxy",
+        title="MX Proxy",
         pageTitle="Mail Proxy"),
 
     Page("instances.mdtext",
-        title="Mult Instances",
-        pageTitle="Multiple Instances"),
+        title="MX Proxy++",
+        pageTitle="MX Proxy Extended, using Multiple Instances"),
 
     Page("virtual_accounts.mdtext",
         title="Virtual Accounts",

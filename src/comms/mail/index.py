@@ -3,6 +3,8 @@ from countershape import  markup
 
 this.markup = markup.Markdown()
 
+this.titlePrefix = ns.titlePrefix + "[Communications | Mail] "
+
 pages = [
     Page("sendmail.mdtext",
         title="Sendmail",
@@ -16,9 +18,9 @@ pages = [
         title="Web",
         pageTitle="Web Clients"),
         
-    Page("test.mdtext",
-        title="Tests",
-        pageTitle="Testing Connectivity"),
+    Page("validate.mdtext",
+        title="Validate",
+        pageTitle="Validate Connectivity"),
         
     Page("postfix.mdtext",
         title="Postfix",

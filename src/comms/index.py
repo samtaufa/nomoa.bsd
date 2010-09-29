@@ -9,13 +9,9 @@ ns.blk_sidemenu = countershape.widgets.SiblingPageIndex(
                 '/comms/mail.html',
         )
  
-ns.docTitle = "VPN"
+this.titlePrefix = ns.titlePrefix + "[Communications] "
 
 pages = [
-    #~ Page("./actived/actived.mdtext", 
-        #~ title="ADS", 
-        #~ pageTitle="Active Directory"),
-    #~ Directory("actived"),
 
     Page("mail.mdtext", 
         title="Mail",

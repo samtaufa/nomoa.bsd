@@ -3,7 +3,8 @@ import countershape, pygments
 from countershape import Page, Directory, model, template, state, blog, markup
 
 this.markup = markup.Markdown()
-this.titlePrefix = "=8> nomoa.com/bsd/ "
+ns.titlePrefix = "=8> nomoa.com/bsd/ "
+this.titlePrefix = ns.titlePrefix
 
 ns.blk_banner  = template.File(None, "../templates/_banner.tpl")
 ns.blk_relatedsites = template.File(None, "../templates/_relatedsites.tpl")
@@ -11,9 +12,9 @@ ns.blk_footer  = template.File(None, "../templates/_footer.tpl")
 ns.blk_rss = template.File(None, "../templates/_rss.tpl")
 ns.blk_copyright = template.File(None, "../templates/_copyright.tpl")
 
-ns.tpl_layout = countershape.Layout("../templates/_layout.tpl")
-ns.tpl_bloglayout = countershape.Layout("../templates/_blog.tpl")
-ns.tpl_frontpage = countershape.Layout("../templates/_frontpage.tpl")
+ns.tpl_layout = countershape.Layout("../templates/_layout.tpl", bgcolor="#fffacd", onLoad="preloadImages();")
+ns.tpl_bloglayout = countershape.Layout("../templates/_blog.tpl", bgcolor="#fffacd", onLoad="preloadImages();")
+ns.tpl_frontpage = countershape.Layout("../templates/_frontpage.tpl", bgcolor="#fffacd", onLoad="preloadImages();")
 this.layout = ns.tpl_frontpage
 
 
@@ -35,7 +36,7 @@ this.stdHeaders = [
     model.UrlTo("media/css/reset.css"),
     model.UrlTo("media/css/docstyle.css"),
     model.UrlTo("media/css/content.css"),
-    model.UrlTo("media/css/nomoa.openbsd.css"),
+    model.UrlTo("media/css/nomoa.bsd.css"),
     model.UrlTo("media/css/navBar.css"),
     model.UrlTo("media/css/syntax.css"),
     

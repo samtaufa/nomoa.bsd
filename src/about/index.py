@@ -8,6 +8,9 @@ this.layout = ns.tpl_layout
 ns.blk_sidemenu = countershape.widgets.SiblingPageIndex(
                 '/about/site.html',
         )
+        
+this.titlePrefix = ns.titlePrefix + "[About] "
+
    
 pages = [
     Page("site.mdtext",

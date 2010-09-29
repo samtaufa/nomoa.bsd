@@ -2,7 +2,7 @@ from countershape.doc import *
 from countershape import  markup
 
 this.markup = markup.Markdown()
-ns.docTitle = "Installation Preview"
+this.titlePrefix = ns.titlePrefix + "[Build | Preview] "
 
 pages = [
     Page("partitioning.mdtext",
