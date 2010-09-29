@@ -28,7 +28,7 @@
 
     <b>Of Interest</b>
     <ul>
-        <li><a href="" 
+        <li><a href="http://aboutbsd.net" 
             title="About BSD - Aggregating the Blogoshere around BSD">About BSD</a>
         <li><a href="http://www.bsdguides.org/guides/openbsd/"
             title="BSD Guides:: FreeBSD, NetBSD, OpenBSD">BSD Guides</a>
