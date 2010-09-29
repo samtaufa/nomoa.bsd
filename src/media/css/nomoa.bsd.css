@@ -1,6 +1,4 @@
-﻿/* --- basic text and color properties --- */ 
-
-
+﻿/* http://www.nomoa.com/bsd - customisations */
 body {
 	/*
 	scrollbar-3dlight-color: #ccdcDD;
@@ -408,4 +406,32 @@ a.rss:visited:hover {
 
 .image {
 	text-align: center;
+}
+
+/** 
+## Blog Post Styling
+**/
+
+.post {
+}
+.post .posthead {
+}
+H1.posttitle { 
+    background : none;    
+    border : none;	
+	font-family:Verdana, Geneva, Arial, Helv, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 150%; 
+    margin-top:12.0pt;
+    margin-right:0cm;
+    margin-bottom:3.0pt;
+    margin-left: 0 px;
+    background-color : FFCDD2;
+
+	}
+H2.posttime {
+    font-family:Verdana, Geneva, Arial, Helv, Helvetica, sans-serif;
+    font-weight: bold;
+	font-size:100%;
+    background-color: #FACDFF;
 }
