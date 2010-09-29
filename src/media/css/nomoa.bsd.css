@@ -428,7 +428,6 @@ DIV.post DIV.posthead H1 {
     margin-bottom:3.0pt;
     margin-left: 0 px;
     background-color : FFCDD2;
-
 	}
 DIV.post DIV.posthead H2 {
     font-family:Verdana, Geneva, Arial, Helv, Helvetica, sans-serif;
@@ -436,3 +435,16 @@ DIV.post DIV.posthead H2 {
 	font-size:100%;
     background-color: #FACDFF;
 }
+
+DIV.archive H1 { 
+    background : none;    
+    border : none;	
+	font-family:Verdana, Geneva, Arial, Helv, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 150%; 
+    margin-top:12.0pt;
+    margin-right:0cm;
+    margin-bottom:3.0pt;
+    margin-left: 0 px;
+    background-color : FFCDD2;
+	}
