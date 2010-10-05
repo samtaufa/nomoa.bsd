@@ -32,10 +32,10 @@ their tasks while maintaining high availability to clients.:
 
 - 	Internal Mail Server. Serving internal user clients.
 -	Mail Filtering Server. Sits between the Internal Mail Server and the MX Proxy.
--	MX Proxy. Sits at the Corporate Perimeter, is the most sensitive of the 
+-	MX Proxy. Sits at the organisation's perimeter, is the most sensitive of the 
 	devices, being directly accessible to the outside world.
 
-The mail chain diagram looks as:
+For the above scenario, the mail chain looks like the below:
 
 $!Image("mail/mailchain.png", title="SMTP Proxy", klass="center")!$
 <pre>
@@ -44,10 +44,11 @@ $!Image("mail/mailchain.png", title="SMTP Proxy", klass="center")!$
 </strong>
 </pre>
 
-By, single task responsibilities, task isolation, we can have specialised tools at each
-of the three mail flow points. Unfortunately, there are some mail filtering activities
-that are best implemented, at the Internal Mail Server, or MX Proxy. Specifically, the
-MX Proxy can improve our mail filtering success.
+Alluding to the "Single Responsibility Principle" each server in the mail flow points
+focusses on best performance, service within it's confined realm. Unfortunately, there 
+are some mail filtering activities that are best implemented, at the Internal Mail Server, 
+or MX Proxy. Specifically, the MX Proxy can improve our mail filtering success (avoiding 
+spammers.)
 
 To implement filtering on the MX Proxy, the MX Proxy needs to differentiate between
 traffic sourced internally, and sourced externally. To provide this, we can either 
@@ -56,33 +57,64 @@ install:
 -	a 2nd [ MX Proxy ] host, or 
 -	a 2nd MTA instance on the same host.
 
-The priority of the MX Proxy is to provide another layer of security between the
-Internet and Internal users while ensuring no incoming mail is lost. Thus, any 
+The priority of the MX Proxy is to provide another layer of **security** between the
+Internet and the organisations network, while ensuring **no mail is lost**. Thus, any 
 filtering on the MX Proxy must meet the following goals:
 
-1. 	Best performed at message entry point (MX Proxy.) If it can be performed as
-	effectively elsewhere, do not use it on the MX Proxy.
+1.	Improve the same security profile. All implemented filtering must be well documented 
+	(likewise documented here) and generally deployed as 'best-practise.'
 2.	Low-cost performance, resource utilisation. Implementation of the filter(s) cannot
 	degrade servic.
 3. 	Failover pass-through. Filtering to defer to allowing e-mail through
 	and not reject mail when inconclusive or good probability of generating
 	false-positive denial of legitimate email. In effect, this denies, at minimum,
 	content-filtering.
-4. 	No hacks. All implemented filtering must be well documented (and likewise
-	documented here) and generally deployed as 'best-practise.'
+4. 	Best performed at message entry point (MX Proxy.) If it can be performed as
+	effectively elsewhere, do not use it on the MX Proxy.
 
-All other filtering, scanning, is delayed for the **[mail filter]** server.
+All other filtering, scanning, is delayed for the *[mail filter]* server and internal *[
+mail server]* as appropriate.
 
-The *2nd MTA Instance* is a better resource utilisation.
+The **2nd MTA Instance** is a better resource utilisation.
 
 $!Image("mail/instances.png", title="SMTP Proxy", klass="center")!$
+
+The above diagram highlights the mail flow:
+
+* MTA Instance #1 receives and relays External Mail
+* MTA Instance #2 receives and relays Internal Mail
+
+Installation of the 2 instances is in four stages.
+
+<ul>
+	<li><a href="#base.install">Base Install</a></li>
+	<li><a href="#mta.instances">MTA Instances</a>
+		<ul>
+			<li><a href="#replicate.paths">Replicate Configuration Paths</a></li>
+			<li><a href="#modify.base">Modify Base Configuration</a></li>
+			<li><a href="#create.paths">Create and Modify Relevant Paths</a></li>
+		</ul></li>
+	<li><a href="#external.configuration">External Mail - Configuration</a>
+		<ul>
+			<li><a href="#helo.restrictions">HELO restrictions</a></li>
+			<li><a href="#sender.restrictions">Sender restrictions</a></li>
+			<li><a href="#recipient.restrictions">Recipient restrictions</a></li>
+			<li><a href="#spf.greylisting">SPF and greylisting</a></li>
+		</ul>
+	</li>
+	<li><a href="#internal.configuration">Internal Mail - Configuration</a>
+	</li>
+</ul>
+
 
 <a name="base.install"></a>
 
 ### 1. Base Install
 
-The Base Install, is the standard Postfix package install which is
-usually configured for:
+The foundation installation, is your ports (package) install of Postfix.
+
+The default Postfix installation is compiled with the following settings
+that needs to be changed in our two instances.
 
 <pre class="config-file">
 config_directory=/etc/postfix
@@ -100,47 +132,85 @@ solution around two new configurations (instances.)
 ### 2. MTA Instances
 
 Ref: [Adding a second postfix instance](http://advosys.ca/papers/email/58-postfix-instance.html) |
-
 [Managing multiple Postfix instances on a single host](http://www.postfix.org/MULTI_INSTANCE_README.html)
 
-The above mail chain delivers mail through the MX Proxy 
-from 3 different sources:
+Postfix is good enough to use the same binaries to execute with different configurations,
+we'll configure our Instances using the ability to reference different configuration
+settings.
 
-- the Internet (**ext**ernal hosts)
-- **int**ernal hosts
-- localhost 
+Base Configuration settings will be as:
 
-To configure filtering for these messages, we will implement 2 instances.
+<table>
+	<tr><th>Config Item</th><th>postfix-int Instance</th><th>postfix-ext Instance</th></tr>
+	<tr><td>config_directory</td><td>/etc/postfix-int</td><td>/etc/postfix-ext/main.cf</td></tr>
+	<tr><td>queue_directory</td> <td>/var/spool/postfix-int</td><td>/var/spool/postfix-ext</td></tr>
+</table>	
 
-- Instance (**ext**) will be for external hosts
-- Instance (**int**) will be for internal hosts, including localhost
 
-#### External Instance
+<a name="replicate.paths"></a>
+
+##### 1. Replicate Configuration Paths
+
+Replicating the configuration files, and Queue paths:
+
+<pre class="command-line">
+cp -rp /etc/postfix /etc/postfix-ext
+cp -rp /etc/postfix /etc/postfix-int
+</pre>
+
+To replicate the queue directory requires a slightly different approach:
+
+-	Create the Path
+-	Let Postfix populate standard paths
+-	Manually incorporate 'chroot' paths
+
+###### Create the Path
+
+<pre class="command-line">
+mkdir -p /var/spool/postfix-int
+mkdir -p /var/spool/postfix-ext
+</pre>
+
+At minimum, we want to change the default path for the 'configuration', and
+'queue.'
+
+Path: /etc/postfix-ext/main.cf
 
 <pre class="config-file">
 config_directory=/etc/postfix-ext
 queue_directory=/var/spool/postfix-ext
 </pre>
 
-#### Internal Instance
+Path: /etc/postfix-int/main.cf
 
 <pre class="config-file">
 config_directory=/etc/postfix-int
 queue_directory=/var/spool/postfix-int
 </pre>
 
-<a name="replicate.paths"></a>
-
-##### 1. Replicate Configuration Paths
+###### Let Postfix populate standard paths
 
 <pre class="command-line">
-cp -rp /etc/postfix /etc/postfix-ext
+/usr/local/sbin/postfix -c /etc/postfix-ext check
+/usr/local/sbin/postfix -c /etc/postfix-int check
 </pre>
 
-Subsequently, any other instance is replicated
+<pre class="manpage">
+postfix(1)
+
+    check  Warn about bad directory/file ownership or permis-
+		   sions, and create missing directories.
+</pre>
+
+###### Manually incorporate 'chroot' paths
 
 <pre class="command-line">
-cp -rp /etc/postfix /etc/postfix-int
+cp -rp /var/spool/postfix/etc /var/spool/postfix-ext
+cp -rp /var/spool/postfix/usr /var/spool/postfix-ext
+cp -rp /var/spool/postfix/lib /var/spool/postfix-ext
+cp -rp /var/spool/postfix/etc /var/spool/postfix-int
+cp -rp /var/spool/postfix/usr /var/spool/postfix-int
+cp -rp /var/spool/postfix/lib /var/spool/postfix-int
 </pre>
 
 <a name="modify.base"></a>
@@ -550,7 +620,7 @@ going to copy and paste to a non-proxy configuration.
 </pre>
 
 Because we get a lot of emails purporting to be from internal, it's important to
-verify this before relaying mail. Remember that this instance, will only recieve
+verify this before relaying mail. Remember that this instance, will only receive
 mail messages from external hosts.
 
 File: /etc/postfix-ext/sender_access
