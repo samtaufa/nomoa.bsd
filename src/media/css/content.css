@@ -113,3 +113,12 @@ blockquote {
 	border-left: 5px solid #ccc; 
 }
 
+ol {
+	list-style-type: lower-roman;
+	list-style-position: outside;
+}
+
+ul {
+	list-style-type: disc;
+	list-style-position: outside;
+}

@@ -1,12 +1,5 @@
 ## Hot Failover with CARP
 
-OpenBSD supports a Hot Failover scenario using $!manpage("carp",8)!$ 
-(Common Access Redundancy Protocol.) The CARP Protocol
-provides a pseudo-device to share a single IP between
-multiple hosts. 
-
-$!Image("fw/carp_basic.png", title="Basic CARP Diagram", klass="center")!$
-
 <div class=toc>
 
 Table of Contents
@@ -39,6 +32,13 @@ Table of Contents
 </ul>
 
 </div>
+
+OpenBSD supports a Hot Failover scenario using $!manpage("carp",8)!$ 
+(Common Access Redundancy Protocol.) The CARP Protocol
+provides a pseudo-device to share a single IP between
+multiple hosts. 
+
+$!Image("fw/carp_basic.png", title="Basic CARP Diagram", klass="center")!$
 
 <blockquote>
 <p>

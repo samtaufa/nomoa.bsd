@@ -1,26 +1,10 @@
 ## Routing with bgpd
 
-[ $!manpage("bgpd",8)!$  | $!manpage("bgpctl",8)!$ ]
-
-These notes are a direct RIP from the above notes, and others
-aggregated here to help my depleting memory cells.
-
-OpenBSD supports the Border Gateway Protocol with it's base tool
-<pre class="manpage">
-is a Border Gateway Protocol (BGP) daemon which manages the network
-routing tables.  Its main purpose is to exchange information concerning
-"network reachability" with other BGP systems.  bgpd uses the Border
-Gateway Protocol, Version 4, as described in RFC 1771.  Please refer to
-that document for more information about BGP.
-</pre>
-
-Monitoring and managing active bgpd sessions is through the supplied
-$!manpage("bgpctl",8)!$ 
-
-Basic diagnostic bgpctl commands to monitor an bgpd session include:
+<div class=toc>
+Table of Contents:
 
 <ul>
-    <li>Am I up and Running?
+    <li><a href="#upandrunning">Am I up and Running?</a>
         <ul>
             <li><a href="#run_serve"> What am I serving out?</a>
             <li><a href="#run_connectwho"> Who is connected to me (neighbours)?</a>
@@ -34,16 +18,51 @@ Basic diagnostic bgpctl commands to monitor an bgpd session include:
         </ul>
 </ul>
 
+</div>
+
+[ $!manpage("bgpd",8)!$  | $!manpage("bgpctl",8)!$ ]
+
+These notes are a direct RIP from the above notes, and others
+aggregated here to help my depleting memory cells.
+
+OpenBSD supports the Border Gateway Protocol through $!manpage('bgpd',8)!$
+
+<pre class="manpage">
+BGPD(8)
+
+$!manpage("bgpd")!$ is a Border Gateway Protocol (BGP) daemon which manages the network
+routing tables.  Its main purpose is to exchange information concerning
+"network reachability" with other BGP systems.  $!manpage("bgpd")!$ uses the Border
+Gateway Protocol, Version 4, as described in RFC 1771.  Please refer to
+that document for more information about BGP.
+</pre>
+
+Monitoring and managing active bgpd sessions is through 
+$!manpage("bgpctl",8)!$ 
+
+<pre class="manpage">
+BGPCTL(8)
+
+The $!manpage("bgpctl")!$  program controls the $!manpage('bgpd',8)!$ daemon.
+</pre>
+
+The sample network we use to discuss BGPD is shown in the below diagram.
+
 $!Image("bgpd_network.png", title="BGPD Network Diagram", klass="center")!$
+
+<a name="upandrunning"></a>
 
 ### Am I up and Running
 
-The question whether bgpctl is up and running requires a number of things to 
-accurately confirm.
+A simplified verification whether our BGPD server is up and running is to
+check the daemon (/usr/sbin/bgpd) is running using the standard 'process status' $!manpage('ps',1)!$
+or using $!manpage('bgpctl')!$.
 
 Basic confirmation of the daemon running can be performed using
 
-`ps auxwww | grep bgpd`
+<pre class="command-line">
+ps auxwww | grep bgpd
+</pre>
 
 The next step is to get information from the bgpd daemon.
 
@@ -51,10 +70,49 @@ The next step is to get information from the bgpd daemon.
 bgpctl show summary
 </pre>
 
+If BGPD is running, then it will display status information such as the connected
+BGPD peers (neighbors).
+
 <pre class="screen-output">
 Neighbor                   AS    MsgRcvd    MsgSent  OutQ Up/Down  State/PrfRcvd
 CLOUD Supplier           6666      19587      19046     0 3d18h16m      4
 </pre>
+
+If BGPD is **not running** you may get an error similar to the below:
+
+<pre class="screen-output">
+bgpctl: connect: /var/run/bgpd.sock: No such file or directory
+</pre>
+
+When your BGP server is failed, and not running. Review it's start up failure 
+by foregrounding the server such as:
+
+<pre class="command-line">
+/usr/sbin/bgpd -d
+</pre>
+
+The screen display give directions for investigation. For example:
+
+<pre class="command-line">
+/usr/sbin/bgpd -d
+</pre>
+<pre class="screen-output">
+/etc/bgpd.conf:19: could not parse address "10.0.323.0/24"
+route decision engine ready
+config file /etc/bgpd.conf has errors, not reloading
+fatal in RDE: rde_dispatch_imsg_ession: pipe closed
+kernel routing table decoupled
+Terminating
+</pre>
+
+The above error directing us to review the config file "/etc/bgpd.conf" line 19 
+and specifically the 'address "10.0.323.0/24"
+
+<a name="whereami"></a>
+
+#### Where am I
+
+What network interfaces am I seeing?
 
 Confirm that "bgpd" correctly interpolates your active network interfaces.
 

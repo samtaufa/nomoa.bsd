@@ -16,7 +16,7 @@ pages = [
         title="MX Proxy",
         pageTitle="Mail Proxy"),
 
-    Page("instances.mdtext",
+    Page("proxy.instances.mdtext",
         title="MX Proxy++",
         pageTitle="MX Proxy Extended, using Multiple Instances"),
 
