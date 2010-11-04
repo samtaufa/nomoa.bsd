@@ -5,29 +5,38 @@
 Table of Contents
 
 <ul>
-	<li><a href="#base.install">Base Install</a></li>
-	<li><a href="#mta.instances">MTA Instances</a>
+	<li><a href="#package.install">1. Package Install</a>
 		<ul>
-			<li><a href="#replicate.paths">Replicate Configuration Paths</a></li>
-			<li><a href="#modify.base">Modify Base Configuration</a></li>
-		</ul></li>
-	<li><a href="#inbound.restrictions">Inbound Instance</a>
-		<ul>
-			<li><a href="#helo.restrictions">HELO restrictions</a></li>
-			<li><a href="#sender.restrictions">Sender restrictions</a></li>
-			<li><a href="#recipient.restrictions">Recipient restrictions</a></li>
-			<li><a href="#spf.greylisting">SPF and greylisting</a></li>
+			<li>Aliases</li>
+			<li>Relay Domains</li>
+			<li>Relay Transport</li>
+			<li>Update Databases</li>
+			<li>Start and Reload</li>
 		</ul>
 	</li>
-	<li><a href="#outbound.restrictions">Outbound Instance</a>
+	<li><a href="#mta.instances">2. MTA Instances</a>
 	</li>
-	<li><a href="#summary">Summary</a>
+	<li><a href="#">3. Inbound Instance</a>
 		<ul>
-			<li><a href="#summary.fileconfigurations">File Configurations</a></li>
-			<li><a href="#summary.inbound">Inbound Instance</a></li>
-			<li><a href="#summary.outbound">Outbound Instance</a></li>
+			<li>Incorporate chroot files</li>
+			<li>Relay Domains</li>
+			<li>Relay Transport</li>
+			<li>SMTP Connection Restrictions</li>
+			<li>Sender Restriction</li>
+			<li>Start and Reload</li>
+			<li>Advanced Recipient Restrictions</li>
+			<li>Unknown Cost/Value</li>
 		</ul>
 	</li>
+	<li><a href="#">4. Outbound Instance</a>
+		<ul>
+			<li>Incorporate choort files</li>
+			<li>Trusted SMTP Hosts</li>
+			<li>Start and Reload</li>
+		</ul>
+	</li>
+	<li><a href="#">5. Logging</a></li>
+	<li><a href="#">6. Test and Verification</a></li>
 </ul>
 
 </div>
@@ -105,48 +114,27 @@ The above diagram highlights the mail flow using our three MTA instances:
 	MTA Instance "Summary Filters"
 </div>
 
+<a name="package.install"></a>
+
+### 1. Package Install
 
 
-Installation of the instances is in four stages.
-
-<ul>
-	<li><a href="#base.install">Base Install</a></li>
-	<li><a href="#mta.instances">MTA Instances</a>
-		<ul>
-			<li><a href="#replicate.paths">Replicate Configuration Paths</a></li>
-			<li><a href="#modify.base">Modify Base Configuration</a></li>
-		</ul></li>
-	<li><a href="#inbound.restrictions">Inbound Instance</a>
-		<ul>
-			<li><a href="#helo.restrictions">HELO restrictions</a></li>
-			<li><a href="#sender.restrictions">Sender restrictions</a></li>
-			<li><a href="#recipient.restrictions">Recipient restrictions</a></li>
-			<li><a href="#spf.greylisting">SPF and greylisting</a></li>
-		</ul>
-	</li>
-	<li><a href="#outbound.restrictions">Outbound Instance</a>
-	</li>
-</ul>
-
-
-<a name="base.install"></a>
-
-### 1. Base Install
-
-We base our installation from our existing, working, [Mail Proxy](proxy.html).
-It simplifies our adaptation to evolve from something we know works.
+Install the OpenBSD Postfix Package.
+The Postfix "multi-instance" configuration tool uses the default install
+paths as the first instance, our "Primary Instance."
 
 The compiled postfix binaries expect configuration files in 
 */etc/postfix* and the  mail/queue in */var/spool/postfix*
-These settings can be adjusted in our postfix instances:
+These settings can be adjusted in our secondary instances:
 
 <pre class="config-file">
 config_directory=/etc/postfix
 queue_directory=/var/spool/postfix
 </pre>
 
-Keep the base, working install untouched (pristine) and build our
-solution around two new configurations (instances.)
+Update the Postfix configuration files, such that it accepts
+mail only from the localhost and relay's mail for internal
+users to the [Mail Filter Server]
 
 File excerpt: /etc/postfix/main.cf
 
@@ -175,9 +163,15 @@ File excerpt: /etc/postfix/master.cf
 127.0.0.1:smtp  inet    n   -   -   -   -   smtpd
 </pre>
 
-##### Ancilliary Files
+#### Aliases
 
-###### Relay Domains
+File excerpt: /etc/postfix/aliases
+
+<pre class="config-file">
+root:		control
+</pre>
+
+#### Relay Domains
 
 Because we support local mail delivery, we are also going
 to be explicit on where we want to deliver e-mail from
@@ -195,15 +189,7 @@ example.net
 Because parent_domain_matches_subdomain is the default, this
 will support subdomain.example.com etc.
 
-###### Aliases
-
-File excerpt: /etc/postfix/aliases
-
-<pre class="config-file">
-root:		control
-</pre>
-
-###### Transport
+#### Transport
 
 File excerpt: /etc/postfix/transport
 
@@ -213,7 +199,7 @@ example.com			smtp:[ip-address]
 example.net			smtp:[ip-address]
 </pre>
 
-###### Create Databases
+#### Update Databases
 
 <pre class="command-line">
 /usr/local/sbin/postmap /etc/postfix/transport
@@ -225,9 +211,6 @@ example.net			smtp:[ip-address]
 <pre class="command-line">
 /usr/local/sbin/postfix reload
 </pre>
-
-
-<a name="mta.instances"></a>
 
 ### 2. MTA Instances
 
@@ -253,7 +236,7 @@ multi_instance_enable = yes
 
 Verify the configuration is operational as previously expected.
 
-##### Inbound Instance (default)
+### 3. Inbound Instance
 
 After which we can initialise the other MTA instances (inbound and outbound)
 
@@ -314,12 +297,13 @@ File excerpt: /etc/postfix-inbound/master.cf
 smtp           inet    n   -   -   -   -   smtpd
 </pre>
 
-###### Incorporate chroot files
+#### Incorporate chroot files
 
 Incorporate custom configuration settings involved with
 OpenBSD's default chroot installation
 
 <pre class="command-line">
+/usr/local/sbin/postfix -c /etc/postfix-inbound check
 export SUBDIR="etc usr lib"
 export SRC=/var/spool/postfix
 export DST=/var/spool/postfix-inbound
@@ -330,14 +314,7 @@ for subdir in $SUBDIR; do
 done
 </pre>
 
-###### Start and Reload
-
-<pre class="command-line">
-/usr/local/sbin/postmulti -i postfix-inbound -p start
-</pre>
-
-###### Ancilliary Files
-
+#### Relay Domains
 
 File excerpt: /etc/postfix-inbound/relaydomains
 
@@ -347,6 +324,8 @@ example.com
 example.net
 </pre>
 
+#### Relay Transport
+
 File excerpt: /etc/postfix-inbound/transport
 
 <pre class="config-file">
@@ -355,7 +334,7 @@ example.com         smtp:[ip-address]
 example.net         smtp:[ip-address]
 </pre>
 
-####### SMTP Connection Restrictions
+#### SMTP Connection Restrictions
 
 File excerpt: /etc/postfix-inbound/helo_access
 
@@ -376,7 +355,7 @@ files.
 /usr/local/sbin/postmulti -i postfix-inbound -p reload
 </pre>
 
-####### Sender restrictions
+#### Sender restrictions
 
 <pre class="config-file">
 check_sender_access hash:/etc/postfix-inbound/sender_access
@@ -399,7 +378,7 @@ subdomain.example.com	REJECT forged account
 /usr/local/sbin/postfix reload
 </pre>
 
-###### Advanced Recipient restrictions
+#### Advanced Recipient restrictions
 
 Progressing through the initial stages of connection, mail receipt, we have focussed on
 low-cost activities. A few 
@@ -429,7 +408,13 @@ copy paste them across as I get them working correctly within my environment.)
 	check_policy_service inet:127.0.0.1:10023
 </pre>
 
-###### Unknown Cost/Value
+#### Start and Reload
+
+<pre class="command-line">
+/usr/local/sbin/postmulti -i postfix-inbound -p start
+</pre>
+
+#### Unknown Cost/Value
 
 The **reject_unverified_sender** is another anti-spam feature that will reject
 a large number of UCE, but at a cost that needs to be verified before 
@@ -439,7 +424,7 @@ enabled in your configuration.
 reject_unverified_sender
 </pre>
 
-##### Outbound Instance
+### Outbound Instance
 
 Use submission port instead of smtp, and enable
 smtp for localhost.
@@ -488,12 +473,13 @@ The submission port (587) differs from the smtp (25)
 but simplifies our configuration. For the Outbound
 configuration (no filtering.).
 
-###### Incorporate chroot files
+#### Incorporate chroot files
 
 Incorporate custom configuration settings involved with
 OpenBSD's default chroot installation
 
 <pre class="command-line">
+/usr/local/sbin/postfix -c /etc/postfix-outbound check
 export SUBDIR="etc usr lib"
 export SRC=/var/spool/postfix
 export DST=/var/spool/postfix-outbound
@@ -504,13 +490,7 @@ for subdir in $SUBDIR; do
 done
 </pre>
 
-###### Start and Reload
-
-<pre class="command-line">
-/usr/local/sbin/postmulti -i postfix-outbound -p start
-</pre>
-
-###### Ancilliary Files
+#### Trusted SMTP Hosts
 
 File excerpt: /etc/postfix-outbound/mynetworks
 
@@ -520,7 +500,24 @@ File excerpt: /etc/postfix-outbound/mynetworks
 # - or both
 </pre>
 
-###### Verification
+
+#### Start and Reload
+
+<pre class="command-line">
+/usr/local/sbin/postmulti -i postfix-outbound -p start
+</pre>
+
+### 5. Logs
+
+Do not forget to add the new postfix logs to $!manpage("newsyslog")!$
+
+We should have a line in /etc/rc.conf.local with at least the following:
+
+<pre class="config-file">
+syslogd_flag="-a /var/spool/postfix/dev/log -a /var/spool/postfix-inbound/dev/log -a /var/spool/postfix-outbound/dev/log"
+</pre>
+
+### 6. Verification
 
 You can test, verify, behaviour of the above options by using the <b>warn_if_reject</b>
 to increase verbosity in your log file.
