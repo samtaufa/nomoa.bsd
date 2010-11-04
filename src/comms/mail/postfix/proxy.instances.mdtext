@@ -258,6 +258,7 @@ master_service_disable =
 authorized_submit_users = root
 multi_instance_group = mta
 multi_instance_name = postfix-inbound
+multi_instance_enable = yes
 
 # -- Customisations for our configuration
 relay_domains    = $config_directory/relaydomains
@@ -448,6 +449,7 @@ master_service_disable =
 authorized_submit_users = root
 multi_instance_group = mta
 multi_instance_name = postfix-outbound
+multi_instance_enable = yes
 
 # -- Customisations for our configuration
 message_size     = 20480000
