@@ -411,6 +411,22 @@ copy paste them across as I get them working correctly within my environment.)
 
 #### Start and Reload
 
+Normally, we would need to enable the postfix-inbound instance
+with the following command
+
+<pre class="command-line">
+/usr/local/sbin/postmulti -i postfix-inbound -e enable
+</pre>
+
+which would make at least the following addition to the main.cf
+file.
+
+<pre class="config-file">
+multi_instance_enable = yes
+</pre>
+
+and we can start|reload using the below command.
+
 <pre class="command-line">
 /usr/local/sbin/postmulti -i postfix-inbound -p start
 </pre>
@@ -504,6 +520,22 @@ File excerpt: /etc/postfix-outbound/mynetworks
 
 
 #### Start and Reload
+
+Normally, we would need to enable the postfix-outbound instance
+with the following command
+
+<pre class="command-line">
+/usr/local/sbin/postmulti -i postfix-outbound -e enable
+</pre>
+
+which would make at least the following addition to the main.cf
+file.
+
+<pre class="config-file">
+multi_instance_enable = yes
+</pre>
+
+and we can start|reload using the below command.
 
 <pre class="command-line">
 /usr/local/sbin/postmulti -i postfix-outbound -p start
