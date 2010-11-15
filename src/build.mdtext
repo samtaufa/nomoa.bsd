@@ -8,7 +8,7 @@ in the chain (point of failure.)
 This section of the notes covers some areas for installing 
 OpenBSD onto your system.
 
-### [Preview](preview.html) / Pre Install
+### [Preview](build/preview.html) / Pre Install
 
 Some things to help you, before installing OpenBSD.
 
