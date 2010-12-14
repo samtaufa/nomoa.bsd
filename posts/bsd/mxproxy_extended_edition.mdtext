@@ -1,0 +1,17 @@
+MX Proxy Extended, using Multiple Instances
+time: 2010-11-19 22:38
+
+I needed to add some more 'security' to our mail chain, which required
+adding more checking on the MX Proxy, which is our host that sits on the
+Internet 'proxying' mail traffic in and out of the organisation.
+
+To improve our security profile, using our preferred Postfix, necessitates 
+incoming mail be processed independently of outgoing mail.
+
+Read more of what we were able to do in 
+
+[MX Proxy Extended, using Multiple Instances](./comms/mail/postfix/proxy.instances.html)
+
+To save money on a 2nd computer hardware and using another Public IP address,
+we used Postfix's Multiple Instance facilities, as well as using separate
+ports for internal mail and external mail.

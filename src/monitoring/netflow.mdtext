@@ -1,0 +1,117 @@
+## Netflow for network monitoring
+
+Two aspects:
+
+- Collector
+- Sensor
+
+
+### Collector at the Server
+
+Collectors aggregate the netflow data from various sources (usually?) external to the collecting host.
+
+Examples:
+
+- [flow-tools](http://code.google.com/p/flow-tools/) [flow-capture](http://code.google.com/p/flow-tools/wiki/ManFlowCapture)
+
+#### flow-tools
+
+<pre class="manpage">
+flow-tools is library and a collection of programs used to collect, send, process, 
+and generate reports from NetFlow data. The tools can be used together on a 
+single server or distributed to multiple servers for large deployments. The flow-tools 
+library provides an API for development of custom applications for NetFlow export 
+versions 1,5,6 and the 14 currently defined version 8 subversions. 
+</pre>
+
+#### flow-capture
+
+<pre class="manpage">
+The flow-capture(1) utility will receive and store NetFlow exports to disk. The flow
+files are rotated rotations times per day and expiration of old flow files can be configured 
+by number of files or total space utilization. Files are stored in workdir and can optionally 
+be stored in additional levels of directories. Active files created by flow-capture(1) begin 
+with 'tmp'. Files that are complete begin with 'ft'. 
+</pre>
+    
+<pre class="command-line">
+flow-capture -p /var/run/flow-capture.pid -n 287 -w /var/data/db/flows -S 5 
+</pre>
+
+
+#### One OpenBSD Way [flowd](http://code.google.com/p/flowd)
+
+<pre class="manpage">
+flowd is a small, fast and secure NetFlow™ collector. It offers the following features
+</pre>
+
+
+#### Diagnostics
+
+Use "flowd -d" to run flowd with debug/foreground verbose output.
+
+Use tcpdump to verify netflow traffic from the client is reaching the host, ensuring you have the correct
+port and address. (Compare with "accept agent", and "flow source")
+
+Verify that /etc/flowd.conf "accept agent," "flow source" and "listen on" strings allow the client host
+to submit data to the collector.
+
+### Sensor at the Client
+
+Sensors detect and broadcast netflow information from a device.
+
+On switching appliances, such as Cisco and Juniper the sensor is probably installed or configurable on the device.
+Various software tools exist for Unix, including [softflowd](http://code.google.com/p/softflowd) 
+
+#### One OpenBSD Way
+
+OpenBSD supports exporting netflow data from the base install using the $!manpage("pflow",4)!$ pseudo-device
+and the flow state option 'pflow' in the firewall packet filter $!manpage("pf.conf",5)!$.
+
+<pre class="manpage">
+The pflow interface is a pseudo-device which exports pflow accounting
+data from the kernel using udp(4) packets.  pflow is compatible with
+netflow v5.  The data is extracted from the pf(4) state table.
+
+Multiple pflow interfaces can be created at runtime using the ifconfig
+pflowN create command.  Each interface must be configured with a flow
+receiver IP address and port number.
+
+Only states created by a rule marked with the pflow keyword are exported
+by the pflow interface.
+</pre>
+
+##### $!manpage("pflow",4)!$
+
+To set up the netflow from the current machine (10.0.0.1) to an external collector
+at host 10.0.0.2 at port 1234
+
+<pre class="manpage">
+       # ifconfig pflow0 flowsrc 10.0.0.1 flowdst 10.0.0.2:1234
+</pre>
+
+or set into the configuration file: /etc/hostname.pflow0
+
+<pre class="config-file">
+flowsrc 10.0.0.1 flowdst 10.0.0.2:1234
+</pre>
+
+##### $!manpage("pf.conf",5)!$.
+
+<pre class="manpage">
+pflow
+   States created by this rule are exported on the pflow(4) interface.
+</pre>
+
+To set it as the default for all state actions in the ruleset: /etc/pf.conf
+
+<pre class="config-file">
+set state-defaults pflow
+</pre>
+
+To specify 'pflow' for a specific rule: /etc/pf.conf
+
+<pre class="config-file">
+pass in on $myinf keep state pflow
+</pre>
+

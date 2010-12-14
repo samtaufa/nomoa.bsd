@@ -41,6 +41,8 @@ Table of Contents
 
 </div>
 
+OpenBSD 4.8 AMD64, Postfix 2.7.1
+
 Expanding on our [MX Proxy](proxy.html) example, we evolve a scenario where our needs
 are a little more complicated, and likewise our increased requirements for the [MX Proxy](proxy.html) 
 In our new scenario, we deploy 3 purposed hosts, prioritising on performing 
