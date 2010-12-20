@@ -378,7 +378,7 @@ subdomain.example.com	REJECT forged account
 
 <pre class="command-line">
 /usr/local/sbin/postmap /etc/postfix-inbound/sender_access
-/usr/local/sbin/postfix reload
+/usr/local/sbin/postmulti -i postfix-inbound -p reload
 </pre>
 
 #### Advanced Recipient restrictions
