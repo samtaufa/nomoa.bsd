@@ -21,11 +21,12 @@ pages = [
         title="Nagios",
         pageTitle="Nagios Monitoring"),    
         
-    Page("netflow.mdtext", 
-        title="Netflow",
-        pageTitle="Netflow"),    
-        
     Page("smokeping.mdtext",
         title="Smokeping",
         pageTitle="Smokeping"),
+        
+    Page("netflow.mdtext", 
+        title="Netflow",
+        pageTitle="Netflow"),    
+    Directory("netflow"),    
 ]

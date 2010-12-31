@@ -1,60 +1,18 @@
 ## Netflow for network monitoring
 
-Two aspects:
 
-- Collector
+Wikipedia Reference
+
+There are two aspects of monitoring your network with netflow:
+
 - Sensor
+- Collector
 
+The Sensor replicates traffic data points at the "host" and sends it to the 
+designated collector.
 
-### Collector at the Server
-
-Collectors aggregate the netflow data from various sources (usually?) external to the collecting host.
-
-Examples:
-
-- [flow-tools](http://code.google.com/p/flow-tools/) [flow-capture](http://code.google.com/p/flow-tools/wiki/ManFlowCapture)
-
-#### flow-tools
-
-<pre class="manpage">
-flow-tools is library and a collection of programs used to collect, send, process, 
-and generate reports from NetFlow data. The tools can be used together on a 
-single server or distributed to multiple servers for large deployments. The flow-tools 
-library provides an API for development of custom applications for NetFlow export 
-versions 1,5,6 and the 14 currently defined version 8 subversions. 
-</pre>
-
-#### flow-capture
-
-<pre class="manpage">
-The flow-capture(1) utility will receive and store NetFlow exports to disk. The flow
-files are rotated rotations times per day and expiration of old flow files can be configured 
-by number of files or total space utilization. Files are stored in workdir and can optionally 
-be stored in additional levels of directories. Active files created by flow-capture(1) begin 
-with 'tmp'. Files that are complete begin with 'ft'. 
-</pre>
-    
-<pre class="command-line">
-flow-capture -p /var/run/flow-capture.pid -n 287 -w /var/data/db/flows -S 5 
-</pre>
-
-
-#### One OpenBSD Way [flowd](http://code.google.com/p/flowd)
-
-<pre class="manpage">
-flowd is a small, fast and secure NetFlow™ collector. It offers the following features
-</pre>
-
-
-#### Diagnostics
-
-Use "flowd -d" to run flowd with debug/foreground verbose output.
-
-Use tcpdump to verify netflow traffic from the client is reaching the host, ensuring you have the correct
-port and address. (Compare with "accept agent", and "flow source")
-
-Verify that /etc/flowd.conf "accept agent," "flow source" and "listen on" strings allow the client host
-to submit data to the collector.
+The Collector monitors traffic from Sensors allowing administrators to
+analyse the data.
 
 ### Sensor at the Client
 
@@ -114,4 +72,5 @@ To specify 'pflow' for a specific rule: /etc/pf.conf
 <pre class="config-file">
 pass in on $myinf keep state pflow
 </pre>
+
 
