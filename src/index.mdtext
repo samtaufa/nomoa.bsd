@@ -23,8 +23,8 @@ and practise safe Computing.
 
 ### Build and Consistency
 
-[Preview](build\preview.html) | [Install](build\install.html) | 
-[Compiling](build\compiling.html) | [Consistency](build\consistency.html)
+[Preview](build/preview.html) | [Install](build/install.html) | 
+[Compiling](build/compiling.html) | [Consistency](build/consistency.html)
 
 Putting together an $!OpenBSD!$ box is fun and easy, although
 there are a few hurdles that can seem daunting for the new
@@ -63,7 +63,7 @@ and we bring together some of these key tools on $!OpenBSD!$.
 
 ### Gateways and Perimeter Systems
 
-[High Availability](gateway\highavailability.html) | [Firewall](gateway\firewall.html) | [Routing](gateway\routing.html)
+[High Availability](gateway/highavailability.html) | [Firewall](gateway/firewall.html) | [Routing](gateway/routing.html)
 
 $!OpenBSD!$ is a great tool for securing your borders and gateways
 and comes pre-configured with foundation tools for such services.
