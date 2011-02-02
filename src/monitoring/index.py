@@ -13,20 +13,21 @@ this.titlePrefix = ns.titlePrefix + "[Monitoring] "
 
 pages = [
                
-    Page("vulnerability.mdtext", 
-        title="Published Issues",
-        pageTitle="Publicised Vulnerabilities"),    
+    Page("announcements.mdtext", 
+        title="Announcements",
+        pageTitle="Announcements"),    
 
     Page("nagios.mdtext", 
         title="Nagios",
         pageTitle="Nagios Monitoring"),    
         
-    Page("smokeping.mdtext",
-        title="Smokeping",
-        pageTitle="Smokeping"),
-        
     Page("netflow.mdtext", 
         title="Netflow",
         pageTitle="Netflow"),    
     Directory("netflow"),    
+	
+    Page("smokeping.mdtext",
+        title="Smokeping",
+        pageTitle="Smokeping"),
+        
 ]

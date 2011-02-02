@@ -1,15 +1,21 @@
-Several tools are used for monitoring hosts.
+## System Monitoring
 
-
+Several tools are used for monitoring IT Services, including host/device status,
+and network status.
 
 -   Announcements
--   Nagios
--   Smokeping
+-   Host / Device Status 
+-   Network Performance
+
+For many, resorting to commercial products is a valid decision depending on
+availability of expertise to install, maintain, make use of open source
+resources. The following are some of the tools (and their category) we have
+successfully deployed.
 
 ### Announcements
 
 Unfortunately, for the general populace, the only way to find out
-about vulnerabilities is to monitor annoucements made through
+about vulnerabilities is to monitor [annoucements](monitoring/announcements.html) made through
 public forums, such as project mailing lists, or press-releases
 from various researchers and vendors.
 
@@ -18,12 +24,23 @@ have to increase the number of information sources to monitor
 looking for new knowledge, applications related to security and
 stability of installed systems.
  
-### Nagios
+### Host / Device Status
 
-Nagios live monitors systems for different details, including 
-disk capacity utilisation.
+There are a number of standard tools used for monitoring the hosts, devices
+on your network. Nagios being one of the more popular, although a <a href="http://www.google.com">Google</a>
+/<a href="http://www.bing.com">Bing</a> search will quickly highlight alternatives.
 
-### Smokeping
+[Nagios](monitoring/nagios.html) is very good for monitoring up/down status, and is also able to use
+SNMP and custom NRPE for determining more detailed status information on hosts. Example things
+you can monitor using nagios include:
 
-Smokeping has a number of features, including the visual display 
-of latency between the monitoring host and the target server.
+- up/down state
+- disk utilisation
+- cpu utilisation
+
+### Network Performance
+
+[Smokeping](monitoring/smokeping.html) gives a quick graphical view of network latency.
+
+[Netflow](monitoring/netflow.html) is a protocol to provide historical network traffic
+data that can be analysed, graphed for broad and minute review.

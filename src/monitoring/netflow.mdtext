@@ -1,76 +1,44 @@
 ## Netflow for network monitoring
 
+If you manage a network that spans more than one site, then you need something to
+monitor the connectivity between sites, and you need [Michael W. Lucas' book "Network Flow Analysis."](
+http://networkflowanalysis.com)
 
-Wikipedia Reference
+If you have the brain power, and time, then by all means search the web and find 
+the tools listed here. For those of us with less brain power (or time?) then
+the above book is a great investment.
 
-There are two aspects of monitoring your network with netflow:
+There may be other tools, exorbitantly priced or free, for monitoring the performance
+of your network, but the above book gives great examples for installing and validating
+your new monitoring system 
 
-- Sensor
-- Collector
+Netflow is a protocol for 'publishing' flow information on a device. The device 'sensor' 
+publishes the flow data which is 'recorded' by another device on the network
+called a 'collector'
 
-The Sensor replicates traffic data points at the "host" and sends it to the 
-designated collector.
+### Sensor
 
-The Collector monitors traffic from Sensors allowing administrators to
-analyse the data.
-
-### Sensor at the Client
-
-Sensors detect and broadcast netflow information from a device.
+The [Sensor](netflow/sensor.html) is deployed on the network edge server/device and replicates traffic data points 
+at the "device/host" which it publishes as a UDP broadcast to a collector.
 
 On switching appliances, such as Cisco and Juniper the sensor is probably installed or configurable on the device.
 Various software tools exist for Unix, including [softflowd](http://code.google.com/p/softflowd) 
 
-#### One OpenBSD Way
+For OpenBSD, we've been using $!manpage("pflow",4)!$
 
-OpenBSD supports exporting netflow data from the base install using the $!manpage("pflow",4)!$ pseudo-device
-and the flow state option 'pflow' in the firewall packet filter $!manpage("pf.conf",5)!$.
+### Collector
 
-<pre class="manpage">
-The pflow interface is a pseudo-device which exports pflow accounting
-data from the kernel using udp(4) packets.  pflow is compatible with
-netflow v5.  The data is extracted from the pf(4) state table.
+The [Collector](netflow/collector.html) accepts traffic from Sensors. 
+The collected data is now available for further analysis/evaluation.
 
-Multiple pflow interfaces can be created at runtime using the ifconfig
-pflowN create command.  Each interface must be configured with a flow
-receiver IP address and port number.
+Command-line analysis is provided with flow-tools, but more graphical
+tools are also available.
 
-Only states created by a rule marked with the pflow keyword are exported
-by the pflow interface.
-</pre>
+[FlowScan/CUFlow](netflow/graphs.flowscan.html) give general packet flow overview.
 
-##### $!manpage("pflow",4)!$
+[FlowViewer](netflow/graphs.flowviewer.html) allows customised queries
 
-To set up the netflow from the current machine (10.0.0.1) to an external collector
-at host 10.0.0.2 at port 1234
-
-<pre class="manpage">
-       # ifconfig pflow0 flowsrc 10.0.0.1 flowdst 10.0.0.2:1234
-</pre>
-
-or set into the configuration file: /etc/hostname.pflow0
-
-<pre class="config-file">
-flowsrc 10.0.0.1 flowdst 10.0.0.2:1234
-</pre>
-
-##### $!manpage("pf.conf",5)!$.
-
-<pre class="manpage">
-pflow
-   States created by this rule are exported on the pflow(4) interface.
-</pre>
-
-To set it as the default for all state actions in the ruleset: /etc/pf.conf
-
-<pre class="config-file">
-set state-defaults pflow
-</pre>
-
-To specify 'pflow' for a specific rule: /etc/pf.conf
-
-<pre class="config-file">
-pass in on $myinf keep state pflow
-</pre>
-
-
+In a standard workflow environment, we monitor general traffic using [smokeping](smokeping.html)
+get a live view of an effected link using [FlowScan/CUFlow](netflow/graphs.flowscan.html) to
+determine general flow issues, and then drill deeper for specifics using
+[FlowViewer](netflow/graphs.flowviewer.html)
