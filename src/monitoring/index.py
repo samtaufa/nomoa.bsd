@@ -29,5 +29,8 @@ pages = [
     Page("smokeping.mdtext",
         title="Smokeping",
         pageTitle="Smokeping"),
-        
+    
+	Page("sms.mdtext",
+		title="SMS",
+		pageTitle="Simple Message System"),
 ]

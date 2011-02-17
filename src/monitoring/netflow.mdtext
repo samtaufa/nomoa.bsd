@@ -1,44 +1,100 @@
 ## Netflow for network monitoring
 
-If you manage a network that spans more than one site, then you need something to
-monitor the connectivity between sites, and you need [Michael W. Lucas' book "Network Flow Analysis."](
-http://networkflowanalysis.com)
+Ref: [Network Flow Analysis.](http://networkflowanalysis.com)
+
+Netflow is a protocol we can use to push out traffic information from
+edge devices (such as routers, gateways) that can be captured at another
+point (e.g. our host which can perform analysis on the data.)
+
+In short, using netflow gives us a clearer picture of actual traffic
+behaviour across the above "edge devices." The challenge is buying or
+putting together tools to push the data, collect the data and 
+analyse, summarise that data for us.
+
+<div class="toc">
+
+Table of Contents
+
+<ol>
+	<li><a href="#1">Monitoring your network</a></li>
+	<li><a href="#2">Pushing Data using Sensors</a></li>
+	<li><a href="#3">Capturing Data using Collectors</a></li>
+	<li><a href="#4">Analysing Data</a></li>
+</ol>
+
+</div>
+
+
+### <a name="1"></a> 1. Monitoring your Network
+
+Manage a computer network and you need monitoring for an overview of traffic 
+behaviour across your network. Manage an expanded network spanning a large number of
+hosts, devices, and/or geographical layout or multiple sites, and you really 
+need network traffic monitoring/analysis tools. When you're responsible for
+the network, everyone blames performance issues on your network and you 
+need better knowledge of the security, stability and performance factors
+of your network. You need live data, and historical data with enough
+granularity to be able to extract useable information.
+
+First look at [Michael W. Lucas'](http://www.michaelwlucas.com) book 
+[Network Flow Analysis.](http://networkflowanalysis.com)
+These notes augment that book because there is just too much valuable
+information there to even attempt to duplicate. Buy the book.
 
 If you have the brain power, and time, then by all means search the web and find 
-the tools listed here. For those of us with less brain power (or time?) then
-the above book is a great investment.
+the tools listed here. 
 
-There may be other tools, exorbitantly priced or free, for monitoring the performance
-of your network, but the above book gives great examples for installing and validating
-your new monitoring system 
+- netflow
+- RRDTool
+- Cflow.pm and related Perl utilities
+- FlowScan
+- CUFlow
 
-Netflow is a protocol for 'publishing' flow information on a device. The device 'sensor' 
-publishes the flow data which is 'recorded' by another device on the network
-called a 'collector'
+[Network Flow Analysis.](http://networkflowanalysis.com) is an investment in
+your time. If you've got more time then sense, go ahead and try to get those
+tools together and augment the information out there for how to do it.
 
-### Sensor
+There may be preconfigured tools, exorbitantly priced or free, for monitoring the performance
+of your network, but[Michael's book](http://networkflowanalysis.com) gives great examples for 
+installing and validating and using your new monitoring system 
 
-The [Sensor](netflow/sensor.html) is deployed on the network edge server/device and replicates traffic data points 
-at the "device/host" which it publishes as a UDP broadcast to a collector.
+### <a name="2"></a> 2. Pushing Data using Sensors 
 
-On switching appliances, such as Cisco and Juniper the sensor is probably installed or configurable on the device.
-Various software tools exist for Unix, including [softflowd](http://code.google.com/p/softflowd) 
+[Sensors](netflow/sensor.html) on Edge Devices publish netflow data as a 
+directed UDP broadcast.
 
-For OpenBSD, we've been using $!manpage("pflow",4)!$
+On switching appliances, such as Cisco and Juniper, the sensor is normally installed 
+or configurable on the device. Various software tools exist for Unix, including [softflowd](http://code.google.com/p/softflowd) which is available in the [OpenBSD
+Package Collection](http://www.openbsd.org/faq/faq15.html#Intro).
 
-### Collector
+For OpenBSD, [we use](netflow/sensor.html) $!manpage("pflow",4)!$
 
-The [Collector](netflow/collector.html) accepts traffic from Sensors. 
-The collected data is now available for further analysis/evaluation.
+### <a name="3"></a> 3. Capturing Data using Collectors
 
-Command-line analysis is provided with flow-tools, but more graphical
+Network Flow data published by the above 'sensors' are captured by
+a [collector](netflow/collector.html). The data is simply archived
+to disk in a predictable format/layout on which you can use your
+analysis tools. 
+	
+### <a name="4"></a> 4. Analysing Data
+
+#### Console
+
+Console analysis is provided with flow-tools, but more graphical
 tools are also available.
 
-[FlowScan/CUFlow](netflow/graphs.flowscan.html) give general packet flow overview.
-
-[FlowViewer](netflow/graphs.flowviewer.html) allows customised queries
+#### GUI Frontends
 
 In a standard workflow environment, we monitor general traffic using [smokeping](smokeping.html)
-get a live view of an effected link using [FlowScan/CUFlow](netflow/graphs.flowscan.html) to
+get a live view of an effected link using [FlowScan/CUFlow](netflow/flow.flowscan.html) to
 determine general flow issues, and then drill deeper for specifics using
-[FlowViewer](netflow/graphs.flowviewer.html)
+[FlowViewer](netflow/flow.flowviewer.html)
+
+[Flow - Graphs](netflow/flow.flowscan.html) reviews the Graphing front-ends
+FlowScan/CUFlow.
+
+[Flow - Custom](netflow/flow.flowviewer.html) reviews the Graphing front-end
+FlowViewer, which supports more extended customisation/analysis than FlowScan/CUFlow.
+
+When diagnostics are required, we can use the historical data available from
+[smokeping](smokeping.html) and [FlowViewer](netflow/graphs.flowviewer.html)
