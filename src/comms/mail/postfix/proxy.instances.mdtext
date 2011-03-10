@@ -23,6 +23,7 @@ Table of Contents
 			<li>Relay Transport</li>
 			<li>SMTP Connection Restrictions</li>
 			<li>Sender Restriction</li>
+			<li><a href="#3.recipient">Recipient Restriction</a></li>
 			<li>Start and Reload</li>
 			<li>Advanced Recipient Restrictions</li>
 			<li>Unknown Cost/Value</li>
@@ -381,7 +382,8 @@ subdomain.example.com	REJECT forged account
 /usr/local/sbin/postmulti -i postfix-inbound -p reload
 </pre>
 
-#### Advanced Recipient restrictions
+
+#### <a name="3.recipient"></a>Recipient Restriction
 
 Progressing through the initial stages of connection, mail receipt, we have focussed on
 low-cost activities. A few 
@@ -399,17 +401,50 @@ smtpd_recipient_restrictions =
 	permit
 </pre>
 
-The following are more expensive tests and are more likely to create
-false positives. They are left out of the standard configuration (i.e. I'll
-copy paste them across as I get them working correctly within my environment.)
+The advantage of these is that, being later in the processing stage of
+e-mail, it has also recieved more information about the potential
+message.
+
+Expanding the generic rule, we can add blacklists with instructions
+such as the following.
 
 <pre class="config-file">
-	reject_rbl_client relays.ordb.org,
-	reject_rbl_client list.dsbl.org,
-	reject_rbl_client sbl-xbl.spamhaus.org,
-	check_policy_service unix:private/spfpolicy
-	check_policy_service inet:127.0.0.1:10023
+	smtpd_recipient_restrictions =
+		permit_mynetworks,
+		reject_unauth_destination,
+		reject_invalid_hostname,
+		reject_unauth_pipelining,
+		reject_non_fqdn_sender,
+		reject_unknown_sender_domain,
+		reject_non_fqdn_recipient,
+		reject_unknown_recipient_domain,
+		check_helo access		hash:$config_directory/helo_access,
+		check_sender_access     hash:$config_directory/sender_access,
+		check_recipient_access  hash:$config_directory/recpient_access,
+		reject_rhsbl_recipient  bogusmx.rfc-ignorant.org,
+		reject_rhsbl_recipient  dsn.rfc-ignorant.org,
+		reject_rbl_client       zen.spamhaus.org,
+		reject_rbl_client       dnsbl.njabl.org,
+		permit		
 </pre>
+
+Take care to monitor the effectiveness, or stability of the remote services
+being used. Likewise, ensure that your use is compliant with the
+acceptable use of those remote services.
+
+File excerpt: /etc/postfix-inbound/recipient_access
+
+<pre class="config-file">
+10.20.30.40				REJECT forged account 
+127.0.0.1				REJECT forged account
+10.11.32.55				OK
+</pre>
+
+<pre class="command-line">
+/usr/local/sbin/postmap /etc/postfix-inbound/recipient_access
+/usr/local/sbin/postmulti -i postfix-inbound -p reload
+</pre>
+
 
 #### Start and Reload
 
@@ -427,7 +462,7 @@ file.
 multi_instance_enable = yes
 </pre>
 
-and we can start|reload using the below command.
+and we can start using the below command.
 
 <pre class="command-line">
 /usr/local/sbin/postmulti -i postfix-inbound -p start
