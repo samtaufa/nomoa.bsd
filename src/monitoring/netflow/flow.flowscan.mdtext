@@ -1,0 +1,654 @@
+## Graphs - Common Flow view with FlowScan/CUFlow 
+
+Ref: [flow-tools](http://code.google.com/p/flow-tools/), [Network Flow Analysis](http://networkflowanalysis.com "Michael W. Lucas' book 'Network Flow Analysis'")
+
+Pretty pictures are always nice, and sometimes they make better aggregation
+of data to us. 
+
+Installation notes augment <a href="http://networkflowanalysis.com" title="Michael W. Lucas' book 'Network Flow Analysis'">Network Flow Analysis.</a>
+
+<div class="toc">
+
+Table of Contents
+
+<ol>
+	<li><a href="#1">Cflow.pm</a>
+		<ul>
+			<li>Build the Ports Tree Source</li>
+			<li>Get the Source</li>
+			<li>Extract the Source</li>
+			<li>Compiling</li>
+			<li>Verifying Build</li>
+		</ul>
+	</li>
+	<li><a href="#2">FlowScan/CUFlow Prerequisites</a>
+		<ul>
+			<li>Perl Modules</li>
+			<li>ConfigReader::DirectiveStyle</li>
+		</ul>
+	</li>
+	<li><a href="#3">FlowScan</a>
+		<ul>
+			<li>Get the Source</li>
+			<li>Build and Install</li>
+			<li>Create Account and Paths</li>
+			<li>Configuration - FlowScan</li>
+		</ul>
+	</li><li><a href="#4">CUFlow</a>
+		<ul>
+			<li>Install</li>
+			<li>Running</li>
+			<li>Capturing netflow</li>
+		</ul>
+	</li>		
+</ol>
+
+</div>
+
+### <a name="1">1. </a> Cflow.pm
+
+[Dave Plonka](http://net.doit.wisc.edu/~plonka/)'s Cflow perl module from: http://net.doit.wisc.edu/~plonka/Cflow/
+is a significant prerequisite for data flow analysis, but it is a little
+convoluted to install. Hopefully, the below notes will give you
+enough noise that if it doesn't work, at least you'll enough material
+to hopefully discover how to configure it on your system.
+
+- Build the Ports tree source
+- Get the Source
+- Extract the Source
+- Compile
+- Verify Build
+
+#### Build the Ports tree source
+
+<pre class="command-line">
+# cd /usr/ports/net/flow-tools
+# make package
+</pre>
+
+For OpenBSD 4.8, the flow-tools source has now been built with the
+correct Makefile configurations for our installed package. The extracted,
+compiled source tree is now in:
+
+<pre class="command-line">
+/usr/ports/pobj/flow-tools-0.68.5/flow-tools-0.68.5/
+</pre>
+
+#### Get the Source
+
+Ref: [http://net.doit.wisc.edu/~plonka/Cflow/](http://net.doit.wisc.edu/~plonka/Cflow/)
+
+For some reason, I initially couldn't follow instructions for finding the source
+files? The above page shows the current(?) release which you can manually
+download.
+
+<pre class="command-line">
+# cd /usr/ports/distfiles/
+# curl -O http://net.doit.wisc.edu/~plonka/Cflow/Cflow-1.053.tar.gz
+</pre>
+<pre class="screen-output">
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 42007  100 42007    0     0  18839      0  0:00:02  0:00:02 --:--:-- 27874
+</pre>
+
+Refer to the flow-tools contrib/README for further details.
+
+#### Extract the source
+
+The Cflow.pm package needs to be compiled from within
+the 'contrib' directory of the flow-tools source.
+
+<pre class="command-line">
+# cd /usr/ports/pobj/flow-tools-0.68.5/flow-tools-0.68.5/contrib/
+# tar -zxvf /usr/ports/distfiles/Cflow-1.053.tar.gz
+</pre>
+<pre class="screen-output">
+Cflow-1.053
+Cflow-1.053/Cflow.xs
+Cflow-1.053/cflow5.h
+Cflow-1.053/Cflow.pm
+Cflow-1.053/MANIFEST
+Cflow-1.053/Makefile.PL
+Cflow-1.053/Changes
+Cflow-1.053/COPYING
+Cflow-1.053/test.pl
+Cflow-1.053/README
+Cflow-1.053/flowdumper.PL
+</pre>
+
+#### Compiling
+
+Before we can successfully compile Cflow for OpenBSD, we
+need to make the below modifications to the Makefile.PL
+
+<pre class="config-file">
+--- Makefile.PL.org     Tue Feb 15 22:33:05 2011
++++ Makefile.PL Tue Feb 15 22:37:49 2011
+@@ -42,10 +42,10 @@
+ sub find_flow_tools {
+    my($ver, $dir);
+    my($libdir, $incdir);
+-   if (-f '../../lib/libft.a') {
++   if (-f '/usr/local/lib/libft.a') {
+       $dir = '../../lib';
+       $incdir = "-I$dir -I$dir/..";
+-      $libdir = "-L$dir";
++      $libdir = "-L/usr/local/lib";
+    }
+    if ("$libdir") {
+       print "Found flow-tools... using \"-DOSU $incdir $libdir -lft -lz\".\n";
+</pre>
+
+Without the above changes, the flowdumper program cannot
+find libft.a and displays no output or causes a Segmentation Fault.
+
+After the above changes to Makefile.PL
+
+<pre class="command-line">
+# perl Makefile.PL
+</pre>
+<pre class="screen-output">
+Checking if your kit is complete...
+Looks good
+Found flow-tools... using "-DOSU -I../../lib -I../../lib/.. -L/usr/local/lib -lft -lz".
+Note (probably harmless): No library found for -lnsl
+Writing Makefile for Cflow
+</pre>
+
+<pre class="command-line">
+make
+</pre>
+<pre class="screen-output">
+cp Cflow.pm blib/lib/Cflow.pm
+AutoSplitting blib/lib/Cflow.pm (blib/lib/auto/Cflow)
+/usr/bin/perl /usr/libdata/perl5/ExtUtils/xsubpp  -typemap /usr/libdata/perl5/ExtUtils/typemap  Cflow.xs > Cflow.xsc && mv Cflow.xsc Cflow.c
+cc -c  -I../../lib -I../../lib/..  -DOSU -O2     -DVERSION=\"1.053\"  -DXS_VERSION=\"1.053\" -DPIC -fPIC "-I/usr/libdata/perl5/amd64-openbsd/5.10.1/CORE"   Cflow.c
+Running Mkbootstrap for Cflow ()
+chmod 644 Cflow.bs
+rm -f blib/arch/auto/Cflow/Cflow.so
+LD_RUN_PATH="/usr/local/lib:/usr/lib" cc  -shared -fPIC  -fstack-protector Cflow.o  -o blib/arch/auto/Cflow/Cflow.so      -L/usr/local/lib -lft -lz 
+chmod 755 blib/arch/auto/Cflow/Cflow.so
+cp Cflow.bs blib/arch/auto/Cflow/Cflow.bs
+chmod 644 blib/arch/auto/Cflow/Cflow.bs
+/usr/bin/perl "-Iblib/arch" "-Iblib/lib" flowdumper.PL flowdumper
+cp flowdumper blib/script/flowdumper
+/usr/bin/perl -MExtUtils::MY -e 'MY->fixin(shift)' -- blib/script/flowdumper
+Manifying blib/man1/flowdumper.1
+Manifying blib/man3/Cflow.3p
+</pre>
+
+<pre class="command-line">
+# make install
+</pre>
+<pre class="screen-output">
+Manifying blib/man1/flowdumper.1
+Files found in blib/arch: installing files in blib/lib into architecture dependent library tree
+Appending installation info to /usr/libdata/perl5/amd64-openbsd/5.10.1/perllocal.pod
+</pre>
+
+#### Verifying Build
+
+Verify the Cflow.pm build/install, by running flowdumper on one
+of you netflow data files.
+
+<pre class="command-line">
+flowdumper ft-v05.2011-02-13.075500+1100
+</pre>
+
+I've encountered 3 possible results when running flowdumper after the
+above "make install"
+
+-	Successful Execution
+-	Failure No Output
+-	Failure undefined symbol
+
+##### a. Successful Execution
+
+<pre class="command-line">
+# flowdumper ft-v05.2011-02-13.075500+1100 | head -20
+</pre>
+<pre class="screen-output">
+FLOW
+  index:          0xc7ffff
+  router:         IP-Address
+  src IP:         192.168.112.130
+  dst IP:         192.168.18.57
+  input ifIndex:  0
+  output ifIndex: 0
+  src port:       1478
+  dst port:       80
+  pkts:           3
+  bytes:          128
+  IP nexthop:     0.0.0.0
+  start time:     Sun Feb 13 07:49:12 2011
+  end time:       Sun Feb 13 07:49:12 2011
+  protocol:       6
+  tos:            0x0
+  src AS:         0
+  dst AS:         0
+  src masklen:    0
+  dst masklen:    0
+</pre>
+
+Get an explanation of what the above display means from 
+<a href="http://networkflowanalysis.com" title="Michael W. Lucas' book 'Network Flow Analysis'">Network Flow Analysis.</a>
+
+##### b. Failure No Output
+
+No output.
+
+Implication: libft.a did not link, you may need to hardcode
+the location of libft.a, as in the first part of the above
+patch.
+
+##### b. Failure undefined symbol
+
+<pre class="screen-output">
+flowdumper /tmp/ft-v05.2011-02-13.075500+1100 | head -20
+/usr/bin/perl:/usr/local/libdata/perl5/site_perl/amd64-openbsd/auto/Cflow/Cflow.so: undefined symbol 'fterr_setid'
+lazy binding failed!
+Segmentation fault (core dumped)
+</pre>
+
+Implication: The binary is not finding the runtime libraries it needs to
+complete execution. You need the second change in the above
+patch.
+
+### <a name="2">2. </a>FlowScan/CUFlow Prerequisites
+
+There are a number of prerequisites highlighted by [Michael W. Lucas' book "Network Flow Analysis."](http://networkflowanalysis.com),
+that need to be installed for FlowScan/CUFlow. Binary tools I install from OpenBSD
+Packages, but perl tools has been simpler to install from CPAN.
+
+- RRDtool, installed 1.2.30p0 from packages which includes dependencies png and libart
+- p5-RRD (install from packages)
+
+The Perl Modules
+
+- RRD
+- Boulder::Stream
+- ConfigReader::DirectiveStyle (get Source and manual install)
+- HTML::Table
+- Net::Patricia (installation prompts to install dependencies, just say YES)
+- Cflow.pm (we already installed that above)
+
+#### The Perl Modules
+
+On first attempt, I tried using the binary Packages, but most of them were revisions
+behind what was needed, so I've used CPAN for installing the Perl Modules.
+
+<pre class="command-line">
+# perl -MCPAN -e shell
+</pre>
+<pre class="screen-output">
+Terminal does not support AddHistory.
+
+cpan shell -- CPAN exploration and modules installation (v1.9402)
+Enter 'h' for help.
+</pre>
+<pre class="command-line">
+cpan[1]> install Boulder::Stream
+cpan[2]> install HTML::Table
+cpan[3]> install Net::Patricia
+cpan[4]> quit
+</pre>
+
+#### ConfigReader::DirectiveStyle 
+
+Get the source from the homepage http://cpan.perl.org/authors/id/A/AM/AMW/
+
+<pre class="command-line">
+# cd /usr/ports/distfiles
+# curl -O http://cpan.perl.org/authors/id/A/AM/AMW/ConfigReader-0.5.tar.gz
+</pre>
+<pre class="screen-output">
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 17592  100 17592    0     0  17350      0  0:00:01  0:00:01 --:--:-- 26335
+</pre>
+<pre class="command-line">
+# cd /tmp
+# tar -zxf /usr/ports/distfiles/ConfigReader-0.5.tar.gz
+# mv ConfigReader-0.5 /usr/local/libdata/perl5/site_perl/amd64-openbsd/ConfigReader
+</pre>
+
+### <a name="3">3. </a> FlowScan
+
+Ref: [FlowScan Homepage](http://net.doit.wisc.edu/~plonka/FlowScan/), [flowscan.pm](http://net.doit.wisc.edu/~plonka/list/flowscan/archive/att-0848/01-FlowScan.pm)
+
+[Dave Plonka](http://net.doit.wisc.edu/~plonka/)'s FlowScan is a 
+"freely-available Internet traffic measurement and analysis tool"
+
+<div clas="toc">
+
+<ul>
+	<li>Get the Source</li>
+	<li>Build and Install</li>
+	<li>Create Account and Paths</li>
+	<li>Configuration</li>
+</ul>
+   
+</div>
+
+#### a. Get the source from the author's site
+
+There are two source packages we need to retrieve, 
+
+-   the full FlowScan source release, and an
+-   updated Perl pm for FlowScan.pm (version 1.6)
+
+The latest release
+[FlowScan-1.006.tar.gz](http://net.doit.wisc.edu/~plonka/FlowScan/FlowScan-1.006.tar.gz) 
+is listed at the [FlowScan Home Page](http://net.doit.wisc.edu/~plonka/FlowScan/)
+
+<pre class="command-line">
+curl -O http://net.doit.wisc.edu/~plonka/FlowScan/FlowScan-1.006.tar.gz
+</pre>
+
+Download using your preferred method.
+
+The latest [FlowScan.pm](http://www.letmebingthatforyou.com/?q=FlowScan.pm Dave Plonka 1.6)
+may require searching on the Internet, with version 1.6 current
+at the time of this install example.
+
+<a href="http://lmgtfy.com/?q=FlowScan.pm+Dave+Plonka+1.6">Google</a> or <a href="http://www.letmebingthatforyou.com/?q=FlowScan.pm Dave Plonka 1.6">Bing</a> for FlowScan.pm 1.6 Dave Plonka</a>
+
+On both services, the 1st result is the actual Perl file.
+
+<pre class="command-line">
+curl -o FlowScan.pm \
+  http://net.doit.wisc.edu/~plonka/list/flowscan/archive/att-0848/01-FlowScan.pm
+</pre>
+
+#### b. Build and Install
+
+Review [Network Flow Analysis](http://networkflowanalysis.com "Michael W. Lucas' book 'Network Flow Analysis'") for rationales
+
+<pre class="command-line">
+# cd /tmp
+# tar -zxf /usr/ports/distfiles/FlowScan-1.006.tgz
+# cd FlowScan-1.006
+# ./configure --prefix=/var/data/netflow/
+</pre>
+
+During configuration you will get an error message of the form:
+
+<pre class="screen-output">
+checking that service name for 80/tcp is http... no
+configure: error: Please change /etc/services so 
+that the service name for 80/tcp is http with alias www
+</pre>
+
+Which must be resolved by updating the file: /etc/services with
+something like the below diff:
+
+<pre class="config-file">
+--- /etc/services.org   Wed Feb 16 03:15:53 2011
++++ /etc/services       Wed Feb 16 03:16:09 2011
+@@ -50,7 +50,7 @@
+ gopher         70/udp
+ rje            77/tcp          netrjs
+ finger         79/tcp
+-www            80/tcp          http    # WorldWideWeb HTTP
++http           80/tcp          www     # WorldWideWeb HTTP
+ www            80/udp                  # HyperText Transfer Protocol
+ link           87/tcp          ttylink
+ kerberos       88/udp          kerberos-sec    # Kerberos 5 UDP
+</pre>
+
+Complete the configuration, and install
+
+<pre class="command-line">
+# ./configure --prefix=/var/data/netflow/
+# make install
+</pre> 
+
+The path /var/data/netflow/bin will now contain the FlowScan software.
+
+##### Update FlowScan.pm to v. 1.6
+
+There's a relevant reason (since we're using flow-tools/netflow) that we
+need the 1.6 release of 1.5.
+
+Copy our FlowScan.pm file over the installed version 1.5
+
+#### c. Create Account and Paths
+
+<pre class="command-line">
+/usr/sbin/groupadd _flowscan
+/usr/sbin/useradd -mv -b /var/data/netflow \
+   -c "FlowScan Daemon" -L "default" -g _flowscan \
+   -s /sbin/nologin _flowscan
+
+mkdir -p /var/data/netflow/flowscandata
+touch /var/log/flowscan.log
+</pre>
+
+#### d. Configuration - FlowScan
+
+The sample configuration files are not copied to the installation folder
+so do this now
+
+<pre class="command-line">
+# cp /tmp/FlowScan-1.006/cf/flowscan.cf /var/data/netflow/bin
+</pre>
+
+##### flowscan.cf::FlowFileGlob
+
+Be explicit with the directory path.
+
+<pre class="config-file">
+FlowFileGlob /var/data//netflow/flowscandata/ft-v*[0-9]
+</pre>
+
+##### flowscan.cf::ReportClasses
+
+We're not going to use the default sample configuration (CampusIO) 
+and need to insert here that we are going to be using CUFlow.
+
+<pre class="config-file">
+ReportClasses CUFlow
+</pre>
+
+##### flowscan.cf::Verbose
+
+<pre class="config-file">
+</pre>
+
+### <a name="4">4. </a>CUFlow
+
+#### Get the Source
+
+Ref: [CUFlow Home Page](http://www.columbia.edu/acis/networks/advanced/CUFlow/CUFlow.html)
+
+- Link to [Directory listing](http://www.columbia.edu/acis/networks/advanced/CUFlow/)
+
+Extract and copy the files CUFlow.cf and CUFlow.pm to the above FlowScan *bin* 
+directory.
+
+The following needs to be modified on your configuration.
+
+<table>
+	<tr>
+		<th>Configuration</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td>Subnet</td>
+		<td>"Local" subnets for differentiation between "sides" of the edge device.</td>
+	</tr>
+	<tr>
+		<td>Network</td>
+		<td>Named network segments for tracking by label.</td>
+	</tr>
+	<tr>
+		<td>OutputDIR</td>
+		<td>Storage location for RRD Data files (e.g. ./flowscanrrd)</td>
+	</tr>
+	<tr>
+		<td>Scoreboard</td>
+		<td>A top X usage style of report per data flow archive.</td>
+	</tr>
+	<tr>
+		<td>AggregateScore</td>
+		<td>Aggregate Top X usage style of report</td>
+	</tr>
+	<tr>
+		<td>Router</td>
+		<td>Identify different sensors (edge-devices) collated
+		in this flow data.</td>
+	</tr>
+	<tr>
+		<td>Service</td>
+		<td>Named Service ports (TCP/IP) to track by label.</td>
+	</tr>
+	
+</table>
+
+#### e. Running
+
+We've created the relevant paths, and configuration files
+so it's time to start flowscan, and a startup script
+helps to ensure everything's in the right place.
+
+<pre style="config-file">
+#!/bin/sh
+PREFIX=/var/data/netflow
+BIN=$PREFIX/bin
+SCANDATA=$PREFIX/scandata
+LOGFILE=/var/log/flowscan.log
+USER=_flowscan
+
+nohup sudo -u _flowscan $BIN/flowscan > $LOGFILE 2>&1 &
+</pre>
+
+Modifications to FlowScan.pm
+
+<pre class="command-line">
+--- FlowScan.pm.org Mon Feb 12 07:41:47 2001
++++ FlowScan.pm      Wed Jan  5
+16:49:09 2011
+@@ -105,6 +105,20 @@
+       }
+       mutt_normalize_time(@tm);
+       return mutt_mktime(@tm, -1, 0)
++   } elsif ($file =~
++            m/(\d\d\d\d)-(\d\d)-(\d\d).(\d\d)(\d\d)(\d\d)([+-])(\d\d)(\d\d)/) {
++      # The file name contains an "hours east of GMT" component
++      my(@tm) = ($6, $5, $4, $3, $2-1, $1-1900, 0, 0, -1);
++      my($tm_sec, $tm_min, $tm_hour, $tm_mday, $tm_mon, $tm_year,
++        $tm_wday, $tm_yday, $tm_isdst) = (0 .. 8); # from "man perlfunc"
++      if ('+' eq $7) { # subtract hours and minutes to get UTC
++        $tm[$tm_min] -= 60*$8+$9
++      } else { # add hours and minutes to get UTC
++        $tm[$tm_min] += 60*$8+$9
++      }
++      mutt_normalize_time(@tm);
++      return mutt_mktime(@tm, -1, 0)
++
+    } elsif ($file =~ m/(\d\d\d\d)(\d\d)(\d\d)_(\d\d):(\d\d):(\d\d)$/) {
+       # The file name contains just the plain old localtime
+       return mutt_mktime($6, $5, $4, $3, $2-1, $1-1900, 0, 0, -1, 1)
+</pre>
+
+The above changes/patch was to factor for the different file format used on
+my set up for storing flows on the hard drive.
+
+Modifications to flowscan.cf
+
+<pre class="command-line">
+--- flowscan.cf.org        Fri Oct  6 12:40:35 2000
++++ flowscan.cf      Wed Jan  5 15:44:01 2011
+@@ -5,13 +5,15 @@
+ # use this glob (file pattern match) when looking for raw flow files to be  # processed, e.g.:
+ # FlowFileGlob /var/local/flows/flows.*:*[0-9] -FlowFileGlob flows.*:*[0-9]
++#FlowFileGlob flows.*:*[0-9]
++FlowFileGlob /var/data/log/netflow/flowscandata/gateway1/ft-v*[0-9]
+
+ # ReportClasses (REQUIRED)
+ # a comma-seperated list of FlowScan report classes, e.g.:
+ # ReportClasses CampusIO
+ # ReportClasses SubNetIO
+-ReportClasses CampusIO
++#ReportClasses CampusIO
++ReportClasses CUFlow
+
+ # WaitSeconds (OPTIONAL)
+ # This should be <= the "-s" value passed on the command-line to cflowd, e.g.: 
+</pre>
+
+Another configuration file will be required for gateway2 ($PREFIX/bin/gateway1 && $PREFIX/bin/gateway2)
+
+Startup Scripts, file: startup_flowscan.sh
+
+<pre class="command-line">
+#!/bin/sh
+
+PREFIX=/var/data/log/netflow
+bindir=$PREFIX/bin
+user=_flowscan
+
+echo 'Startup flowscan'
+logfile=/var/log/flowscan-gateway1.log
+scandir=$PREFIX/flowscandata/gateway1
+echo
+echo ' - gateway1'; nohup $bindir/gateway1/flowscan > $logfile &
+
+logfile=/var/log/flowscan-gateway2.log
+scandir=$PREFIX/flowscandata/gateway2
+echo ' - gateway2'; nohup $bindir/gateway2/flowscan > $logfile &
+</pre>
+
+File Excerpt: /etc/rc.local
+
+<pre class="config-file">
+FLOWCAPTURE=/usr/local/bin/flow-capture
+FLOWPID=/var/run/flow-capture
+FLOWDATA=/var/data/log/netflow
+local_ipaddress=
+gateway1_ipaddress=
+gateway2_ipaddress=
+
+if [ -x ${FLOWCAPTURE} ]; then
+    echo ' flow-capture'
+    printf ' - gateway1'; ${FLOWCAPTURE} -p ${FLOWPID}.ifw.pid \
+		-R /usr/local/bin/flow-rotate_i.sh -n 287 -w ${FLOWDATA}/gateway1 \
+		-S 5 local_ipaddress/gateway1_ipaddress/12345 && \
+           echo "\t\t [OK]" || echo "\t\t [Failed]";
+    printf ' - gateway2      '; ${FLOWCAPTURE} -p ${FLOWPID}.wan.pid \
+		-R /usr/local/bin/flow-rotate_w.sh -n 287 -w ${FLOWDATA}/gateway2 \
+		-S 5 local_ipaddress/gateway2_ipaddress/12346 && \
+           echo "\t\t [OK]" || echo "\t\t [Failed]"; fi
+
+if [ -f /var/data/log/netflow/bin/start_flowscan.sh ]; then
+   printf ' flowscan'; sh /var/data/log/netflow/bin/start_flowscan.sh && \
+           echo "\t\t [OK]" || echo "\t\t [Failed]"; fi echo '.' 
+fi
+</pre>
+
+Related Scripts
+
+- flow-rotate1.sh
+- flow-rotate2.sh
+
+File: flow-rotate1.sh
+
+<pre class="command-line">
+#!/bin/sh
+cp $1 /var/data/log/netflow/flowscandata/gateway1/
+</pre>
+
+File: flow-rotate2.sh
+
+<pre class="command-line">
+#!/bin/sh
+cp $1 /var/data/log/netflow/flowscandata/gateway2/
+</pre>
+
+### <a name="CUFlow"></a>CUFlow
+
+Modify CUFlow.cf
+
+- specify "internal" network subnets
+- specify network ports of interest

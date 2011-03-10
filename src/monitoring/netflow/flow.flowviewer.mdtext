@@ -1,0 +1,102 @@
+## Graphs - Custom Analysis using FlowViewer
+
+### Modifications
+
+<pre class="config-file">
+--- FlowViewer_Configuration.pm.orig Wed Jun 11 05:10:37 2008
++++ FlowViewer_Configuration.pm     Thu Jan
+6 16:37:34 2011
+@@ -40,7 +40,7 @@
+
+ # Server
+
+-$FlowViewer_server       = "www.yourcompany.com";     # (IP address or hostname)
++$FlowViewer_server       = "192.168.21.193";     # (IP address or
+hostname)
+
+ # Service
+
+@@ -48,38 +48,39 @@
+
+ # Directories and Files:
+
+-$reports_directory       = "/htp/htdocs/FlowViewer_3.3.1";
+-$reports_short           = "/FlowViewer_3.3.1";
+-$graphs_directory        = "/htp/htdocs/FlowGrapher_3.3.1";
+-$graphs_short            = "/FlowGrapher_3.3.1";
+-$tracker_directory       = "/htp/htdocs/FlowTracker_3.3.1";
+-$tracker_short           = "/FlowTracker_3.3.1";
+-$cgi_bin_directory       = "/htp/cgi-bin/FlowViewer_3.3.1";
+-$cgi_bin_short           = "/cgi-bin/FlowViewer_3.3.1";
+-$work_directory          = "/htp/cgi-bin/FlowViewer_3.3.1/Flow_Working";
+-$work_short              = "/cgi-bin/FlowViewer_3.3.1/Flow_Working";
+-$save_directory          = "/htp/htdocs/FlowViewer_Saves";
+-$save_short              = "/FlowViewer_Saves";
+-$names_directory         = "/htp/cgi-bin/FlowViewer_3.3.1";
+-$filter_directory        = "/htp/cgi-bin/FlowTracker_Files/FlowTracker_Filters";
+-$rrdtool_directory       = "/htp/cgi-bin/FlowTracker_Files/FlowTracker_RRDtool";
++$reports_directory       = "/var/www/htdocs/FlowViewer";
++$reports_short           = "/FlowViewer";
++$graphs_directory        = "/var/www/htdocs/FlowGrapher";
++$graphs_short            = "/FlowGrapher";
++$tracker_directory       = "/var/www/htdocs/FlowTracker";
++$tracker_short           = "/FlowTracker";
++$cgi_bin_directory       = "/var/www/cgi-bin/FlowViewer";
++$cgi_bin_short           = "/cgi-bin/FlowViewer";
++$work_directory          = "/var/www/htdocs/FlowWorking";
++$work_short              = "/FlowWorking";
++$save_directory          = "/var/www/htdocs/FlowViewer";
++$save_short              = "/FlowViewer";
++$names_directory         = "/var/www/var/flowviewer/names";
++$filter_directory        = "/var/www/var/flowviewer/filters";
++$rrdtool_directory       = "/var/www/var/flowviewer/rrdtool";
+
+-$flow_data_directory     = "/htp/flows";
+-$exporter_directory      = "/htp/flows/all_routers";
+-$flow_bin_directory      = "/usr/bin";
+-$rrdtool_bin_directory   = "/usr/local/rrdtool-1.2.12/bin";
++$flow_data_directory     = "/var/data/log/netflow";
++$exporter_directory      = "/var/www/var/flowviewer/exporter";
++$flow_bin_directory      = "/usr/local/bin";
++$rrdtool_bin_directory   = "/usr/local/bin";
+
+ $actives_webpage         = "index.html";
+-$trackings_title         = "Your Company Name";
+-$user_logo               = "Generic_Logo.jpg";  # For a nice look make your logo 86 pixels high
+-$user_hyperlink          = "http://www.yourcompany.com/";
++$trackings_title         = "Your Company";
++$user_logo               = "Your.Company.Logo.jpg";  # For a nice look make your logo 86 pixels high
++$user_hyperlink          = "http://www.example.com/";
+
+ # General parameters
+
+ $version                 = "3.3.1";
+ $no_devices_or_exporters = "N";
+-@devices                 = ("router_1","router_2","router_3");
+-#@exporters               = ("192.168.100.1:New York
+Router","192.168.100.2:Prague Router");
++#@devices                 =
+("gateway1","gateway2","router_3");
++@devices                  = ("gateway1","gateway2");
++@exporters               = ("gateway1_ipaddress:gateway1","gateway2_ipaddress:gateway2");
+
+ $flow_capture_interval   = (30 * 60);
+ $flow_file_length        = (15 * 60);
+@@ -138,7 +139,8 @@
+
+ # Tracking parameters
+
+-$log_directory      = "/htp/cgi-bin/FlowViewer_3.3.1";
++#$log_directory      = "/var/www/cgi-bin/FlowViewer_3.3.1";
++$log_directory      = "/var/www/var/flowviewer/log";
+ $log_collector_short= "Y";
+ $log_collector_med  = "N";
+ $log_collector_long = "N"; 
+</pre>
+
+Updates to /etc/rc.local
+
+<pre class="config-file">
+PERL5LIB=/var/www/cgi-bin/FlowViewer/ /var/www/cgi-bin/FlowViewer/FlowTracker_Collector &
+PERL5LIB=/var/www/cgi-bin/FlowViewer/ /var/www/cgi-bin/FlowViewer/FlowTracker_Grapher &
+</pre>
