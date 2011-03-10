@@ -1,0 +1,17 @@
+smtpd_recipient_restrictions
+time: 2011-03-10 15:00
+
+
+Another case of trying to avoid the inevitable.
+
+[spamhaus.org](http://spamhaus.org) and [rfc-ignorant.org](http://rfc-ignorant.org)
+are an important part of your overall antispam arsenal. The only problem is
+that although many of these services are free, you do need to at least:
+
+- confirm you are working within their terms of use
+- confirm the services are still valid
+
+[MX Proxy Extended, using Multiple Instances](./comms/mail/postfix/proxy.instances.html)
+has been updated to something that works for me. I'm sure there are better
+solutions out there. But it doesn't hurt to try, or be exposed to other
+methods?
