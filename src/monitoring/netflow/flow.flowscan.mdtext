@@ -14,7 +14,7 @@ Table of Contents
 <ol>
 	<li><a href="#1">Cflow.pm</a>
 		<ul>
-			<li>Build the Ports Tree Source</li>
+			<li>Build the flow-tools Ports Tree Source</li>
 			<li>Get the Source</li>
 			<li>Extract the Source</li>
 			<li>Compiling</li>
@@ -59,28 +59,35 @@ to hopefully discover how to configure it on your system.
 - Compile
 - Verify Build
 
-#### Build the Ports tree source
+#### Build the flow-tools Ports tree source
+
+To compile the Cflow.pm toolset, we need to use compiled components
+of the flow-tools toolkit.
 
 <pre class="command-line">
 # cd /usr/ports/net/flow-tools
-# make package
+# make
 </pre>
 
-For OpenBSD 4.8, the flow-tools source has now been built with the
-correct Makefile configurations for our installed package. The extracted,
-compiled source tree is now in:
+OpenBSD 4.8. To ensure the flow-tools source has now been built with the
+correct configurations for OpenBSD, we choose to use the compiled source
+from the OpenBSD packages. In OpenBSD 4.8, compiled Ports are stored under
+the path: /usr/ports/pobj, so to find the compiled flow-tools, take a look at:
 
 <pre class="command-line">
 /usr/ports/pobj/flow-tools-0.68.5/flow-tools-0.68.5/
 </pre>
 
+In the above directory, will be the textfile ./contrib/README 
+which provides further information for compiling extensions
+to the flow-tools toolkit (such as Cflow.pm)
+
 #### Get the Source
 
 Ref: [http://net.doit.wisc.edu/~plonka/Cflow/](http://net.doit.wisc.edu/~plonka/Cflow/)
 
-For some reason, I initially couldn't follow instructions for finding the source
-files? The above page shows the current(?) release which you can manually
-download.
+There is no package for Cflow.pm, so we need to download the source files and compile it.
+The above page shows the current(?) release which you can then download.
 
 <pre class="command-line">
 # cd /usr/ports/distfiles/
@@ -92,12 +99,9 @@ download.
 100 42007  100 42007    0     0  18839      0  0:00:02  0:00:02 --:--:-- 27874
 </pre>
 
-Refer to the flow-tools contrib/README for further details.
-
 #### Extract the source
 
-The Cflow.pm package needs to be compiled from within
-the 'contrib' directory of the flow-tools source.
+Extract the contents of the downloaded archive file.
 
 <pre class="command-line">
 # cd /usr/ports/pobj/flow-tools-0.68.5/flow-tools-0.68.5/contrib/
@@ -119,8 +123,14 @@ Cflow-1.053/flowdumper.PL
 
 #### Compiling
 
-Before we can successfully compile Cflow for OpenBSD, we
-need to make the below modifications to the Makefile.PL
+Notes for compiling the Cflow.pm toolkit is included in
+the file Cflow-version/README. 
+
+- 	The Cflow.pm package needs to be compiled from within 
+	the 'contrib' directory of the flow-tools source.
+
+To complete the compilation, a few modifications need to
+be made to the generic configuration file: Makefile.PL
 
 <pre class="config-file">
 --- Makefile.PL.org     Tue Feb 15 22:33:05 2011
@@ -143,7 +153,8 @@ need to make the below modifications to the Makefile.PL
 Without the above changes, the flowdumper program cannot
 find libft.a and displays no output or causes a Segmentation Fault.
 
-After the above changes to Makefile.PL
+After the above changes to Makefile.PL, we build the make configuration Makefile and 
+run a 'make' and install.
 
 <pre class="command-line">
 # perl Makefile.PL
@@ -186,6 +197,8 @@ Manifying blib/man1/flowdumper.1
 Files found in blib/arch: installing files in blib/lib into architecture dependent library tree
 Appending installation info to /usr/libdata/perl5/amd64-openbsd/5.10.1/perllocal.pod
 </pre>
+
+The difficult part is done.
 
 #### Verifying Build
 
@@ -242,7 +255,7 @@ Implication: libft.a did not link, you may need to hardcode
 the location of libft.a, as in the first part of the above
 patch.
 
-##### b. Failure undefined symbol
+##### c. Failure undefined symbol
 
 <pre class="screen-output">
 flowdumper /tmp/ft-v05.2011-02-13.075500+1100 | head -20

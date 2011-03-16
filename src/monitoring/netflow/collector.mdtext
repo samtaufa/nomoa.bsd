@@ -39,9 +39,18 @@ http://www.openbsd.org/faq/faq15.html#PkgMgmt). The package install is
 sufficient to validate the sensors/collectors are correctly communicating, 
 and to verify flow-tools can review the captured data.
 
+<pre class="command-line">
+$ sudo pkg_add flow-tools
+</pre>
+
 At a later stage of installing analysis tools, we will build the package 
 from source using the [Ports](http://www.openbsd.org/faq/faq15.html#Ports) 
-tree. 
+tree, because we will need the compiled objects and libraries. 
+
+<pre class="command-line">
+# cd /usr/ports/net/flow-tools
+# make
+</pre>
 
 ### <a name="2"></a> 2. Data Paths
 

@@ -79,26 +79,36 @@ analysis tools.
 	
 ### <a name="4"></a> 4. Analysing Data
 
+In our workflow, we monitor traffic latency using [smokeping](smokeping.html). When latency
+changes dramatically, an indicator of changes in network utilisation, we drill further
+into the problem by analysing the captured netflow data.
+
 #### Console
 
-Console analysis is provided with flow-tools, but more graphical
-tools are also available.
+Console analysis is provided with flow-tools, and the best tutorial
+I've found is [Michael W. Lucas'](http://www.michaelwlucas.com) book 
+[Network Flow Analysis.](http://networkflowanalysis.com)
+
+Save yourself the time, use the GUI tools, and then get Michael's book.
 
 #### GUI Frontends
 
-In a standard workflow environment, we monitor general traffic using [smokeping](smokeping.html)
-get a live view of an effected link using [FlowScan/CUFlow](netflow/flow.flowscan.html) to
-determine general flow issues, and then drill deeper for specifics using
+A general overfiew of traffic behaviour can be extracted using
+link using [FlowScan/CUFlow](netflow/flow.flowscan.html).
+
+
+To get more specifics on the traffic, and behaviour of specific
+hosts or ports, we then drill deeper using
 [FlowViewer](netflow/flow.flowviewer.html)
 
-[Flow - Graphs](netflow/flow.flowscan.html) reviews the Graphing front-ends
-FlowScan/CUFlow.
+- 	[Flow - Graphs](netflow/flow.flowscan.html) reviews the Graphing front-ends
+	FlowScan/CUFlow.
+- 	[Flow - Custom](netflow/flow.flowviewer.html) reviews the Graphing front-end
+	FlowViewer, which supports more extended customisation/analysis than FlowScan/CUFlow.
 
-[Flow - Custom](netflow/flow.flowviewer.html) reviews the Graphing front-end
-FlowViewer, which supports more extended customisation/analysis than FlowScan/CUFlow.
-
-When diagnostics are required, we can use the historical data available from
-[smokeping](smokeping.html) and [FlowViewer](netflow/graphs.flowviewer.html)
+the historical data visible through [smokeping](smokeping.html) and 
+[FlowViewer](netflow/graphs.flowviewer.html) is very useful for 
+communicating network behaviour extending over long periods of time.
 
 ### <a name="5"></a>5. Reference Resource
 
