@@ -1,0 +1,169 @@
+Mitigating against Denial of Service
+time: 2011-03-10 15:20
+
+Eventually had to get to the point of explicitly looking
+at potential denial of service attacks on the firewall.
+
+For now we've implemented the following stratagem.
+
+- 	meter traffic and define what is abusive behaviour, 
+- 	for traffic classified as abusive, put these 
+	IP Addresses in a bucket/table 
+- 	drop any existing states from &lt;abusive> users
+- 	block any further connections from that IP Address
+-	At a later time, re-open connections from that IP Address
+
+Your mileage may vary, but since it took almost an hour to figure out how
+these things work, I'm putting it up here as a pointer to read the manuals
+with some clearer understanding.
+
+Fragments: /etc/pf.conf
+
+<pre class="config-file">
+table &lt;abusers&gt; {}
+
+block drop in log quick on $external_if from &lt;abusers> to any
+
+pass out quick on $dmz_if tagged INTERNET_DMZ
+
+pass in on $external_if from any to &lt;webservers> \
+    port https flags S/SA synproxy state \
+	(max-src-nodes 50, max-src-conn 200, max-src-conn-rate 100/10, \
+	overload &lt;abusers&gt; flush global) \
+	tag INTERNET_DMZ
+</pre>
+
+OpenBSD's Packet Filter supports a number of options, to monitor
+and manage the 'state' of packets as they traverse the firewall:
+"[Stateful Tracking Options](http://www.openbsd.org/faq/pf/filter.html#stateopts)"
+
+### Meter Traffic, Define Abusive Behaviour, 
+
+[Stateful Tracking Options](http://www.openbsd.org/faq/pf/filter.html#stateopts)
+that let us meter the traffic include the sample rule shown above:
+
+<pre class="config-file">
+pass in ... \
+    ... \
+	(max-src-nodes XXX, max-src-conn XXXX, max-src-conn-rate XXX/XX, \
+	...) \
+	...
+</pre>
+
+In our above example, we use the parameters **max-src-nodes**, 
+**max-src-conn**, and **max-src-conn-rate** to specify the
+maximum number of connections that we will allow, before
+we classify the connections as behaving abusively.
+
+You're best bet for what those settings mean, is to look it
+up in the $!manpage('pf.conf')!$ manpage and FAQ. Below
+is a simplified explanatory.
+
+-	**max-src-node** defines the maximum number of remote nodes
+	that may connect through this rule. For our example we know this
+	https service is through a very limited bandwidth, and
+	services have a small local client base.
+-	**max-src-conn** defines the maximum number of connections
+	from a remote node supported by this rule. For our example,
+	we observe many connections for the web service from a 
+	single user connection.
+-	**max-src-conn-rate** defines, for a remote node's connection,
+	the maximum number of connections per second. For our
+	example, the metered rate is sufficient for our users.
+
+Any IP Address that breeches **any** of the above boundaries
+will categorise that IP Address. For a site allowing 50 max-src-nodes,
+if it is under attack and your legitimate user is node #51, they will 
+be blocked together with other members of the DDOS attack.
+
+Solving that particular solution, is left up to the users ingenuity.
+But, there's enough flexibility in $!manpage('pf')!$ to let you
+deal with the above gracefully.
+	
+### Abusive IP Addresses in a table 
+
+When network traffic for the above rule exceeds the set maximum
+boundaries, we categorise IP Addresses exceeding these boundaries
+by placing them in a PF table &lt;abusers>
+
+<pre class="config-file">
+pass in ... \
+    ... \
+	(... , \
+	overload &lt;abusers> ...) \
+	tag INTERNET_DMZ
+</pre>
+
+The table &lt;abusers> will now contain IP Addresses of any remote
+node that has exceeded our set boundaries.
+
+### Drop Existing States
+
+The presumption, in this sample, is that if a remote node is abusing
+connections to our site, then we need to drop all connections from 
+that IP Address.
+
+<pre class="config-file">
+pass in ... \
+    ... \
+	(... , \
+	... flush global) \
+	...
+</pre>
+
+### Block Connections from that IP Address
+
+<pre class="config-file">
+block drop in log quick on $external_if from &lt;abusers> to any
+</pre>
+
+### Un-Block Connections from that IP Address
+
+We can use $!manpage('pfctl')!$ to remove IP Addresses that have been
+in the &lt;abusers> table for a set amount of time.
+
+At the command-line, we can use something like the below
+
+<pre class="command-line">
+pfctl -t abusers -T expire 3600
+</pre>
+
+Which would transfer to a regular/scheduled check in your 
+$!manpage('crontab')!$ to something like this.
+
+<pre class="config-file">
+*/5       *      *      *      *      pfctl -t abusers -T expire 3600
+</pre>
+
+We now have examples of some mechanisms for monitoring and
+mitigating against Denial of Service. The cool thing about the
+OpenBSD packet filter solution, is that you have enough hooks
+into the system that you can build upon it using $!manpage('pfctl')!$ 
+for a more complicated solution when your environment requires it.
+
+We also leave as an exercise, reading up on further [PF filtering](http://www.openbsd.org/faq/pf/filter.html):
+
+<pre class="config-file">
+pass in ... \
+    ... <a href="http://www.openbsd.org/faq/pf/filter.html#tcpflags">flags S/SA</a> <a href="http://www.openbsd.org/faq/pf/filter.html#synproxy">synproxy</a> state \
+	... \
+	... \
+	...
+</pre>
+
+What else do we have in OpenBSD's Packet Filter to mitigate
+against Denial of Service attacks ? There's more you can look up
+together with what's been alluded to above:
+
+- 	Access Controls
+-	Rate Limiting
+-	Traffic Shaping
+-	Quality of Service
+-	Packet Re-assembly
+-	SYN Proxy
+
+And then, there is your ingenuity to mould the above tools to your
+directions. I'm sure you all got that, and more, from reading through 
+the man pages (and if you didn't, please share your discovery with us?)
+
+Stay Safe.
