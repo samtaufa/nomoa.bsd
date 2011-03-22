@@ -24,8 +24,8 @@ want to find a file. Update the file/location database by using the
 locate.updatedb program and then interrogate (search in) the database
 by using locate. Start locate.updatedb.
 
-<pre class="command-line">#
-/usr/libexec/locate.updatedb 
+<pre class="command-line">
+# /usr/libexec/locate.updatedb 
 # locate filename
 </pre>
 

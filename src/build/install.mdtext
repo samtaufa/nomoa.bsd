@@ -5,8 +5,8 @@
 Table of Contents
 
 <ul>
-  <li> <a href="#submit.dmesg">Submit DMESG</a></li>
-  <li> Packages</li>
+  <li><a href="#submit.dmesg">Submit DMESG</a></li>
+  <li><a href="#packages">Packages></a></li>
   <li><a href="#user.accounts">User Accounts</a>
       <ol>
           <li> User Shell</li>
@@ -59,7 +59,7 @@ to the project to get copies of system messages with each new release.
 or, if the machine does not have e-mail access then save the contents to
 a file for sending.
 
-#### Packages
+#### <a name="packages">Packages</a>
 
 Ref: [3. Packages](preview/packagemanagement.html)
 
@@ -417,6 +417,46 @@ security:   root
 </pre>
 
 ### <a name="auditing">Auditing</a>
+
+#### <a name="patchreview">Patch Review</a>
+
+Ref: [Errata](http://www.openbsd.org/errata48.html) | 
+[Current Changelog](http://www.openbsd.org/plus.html)
+
+The best way of keeping tabs of security updates to the OpenBSD ecosystem
+is to follow the [mailing lists](http://www.openbsd.org/mail.html).
+
+The web interface for reviewing changes, are a smaller subset of
+reported updates normally available in the web [Errata](
+http://www.openbsd.org/errata48.html) and [Current Changelog](
+http://www.openbsd.org/plus.html).
+
+The Errata pages list updates (and where possible, patches) for Stable releases
+of OpenBSD. The url/filename for errata pages are usually in the form
+errataXY.html where XY is the major/minor version numbers.
+
+For example:
+
+-	[errata21.html](http://www.openbsd.org/errata21.html)
+-	[errata35.html](http://www.openbsd.org/errata35.html)
+-	[errata48.html](http://www.openbsd.org/errata48.html)
+
+Changelogs show many of the machine-independent changes between the previous
+release and the versioned release. This lists further service/application
+specific updates that may be useful in your environment.
+
+For example: 
+
+-	[Current Changelog](http://www.openbsd.org/plus.html) normally has the changes between
+	the latest "stable" release and current code development.
+-	[plus49.html](http://www.openbsd.org/plus49.html) holds the changes between
+    the OpenBSD 4.8 release and OpenBSD 4.9.
+-	[plus20.html](http://www.openbsd.org/plus20.html) holds the changes between
+    the OpenBSD 4.8 release and OpenBSD 4.9.
+	
+Note, that not all updates are listed on these pages. For a more complete
+list of changes, you can follow the source code updates at source-changes,
+or ports-changes [mailing list](http://www.openbsd.org/mail.html).
 
 #### <a name="nmapscan">nmap scan</a>
 
