@@ -168,7 +168,11 @@ class ShowSrc:
         f = file(os.path.join(self.d, path)).read()
         if proc:
             f = proc(f)
-        post = "<div class=\"fname\">(%s)</div>"%path
+        post = """
+<div class=\"fname\">
+(%s)
+</div>
+"""%path
         return f + post
 
     def py(self, path, **kwargs):
@@ -178,7 +182,8 @@ class ShowSrc:
         return """
 <pre class="%s">
 %s
-</pre>""" % (self.klass, f)
+</pre>
+""" % (self.klass, f)
 
     def plain(self, path):
         return self._wrap(self._preProc, path)
