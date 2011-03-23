@@ -6,40 +6,36 @@ Table of Contents
 
 <ul>
   <li><a href="#submit.dmesg">Submit DMESG</a></li>
-  <li><a href="#packages">Packages></a></li>
+  <li><a href="#packages">Packages</a></li>
   <li><a href="#user.accounts">User Accounts</a>
-      <ol>
-          <li> User Shell</li>
-          <li> Groups</li>
-          <li> Passwords, SSH Public Keys</li>
-          <li> Sudoers</li>
-          <li> AuthPF</li>
-      </ol></li>
   <li><a href="#system.configuration">System Configuration</a>
       <ol>
-          <li> Logs - newsyslog</li>
-          <li> inetd.conf</li>
-          <li> firewall / pf.conf</li>
-          <li> /etc/ssh/sshd</li>
+          <li> <a href="#sc.newsyslog">newsyslog - Trim Log Files</a></li>
+          <li> <a href="#sc.inetd">inetd.conf - Super Daemon</a></li>
+          <li> <a href="#sc.pf">pf.conf - Firewall Config</a></li>
+          <li> <a href="#sc.sshd">sshd_config - SSH Daemon</a></li>
+          <li> <a href="#sc.ssh">ssh_config - ssh client config</a></li>
+          <li> <a href="#sc.sysctl">sysctl.conf - System Knobs</a></li>
+          <li> <a href="#sc.aliases">aliases - Mail Aliases</a></li>
       </ol></li>
   <li><a href="#auditing">Auditing</a>
       <ol>
-          <li> Patch Review</li>
-          <li> <a href="#nmapscan">nmap scan</a></li>
-          <li> Package checklist</li>
+          <li> <a href="#a.patch">Patch Review</a></li>
+          <li> <a href="#a.nmapscan">nmap scan</a></li>
+          <li> <a href="#a.package">Package checklist</a></li>
       </ol></li>
-  <li><a href="#maintenance">Maintenance</a>
+  <li><a href="#maintenance">Maintenance</a></a>
       <ol>
-          <li> Syncback - Configuration Archiving</li>
-          <li> Log Archiving</li>
-          <li> System Status</li>
-          <li> Authentication Summaries</li>
+          <li> <a href="#m.config">Syncback - Configuration Archiving</a></li>
+          <li> <a href="#m.archiving"> Archiving - root cron jobs</a></li>
+          <li> <a href="#m.monitors">Special Monitors - monitor cron jobs</a></li>
+          <li> <a href="#m.authentication">Authentication Summaries</a></li>
       </ol></li>
 </ul>
 
 </div>
 
-Ref: [FAQ 4 - Installation Guide](http://www.openbsd.org/faq/faq4.html)
+&#91;Ref: [FAQ 4 - Installation Guide](http://www.openbsd.org/faq/faq4.html)]
 
 #### <a name="submit.dmesg">Submit DMESG</a>
 
@@ -61,7 +57,7 @@ a file for sending.
 
 #### <a name="packages">Packages</a>
 
-Ref: [3. Packages](preview/packagemanagement.html)
+&#91;Ref: [3. Packages](preview/packagemanagement.html)
 
 Downloading packages for installation seems to be the biggest cause
 for time delay during a system build process. But that doesn't mean
@@ -115,9 +111,9 @@ user creation process, which we further discuss in the following pages.
 
 Things to maximise security and maintainability post production rollout.
 
-#### Log Files
+#### <a name="sc.newsyslog"></a> newsyslog - Trim Log Files
 
-[Ref: $!manpage("newsyslog",8)!$]
+&#91;Ref: $!manpage("newsyslog",8)!$]
 
 Log files can be your single largest collection of 'growing' files.
 Make sure you understand, know where it is stored on your system
@@ -157,7 +153,7 @@ For OpenVPN Hosts
 The OpenVPN configuration updates, are related to standard changes we
 make for log file locations in the OpenVPN Server.
 
-#### inetd.conf
+#### <a name="sc.inetd"></a> inetd.conf
 
 Remove all unnecessary services listed on inetd.conf.
 
@@ -216,11 +212,11 @@ sudo kill -HUP `cat /var/run/inetd.pid`
 Audit the above changes using the `grep' sequence of commands as well as
 using 'nmap' discussed further below.
 
-#### pf.conf
+#### <a name="sc.pf"></a> pf.conf - Packet Filter Configuration
 
 OpenBSD 4.6 and later releases enable the firewall by default. 
 
-Remember to enable IP Forwarding if you intent to release this box as a  firewall.
+Remember to enable IP Forwarding if you intend to release this box as a  firewall.
 
 Refer to the PF FAQ for current details: http://www.openbsd.org/faq/pf/index.html
 
@@ -245,7 +241,7 @@ $ sudo /sbin/pfctl -nf /etc/pf.conf
 
 Check any errors that may be displayed.
 
-#### sshd_config
+#### <a name="sc.sshd"></a> sshd_config - SSH Daemon
 
 Release installations should:
 
@@ -322,7 +318,7 @@ Force sshd to reload it's configuration by sending it a SIGHUP signal
 kill -HUP `cat /var/run/sshd.pid`
 </pre>
 
-#### ssh_config
+#### <a name="sc.ssh"></a> ssh_config - ssh client config
 
 Determine whether you want Agent Forwarding.
 <pre class="command-line">
@@ -333,9 +329,15 @@ grep -i agent /etc/ssh/ssh_config
 ForwardAgent yes
 </pre>
 
-#### sysctl.conf
+#### <a name="sc.sysctl"></a> sysctl.conf - System Startup Knobs
+
+[Ref: $!manpage("sysctl.conf",5)!$, $!manpage("sysctl",8)!$ ]
 
 Disable unnecessary features.
+
+$!manpage("sysctl.conf",5)!$ contains Kernel State knobs that OpenBSD reads on startup
+to set these kernel knobs. The kernel knobs can be manipulated at
+run-time using the $!manpage("sysctl",8)!$
 
 * IPv6 = off
 
@@ -366,7 +368,7 @@ net.inet.ip.forwarding=1
 </pre>
 
 
-#### aliases
+#### <a name="sc.aliases"></a> aliases - Mail Aliases
 
 Configure _root_ mail to go to the designated monitoring team account,
 in our configuration we use a special user account *__monitor* :
@@ -378,7 +380,7 @@ For example, ensure email for the 'root' account is delivered to the *__monitor*
 by editing the alias file as in the below.
 
 <pre class="screen-output">
-root:           __monitor
+root:           **monitor**
 </pre>
 
 Rebuild the alias hash file using newaliases
@@ -418,9 +420,9 @@ security:   root
 
 ### <a name="auditing">Auditing</a>
 
-#### <a name="patchreview">Patch Review</a>
+#### <a name="a.patch">Patch Review</a>
 
-Ref: [Errata](http://www.openbsd.org/errata48.html) | 
+&#91;Ref: [Errata](http://www.openbsd.org/errata48.html) | 
 [Current Changelog](http://www.openbsd.org/plus.html)
 
 The best way of keeping tabs of security updates to the OpenBSD ecosystem
@@ -458,7 +460,7 @@ Note, that not all updates are listed on these pages. For a more complete
 list of changes, you can follow the source code updates at source-changes,
 or ports-changes [mailing list](http://www.openbsd.org/mail.html).
 
-#### <a name="nmapscan">nmap scan</a>
+#### <a name="a.nmapscan">nmap scan</a>
 
 External scan for open ports using nmap. There should be a clear rationale to why any specific port should be kept open.
 
@@ -495,7 +497,7 @@ IP ID Sequence Generation: Randomized
 Final times for host: srtt: 281 rttvar: 290  to: 100000
 </pre>
 
-### Package Checklist
+### <a name="a.package"></a> Package Checklist
 
 <pre class="command-line">
 $ pkg_info
@@ -526,47 +528,39 @@ wget-1.10.2p1       retrieve files from the web via HTTP, HTTPS and FTP
 zsh-4.3.5           Z shell, Bourne shell-compatible
 </pre>
 
-### Patch Review
-
-Check appdata for the current stable releases of the installation and certify choices taken.
 
 ### <a name="maintenance">Maintenance</a>
 
--   Syncback - Configuration Archiving
--   Log Archiving
--   System Status
--   Authentication Summaries
+The following are really of no value outside of how I'm doing things, but
+I'm putting it together here, because it simplifies my list of things
+to review (this one document)
 
-General maintenance log archiving is pre-empted through various cron jobs.
+A basic host maintenance configuration, will include archiving:
+
+-   Configuration Files
+-   Logs
+
+We handle the above archiving process through a set of scripts that are
+executed either as the 'root' user, or as the special 'monitor' account
+that we use explicitly for maintenance, monitoring.
 
 #### ROOT's cron
 
+The scripts that we execute as the 'root' user can be automated through
+root's cron as in the below:
+
+- Generate a current Package List
+- Archive Configuration Files
+- Archive Logs
+
 <pre class="config-file">
-00  19  *  *  *  /bin/sh /usr/local/sbin/backup.configs.sh > /dev/null 2>&amp;1
 50  18  *  *  *  /bin/ls -1 /var/db/pkg/ > /etc/packagelist.txt
+00  19  *  *  *  /bin/sh /usr/local/sbin/backup.configs.sh > /dev/null 2>&amp;1
 10  19  *  *  *  /bin/sh /usr/local/sbin/archlogs > /dev/null 2>&amp;1
 </pre>
 
-Basic root configuration includes maintaining current state of
 
-1. Configuration Archiving
-2. Installed Packages
-3. Archiving Log Files
-
-##### Configuration Archiving
-
-In our *simplified approach* to [configuration management](../config.html), a basic 
-script is executed by 'root' to archive files in configuration
-paths, such as /etc.
-
-Review our Configuration Archiving for futher details of this
-related approach.
-
--   /usr/local/sbin/backup.configs.sh
--   /etc/backup.configs
--   /etc/backup.configs.exclude
-
-##### Installed Packages
+##### Generate a Package List
 
 We maintain a text file list of installed packages in /etc,
 so that we can backup this information together with standard
@@ -577,21 +571,69 @@ to ensure:
 
 -   Local copies of packages related to this host install
     are maintained.
+-	Building a Restoration ISO can be scripted to include
+    packages from the Package List.
 -   Restoration of this host can be scripted (this support
     allows for scrpted re-installation of packages.)
+
+<pre class="command-line">
+/bin/ls -1 /var/db/pkg/ > /etc/packagelist.txt
+</pre>
+
+On a daily schedule, we generate a list of installed packages.
+
+##### Archive Configuration Files
+
+In our *simplified approach* to [configuration management](../config.html), a basic 
+script is executed by 'root' to archive files in configuration
+paths, such as /etc.
+
+Review our Configuration Archiving for futher details of this
+related approach.
+
+-	/var/syncback
+-   /usr/local/sbin/backup.configs.sh
+-   /etc/backup.configs
+-   /etc/backup.configs.exclude
+
+Path: /var/syncback
+
+The destination directory for the archives.
+
+File: /etc/backup.configs
+
+-	Is a line-separated list of files or directories to be archived.
+
+File: /etc/backup.configs.exclude
+
+-	Is a line-separated list of files or directories, not to be archived.
+
+File: backup.configs.sh
+
+$!showsrc.config("build/install/backup.configs.sh")!$
+
+The sample script may be a bit too verbose, cut it down for your own
+needs.
 
 ##### Archiving Log Files
 
 Install and review the `archlog` script
 
-#### __monitor's cron
+File: archlogs
+
+$!showsrc.config("build/install/archlogs")!$
+
+The sample script may be a bit too verbose, cut it down for your own
+needs.
+
+#### **monitor's cron**
 
 
 <pre class="config-file">
 20  19  *  *  *  /bin/sh /usr/local/sbin/backup.peer.configs.sh > /dev/null 2>&amp;1
 </pre>
 
-Basic __monitor user configuration includes maintaining current state of peer
+Basic **monitor** user configuration includes maintaining current state of peer
 hosts not accessible from other hosts. The backup.peer.configs.sh script is
 responsible for hosts hidden behind this host (such as CARP peers without
 accessible IP addresses, or hosts behind a firewall.)

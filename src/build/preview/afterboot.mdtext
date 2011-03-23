@@ -20,7 +20,7 @@ Table of Contents
 
 </div>
 
-[Ref: $!manpage("afterboot",8)!$]
+&#91;Ref: $!manpage("afterboot",8)!$]
 
 The $!manpage("afterboot")!$ man pages list a sequence of issues to review after
 the OpenBSD system has been configured and is up and running. For the
@@ -175,7 +175,7 @@ you will see this additional information for many network devices.
 
 ##### <a name="net_routing"></a>Routing Configuration
 
-[ref: $!manpage("netstat")!$ | $!manpage("route")!$ ]
+&#91;Ref: $!manpage("netstat")!$ | $!manpage("route")!$ ]
 We can check the network routing using <b>netstat -r -n</b>
 
 <pre class="command-line">

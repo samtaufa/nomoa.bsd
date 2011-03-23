@@ -1,6 +1,6 @@
 ## Configuring Sudo Privileges
 
-[ref: $!manpage("sudo",8)!$, $!manpage("sudoers",5)!$ ]
+&#91;Ref: $!manpage("sudo",8)!$, $!manpage("sudoers",5)!$ ]
 
 There are two elements to modifying the /etc/sudoers configuration file.
 

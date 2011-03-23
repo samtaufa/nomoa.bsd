@@ -5,40 +5,50 @@
 Table of Contents
 
 <ul>
-<li><a href="#installPMpico">Example: Installing a nice little editor</a></li>
-<li><a href="#instPMbash2">Example: Installing Bash 2 - local</a></li>
-<li><a href="#instPMbash2ftp">Example: Installing Bash 2 - ftp</a>
-<ul>
-  <li><a href="#instPMdontknow">Example: Don't know the package or ftp directory ?</a></li>
-</ul></li>
+	<ul>Examples
+		<li><a href="#installPMpico">nice little editor</a></li>
+		<li><a href="#bash2">Bash 2 - local</a></li>
+		<li><a href="#bash2ftp">Bash 2 - ftp</a></li>
+		<li><a href="#dontknow">Unknown Location</a></li>
+	</ul>
 </ul>
 
 </div>
 
-&#91;Ref: $!manpage("pkg_add")!$ | $!manpage("pkg_info")!$ | $!manpage("pkg_delete")!$ |
+&#91;Ref: $!manpage("pkg_add",1)!$ | $!manpage("pkg_info",1)!$ | $!manpage("pkg_delete",1)!$ |
 [FAQ 15 - The OpenBSD packages and port system](http://www.openbsd.org/faq/faq15.html)&#93;
 
 [Config location: /usr/src ] 
 
-[ref: [OpenBSD FAQ - Section 8](http://www.openbsd.com/faq/faq8.html#8.7)]
+&#91;Ref: [OpenBSD FAQ - Section 8](http://www.openbsd.com/faq/faq8.html#8.7 "General Questions")]
  
-OpenBSD stores binary executables in what is termed 'packages.'
-These packages store the information required to safely install the
-binaries, libraries, and documentation distributed for that program.
-Packages are generally pre-compiled binaries configured for the OpenBSD
-disk layout and database of installed software. The benefits of
-packages include resolving dependencies (on other libraries and
-applications.)
+The OpenBSD Project provides application binary executables in 
+what are termed 'packages.' These packages store the information 
+required to safely install the binaries, documentation, and 
+dependencies such as libraries. Packages are configured for 
+the OpenBSD disk layout and database of installed software. 
+The benefits of packages include someone else figuring out
+how to install the software 'correctly,' including resolving 
+dependencies (such as what else do you need to make sure that
+this program will run.)
 
-Three utilities are used for administration (adding [pkg_add],
-deleting [pkg_delete], and query [pkg_info])
+Three Package Administration tools you will most likely come-across are:
 
-For those new to packages (like me) I change to the directory
-containing the packages before using pkg_add (this is not necessary and
-is explained later in setting environment variables for bash, my
-preferred shell.)
+-	adding $!manpage('pkg_add')!$,
+-	deleting $!manpage('pkg_delete')!$, and 
+-	query $!manpage('pkg_info')!$
 
- The general format for using pkg_add is:
+For those new to packages (and haven't read through the FAQ Entries) 
+change your working directory to where the packages are stored before 
+using pkg_add (this is not necessary and is explained later in setting 
+environment variables.)
+
+This guide will give you some simple useage scenarios of using 
+Package Management to install a package. If you wish to gain greater
+control of you application, then you will need to look at using
+the 'ports' system.
+
+The general format for using pkg_add is:
 
 <pre class="command-line">
 # pkg_add -v /[path-to-package]/filename
@@ -114,7 +124,7 @@ for command-line options, especially the "-w" command line option to
 turn off auto-wordwrap. 'pico -w file' is a quick and easy editor for
 Unix.
 
-#### <a name="instPMbash2"></a>Example - Installing Bash 2
+#### <a name="bash2"></a>Example - Installing Bash 2
 
 [package: bash-2.04-static.tgz | config file: /etc/shells]
 
@@ -199,7 +209,7 @@ include bash as a valid login shell.
 Include the above line (/usr/local/bin/bash) into the /etc/shells
 file.
 
-#### <a name="instPMbash2ftp"></a>Example - Installing Bash 2 - ftp
+#### <a name="bash2ftp"></a>Example - Installing Bash 2 - ftp
 
 For those without the release CDs, performing a pkg_add from an ftp
 connection is no more difficult than the above, as shown in the below
@@ -221,7 +231,7 @@ pkg_add uses ftp to retrieve from my internal ftp site
 per the same operation above. You can replace 192.168.101.77 with any
 valid ftp site which holds the package you wish to install.
 
-##### <a name="instPMdontknow"></a>Example - Don't know the package or ftp directory ?
+##### <a name="dontknow"></a>Example - Don't know the package or ftp directory ?
 
 If you do not know what the package name is, or the specific
 directory the file is located, you can still perform an ftp pkg_add.

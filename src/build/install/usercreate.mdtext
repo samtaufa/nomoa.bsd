@@ -1,6 +1,6 @@
 ## Creating New Users
 
-Ref: [BSD Certification](http://www.bsdcertification.org/downloads/user_management.pdf) |
+&#91;Ref: [BSD Certification](http://www.bsdcertification.org/downloads/user_management.pdf) |
 [User Administration](../install/useradmin.html)  | 
 [FAQ 10](http://www.openbsd.org/faq/faq10.html#AddDelUser)
 
@@ -111,7 +111,7 @@ is disabled and sshd restarted.
 
 ##### User Passwords
 
-Ref: [spew.pl](http://www.perlmonks.org/?node_id=124838) 
+&#91;Ref: [spew.pl](http://www.perlmonks.org/?node_id=124838) ]
 
 During account creation, we always generated random passwords.
 Fortunately, our host access policy is secured physical access

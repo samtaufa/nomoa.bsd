@@ -304,7 +304,7 @@ Please remember to read their documentation, together with this, to ensure your
 
 #### <a name="osbs1"></a>OS Boot Selector (os-bs 1.35)
 
-<p class="pFileReference">[ref: installation CD, go on and get radical, buy one. 
+<p class="pFileReference">&#91;Ref: installation CD, go on and get radical, buy one. 
 It is also available from the OpenBSD ftp site.]</p>
   
 <p>Operating System Boot Selector (OS-BS) is supplied as a self-extracting MSDOS 
@@ -359,7 +359,7 @@ prompt you to choose which OS to boot.</p>
 
 ### <a name="osbs2b8"></a> OS Boot Selector 2.0Beta8
 
-<p class="pFileReference">[ref: <a href="http://www.prz.tu-berlin.de/%7Ewolf/os-bs.html">http://www.prz.tu-berlin.de/~wolf/os-bs.html</a>]</p>
+<p class="pFileReference">&#91;Ref: <a href="http://www.prz.tu-berlin.de/%7Ewolf/os-bs.html">http://www.prz.tu-berlin.de/~wolf/os-bs.html</a>]</p>
 
 OS-BS 2.0Beta8 is an updated development from the 1.x serious <a href="http://www.prz.tu-berlin.de/%7Ewolf/os-bs.html">http://www.prz.tu-berlin.de/~wolf/os-bs.html</a> 
 Fortunately a commercial venture bought up the distribution rights to the software, 
@@ -402,7 +402,7 @@ Features: </p>
 
 ### <a name="mattsoft"></a>mattsoft Boot Manager
 
-<p class="pFileReference">[ref: <a href="http://www.penguin.cz/%7Emhi/mbtmgr">http://www.penguin.cz/~mhi/mbtmgr</a>]</p>
+<p class="pFileReference">&#91;Ref: <a href="http://www.penguin.cz/%7Emhi/mbtmgr">http://www.penguin.cz/~mhi/mbtmgr</a>]</p>
 
 <p>A heap of configuration options. The latest release should be especially useful 
   for Win9X users (ie. it comes with a Win32 installation program, although you 
@@ -455,7 +455,7 @@ Features: </p>
 
 #### <a name="GAG"></a>GAG
 
-<p class="anchBlue">[ref: <a href="http://www.rastersoft.com/gageng.htm">http://www.rastersoft.com/gageng.htm</a>]</p>
+<p class="anchBlue">&#91;Ref: <a href="http://www.rastersoft.com/gageng.htm">http://www.rastersoft.com/gageng.htm</a>]</p>
 
 <p>The best thing I liked about this ? You just create a boot disk (whether from 
   Unix or DOS) and your ready to install. Unfortunately (?) this means that your 

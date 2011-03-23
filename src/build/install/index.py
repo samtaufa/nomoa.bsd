@@ -4,6 +4,10 @@ this.titlePrefix = ns.titlePrefix + "[Build | Install] "
 
 pages = [
 
+    Page("checklist.mdtext", 
+        title="Checklist", 
+        pageTitle="Checklist"),    
+		
     Page("useradmin.mdtext", 
         title="User Admin", 
         pageTitle="User Administration"),    

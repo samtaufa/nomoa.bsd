@@ -1,8 +1,8 @@
 ## Remove Users
 
-Ref: [BSD Certification](http://www.bsdcertification.org/downloads/user_management.pdf) |
+&#91;Ref: [BSD Certification](http://www.bsdcertification.org/downloads/user_management.pdf) |
 [User Administration](../install/useradmin.html)  | 
-[FAQ 10](http://www.openbsd.org/faq/faq10.html#AddDelUser)
+[FAQ 10](http://www.openbsd.org/faq/faq10.html#AddDelUser)]
 
 <div class="toc">
 
@@ -101,7 +101,7 @@ GROUP_ID=`grep $USERNAME /etc/passwd | awk -F : '{ print $4 }'`
 
 ### 2. Ensure user isn't currently logged in'
 
-[Ref: $!manpage("w",1)!$]
+&#91;Ref: $!manpage("w",1)!$]
 
 Preferably the fewer people logged in during this process the saner the
 environment, but especially we don't need the user being logged
@@ -129,7 +129,7 @@ to ensure none of the cron jobs are currently active as well)
 
 ### 3. Remove the user account(s)
 
-[Ref: $!manpage("rmuser")!$]
+&#91;Ref: $!manpage("rmuser")!$]
 
 Before removing a user account, a sanity review of the users cron and /home directory
 may be preferred, because in a scripted configuration we're just going to

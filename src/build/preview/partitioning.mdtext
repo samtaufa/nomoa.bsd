@@ -1,7 +1,7 @@
 ## First Time - Partitioning
 
-Ref: $!manpage("disklabel",8)!$, $!manpage("fdisk",8)!$, 
-[FAQ 14 - Disk Setup](http://www.openbsd.org/faq/faq14.html)
+&#91;Ref: $!manpage("disklabel",8)!$, $!manpage("fdisk",8)!$, 
+[FAQ 14 - Disk Setup](http://www.openbsd.org/faq/faq14.html)]
 
 Partitioning is the process where you divide up your Hard Disk
 into logical segments (partitions) for storing files. A good 

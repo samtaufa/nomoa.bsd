@@ -13,7 +13,7 @@ Table of Contents
 
 ####  <a name="findfile"></a>Making it easier to find files 
 
-[Ref: $!manpage("locate",8)!$ - find filenames quickly |
+&#91;Ref: $!manpage("locate",8)!$ - find filenames quickly |
 $!manpage("locate.updatedb",1)!$ - update locate database |
 $!manpage("find",1)!$ - walk a file hierarchy]
 
@@ -123,7 +123,7 @@ to /home/opt for the time-being.
 
 ##### Option 1: 
 
-[ref: OpenBSD FAQ and e-mail by H&aring;kan Olsson ]
+&#91;Ref: OpenBSD FAQ and e-mail by H&aring;kan Olsson ]
 
 `cd /opt; find . -xdev -depth -print | cpio -pdmu /home/opt`
     
@@ -140,7 +140,7 @@ d: depth-first traversal; e:
 
 #####  Option 2: 
 
-[ref: e-mail by Christopher Linn] 
+&#91;Ref: e-mail by Christopher Linn] 
 
 `cd /opt; tar cXf - . | (cd /home/opt; tar xpf - )`
     
@@ -149,7 +149,7 @@ This would be if you have any other partitions mounted inside of
 
 #####  Option 3: 
 
-[ref: e-mail by Dan Harnett] 
+&#91;Ref: e-mail by Dan Harnett] 
 
 `cd /home/opt; dump -0uaf - /opt | restore -rf -`
     

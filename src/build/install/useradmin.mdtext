@@ -33,7 +33,7 @@ Table of Contents
     
 </div>
 
-[ ref: <a href="http://www.bsdcertification.org/downloads/user_management.pdf">BSD Certification</a> |
+&#91;Ref: <a href="http://www.bsdcertification.org/downloads/user_management.pdf">BSD Certification</a> |
   <a href="useradmin.old.html">User Administration</a>| <a href="http://andrsn.stanford.edu/FreeBSD/newuser.html">New User (article)</a> |
   <a title="What to do AFTER you have BSD installed by Chris Coleman" 
   href="http://www.daemonnews.org/200005/chrisc@daemonnews.org">Daemon News (article)</a> |
@@ -160,7 +160,7 @@ of this information using the '$!manpage('chpass')!$' command (discussed below).
 
 #### Changing User Information 
     
- [ref: $!manpage('chpass',1)!$, $!manpage('vipw',8)!$]</p>
+ &#91;Ref: $!manpage('chpass',1)!$, $!manpage('vipw',8)!$]</p>
 
 Once you've configured the base system for working, we can look at basic configuration of users. Note, for those
 with some previous Unix experience, Do not just edit /etc/passwd or /etc/Master.passwd
@@ -222,14 +222,14 @@ If you're still having problems, remember [the tutorial](http://www.freebsd.org/
     
 Alternative tools, useful for batch processing include: usermod</p>
 
-ref: [What to do AFTER you have BSD installed](http://www.daemonnews.org/200005/chrisc@daemonnews.org)
+&#91;Ref: [What to do AFTER you have BSD installed](http://www.daemonnews.org/200005/chrisc@daemonnews.org)]
 by Chris Coleman
 
 <a name="rmuser"></a>
 
 #### Deleting a User
 
-[ ref: $!manpage("rmuser",8)!$, $!manpage("user",8)!$, $!manpage("useradd",8)!$, $!manpage("userinfo",8)!$, $!manpage("usermod",8)!$, $!manpage("userdel",8)!$ ]
+&#91;Ref: $!manpage("rmuser",8)!$, $!manpage("user",8)!$, $!manpage("useradd",8)!$, $!manpage("userinfo",8)!$, $!manpage("usermod",8)!$, $!manpage("userdel",8)!$ ]
   
 From the man page <i>$!manpage("userdel",8)!$</i>
 
@@ -264,7 +264,7 @@ any files and other entries in them.
 
 #### Group Management
 
-[ref: $!manpage("group",8)!$, $!manpage("groupadd",8)!$, 
+&#91;Ref: $!manpage("group",8)!$, $!manpage("groupadd",8)!$, 
 $!manpage("groupdel",8)!$, $!manpage("groupinfo",8)!$, $!manpage("groupmod",8)!$ ] 
   
 Groups are important categorisations for users that allow administrators to 
@@ -280,7 +280,7 @@ passes it to the appropriate program.
 
 ##### Create a new Group
 
-[ref: $!manpage("group",8)!$, $!manpage("groupadd",8)!$ ]
+&#91;Ref: $!manpage("group",8)!$, $!manpage("groupadd",8)!$ ]
 
 
 To add new groups 'computerstaff' and 'class501' to the system, we can enter 
