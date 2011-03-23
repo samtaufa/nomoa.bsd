@@ -1,0 +1,30 @@
+#!/bin/sh
+
+HOSTNAME=`/bin/hostname -s`
+
+UNAME_OPENBSD="/usr/bin/uname"
+UNAME_LINUX="/bin/uname"
+UNAME="uname"
+TAR="/bin/tar"
+
+ostype=`$UNAME`
+
+case $ostype in
+    "Linux")
+        echo "Running on Linux";
+        ;;
+    "OpenBSD")
+        echo "Running on OpenBSD";
+        ;;
+    *)
+        echo "Unknown OS - backup failed";
+        exit 1;
+        ;;
+esac
+
+DATA="/var/log/"
+DST="/var/syncback"
+
+umask 027
+
+$TAR -czf $DST/$HOSTNAME.logs.tgz $DATA
