@@ -217,8 +217,8 @@ example.net			smtp:[ip-address]
 
 ### 2. MTA Instances
 
-Ref: [Adding a second postfix instance](http://advosys.ca/papers/email/58-postfix-instance.html) |
-[Managing multiple Postfix instances on a single host](http://www.postfix.org/MULTI_INSTANCE_README.html)
+&#91;Ref: [Adding a second postfix instance](http://advosys.ca/papers/email/58-postfix-instance.html) |
+[Managing multiple Postfix instances on a single host](http://www.postfix.org/MULTI_INSTANCE_README.html)]
 
 Postfix is good enough to use the same binaries to execute with different configurations,
 we'll configure our Instances using the ability to reference different configuration

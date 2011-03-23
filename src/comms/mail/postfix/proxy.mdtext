@@ -14,7 +14,7 @@ $!Image("mail/smtp_proxy.png", title="SMTP Proxy", klass="center")!$
 
 For a our mail proxy server, the effected configuration files are:
 
-[ref: postconf(5)]
+&#91;Ref: postconf(5)]
 
 <ul>
     <li>/etc/postfix/<a href="#main.cf">main.cf</a></li>

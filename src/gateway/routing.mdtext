@@ -1,4 +1,4 @@
-[ref: <a href="http://openbsd.oganer.net/papers/linuxtag06-network.pdf">Routing with OpenBSD using OpenOSPFD and OpenBGPD</a> ]
+&#91;Ref: <a href="http://openbsd.oganer.net/papers/linuxtag06-network.pdf">Routing with OpenBSD using OpenOSPFD and OpenBGPD</a> ]
 
 The Internet is split into regions called Autonomous Systems (AS). Each AS is under the control of a single administrative entity
 (e.g. ISP, University et. al.) The edge routers of these AS use an Exterior Gateway Protocol (EGP) to announce/exchange

@@ -1,6 +1,6 @@
 ## Flow Views
 
-Ref: [flow-tools](http://code.google.com/p/flow-tools/),  <a href="http://networkflowanalysis.com" title="Michael W. Lucas' book 'Network Flow Analysis'">Network Flow Analysis.</a>
+&#91;Ref: [flow-tools](http://code.google.com/p/flow-tools/),  <a href="http://networkflowanalysis.com" title="Michael W. Lucas' book 'Network Flow Analysis'">Network Flow Analysis.</a>]
 
 The most flexible, and difficult way to view your netflow
 data is to use the console tools from flow-tools. These console 
@@ -38,7 +38,7 @@ protocols in the communications.
 -	Protocol 6 - "TCP Protocol"
 -	Protocol 17 - "UDP Protocol"
 
-Ref: [Iana IPv4 Protocol Numbers](http://www.iana.org/assignments/protocol-numbers/protocol-numbers.xml)
+&#91;Ref: [Iana IPv4 Protocol Numbers](http://www.iana.org/assignments/protocol-numbers/protocol-numbers.xml)]
 
 192.168.110.33 is exchanging, what looks like Domain Name Services(DNS)
 (port 53) queries with 192.168.13.38. 432 octets (bytes) to make the request,

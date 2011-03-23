@@ -91,7 +91,7 @@ vnconfig -u snvd3
 
 ### Burn the CD
 
-[ref: <a href="http://www.openbsd.org/faq/faq13.html#burnCD">FAQ: How do I burn CDs and DVDs</a>]
+&#91;Ref: <a href="http://www.openbsd.org/faq/faq13.html#burnCD">FAQ: How do I burn CDs and DVDs</a>]
     <ul>
         <li>Locate your CDR Drive
         <li>Record the ISO file to CDR

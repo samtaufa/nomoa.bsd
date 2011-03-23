@@ -272,7 +272,7 @@ of replacements.
 
 #### Killing State
 
-Ref: [PF Firewall Management](http://undeadly.org/cgi?action=article&sid=20060929080943)
+&#91;Ref: [PF Firewall Management](http://undeadly.org/cgi?action=article&sid=20060929080943)]
 
 When refreshing firewall rules, you can kill state information 
 by explicitly using the "-k | -K" pfctl option.

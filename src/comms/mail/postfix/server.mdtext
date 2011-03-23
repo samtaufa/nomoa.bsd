@@ -168,7 +168,7 @@ Ensure configuration is correct by completing the above instructions.
 
 ####  <a name="2.4MinimumMandatory"></a>3. Minimal Configuration
 
-[ref: <a href="http://www.postfix.org/INSTALL.html#mandatory">
+&#91;Ref: <a href="http://www.postfix.org/INSTALL.html#mandatory">
 Mandatory</a> ]
 
 File Fragment: /etc/postfix/main.cf
@@ -306,7 +306,7 @@ updated for any changes to show through to Postfix.
 
 ### <a name="StartingPostfix"></a>Starting Postfix
 
-[ref: $!manpage("postfix",1)!$]
+&#91;Ref: $!manpage("postfix",1)!$]
 
 Now, we are ready to make some fundamental tests, so let's start Postfix 
 which at this stage is a nice 5 step process.
@@ -370,7 +370,7 @@ installation, which is not what we want here.
 
 #### <a name="3.4CheckFilesAndConfiguration"></a>4. Check files and configuration
 
-[Ref: $!manpage("postconf",1)!$, $!manpage("postfix",1)!$]
+&#91;Ref: $!manpage("postconf",1)!$, $!manpage("postfix",1)!$]
 
 Postfix comes with rudimentary testing of file (_using postfix check_) 
 and configuration settings(_using postconf_), so 
@@ -439,7 +439,7 @@ the postfix command, or in our example we will use the 'new' Sendmail command.
 
 ### <a name="TestingTheMailServer"></a>Testing the mail server
 
-[ref: The Network People, Inc. [Mail Server Testing](http://www.tnpi.biz/internet/mail/forge.shtml) ] 
+&#91;Ref: The Network People, Inc. [Mail Server Testing](http://www.tnpi.biz/internet/mail/forge.shtml) ] 
 
 We should now be able to test whether the server's 'face' to the world 
 (smtp) is working. 
@@ -556,7 +556,7 @@ session shown above
 
 #### <a name="4.3mail"></a>mail
 
-[Ref: $!manpage("mail",1)!$]
+&#91;Ref: $!manpage("mail",1)!$]
 
 While we're testing with real system user accounts, we can use the unix 
 'mail' program to check our mail message.

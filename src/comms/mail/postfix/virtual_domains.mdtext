@@ -135,7 +135,7 @@ in: /var/spool/postfix/vmail
 
 ### <a name="ConfiguringAVirtualEmailService_Basic"></a>Configuring a Virtual Email Service - basic test install
 
-[ref: Postfix Virtual Domain Hosting Howto - VIRTUAL_README.html]
+&#91;Ref: Postfix Virtual Domain Hosting Howto - VIRTUAL_README.html]
 
 I've always had difficulty in getting the full featured database driven 
 virtual email working, so we will go through a slow installation process of 
@@ -385,7 +385,7 @@ NOT WORKING YET.
 
 #### <a name="5.2CreateTheSystemUserAccount"></a>2. Create the system user account for managing virtual mail
 
-[ref: <a href="http://www.postfix.org/postconf.5.html#virtual_uid_maps">virtual\_uid\_maps</a>,
+&#91;Ref: <a href="http://www.postfix.org/postconf.5.html#virtual_uid_maps">virtual\_uid\_maps</a>,
 <a href="http://www.postfix.org/postconf.5.html#virtual_gid_maps">virtual\_gid\_maps</a>]
 
 Mail delivery happens with the recipient's UID/GID privileges specified with
@@ -1131,7 +1131,7 @@ select domain from domain;
 
 #### <a name="6.3CreateTheSystemUserAccount"></a>Create the system user account for managing virtual mail
 
-[ref: <a href="http://www.postfix.org/postconf.5.html#virtual_uid_maps">
+&#91;Ref: <a href="http://www.postfix.org/postconf.5.html#virtual_uid_maps">
 http://www.postfix.org/postconf.5.html#virtual_uid_maps</a>,
 <a href="http://www.postfix.org/postconf.5.html#virtual_gid_maps">
 http://www.postfix.org/postconf.5.html#virtual_gid_maps</a>] 

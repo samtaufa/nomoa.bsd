@@ -999,7 +999,7 @@ What does the log file record.
 
 ### Calamaris
 
-[ref: <a href="http://calamaris.cord.de/">http://calamaris.cord.de/</a>]</p>
+&#91;Ref: <a href="http://calamaris.cord.de/">http://calamaris.cord.de/</a>]</p>
 
 Calamaris can generate a quick and neatly formatted report from the access 
 files.</p>
@@ -1045,7 +1045,7 @@ Assumptions in the script are:
 
 #### sqmgrlog, sarg
 
-[ref: <a href="http://web.onda.com.br/orso/index.html">http://web.onda.com.br/orso/index.html</a>]</p>
+&#91;Ref: <a href="http://web.onda.com.br/orso/index.html">http://web.onda.com.br/orso/index.html</a>]</p>
 
 Sarg is a Squid Analysis Report Generator that allow you to view "where" 
 your users are going to on the Internet. Sarg generate reports in html, with 

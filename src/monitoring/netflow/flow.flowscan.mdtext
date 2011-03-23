@@ -1,6 +1,6 @@
 ## Graphs - Common Flow view with FlowScan/CUFlow 
 
-Ref: [flow-tools](http://code.google.com/p/flow-tools/), [Network Flow Analysis](http://networkflowanalysis.com "Michael W. Lucas' book 'Network Flow Analysis'")
+&#91;Ref: [flow-tools](http://code.google.com/p/flow-tools/), [Network Flow Analysis](http://networkflowanalysis.com "Michael W. Lucas' book 'Network Flow Analysis'")]
 
 Pretty pictures are always nice, and sometimes they make better aggregation
 of data to us. 
@@ -84,7 +84,7 @@ to the flow-tools toolkit (such as Cflow.pm)
 
 #### Get the Source
 
-Ref: [http://net.doit.wisc.edu/~plonka/Cflow/](http://net.doit.wisc.edu/~plonka/Cflow/)
+&#91;Ref: [http://net.doit.wisc.edu/~plonka/Cflow/](http://net.doit.wisc.edu/~plonka/Cflow/)]
 
 There is no package for Cflow.pm, so we need to download the source files and compile it.
 The above page shows the current(?) release which you can then download.
@@ -328,7 +328,7 @@ Get the source from the homepage http://cpan.perl.org/authors/id/A/AM/AMW/
 
 ### <a name="3">3. </a> FlowScan
 
-Ref: [FlowScan Homepage](http://net.doit.wisc.edu/~plonka/FlowScan/), [flowscan.pm](http://net.doit.wisc.edu/~plonka/list/flowscan/archive/att-0848/01-FlowScan.pm)
+&#91;Ref: [FlowScan Homepage](http://net.doit.wisc.edu/~plonka/FlowScan/), [flowscan.pm](http://net.doit.wisc.edu/~plonka/list/flowscan/archive/att-0848/01-FlowScan.pm)]
 
 [Dave Plonka](http://net.doit.wisc.edu/~plonka/)'s FlowScan is a 
 "freely-available Internet traffic measurement and analysis tool"
@@ -473,7 +473,7 @@ ReportClasses CUFlow
 
 #### Get the Source
 
-Ref: [CUFlow Home Page](http://www.columbia.edu/acis/networks/advanced/CUFlow/CUFlow.html)
+&#91;Ref: [CUFlow Home Page](http://www.columbia.edu/acis/networks/advanced/CUFlow/CUFlow.html)]
 
 - Link to [Directory listing](http://www.columbia.edu/acis/networks/advanced/CUFlow/)
 

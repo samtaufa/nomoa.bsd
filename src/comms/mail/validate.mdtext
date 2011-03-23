@@ -191,7 +191,7 @@ session shown above
 
 ##### mail
 
-[Ref: $!manpage('mail',1)!$ ]
+&#91;Ref: $!manpage('mail',1)!$ ]
 
 While we're testing with real system user accounts, we can use the unix 
 'mail' program to check our mail message.
@@ -301,7 +301,7 @@ and store those messages for users.</p>
 <a name="test.pop3"></a>
 #### POP3 - Post Office Protocol
 
-[ref: The Network People, Inc. 
+&#91;Ref: The Network People, Inc. 
 [Mail Server Testing](http://www.tnpi.biz/internet/mail/forge.shtml) ]
 
 If you've successfully installed dovecot with mysql above, and have gone 

@@ -135,7 +135,7 @@ to comment the line out, prevent its execution.
 
 #### Testing smtp
 
-[ref: <a href="http://www.tnpi.biz/internet/mail/forge.shtml">The Network People, Inc. Mail Server Testing</a> ] </p>
+&#91;Ref: <a href="http://www.tnpi.biz/internet/mail/forge.shtml">The Network People, Inc. Mail Server Testing</a> ] </p>
 
 To simplify testing, we will perform the tests from on the 
 SMTP server itself. You may need to test externally to 
@@ -259,7 +259,7 @@ Note the 'caveat' above, and you may want to review a more 'secure' pop3 server 
 
 #### Testing the Pop3 Server
   
-[ref: The Network People, Inc. [Mail Server Testing](http://www.tnpi.biz/internet/mail/forge.shtml) ] 
+&#91;Ref: The Network People, Inc. [Mail Server Testing](http://www.tnpi.biz/internet/mail/forge.shtml) ] 
 
 To simplify testing, we will perform the tests on the POP server itself. You may need to test externally to verify behaviour with an active firewall or other systems between your POP Server and the client.
 
@@ -337,8 +337,8 @@ am using the plaintext flavor because it will not be made available externally
 
 #### Testing the IMAP Server
 
-ref: [How I test an imap server](http://aplawrence.com/SCOFAQ/FAQ_scotec4testimap.html);
-The Network People, Inc. [Mail Server Testing](http://www.tnpi.biz/internet/mail/forge.shtml)
+&#91;Ref: [How I test an imap server](http://aplawrence.com/SCOFAQ/FAQ_scotec4testimap.html);
+The Network People, Inc. [Mail Server Testing](http://www.tnpi.biz/internet/mail/forge.shtml)]
 
 IF you are having problems, remember to review the log file /var/log/maillog for 
 any error messages that might assist your diagnostics and if that isn't enough 
@@ -689,7 +689,7 @@ of settings.</p>
 
 #### <a name="diagMX"></a>Looking Up MX records
 
-[ref: dig(1)]
+&#91;Ref: dig(1)]
 
 <p>sendmail prioritises mail using the MX records given by your DNS
 server. It may be useful sometimes to verify your assumptions of what

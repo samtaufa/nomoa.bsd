@@ -456,7 +456,7 @@ of how and why your hosts will fail between each other.
 
 #### Forced Physical Failure
 
-[Ref: $!manpage('carp')!$, $!manpage('ifconfig')!$]
+&#91;Ref: $!manpage('carp')!$, $!manpage('ifconfig')!$]
 
 Disabling a CARP Interface can be achieved through physically
 disconnecting the interface, or by using the $!manpage('ifconfig')!$
@@ -466,7 +466,7 @@ utility to disable the interface.
 
 #### Increase ADVSKEW
 
-[Ref: $!manpage('carp')!$, $!manpage('ifconfig')!$]
+&#91;Ref: $!manpage('carp')!$, $!manpage('ifconfig')!$]
 
 Another method for failing an carp interface, is to change the
 frequency of carp advertisements (the most frequent gaining
@@ -487,7 +487,7 @@ Advantage: Interface is still functional.
 
 #### Increase demote count
 
-[Ref: From $!manpage('ifconfig')!$]
+&#91;Ref: From $!manpage('ifconfig')!$]
 
 <pre class="manpage">
 ifconfig -g group-name [[-]carpdemote [number]]

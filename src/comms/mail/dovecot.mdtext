@@ -34,7 +34,7 @@
     </ul>
 </div>
 
-[Ref: OpenBSD 4.7, Dovecot 1.2.13]
+&#91;Ref: OpenBSD 4.7, Dovecot 1.2.13]
 
 Client access, getting your e-mail from the mail server, is generally
 through programs that support the standard protocol for receiving
@@ -733,8 +733,8 @@ password is correct, or whether the database is correctly entered above.
 
 ### <a name="mysql.pop3"></a>Test the Pop3 Server
 
-Ref: The Network People, Inc. [Mail Server Testing](
-http://www.tnpi.biz/internet/mail/forge.shtml)
+&#91;Ref: The Network People, Inc. [Mail Server Testing](
+http://www.tnpi.biz/internet/mail/forge.shtml)]
 
 If you've successfully installed dovecot with mysql above, and have gone 
 through the Configuring a Virtual Email Service - MySQL in [our postfix 

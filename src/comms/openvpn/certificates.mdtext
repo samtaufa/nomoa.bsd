@@ -29,7 +29,7 @@ notes on configuring and using SS# (pronounced S-S-Sharp, that's a pun)
 
 ### Creating Self-Signed Certificates
 
-[ref: <a href="http://www.openbsd.org/faq/">OpenBSD   FAQ</a> | 
+&#91;Ref: <a href="http://www.openbsd.org/faq/">OpenBSD   FAQ</a> | 
 mod_ssl/ssl_faq.html#ToC17 - html documentation of mod_ssl |
 /var/www/conf/httpd.conf ]
 

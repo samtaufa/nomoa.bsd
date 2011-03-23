@@ -49,7 +49,7 @@ running the server in the chroot environment.</p>
 
 ### Setting Apache to start every time the system is started/restarted
 
-[ref: httpd(8), ssl(8)]</p>
+&#91;Ref: httpd(8), ssl(8)]</p>
 
 The first thing we consider about the Apache web-server is turning it on, and 
 setting it up so it turns on automatically if the system is restarted. To do 
@@ -406,11 +406,14 @@ some precautions you can take.</p>
 successful whacked my system.)</i></p>
 
 ### <a name="securessl"></a>Securing the Site with SSL
-<p>[ref: <a href="http://www.openbsd.org/faq/faq10.html#10.6">OpenBSD FAQ 10.6 
+
+&#91;Ref: <a href="http://www.openbsd.org/faq/faq10.html#10.6">OpenBSD FAQ 10.6 
 Setting up a Secure HTTP Server with SSL</a>]
-[local: <a href="openssl.htm">openss# - Secured Communications</a>] </p>
-<p>For pumping out dynamic and static pages with public content, the webserver 
-so far is just fine.</p>
+[local: <a href="openssl.htm">openss# - Secured Communications</a>] ]</p>
+
+For pumping out dynamic and static pages with public content, the webserver 
+so far is just fine.
+
 <p>When you want to secure content, such as credit-card transactions or webmail 
 services, then we need to take a look at data encryption which is served through 
 SSL. Fortunately, OpenBSD was one of the first (if not the first) operating 
@@ -462,7 +465,7 @@ you if you take a look at the
 
 #### <a name="secureVH"></a>Securing Virtual Hosts
 
-[ref: <a href="http://www.incyte-studios.com/ssl.htm">http://www.incyte-studios.com/ssl.htm</a>]</p>
+&#91;Ref: <a href="http://www.incyte-studios.com/ssl.htm">http://www.incyte-studios.com/ssl.htm</a>]</p>
 
 Trey Stout [published an article](http://www.incyte-studios.com/ssl.htm)
 for those who have a need to put several SSL 

@@ -43,7 +43,7 @@ and there to reading the documentation.
 
 ### <a name="ssh"></a>Remote Access with ssh
 
-Ref: $!manpage("ssh",1)!$ | [OpenBSD FAQ4](http://www.openbsd.org/faq/faq4.html)
+&#91;Ref: $!manpage("ssh",1)!$ | [OpenBSD FAQ4](http://www.openbsd.org/faq/faq4.html)]
 
 <p>When the itch arrives and you just have to get a 'console' connection to that 
 server, telnet is asking for someone to sniff your password and $!OpenBSD!$'s 
@@ -69,7 +69,7 @@ connection using your user-id, johndoe)</p>
   
 #### <a name="sshconfig"></a>Configuring ssh
 
-[Ref: $!manpage("ssh",1)!$]
+&#91;Ref: $!manpage("ssh",1)!$]
 
 ssh checks for its configuration from the command-line, then the user's configuration 
 file ($HOME/.ssh/config), then the system-wide configuration file (/etc/ssh/ssh_config) 
@@ -96,7 +96,7 @@ Protocol 2,1
   
 ### <a name="sshd"></a> sshd - your ssh server daemon
 
-[ref: $!manpage("sshd",8)!$]
+&#91;Ref: $!manpage("sshd",8)!$]
 
 sshd is the daemon that listens for connections from clients. It is normally started at boot from /etc/rc. 
 It forks a new daemon for each incoming connection. The forked daemons handle 
@@ -152,7 +152,7 @@ through the man page for further information.
   
 ### <a name="scp"></a>Copying a file through SSH
 
-[Ref: $!manpage("scp",1)!$]
+&#91;Ref: $!manpage("scp",1)!$]
 
 scp is a utility that allows you to copy files between hosts using the ssh 
 transport. With ssh2 there is also support for gzip style compression of files 

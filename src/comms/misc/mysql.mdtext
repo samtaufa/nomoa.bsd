@@ -25,7 +25,7 @@
     
 </div>
 
-[ref: OpenBSD 3.5Beta | mysql-server-4.0.18.tgz | Paul Dubois, MySQL, (Indiana, New Riders, 2000) ]
+&#91;Ref: OpenBSD 3.5Beta | mysql-server-4.0.18.tgz | Paul Dubois, MySQL, (Indiana, New Riders, 2000) ]
   
 Install the mysql package using pkg\_add. The package installation will install 
 the mysql binaries and create the default database by executing mysql\_install\_db. 
@@ -101,7 +101,7 @@ Query OK, 0 rows affected (0.07 sec)
 
 #### Is it Running?
 
-[ref: fstat(1) ]
+&#91;Ref: fstat(1) ]
 <p>Verify the server is running by using the 'fstat' in the following example:</p>
 
 <pre class="command-line">
@@ -409,7 +409,7 @@ large queries working.
 
 ### Troubleshooting
 
-[ref: misc@openbsd.org October 2001 archives | /usr/ports/databases/mysql/patches/]
+&#91;Ref: misc@openbsd.org October 2001 archives | /usr/ports/databases/mysql/patches/]
   
 One problem that seems to be reported a lot on the mailing lists (and subsequently 
 responded to) is that mysql at a large level of use begins to consume all available 

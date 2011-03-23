@@ -66,8 +66,8 @@ alternatives provided in the ports collection.
 
 ###  Domain Name Server (DNS)
 
-Ref: [OpenBSD as a domain name server](http://www.kernel-panic.it/openbsd/dns/) | 
-[Is my DNS a mess](http://bind8nt.meiway.com/itsaDNSmess.cfm)
+&#91;Ref: [OpenBSD as a domain name server](http://www.kernel-panic.it/openbsd/dns/) | 
+[Is my DNS a mess](http://bind8nt.meiway.com/itsaDNSmess.cfm)]
 
 A key infrastructure for email delivery, is Domain Name Services (DNS). For
 mail destined outside, or coming from the outside we are dependent on

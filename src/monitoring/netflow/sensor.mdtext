@@ -24,7 +24,7 @@ Table of Contents
 
 ##### <a name="1">1. </a>Configure pflow pseudo-device $!manpage("pflow",4)!$
 
-Ref: $!manpage("pflow",4)!$ $!manpage("ifconfig",8)!$
+&#91;Ref: $!manpage("pflow",4)!$ $!manpage("ifconfig",8)!$
 
 From the manpage:
 

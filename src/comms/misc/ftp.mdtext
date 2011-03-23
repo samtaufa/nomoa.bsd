@@ -207,7 +207,7 @@ chroot to force each login into their private directory.
   
 #### <a name="restrictLoginConf"></a>Restrict Using login.conf
 
-[ref: $!manpage("login.conf",5)!$, $!manpage("ftpd",8)!$ |  e-mail from Joakim Aronius | OpenBSD 3.0]
+&#91;Ref: $!manpage("login.conf",5)!$, $!manpage("ftpd",8)!$ |  e-mail from Joakim Aronius | OpenBSD 3.0]
   
 OpenBSD's login classes give us another method for structuring security privileges 
 for our ftp clients. /etc/login.conf is the configuration file that determines 

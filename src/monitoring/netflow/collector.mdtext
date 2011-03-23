@@ -1,6 +1,6 @@
 ## Collector Flow-Tools
 
-Ref: [flow-tools](http://code.google.com/p/flow-tools/),  <a href="http://networkflowanalysis.com" title="Michael W. Lucas' book 'Network Flow Analysis'">Network Flow Analysis.</a>
+&#91;Ref: [flow-tools](http://code.google.com/p/flow-tools/),  <a href="http://networkflowanalysis.com" title="Michael W. Lucas' book 'Network Flow Analysis'">Network Flow Analysis.</a>]
 
 The primary tool capturing netflow data is [flow-tools](http://code.google.com/p/flow-tools/). 
 

@@ -544,7 +544,7 @@ on the server if user directories are expected.
 
 ###  <a name="sambaPDC"></a>Authentication for NT, Win9X Workstations
 
-[ref: Samba-2.2.2/docs/Samba-HOWTO-Collection.pdf]
+&#91;Ref: Samba-2.2.2/docs/Samba-HOWTO-Collection.pdf]
 
 With later versions of Samba (2.2.2) we are able to use the OpenBSD/Samba combination 
 to authenticate users for a LAN comprising Windows NT and Win9X clients. In 
