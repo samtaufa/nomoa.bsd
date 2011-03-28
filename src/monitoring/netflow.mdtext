@@ -73,9 +73,10 @@ For OpenBSD, [we use](netflow/sensor.html) $!manpage("pflow",4)!$
 ### <a name="3"></a> 3. Capturing Data using Collectors
 
 Network Flow data published by the above 'sensors' are captured by
-a [collector](netflow/collector.html). The data is simply archived
-to disk in a predictable format/layout on which you can use your
-analysis tools. 
+a [collector](netflow/collector.html  "A library and collection of programs
+used to collect, send, process, and generate reports from Netflow data."). 
+The data is simply archived to disk in a predictable format/layout on which 
+you can use your analysis tools. 
 	
 ### <a name="4"></a> 4. Analysing Data
 
@@ -83,19 +84,28 @@ In our workflow, we monitor traffic latency using [smokeping](smokeping.html). W
 changes dramatically, an indicator of changes in network utilisation, we drill further
 into the problem by analysing the captured netflow data.
 
-#### Console
+#### 4.1 Console
 
-Console analysis is provided with flow-tools, and the best tutorial
-I've found is [Michael W. Lucas'](http://www.michaelwlucas.com) book 
-[Network Flow Analysis.](http://networkflowanalysis.com)
+[Flow - Console](netflow/flow.views.html)
 
-Save yourself the time, use the GUI tools, and then get Michael's book.
+The most powerful analysis tool, is from the command-line using
+[flow-tools](netflow/collector.html "A library and collection of programs
+used to collect, send, process, and generate reports from Netflow data.")
 
-#### GUI Frontends
+The best tutorial I've found is in print with [Michael W. Lucas'](
+http://www.michaelwlucas.com) book [Network Flow Analysis.](
+http://networkflowanalysis.com). We give you a sufficient start
+to make sure the data collection process is working correctly,
+together with your tool install.
 
-A general overfiew of traffic behaviour can be extracted using
+If you're networking kung fu is good, then use the command-line 
+tools, but get the book and look at the following GUI tools.
+
+#### 4.2 GUI Frontends
+
+We review the installation of 3 GUI front-ends to captured
+data. A general overfiew of traffic behaviour can be extracted using
 link using [FlowScan/CUFlow](netflow/flow.flowscan.html).
-
 
 To get more specifics on the traffic, and behaviour of specific
 hosts or ports, we then drill deeper using
@@ -106,10 +116,9 @@ hosts or ports, we then drill deeper using
 - 	[Flow - Custom](netflow/flow.flowviewer.html) reviews the Graphing front-end
 	FlowViewer, which supports more extended customisation/analysis than FlowScan/CUFlow.
 
-the historical data visible through [smokeping](smokeping.html) and 
-[FlowViewer](netflow/graphs.flowviewer.html) is very useful for 
-communicating network behaviour extending over long periods of time.
-
+Interestingly enough, installing the difficult to understand tool ([FlowViewer](netflow/flow.flowviewer.html))
+is faster with fewer difficult bits to put together.
+	
 ### <a name="5"></a>5. Reference Resource
 
 Some pointers of places that have lists of available netflow analysis (or other) tools.

@@ -2,10 +2,6 @@
 
 &#91;Ref: [flow-tools](http://code.google.com/p/flow-tools/), [Network Flow Analysis](http://networkflowanalysis.com "Michael W. Lucas' book 'Network Flow Analysis'")]
 
-Pretty pictures are always nice, and sometimes they make better aggregation
-of data to us. 
-
-Installation notes augment <a href="http://networkflowanalysis.com" title="Michael W. Lucas' book 'Network Flow Analysis'">Network Flow Analysis.</a>
 
 <div class="toc">
 
@@ -37,13 +33,29 @@ Table of Contents
 	</li><li><a href="#4">CUFlow</a>
 		<ul>
 			<li>Install</li>
-			<li>Running</li>
+		</ul></li>
+	<li><a href="#4">Execution</a>
+		<ul>
 			<li>Capturing netflow</li>
 		</ul>
 	</li>		
 </ol>
 
 </div>
+
+Pretty pictures are always nice, and sometimes they make better aggregation
+of data to us. 
+
+Installation notes augment <a href="http://networkflowanalysis.com" title="Michael W. Lucas' book 'Network Flow Analysis'">Network Flow Analysis.</a>
+
+The Graphical Analysis tools CUFlow, and FlowScan are built on top of another tool 
+Cflow.pm. FlowScan analyses the data and generate some summary use data that
+are viewable through an Internet Browser, whilst CUFlow takes this data and
+provides a different type of analysis.
+
+The important note about the FlowScan analysis is that it will delete the
+data after analysis, as such we want to take a copy of the netflow data
+before analysis.
 
 ### <a name="1">1. </a> Cflow.pm
 
@@ -426,6 +438,39 @@ need the 1.6 release of 1.5.
 
 Copy our FlowScan.pm file over the installed version 1.5
 
+The following are my modifications to FlowScan.pm v 1.5 to work with
+my installation (without using the v 1.6 files)
+
+<pre class="command-line">
+--- FlowScan.pm.org Mon Feb 12 07:41:47 2001
++++ FlowScan.pm      Wed Jan  5
+16:49:09 2011
+@@ -105,6 +105,20 @@
+       }
+       mutt_normalize_time(@tm);
+       return mutt_mktime(@tm, -1, 0)
++   } elsif ($file =~
++            m/(\d\d\d\d)-(\d\d)-(\d\d).(\d\d)(\d\d)(\d\d)([+-])(\d\d)(\d\d)/) {
++      # The file name contains an "hours east of GMT" component
++      my(@tm) = ($6, $5, $4, $3, $2-1, $1-1900, 0, 0, -1);
++      my($tm_sec, $tm_min, $tm_hour, $tm_mday, $tm_mon, $tm_year,
++        $tm_wday, $tm_yday, $tm_isdst) = (0 .. 8); # from "man perlfunc"
++      if ('+' eq $7) { # subtract hours and minutes to get UTC
++        $tm[$tm_min] -= 60*$8+$9
++      } else { # add hours and minutes to get UTC
++        $tm[$tm_min] += 60*$8+$9
++      }
++      mutt_normalize_time(@tm);
++      return mutt_mktime(@tm, -1, 0)
++
+    } elsif ($file =~ m/(\d\d\d\d)(\d\d)(\d\d)_(\d\d):(\d\d):(\d\d)$/) {
+       # The file name contains just the plain old localtime
+       return mutt_mktime($6, $5, $4, $3, $2-1, $1-1900, 0, 0, -1, 1)
+</pre>
+
+The above changes/patch was to factor for the different file format used on
+my set up for storing flows on the hard drive.
+
 #### c. Create Account and Paths
 
 <pre class="command-line">
@@ -468,6 +513,31 @@ ReportClasses CUFlow
 
 <pre class="config-file">
 </pre>
+
+Modifications to flowscan.cf
+
+<pre class="command-line">
+--- flowscan.cf.org        Fri Oct  6 12:40:35 2000
++++ flowscan.cf      Wed Jan  5 15:44:01 2011
+@@ -5,13 +5,15 @@
+ # use this glob (file pattern match) when looking for raw flow files to be  # processed, e.g.:
+ # FlowFileGlob /var/local/flows/flows.*:*[0-9] -FlowFileGlob flows.*:*[0-9]
++#FlowFileGlob flows.*:*[0-9]
++FlowFileGlob /var/data/log/netflow/flowscandata/gateway1/ft-v*[0-9]
+
+ # ReportClasses (REQUIRED)
+ # a comma-seperated list of FlowScan report classes, e.g.:
+ # ReportClasses CampusIO
+ # ReportClasses SubNetIO
+-ReportClasses CampusIO
++#ReportClasses CampusIO
++ReportClasses CUFlow
+
+ # WaitSeconds (OPTIONAL)
+ # This should be <= the "-s" value passed on the command-line to cflowd, e.g.: 
+</pre>
+
+Another configuration file will be required for gateway2 ($PREFIX/bin/gateway1 && $PREFIX/bin/gateway2)
 
 ### <a name="4">4. </a>CUFlow
 
@@ -519,13 +589,23 @@ The following needs to be modified on your configuration.
 	
 </table>
 
-#### e. Running
+#### <a name="5"></a> Execution
 
 We've created the relevant paths, and configuration files
-so it's time to start flowscan, and a startup script
+so it's time to start flowscan to analyse the tools so
+we can start looking at some of the graphs.
+
+<ul>
+	<li>Startup Script</li>
+	<li>flow-capture</li>
+	<li>FlowScan GUI</li>
+	<li>CUFlow GUI</li>
+</ul>
+
+and a startup script
 helps to ensure everything's in the right place.
 
-<pre style="config-file">
+<pre class="config-file">
 #!/bin/sh
 PREFIX=/var/data/netflow
 BIN=$PREFIX/bin
@@ -535,63 +615,6 @@ USER=_flowscan
 
 nohup sudo -u _flowscan $BIN/flowscan > $LOGFILE 2>&1 &
 </pre>
-
-Modifications to FlowScan.pm
-
-<pre class="command-line">
---- FlowScan.pm.org Mon Feb 12 07:41:47 2001
-+++ FlowScan.pm      Wed Jan  5
-16:49:09 2011
-@@ -105,6 +105,20 @@
-       }
-       mutt_normalize_time(@tm);
-       return mutt_mktime(@tm, -1, 0)
-+   } elsif ($file =~
-+            m/(\d\d\d\d)-(\d\d)-(\d\d).(\d\d)(\d\d)(\d\d)([+-])(\d\d)(\d\d)/) {
-+      # The file name contains an "hours east of GMT" component
-+      my(@tm) = ($6, $5, $4, $3, $2-1, $1-1900, 0, 0, -1);
-+      my($tm_sec, $tm_min, $tm_hour, $tm_mday, $tm_mon, $tm_year,
-+        $tm_wday, $tm_yday, $tm_isdst) = (0 .. 8); # from "man perlfunc"
-+      if ('+' eq $7) { # subtract hours and minutes to get UTC
-+        $tm[$tm_min] -= 60*$8+$9
-+      } else { # add hours and minutes to get UTC
-+        $tm[$tm_min] += 60*$8+$9
-+      }
-+      mutt_normalize_time(@tm);
-+      return mutt_mktime(@tm, -1, 0)
-+
-    } elsif ($file =~ m/(\d\d\d\d)(\d\d)(\d\d)_(\d\d):(\d\d):(\d\d)$/) {
-       # The file name contains just the plain old localtime
-       return mutt_mktime($6, $5, $4, $3, $2-1, $1-1900, 0, 0, -1, 1)
-</pre>
-
-The above changes/patch was to factor for the different file format used on
-my set up for storing flows on the hard drive.
-
-Modifications to flowscan.cf
-
-<pre class="command-line">
---- flowscan.cf.org        Fri Oct  6 12:40:35 2000
-+++ flowscan.cf      Wed Jan  5 15:44:01 2011
-@@ -5,13 +5,15 @@
- # use this glob (file pattern match) when looking for raw flow files to be  # processed, e.g.:
- # FlowFileGlob /var/local/flows/flows.*:*[0-9] -FlowFileGlob flows.*:*[0-9]
-+#FlowFileGlob flows.*:*[0-9]
-+FlowFileGlob /var/data/log/netflow/flowscandata/gateway1/ft-v*[0-9]
-
- # ReportClasses (REQUIRED)
- # a comma-seperated list of FlowScan report classes, e.g.:
- # ReportClasses CampusIO
- # ReportClasses SubNetIO
--ReportClasses CampusIO
-+#ReportClasses CampusIO
-+ReportClasses CUFlow
-
- # WaitSeconds (OPTIONAL)
- # This should be <= the "-s" value passed on the command-line to cflowd, e.g.: 
-</pre>
-
-Another configuration file will be required for gateway2 ($PREFIX/bin/gateway1 && $PREFIX/bin/gateway2)
 
 Startup Scripts, file: startup_flowscan.sh
 
@@ -632,12 +655,15 @@ if [ -x ${FLOWCAPTURE} ]; then
     printf ' - gateway2      '; ${FLOWCAPTURE} -p ${FLOWPID}.wan.pid \
 		-R /usr/local/bin/flow-rotate_w.sh -n 287 -w ${FLOWDATA}/gateway2 \
 		-S 5 local_ipaddress/gateway2_ipaddress/12346 && \
-           echo "\t\t [OK]" || echo "\t\t [Failed]"; fi
+           echo "\t\t [OK]" || echo "\t\t [Failed]"; 
+fi
 
 if [ -f /var/data/log/netflow/bin/start_flowscan.sh ]; then
    printf ' flowscan'; sh /var/data/log/netflow/bin/start_flowscan.sh && \
-           echo "\t\t [OK]" || echo "\t\t [Failed]"; fi echo '.' 
-fi
+           echo "\t\t [OK]" || echo "\t\t [Failed]"; 
+fi 
+
+echo '.' 
 </pre>
 
 Related Scripts

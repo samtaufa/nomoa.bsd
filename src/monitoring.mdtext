@@ -1,7 +1,8 @@
 ## System Monitoring
 
 Several tools are used for monitoring IT Services, including host/device status,
-and network status.
+and network status. We'll look here at a few areas that may help you 
+monitor your IT Services.
 
 -   Announcements
 -   Host / Device Status 
@@ -15,24 +16,25 @@ successfully deployed.
 ### Announcements
 
 Unfortunately, for the general populace, the only way to find out
-about vulnerabilities is to monitor [annoucements](monitoring/announcements.html) made through
-public forums, such as project mailing lists, or press-releases
+about vulnerabilities is to monitor [annoucements](monitoring/announcements.html) 
+made through public forums, such as project mailing lists, or press-releases
 from various researchers and vendors.
 
 As the diversity of your portfolio or IT services increase, we 
 have to increase the number of information sources to monitor
 looking for new knowledge, applications related to security and
 stability of installed systems.
- 
+
 ### Host / Device Status
 
 There are a number of standard tools used for monitoring the hosts, devices
-on your network. Nagios being one of the more popular, although a <a href="http://www.google.com">Google</a>
-/<a href="http://www.bing.com">Bing</a> search will quickly highlight alternatives.
+on your network. Nagios being one of the more popular, although a 
+<a href="http://www.google.com">Google</a>/<a href="http://www.bing.com">Bing</a> 
+search will quickly highlight alternatives.
 
-[Nagios](monitoring/nagios.html) is very good for monitoring up/down status, and is also able to use
-SNMP and custom NRPE for determining more detailed status information on hosts. Example things
-you can monitor using nagios include:
+[Nagios](monitoring/nagios.html) is very good for monitoring up/down status, and 
+is also able to use SNMP and custom NRPE for determining more detailed status 
+information on hosts. Example things you can monitor using nagios include:
 
 - up/down state
 - disk utilisation
@@ -40,7 +42,14 @@ you can monitor using nagios include:
 
 ### Network Performance
 
-[Smokeping](monitoring/smokeping.html) gives a quick graphical view of network latency.
+Determing the metrics to 'measure' Network Performance is difficult, but at the
+very least you need to be looking at what is going up and down your network
+pipes to gauge some aspect of what is happening there.
 
-[Netflow](monitoring/netflow.html) is a protocol to provide historical network traffic
-data that can be analysed, graphed for broad and minute review.
+We've effectively deployed, with Nagios, Smokeping and Netflow analysis as 
+tools for monitoring the network performance.
+
+-	[Smokeping](monitoring/smokeping.html) gives a quick graphical view of network 
+latency.
+-	[Netflow](monitoring/netflow.html) is a protocol to provide historical network 
+traffic data that can be analysed, graphed for broad and minute review.

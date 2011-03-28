@@ -1,7 +1,139 @@
 ## Graphs - Custom Analysis using FlowViewer
 
+Now we have some analysis tools going, we have a basic workflow
+for pro-active investigation of what's happening on our network:-
 
-### Modifications
+-	Smokeping shows a spike in traffic latency on your link.
+-	CUFlow isolates the ports used in the traffic
+-	Now what ?
+
+Enter, FlowViewer (for those who don't want to investigate at
+the command-line, flow-tools)
+
+<div class="toc">
+
+Table of Contents
+
+	<ul>
+		<li><a href="#prereq">Pre-requisites</a></li>
+		<li><a href="#install">Install</a></li>
+		<li><a href="#apache">Apache</a></li>
+		<li><a href="#flowviewer">FlowViewer</a></li>
+	</ul>
+
+</div>
+
+FlowViewer gives you a GUI front-end for interrogate the database
+for quick analysis of the data. For our above scenario, you can 
+quick drill through to see which hosts were generating the 
+highest traffic at that time and to/from whom.
+
+After the previous netflow analysis tools (flow-tools, flowscan, CUFlow)
+installing FlowViewer is rather simplified.
+
+- 	Install the Pre-requisites
+-	Install Flowviewer
+-	Configure Flowviewer
+
+### <a name="prereq"></a> Pre-Requisites
+
+Refer: [Michael W. Lucas' book "Network Flow Analysis."](
+http://networkflowanalysis.com) which already identifies
+minimal prerequisites to get our FlowViewer up and running.
+
+Binary tools I install from OpenBSD Packages, but perl modules
+may require installing from CPAN. PAN.
+
+If you got here, without installing and testing the [FlowScan/CUFlow](
+flow.flowscan.html), things should work but interpretation of data
+will really need more support from the above book.
+
+The Binaries
+
+- 	RRDtool, installed 1.2.30p0 from packages which includes 
+	dependencies png and libart
+- 	gd 2.0.35 installed from packages (graphics/gd)
+- 	gd::graph (p5-GD-Graph-1.44 from ports)
+	
+The Perl Modules (install from CPAN, if ports version is not current enough)
+
+- GDBM
+
+#### The Perl Modules
+
+<pre class="command-line">
+# perl -MCPAN -e shell
+</pre>
+<pre class="screen-output">
+Terminal does not support AddHistory.
+
+cpan shell -- CPAN exploration and modules installation (v1.9402)
+Enter 'h' for help.
+</pre>
+<pre class="command-line">
+cpan[1]> install GDBM
+cpan[2]> quit
+</pre>
+
+### <a name="install"></a> Install
+
+Ref: [FlowViewer](http://ensight.eos.nasa.gov/FlowViewer/)
+
+Get the current release from the FlowViewer homesite
+[(http://ensight.eos.nasa.gov/FlowViewer/)](http://ensight.eos.nasa.gov/FlowViewer/)
+and follow the basic install instructions that comes with the software.
+
+<pre class="command-line">
+curl -O http://ensight.eos.nasa.gov/FlowViewer/FlowViewer_3.4.tar
+</pre>
+
+As per the installation instructions ('cause I know you were reading
+it.)
+
+1. 'Un-tar' FlowViewer_3.X.tar in an appropriate directory at or below your web server's cgi-bin directory 
+2. Modify the contents of FlowViewer_Configuration.pm for your environment. 
+3. If you are going to use FlowGrapher, you will need to install both the GD and the GD::Graph packages for Perl. 
+4. If you are going to use FlowTracker, you will need to install the RRDtool package (at least version 1.2.12.) Create FlowTracker_Filters and FlowTracker_RRDtool subdirectories. 
+5. Point your web browser at either of FlowViewer.cgi, FlowGrapher.cgi, or FlowTracker.cgi and go ...   
+
+Installation Tips 
+
+1. If you do not embed your device name in the name of the directory that stores the raw flow data (e.g., you have only one device) set the @devices array to empty (i.e., @devices = "";) With version 3.3, you can now collect all devices to one directory, and sort by Exporter. 
+2. Make sure that the FlowViewer 'reports', 'graphs', 'tracker', 'work', 'names', and 'log' (if you're logging) directories that you specify have adequate permissions (e.g., 0777) for the web server to write into them. 
+3. Double check that you have configured the proper HTTP protocol (i.e., either HTTP (usually port 80), or HTTPS (usually port 443)). 
+4. For FlowTracker make sure you install an RRDtool version that is 1.2.12 or later.  
+
+
+### <a name="apache"></a> Apache
+
+Customising your configuration, is basically choosing what paths
+you want to show on your browser. The classic example is
+a straight out alias using the Capitalisation of the application
+name FlowViewer.
+
+<pre class="config-file">
+Alias /Flowviewer/ /var/www/flowviewer/
+&lt;Directory /var/www/flowviewer/>
+	Options +ExecCGI
+	AddHandler cgi-script .cgi
+	Allow from [list-of-trusted-hosts]
+&lt;/Directory>
+</pre>
+
+As noted in the above, I'm putting my files into the directory
+/var/www/flowviewer/
+
+### <a name="flowviewer"></a> FlowViewer
+
+The next part, after copying the files in the appropriate path
+(/var/www/flowviewer/) is to customise how you want your
+paths to look.
+
+Simplicity means keeping things as they are defined by the
+install. But, I'm insane enough to do these documentation
+and have decided on my own 'path'ing. The following
+sample shows installation modifications that have worked
+with FlowViewer 3.3.1 and 3.4. Your Mileage May Vary (YMMV)
 
 <pre class="config-file">
 --- FlowViewer_Configuration.pm.orig Wed Jun 11 05:10:37 2008
@@ -94,6 +226,8 @@ Router","192.168.100.2:Prague Router");
  $log_collector_med  = "N";
  $log_collector_long = "N"; 
 </pre>
+
+Last are updates to the startup script /etc/rc.local
 
 Updates to /etc/rc.local
 

@@ -86,18 +86,21 @@ Our installation will use the following paths.
 			is a large partition with lots of space.</td>
 	</tr>
 	<tr>
-		<td>gatewayMN</td>
-		<td>Gateway MN netflow capture directory</td>
+		<td>mygatewayMN</td>
+		<td>Netflow capture directory, where *mygatewayMN* is what you 
+		    want to name the directory for your files exported from the
+			sensor. For example: wangateway, servers, financedept</td>
 	</tr>
 </table>
 
 Michael's book provides an exhaustive set of tests that are invaluable
-for validating that the configuration is correct.
+for validating that the configuration is correct. For our example paths,
+we need to create some directories.
 
-Install flow-tools using the packages/ports collection.
-
-For some of the additional tools we need to
-retain the working directory of the build source.
+<pre class="command-line">
+# mkdir -p /var/data/netflow/mygatewayMN
+# cp -R /usr/local/share/examples/flow-tools/cfg /etc
+</pre>
 
 ### <a name="3"></a> 3. Capturing netflow data
 
@@ -112,7 +115,7 @@ flow-capture](http://code.google.com/p/flow-tools/wiki/ManFlowCapture)
 which listens on the sensor specified 'destination address' and UDP port.
 
 <pre class="command-line">
-# flow-capture -p /var/run/flow-capture.pid -n 287 -w /var/data/netflow \
+# flow-capture -p /var/run/flow-capture.pid -n 287 -w /var/data/netflow/mygatewayMN \
 	-S 5 10.0.0.2/10.0.0.1/12345
 </pre>
 
@@ -127,24 +130,21 @@ sane to your configuration.
 
 <pre class="manpage">
 -p pidfile Configure the process ID file
-</pre>
 
-<pre class="manpage">
--n rotations the number of times a new file per day. -n 287 is about every 5 minutes. 
-   <a href="http://networkflowanalysis.com">Michael W. Lucas' book "Network Flow Analysis."</a>
-   notes that the 5 minute increment is the expected standard by 
-   supplementary analysis tools.
-</pre>
+-n rotations the number of times a new file per day. 
 
-<pre class="manpage">
 -S stat_interval log a timestamped message every 5 minutes indicating 
 counters such as the number of flows received, packets processed, 
 and lost flows. 
-</pre>
 
-<pre class="manpage">
 -w workdir set the workdir to /var/data/netflow. 
 </pre>
+
+-n 287 is about every 5 minutes. 
+<a href="http://networkflowanalysis.com">Michael W. Lucas' book "Network Flow Analysis."</a>
+notes that the 5 minute increment is the expected standard by 
+supplementary analysis tools.
+
 
 #### Validating Traffic Flow
 
@@ -163,13 +163,13 @@ such as:
 - tmp-v05.YYY-MM-DD.HHMMSS+UTCTZ
 - ft-v05.YY-MM-DD.HHMMSS+UTCTZ
 
-Where ft significies the log file is complete, and tmp signifies the log file
+Where ft signifies the log file is complete, and tmp signifies the log file
 is temporary/incomplete.
 
 ##### flow-capture execution log messages
 
 flow-capture logs its messages to syslog's /var/log/messages
-which can be monitored to 
+which can be monitored.
 
 ##### tcpdump
 
@@ -193,24 +193,25 @@ File extract: /etc/rc.local
 FLOWCAPTURE=/usr/local/bin/flow-capture
 FLOWPID=/var/run/flow-capture.pid
 FLOWDATA=/var/data/netflow
-GATEWAY=wan
-local_ip_address=
-gateway_ipaddress=
+GATEWAY=mygatewayMN
+collector_ipaddress=XXXXXXXXX
+sensor_ipaddress=XXXXXXXXX
 port=12345
 
 if [ -x ${FLOWCAPTURE} ]; then
     echo ' flow-capture'
-	printf ' - gateway #1'; ${FLOWCAPTURE} -p ${FLOWPID} -w ${FLOWDATA}/$GATEWAY \
-		-S 5 $local-ip-address/$gateway_ipaddress/$port && \
+	printf ' - gateway #1'; ${FLOWCAPTURE} -p ${FLOWPID} -w ${FLOWDATA}/${GATEWAY} \
+		-S 5 ${collector_ipaddress}/${sensor_ipaddress}/${port} && \
 		echo "\t\t [OK]" || echo "\t\t [Failed]";
 fi
 </pre>
 
 ### <a name="4"></a> 4. Storage Requirements
 
-How much disk space is required ?
+How much disk space is required ? How long is a piece of string ?
 
-2 months of data collection on 2 devices reveals the below
+2 months of data collection on 2 devices reveals the below, but
+all it really says is that storage
 
 <table>
 	<tr><th>Device</th><th>Storage Requirements</th></tr>
