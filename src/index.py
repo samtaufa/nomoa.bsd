@@ -169,7 +169,7 @@ class ShowSrc:
         if proc:
             f = proc(f)
         post = """
-<div class=\"fname\">
+<div class="filename">
 (%s)
 </div>
 """%path

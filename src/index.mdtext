@@ -12,8 +12,12 @@ rational, easily understood, shining")(FAQ) is a foundation for experimentation,
 and maintenance.
    
 These notes reference how we got/keep  $!OpenBSD!$ up and running. 
-Verify what you read here through the $!OpenBSD!$ mailing lists, Internet 
-and practise safe Computing.
+Verify what you read here through the $!OpenBSD!$ supported documentation
+systems described above, ask questions on their mailing lists, use
+search engines such as 
+<a href="http://lmgtfy.com/?q=Ask Your question here">Google</a> or 
+<a href="http://www.letmebingthatforyou.com/?q=Ask your question here">Bing</a>
+and practise safe Computing (tm).
 
 -   Build and Consistency
 -   Communications Systems
@@ -28,14 +32,14 @@ and practise safe Computing.
 
 Putting together an $!OpenBSD!$ box is fun and easy, although
 there are a few hurdles that can seem daunting for the new
-user. The installation process is well defined and documented. 
+user. The installation process is well defined, documented. 
 We include here a few areas that might be interesting to review
 before a system install (especially for new users.)
 
 Likewise, we try to put here general issues to consider when
-planning to roll-out $!OpenBSD!$ to your critical infrastructure.
+planning to roll-out a consistent deployment of $!OpenBSD!$.
 
-### Secured Communications
+### Communications
 
 [Mail](comms/mail.html) | [VPN](comms/openvpn.html) | [Web](comms/www.html) | [Miscellaneous](comms/misc.html)
 
@@ -43,18 +47,19 @@ Your first step in connecting your new $!OpenBSD!$ box, to anything, is
 to read the [OpenBSD FAQ 6 - Networking](http://www.openbsd.org/faq/faq6.html)
 document. And then, read it again.
 
-Afterwards,  we explore sharing and securing communications services.
+Afterwards,  we can explore end-user communication services with your $!OpenBSD!$.
 
--   File Sharing with Windows clients
--   FTP Server
--   Mail Services
--   Virtual Private Networks
+-   [File Sharing](comms/misc/samba.html) with Windows clients
+-   [FTP Server](comms/misc/ftp.html)
+-   [Mail Services](comms/mail.html)
+-   [Virtual Private Networks](comms/openvpn.html)
 
-#### Mail Server
+#### [Mail Server](comms/mail.html)
 
-For example, e-mail may just be the lifeblood of the Internet, unless you're younger than 25. 
+E-mail may just be the lifeblood of the Internet, unless you're younger than 25. 
 Various tools come together to provide what is generally termed an E-mail Server, 
-and we bring together some of these key tools on $!OpenBSD!$.
+([MTA](comms/mail.html "Mail Transport Agent")) and we bring together some of 
+these key tools on $!OpenBSD!$.
 
 -   an SMTP Server, using [Sendmail](comms/mail.html) or
     [Postfix](comms/mail/postfix.html)

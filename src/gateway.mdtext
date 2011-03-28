@@ -1,24 +1,43 @@
 ## Border and Gateway Systems
 
-OpenBSD is a known quantity for Border Systems (between 
-your organisation and the outside world.
+OpenBSD is an established, tested, system for Edge, or
+Border devices. You may have to use your local search 
+engine, or watch the mailing lists, but if you want to
+write your own [marketing brochures]("aka do your own 
+research"), $!OpenBSD!$ is
+a practical and solid solution for many edge device,
+and border systems.
 
 These notes will not help you build a secure system,
 but will hopefully provide some strategy for monitoring
 or debugging your configuration.
 
-### High Availability
+### <a href="gateway/highavailability.html">High Availability</a>
 
-OpenBSD offers some unique (?) tools for systems requiring high availability services.
+OpenBSD offers some unique (?) tools for systems requiring 
+high availability services. The high availability core services
+allow administrators to augment any application to mitigate
+against hardware failure.
 
-### Firewall
+The default distribution of OpenBSD includes a Firewall
+Packet Filter extending on the above features to support
+various scenarios of high availability for the firewall.
+
+
+### <a href="gateway/pf.html">Firewall</a>
 
 The Packet Filter Engine, PF, is a stateful packet filtering system developed
-by the OpenBSD developers.
+by the OpenBSD developers. PF supports providing access controls for
+network traffic including QOS, Traffic Shaping, and Network Address
+Translation (NAT.)
 
-### Routing
+In this context, we discuss using OpenBSD's High Availability
+Features, which supports warm/hot failover between different
+hosts.
 
-In these we cover some information on OpenBSD's bgpd implementation,
-as well as some local notes on Cisco switches.
+### <a href="gateway/routing.html">Routing</a>
 
-More research required.
+Gateways route traffic between different networks. OpenBSD supports forwarding 
+IP traffic as a gateway. For larger network configurations, OpenBSD also
+supports the Border Gateway Protocol (BGP) through its own implementation,
+and through other 3rd party applications through the Ports/Package System.
