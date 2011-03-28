@@ -36,9 +36,9 @@
             <li> <a href="#test.nmap">Publicly Accessible Services</a></li>
             <li> <a href="#test.relay">Open Relay</a></li>
         </ul></li>
-    <li> <a href="#test.external">Related Notes</a>
+    <li> <a href="#related.notes">Related Notes</a>
         <ul>
-            <li> <a href="#test.ssl">SSL/TLS Transport for securing mail</a>
+            <li> <a href="#rn.ssl">SSL/TLS Transport for securing mail</a>
             <ul>
                 <li>openssl</li>
                 <li>IMAPS</li>
@@ -253,11 +253,11 @@ Reading mail
 
 Quit. We quit out of 'mail' using the 'q' command.
 
-The above reference to the log files and mail client is to provide you with more tools for validating your installation.</p>
+The above reference to the log files and mail client is to provide you with more tools for validating your installation.
 
 ##### Mail Receipt
 
-[ $!manpage('telnet')!$, $!manpage('mail')!$, /var/log/maillog ]
+&#91;Ref: $!manpage('telnet')!$, $!manpage('mail')!$, /var/log/maillog ]
 
 Verify that the mail server will accept tcp connections on smtp 
 from the below by sending mail to a user account on the mail host:
@@ -269,8 +269,8 @@ from the below by sending mail to a user account on the mail host:
 With the verification, ensure that email is recieved by watching the maillog to note:
 
 -   mail is accepted (queued) by the mail server
--   mail is delivered (sent) by the mail server (in this case, delivery is to a local 
-    mail box
+-   mail is delivered (sent) by the mail server 
+	(in this case, delivery is to a local mail box)
     
 An internal client (destination email) should have successfully recieved mail from the above tests.
 
@@ -296,7 +296,7 @@ An external client (destination email) should have successfully recieved mail fr
 ##### Summary
 
 We now have a fully functional SMTP server that can receive email messages, 
-and store those messages for users.</p>
+and store those messages for users.
 
 <a name="test.pop3"></a>
 #### POP3 - Post Office Protocol
@@ -308,9 +308,9 @@ If you've successfully installed dovecot with mysql above, and have gone
 through the Configuring a Virtual Email Service - MySQL in <a href="postfix.htm">our postfix 
 installation guide</a>, (or you have installed your own MySQL virtual user accounts) 
 then we can perform some testing, validating whether our configuration actually 
-works.</p>
+works.
 
-Screen Session</p>
+Screen Session
 
 <pre class="command-line">
 $ telnet localhost pop3
@@ -373,9 +373,9 @@ QUIT
 Connection closed by foreign host.
 </pre>
 
-The maillog file should show success similar to the below</p>
+The maillog file should show success similar to the below
 
-File Fragment: /var/log/maillog</p>
+File Fragment: /var/log/maillog
 
 <pre class="screen-output">
 pop3-login: Login: user=&lt;charlie@alpha.example.org&gt;, method=PLAIN, rip=127.0.0.1, lip=127.0.0.1, secured
@@ -383,9 +383,9 @@ POP3(charlie@alpha.example.org): Disconnected: Logged out top=0/0, retr=1/519, d
 </pre>
 
 Again, a review of the mysql transaction log can be helpful in diagnosing 
-errors.</p>
+errors.
 
-File Fragment: /var/mysql/myhost.log</p>
+File Fragment: /var/mysql/myhost.log
 
 <pre class="screen-output">
 Connect dovecot@localhost on mail
@@ -411,7 +411,7 @@ entered the correct password?
 <a name="test.imap"></a>
 #### IMAP - Internet Message Access Protocol
 
-We use telnet on the localhost to test imap's configuration</p>
+We use telnet on the localhost to test imap's configuration
 
 Screen Session
 
@@ -482,7 +482,7 @@ the '3_ EXISTS_' in the list returned by '<strong>a2 select inbox'</strong>
 Your maillog file is your friend and will give you clues to where you can 
 check for other errors.
 
-File Fragment: /var/log/maillog</p>
+File Fragment: /var/log/maillog
 
 <pre class="screen-output">
 auth-worker(default): mysql: Connected to localhost 
@@ -492,9 +492,9 @@ IMAP(charlie@alpha.example.org): Disconnected: Logged out
 </pre>
 
 Likewise the mysql transaction log should give further assistance should the 
-installation be having problems.</p>
+installation be having problems.
 
-File Fragment: /var/mysql/myhost.log</p>
+File Fragment: /var/mysql/myhost.log
 
 <pre class="screen-output">
 Connect dovecot@localhost on mail
@@ -585,12 +585,12 @@ our server.
 -   Firewall External NIC - verify traffic reaches the NIC and is not blocked
 -   Firewall Internal NIC - verify traffic goes in/out the Internal link and indicates return route from the client.
 
-<a name="test.external"></a>
 
-### Related Notes
 
-<a name="test.ssl"></a>
-#### Diagnosing POP3, IMAP and SMTP via SSL
+### <a name="related.notes"></a> Related Notes
+
+
+#### <a name="rn.ssl"></a> Diagnosing POP3, IMAP and SMTP via SSL
 
 [ Formerly @ http://www.h-online.com/security/features/print/114281 ]
 <date>22 September 2009, 10:51</date>
@@ -604,11 +604,11 @@ with the right tools, it doesn't have to be a black art.
 Almost all mail servers offer the option of encrypting connections. 
 Two different procedures are used  either the entire service protocol 
 is sent via an SSL tunnel or a protocol extension called "StartTLS" is
-used to activate encryption after establishing the connection.</p>
+used to activate encryption after establishing the connection.
 
 Taking SSL services first, these usually run on dedicated, 
 specially defined TCP ports. Here is a short list of the more 
-important ports:</p>
+important ports:
  
 <table>
     <tr>
@@ -643,219 +643,204 @@ important ports:</p>
     </tr>
 </table>
 
-The service listening at the TCP port expects a direct SSL connection so, for example, email clients which don't support SSL can't communicate with IMAPS servers on port 993. Once encryption parameters have been negotiated and certificates exchanged you have a tunnel, through which the actual payload protocol passes. Due to the complications involved in establishing an SSL connection, when it comes to troubleshooting, standard tools such as telnet and netcat tend to come up short.</p>
+The service listening at the TCP port expects a direct SSL connection so, for example, email clients which don't support SSL can't communicate with IMAPS servers on port 993. Once encryption parameters have been negotiated and certificates exchanged you have a tunnel, through which the actual payload protocol passes. Due to the complications involved in establishing an SSL connection, when it comes to troubleshooting, standard tools such as telnet and netcat tend to come up short.
 
-Into the breach steps the universal <b>OpenSSL[1]</b>, which includes a simple SSL client that can easily be used to set up a connection to an SSL service such as <b>https://www.heise.de[2]</b>:</p>
+Into the breach steps the universal <b>OpenSSL[1]</b>, which includes a simple SSL client that can easily be used to set up a connection to an SSL service such as <b>https://www.heise.de[2]</b>:
  
-<p><span style="font-family:monospace;">
-$ <span style="color:blue;">openssl s_client -host www.heise.de -port 443</span><br />
-CONNECTED(00000003)<br />
-[...]<br />
----<br />
-Certificate chain<br />
-0 s:/C=DE/ST=Niedersachsen/L=Hannover/O=Heise Zeitschriften Verlag GmbH Co KG/OU=Netzwerkadministration/OU=Terms of use at www.verisign.com/rpa (c)05/CN=www.heise.de<br />
-i:/O=VeriSign Trust Network/OU=VeriSign, Inc./OU=VeriSign International Server CA - Class 3/OU=www.verisign.com/CPS Incorp.by Ref. LIABILITY LTD.(c)97 VeriSign<br />
-1 s:/O=VeriSign Trust Network/OU=VeriSign, Inc./OU=VeriSign International Server CA - Class 3/OU=www.verisign.com/CPS Incorp.by Ref. LIABILITY LTD.(c)97 VeriSign<br />
-i:/C=US/O=VeriSign, Inc./OU=Class 3 Public Primary Certification Authority<br />
----<br />
+<pre>
+$ <span style="color:blue;">openssl s_client -host www.heise.de -port 443</span>
+CONNECTED(00000003)
 [...]
-</span></p>
- 
-<p>the information provided by openssl allows us to examine the certificates used. Indeed failure to do so lays us open to man-in-the-middle attacks. Technically accomplished users who known how to use ettercap have reputedly used this technique to obtain administrator passwords.</p>
- 
-<p>The SSL client encrypts and decrypts the input and output channels transparently, allowing the user to talk directly to the server:</p>
- 
-<p><span style="font-family:monospace;">
-<span style="color:blue;">GET / HTTP/1.1<br />
-Host: www.heise.de<br />
-&lt;return&gt;</span><br />
-HTTP/1.1 302 Found<br />
-Date: Wed, 16 Sep 2009 10:24:44 GMT<br />
-Server: Apache/1.3.34<br />
-Location: http://www.heise.de/<br />
+---
+Certificate chain
+0 s:/C=DE/ST=Niedersachsen/L=Hannover/O=Heise Zeitschriften Verlag GmbH Co KG/OU=Netzwerkadministration/OU=Terms of use at www.verisign.com/rpa (c)05/CN=www.heise.de
+i:/O=VeriSign Trust Network/OU=VeriSign, Inc./OU=VeriSign International Server CA - Class 3/OU=www.verisign.com/CPS Incorp.by Ref. LIABILITY LTD.(c)97 VeriSign
+1 s:/O=VeriSign Trust Network/OU=VeriSign, Inc./OU=VeriSign International Server CA - Class 3/OU=www.verisign.com/CPS Incorp.by Ref. LIABILITY LTD.(c)97 VeriSign
+i:/C=US/O=VeriSign, Inc./OU=Class 3 Public Primary Certification Authority
+---
 [...]
-</span></p>
+</pre>
  
-<p>Next: Logging in to IMAPS</p>
+the information provided by openssl allows us to examine the certificates used. Indeed failure to do so lays us open to man-in-the-middle attacks. Technically accomplished users who known how to use ettercap have reputedly used this technique to obtain administrator passwords.
  
-<p><hr></p>
+The SSL client encrypts and decrypts the input and output channels transparently, allowing the user to talk directly to the server:
  
-<p> </p>
+<pre>
+<span style="color:blue;">GET / HTTP/1.1
+Host: www.heise.de
+&lt;return&gt;</span>
+HTTP/1.1 302 Found
+Date: Wed, 16 Sep 2009 10:24:44 GMT
+Server: Apache/1.3.34
+Location: http://www.heise.de/
+[...]
+</pre>
+ 
 #### Logging in to IMAPS
-<p>Logging into an IMAPS server is only a little more complicated:</p>
+
+Logging into an IMAPS server is only a little more complicated:
  
-<p><span style="font-family:monospace;">
-$ <span style="color:blue;">openssl s_client -host imap.irgendwo.de -port 993</span><br />
-[...]<br />
-* OK IMAP4 Ready 0.0.0.0 0001f994<br />
-<span style="color:blue;">1 Login user-ju secret</span><br />
-1 OK You are so in<br />
-<span style="color:blue;">2 LIST "" "*"</span><br />
-* LIST (\HasChildren) "." "INBOX"<br />
-* LIST (\HasNoChildren) "." "INBOX.AV"<br />
-[...]<br />
-2 OK Completed (0.130 secs 5171 calls)<br />
-<span style="color:blue;">3 logout</span><br />
-* BYE LOGOUT received<br />
-3 OK Completed<br />
-</span></p>
+<pre>
+$ <span style="color:blue;">openssl s_client -host imap.irgendwo.de -port 993</span>
+[...]
+* OK IMAP4 Ready 0.0.0.0 0001f994
+<span style="color:blue;">1 Login user-ju secret</span>
+1 OK You are so in
+<span style="color:blue;">2 LIST "" "*"</span>
+* LIST (\HasChildren) "." "INBOX"
+* LIST (\HasNoChildren) "." "INBOX.AV"
+[...]
+2 OK Completed (0.130 secs 5171 calls)
+<span style="color:blue;">3 logout</span>
+* BYE LOGOUT received
+3 OK Completed
+</pre>
  
-<p>Don't forget the freely-selectable sequence number which must precede the actual IMAP command. A POP3 login works in a similar way, if we identify ourselves within the SSL tunnel using the USER and PASS POP3 commands:</p>
+Don't forget the freely-selectable sequence number which must precede the actual IMAP command. A POP3 login works in a similar way, if we identify ourselves within the SSL tunnel using the USER and PASS POP3 commands:
  
-<p><span style="font-family:monospace;">
-$ <span style="color:blue;">openssl s_client -host pop.irgendwo.de -port 995</span><br />
-[...]<br />
-+OK POP server ready H mimap3<br />
-<span style="color:blue;">USER user-ju</span><br />
-+OK password required for user "user-ju"<br />
-<span style="color:blue;">PASS secret</span><br />
-+OK mailbox "user-ju" has 0 messages (0 octets) H mimap3<br />
-<span style="color:blue;">quit</span><br />
-+OK POP server signing off<br />
-</span></p>
+<pre>
+$ <span style="color:blue;">openssl s_client -host pop.irgendwo.de -port 995</span>
+[...]
++OK POP server ready H mimap3
+<span style="color:blue;">USER user-ju</span>
++OK password required for user "user-ju"
+<span style="color:blue;">PASS secret</span>
++OK mailbox "user-ju" has 0 messages (0 octets) H mimap3
+<span style="color:blue;">quit</span>
++OK POP server signing off
+</pre>
  
-<p>An alternative option is the telnet-ssl tool which offers similar functionality.</p>
- 
-<p>Next: StartTLS</p>
- 
-<p><hr></p>
- 
-<p> </p>
+An alternative option is the telnet-ssl tool which offers similar functionality.
+  
 #### StartTLS
-<p>Internet providers in particular prefer to use SSL's successor, Transport Layer Security via StartTLS. It has the advantage that it can be offered as an additional option, whilst still allowing clients which don't support it to communicate with the server without encryption. The flip side of this is that email clients need to be able to cope if the server refuses a TLS connection.</p>
+
+Internet providers in particular prefer to use SSL's successor, Transport Layer Security via StartTLS. It has the advantage that it can be offered as an additional option, whilst still allowing clients which don't support it to communicate with the server without encryption. The flip side of this is that email clients need to be able to cope if the server refuses a TLS connection.
  
-<p>The default option in many email clients, "TLS, if available", carries with it a major risk  a man-in-the-middle attacker could silently change the <span style="font-family:monospace;">StartTLS</span> command, which should activate encryption, into an <span style="font-family:monospace;"><span style="color:red;">X</span>tartTLS</span>. The server would then respond that it doesn't do XtartTLS, causing some email clients to send user data in unencrypted form unbeknown to the user. It is therefore advisable to check whether a server can handle StartTLS and then to make it obligatory. If an error message appears, it's then clear that something's wrong.</p>
+The default option in many email clients, "TLS, if available", carries with it a major risk  a man-in-the-middle attacker could silently change the **StartTLS** command, which should activate encryption, into an <span style="color:red;">X</span>tartTLS. The server would then respond that it doesn't do XtartTLS, causing some email clients to send user data in unencrypted form unbeknown to the user. It is therefore advisable to check whether a server can handle StartTLS and then to make it obligatory. If an error message appears, it's then clear that something's wrong.
  
-<p>The port on which TLS services run is provider-dependant. In principle, this type of encryption can be transparently embedded within normal operations. To find out whether a mail server supports this:</p>
+The port on which TLS services run is provider-dependant. In principle, this type of encryption can be transparently embedded within normal operations. To find out whether a mail server supports this:
  
-<p><span style="font-family:monospace;">
-$ <span style="color:blue;">nc smtp.irgendwo.de smtp</span><br />
-220 Mailserver ESMTP Exim 4.69 Wed, 16 Sep 2009 13:05:15 +0200<br />
-<span style="color:blue;">ehlo test</span><br />
-250-Mailserver Hello loki [10.1.2.73]<br />
-250-SIZE 78643200<br />
-250-PIPELINING<br />
-250-STARTTLS<br />
-250 HELP<br />
-<span style="color:blue;">quit</span><br />
-221 Mailserver closing connection<br />
-</span></p>
+<pre>
+$ <span style="color:blue;">nc smtp.irgendwo.de smtp</span>
+220 Mailserver ESMTP Exim 4.69 Wed, 16 Sep 2009 13:05:15 +0200
+<span style="color:blue;">ehlo test</span>
+250-Mailserver Hello loki [10.1.2.73]
+250-SIZE 78643200
+250-PIPELINING
+250-STARTTLS
+250 HELP
+<span style="color:blue;">quit</span>
+221 Mailserver closing connection
+</pre>
  
-<p>This list should include the command <span style="font-family:monospace;">STARTTLS</span>, which activates Transport Layer Security encryption:</p>
+This list should include the command STARTTLS, which activates Transport Layer Security encryption:
  
-<p><span style="font-family:monospace;">
-<span style="color:blue;">STARTTLS</span><br />
-220 TLS go ahead<br />
-</span></p>
+<pre>
+<span style="color:blue;">STARTTLS</span>
+220 TLS go ahead
+</pre>
  
-<p>Netcat runs into trouble at this point, but openssl again comes to the rescue. The developers have made the SSL client smart enough to ask for TLS encryption in SMTP, POP3, IMAP and FTP, although this doesn't work with all servers.</p>
+Netcat runs into trouble at this point, but openssl again comes to the rescue. The developers have made the SSL client smart enough to ask for TLS encryption in SMTP, POP3, IMAP and FTP, although this doesn't work with all servers.
  
-<p><span style="font-family:monospace;">
-$ <span style="color:blue;">openssl s_client -host mail.irgendwo.de -port 25 -starttls smtp</span><br />
-CONNECTED(00000003)<br />
-[...]<br />
-250 HELP<br />
-<span style="color:blue;">ehlo test</span><br />
-250-Mailserver Hello loki [10.1.2.73]<br />
-250-SIZE 52428800<br />
-250-PIPELINING<br />
-250-AUTH PLAIN LOGIN<br />
-250 HELP<br />
-</span></p>
+<pre>
+$ <span style="color:blue;">openssl s_client -host mail.irgendwo.de -port 25 -starttls smtp</span>
+CONNECTED(00000003)
+[...]
+250 HELP
+<span style="color:blue;">ehlo test</span>
+250-Mailserver Hello loki [10.1.2.73]
+250-SIZE 52428800
+250-PIPELINING
+250-AUTH PLAIN LOGIN
+250 HELP
+</pre>
  
-<p>Next: SMTP Authentication</p>
- 
-<p><hr></p>
- 
-<p> </p>
 #### SMTP Authentication
-<p>Authentication in SMTP is a little more complicated. Most servers, as in this example, support the <span style="font-family:monospace;">AUTH PLAIN</span> procedure, in which the access data must be Base64 coded. This is dealt with by the Perl command:</p>
+
+Authentication in SMTP is a little more complicated. Most servers, as in this example, support the **AUTH PLAIN** procedure, in which the access data must be Base64 coded. This is dealt with by the Perl command:
  
-<p><span style="font-family:monospace;">
-$ <span style="color:blue;">perl -MMIME::Base64 -e 'print encode_base64("\000user-ju\000secret")'</span><br />
-AHVzZXItanUAc2VjcmV0<br />
-</span></p>
+<pre>
+$ <span style="color:blue;">perl -MMIME::Base64 -e 'print encode_base64("\000user-ju\000secret")'</span>
+AHVzZXItanUAc2VjcmV0
+</pre>
  
-<p>the output from which should be fed to the SMTP server:</p>
+the output from which should be fed to the SMTP server:
  
-<p><span style="font-family:monospace;">
-<span style="color:blue;">AUTH PLAIN AHVzZXItanUAc2VjcmV0</span><br />
-235 Authentication succeeded<br />
-</span></p>
+<pre>
+<span style="color:blue;">AUTH PLAIN AHVzZXItanUAc2VjcmV0</span>
+235 Authentication succeeded
+</pre>
  
-<p>which signals it is ready for further SMTP commands. For protocols and servers not supported by openssl you can use gnutls-cli from the gnutls-bin package. First it creates a cleartext connection to an arbitrary TLS-enabled service such as:</p>
+which signals it is ready for further SMTP commands. For protocols and servers not supported by openssl you can use gnutls-cli from the gnutls-bin package. First it creates a cleartext connection to an arbitrary TLS-enabled service such as:
  
-<p><span style="font-family:monospace;">
-$ <span style="color:blue;">gnutls-cli -s -p submission smtp.heise.de</span><br />
-Resolving 'smtp.heise.de'...<br />
-Connecting to '10.1.2.41:587'...<br />
-<br />
-- Simple Client Mode:<br />
-<br />
-220 taxis03.heise.de ESMTP Exim 4.69 Wed, 16 Sep 2009 18:03:01 +0200<br />
-<span style="color:blue;">ehlo test</span><br />
-250-taxis03.heise.de Hello loki.ct.heise.de [10.10.22.75]<br />
-250-SIZE 78643200<br />
-250-PIPELINING<br />
-250-STARTTLS<br />
-250 HELP<br />
-<span style="color:blue;">starttls</span><br />
-220 TLS go ahead<br />
-</span></p>
+<pre>
+$ <span style="color:blue;">gnutls-cli -s -p submission smtp.heise.de</span>
+Resolving 'smtp.heise.de'...
+Connecting to '10.1.2.41:587'...
+
+- Simple Client Mode:
+
+220 taxis03.heise.de ESMTP Exim 4.69 Wed, 16 Sep 2009 18:03:01 +0200
+<span style="color:blue;">ehlo test</span>
+250-taxis03.heise.de Hello loki.ct.heise.de [10.10.22.75]
+250-SIZE 78643200
+250-PIPELINING
+250-STARTTLS
+250 HELP
+<span style="color:blue;">starttls</span>
+220 TLS go ahead
+</pre>
  
-<p>Then you switch to a second shell to get the process ID of the running tool and send the signal SIGALARM to it:</p>
+Then you switch to a second shell to get the process ID of the running tool and send the signal SIGALARM to it:
  
-<p><span style="font-family:monospace;">
-$ <span style="color:blue;">ps aux | grep gnutls</span><br />
-ju        6103  pts/3    S+   18:03   0:00 gnutls-cli [...]<br />
-$ <span style="color:blue;">kill -s SIGALRM 6103</span><br />
-</span></p>
+<pre>
+$ <span style="color:blue;">ps aux | grep gnutls</span>
+ju        6103  pts/3    S+   18:03   0:00 gnutls-cli [...]
+$ <span style="color:blue;">kill -s SIGALRM 6103</span>
+</pre>
  
-<p>This causes gnutls-cli to negotiate the TLS connection and to reconnect stdin and stdout to the newly created tunnel. It also presents some interesting information about the new TLS connection it just created:</p>
+This causes gnutls-cli to negotiate the TLS connection and to reconnect stdin and stdout to the newly created tunnel. It also presents some interesting information about the new TLS connection it just created:
  
-<p><span style="font-family:monospace;">
-*** Starting TLS handshake<br />
-- Certificate type: X.509<br />
-- Got a certificate list of 1 certificates.<br />
-<br />
-- Certificate[0] info:<br />
-# The hostname in the certificate matches 'smtp.heise.de'.<br />
-# valid since: Thu Dec 14 14:08:41 CET 2006<br />
-# expires at: Sun Dec 11 14:08:41 CET 2016<br />
-# fingerprint: 28:8C:E0:29:B9:31:9B:96:F6:3D:B4:49:10:CD:06:80<br />
-# Subject's DN: C=DE,ST=Niedersachsen,L=Hannover,O=Heise Zeitschriften Verlag GmbH Co KG,OU=Netzwerkadministration,CN=smtp.heise.de,EMAIL=admin@heise.de<br />
-# Issuer's DN: C=DE,ST=Niedersachsen,L=Hannover,O=Verlag Heinz Heise GmbH & Co KG,OU=Netzwerkadministration,CN=admin@heise.de,EMAIL=admin@heise.de<br />
-<br />
-- Peer's certificate issuer is unknown<br />
-- Peer's certificate is NOT trusted<br />
-- Version: TLS 1.0<br />
-- Key Exchange: DHE RSA<br />
-- Cipher: AES 256 CBC<br />
-- MAC: SHA<br />
-- Compression: NULL<br />
-<span style="color:blue;">quit</span><br />
-221 taxis03.heise.de closing connection<br />
-- Peer has closed the GNUTLS connection<br />
-</span></p>
+<pre>
+*** Starting TLS handshake
+- Certificate type: X.509
+- Got a certificate list of 1 certificates.
+
+- Certificate[0] info:
+# The hostname in the certificate matches 'smtp.heise.de'.
+# valid since: Thu Dec 14 14:08:41 CET 2006
+# expires at: Sun Dec 11 14:08:41 CET 2016
+# fingerprint: 28:8C:E0:29:B9:31:9B:96:F6:3D:B4:49:10:CD:06:80
+# Subject's DN: C=DE,ST=Niedersachsen,L=Hannover,O=Heise Zeitschriften Verlag GmbH Co KG,OU=Netzwerkadministration,CN=smtp.heise.de,EMAIL=admin@heise.de
+# Issuer's DN: C=DE,ST=Niedersachsen,L=Hannover,O=Verlag Heinz Heise GmbH & Co KG,OU=Netzwerkadministration,CN=admin@heise.de,EMAIL=admin@heise.de
+
+- Peer's certificate issuer is unknown
+- Peer's certificate is NOT trusted
+- Version: TLS 1.0
+- Key Exchange: DHE RSA
+- Cipher: AES 256 CBC
+- MAC: SHA
+- Compression: NULL
+<span style="color:blue;">quit</span>
+221 taxis03.heise.de closing connection
+- Peer has closed the GNUTLS connection
+</pre>
  
-<p>This allows you to interactively connect to arbitrary TLS enabled services.  Users wanting to experiment further may be interested to know that openssl also includes <span style="font-family:monospace;">s_server</span> which is able to emulate a very simple www server. <span style="font-family:monospace;">gnutls-serv</span> provides similar functionality for the gnutls-bin package.</p>
+This allows you to interactively connect to arbitrary TLS enabled services.  Users wanting to experiment further may be interested to know that openssl also includes **s_server** which is able to emulate a very simple www server. **gnutls-serv** provides similar functionality for the gnutls-bin package.
  
-<p>(<b>ju[3]</b>)
-</p>
- 
-<!-- /HEISETEXT -->
-<hr />
-<p>
-    <strong>URL of this article:</strong><br />
-    http://www.h-online.com/security/features/114281
-</p>
- 
-<p>
-    <strong>Links in this article:</strong><br />
-    &nbsp;&nbsp;[1]&nbsp;http://www.openssl.org/<br />
-&nbsp;&nbsp;[2]&nbsp;https://www.heise.de<br />
-&nbsp;&nbsp;[3]&nbsp;mailto:ju@heisec.de<br />
-</p>
+(<b>ju[3]</b>)
+
+
+<strong>URL of this article:</strong>
+http://www.h-online.com/security/features/114281
+
+
+
+<strong>Links in this article:</strong>
+&nbsp;&nbsp;[1]&nbsp;http://www.openssl.org/
+&nbsp;&nbsp;[2]&nbsp;https://www.heise.de
+&nbsp;&nbsp;[3]&nbsp;mailto:ju@heisec.de
+
 <div >
     <span class="left">Copyright &copy; 2009 <a href="/contact/">Heise Media UK Ltd.</a></span>
     <span class="right"><a href="/security/privacy/">Privacy Policy</a> <a href="/security/contact/">Contact us</a></span>

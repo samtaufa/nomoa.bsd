@@ -7,7 +7,8 @@ Nomoa.com's $!OpenBSD!$ notes are built on ...
     marked-up text files into a static HTML website.
 -   [Notepad ++](http://notepad-plus.sourceforge.net/) and 
     [ScITE](http://scintilla.com) are the general text
-    editors. ScITE for it's cross-platform support.
+    editors. ScITE for it's cross-platform support, and Notepad++ 
+	because it uses the engine behind ScITE ([Scintilla](http://scintilla.com)).
 -   [dia](http://projects.gnome.org/dia/), 
     is a cross-platform diagram creation program used for the 
     majority of the diagrams on these pages.

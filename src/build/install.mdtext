@@ -25,12 +25,17 @@ Table of Contents
           <li> <a href="#a.package">Package checklist</a></li>
       </ol></li>
   <li><a href="#maintenance">Maintenance</a></a>
-      <ol>
-          <li> <a href="#m.config">Syncback - Configuration Archiving</a></li>
-          <li> <a href="#m.archiving"> Archiving - root cron jobs</a></li>
-          <li> <a href="#m.monitors">Special Monitors - monitor cron jobs</a></li>
-          <li> <a href="#m.authentication">Authentication Summaries</a></li>
-      </ol></li>
+		<ul>
+			<li><a href="#m.config.root">As Root</a>
+				<ul>
+					<li>Generate Package List</li>
+					<li>Archive Configuration Files</li>
+					<li>Archive Log Files</li>
+				</ul>
+			</li>
+			<li><a href="#m.config.monitor">As Monitor</a>
+			</li>
+		</ul></li>
 </ul>
 
 </div>
@@ -529,7 +534,7 @@ zsh-4.3.5           Z shell, Bourne shell-compatible
 </pre>
 
 
-### <a name="maintenance">Maintenance</a>
+### <a name="maintenance"></a> Maintenance
 
 The following are really of no value outside of how I'm doing things, but
 I'm putting it together here, because it simplifies my list of things
@@ -544,7 +549,7 @@ We handle the above archiving process through a set of scripts that are
 executed either as the 'root' user, or as the special 'monitor' account
 that we use explicitly for maintenance, monitoring.
 
-#### ROOT's cron
+#### <a name="m.config.root"></a> As Root
 
 The scripts that we execute as the 'root' user can be automated through
 root's cron as in the below:
@@ -615,9 +620,9 @@ $!showsrc.config("build/install/backup.configs.sh")!$
 The sample script may be a bit too verbose, cut it down for your own
 needs.
 
-##### Archiving Log Files
+##### Archive Log Files
 
-Install and review the `archlog` script
+Install and review the **archlog** script
 
 File: archlogs
 
@@ -626,7 +631,7 @@ $!showsrc.config("build/install/archlogs")!$
 The sample script may be a bit too verbose, cut it down for your own
 needs.
 
-#### **monitor's cron**
+#### <a name="m.config.monitor"></a> **monitor's cron**
 
 
 <pre class="config-file">
@@ -637,3 +642,5 @@ Basic **monitor** user configuration includes maintaining current state of peer
 hosts not accessible from other hosts. The backup.peer.configs.sh script is
 responsible for hosts hidden behind this host (such as CARP peers without
 accessible IP addresses, or hosts behind a firewall.)
+
+$!showsrc.config("build/install/backup.peer.configs.sh")!$
