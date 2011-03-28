@@ -1,0 +1,121 @@
+Filter the Physical Interface
+time: 2011-03-25 20:49
+
+Not that any of you would make such a disastrous error.
+
+But, apparently you need to read documentation, and re-read it every
+once in a while, just in case you've forgotten why you previously
+made a decision.
+
+Also known as, if you increase your management kung-fu, it may cost
+you in your technical 'chops'
+
+[FAQ: Packet Filter](http://www.openbsd.org/faq/pf/filter.html#intro Introduction)
+
+<pre class="manpage">
+Packet filtering is the selective passing or blocking of data packets 
+as they pass through a network interface.
+</pre>
+
+Somewhere along the line, I must have **forgotten** the above FAQ entry, 
+as one copy / paste followed another as we progressed from one
+revision of the firewall rulesets to the next, to another OpenBSD
+upgrade, to another.
+
+At some point a couple of years ago, I went through and replaced all
+these silly filter rulesets that looked like:
+
+<pre class="config-file">
+pass in on {carp0, em0}
+</pre>
+
+to the more accurate
+
+<pre class="config-file">
+pass in on em0
+</pre>
+
+So, I must have seen the 'correct' way to do it at some point, but
+all those dreams of *pass in on carp0* kept floating around in 
+my head that eventually, I came across a new feature I wanted to
+try (i.e. [Stateful Tracking Options](http://www.openbsd.org/faq/pf/filter.html#stateopts))
+and the late night dreams became a nightmare when I put it into
+the live ruleset, and back in comes:
+
+<pre class="config-file">
+pass in on {carp0, em0}
+</pre>
+
+Not totally fixated with the current flavour of the month science-fiction
+novel, I look at that outrage and say to myself "that can't be!!!"
+Promptly I delete the offending eye-sore, and we have the beautiful
+
+<pre class="config-file">
+pass in on carp0
+</pre>
+
+Wooohooo, reset the firewall, totally ignore the test-suites
+I've enacted for everyone else to perform whenever making
+**any** firewall ruleset changes. And, go to lunch.
+
+If you haven't figured out what happened (more to the point,
+what didn't happen,) let's just say I had a lot cleaning
+up, not with just the firewall rulesets, but also with
+the services that weren't getting any traffic during that
+'lunch break.'
+
+But, the $!OpenBSD!$ project isn't usually dependent on the FAQ
+for definitive statements on how things should be done. So, where
+does it actually say that you can filter in on one thing and not
+on another?
+
+The $!manpage("pfctl",8)!$ documentation has this at the beginning.
+
+<pre class="manpage">
+Packet filtering restricts the types of packets that pass through network
+interfaces entering or leaving the host based on filter rules as
+described in pf.conf(5).
+</pre>
+
+The $!manpage("em",4)!$ device driver, for a range of Intel NICS leads off with:
+
+<pre class="manpage">
+NAME
+     em - Intel PRO/1000 10/100/Gigabit Ethernet device
+SYNOPSIS
+     em* at pci?
+</pre>
+
+whereas the $!manpage("carp",4)!$ manpage says
+
+<pre class="manpage">
+NAME
+     carp - Common Address Redundancy Protocol
+SYNOPSIS
+     pseudo-device carp
+</pre>
+
+For my own edification, I record these notes, because apparently
+the reading is that device drivers attached to a device is a
+*network device* and most definitely the carp interface is a
+*pseudo-device* (and as such is not a real *network device*)
+
+#### Summary
+
+In short, note to self: remember the following.
+
+Life is organic, I make a lot of mistakes, and memory
+cells fade, confuse, and outright lie about what you
+remembered to have happened.
+
+- 	Read the manual pages
+-	Read the FAQ
+-	When you're confident about your invulnerability
+	drink some kryptonite, and read the documentation again.
+-	Set a suite of tests to verify changes you've made to
+	any of your systems (make sure that current behaviour
+	is not negatively effected)
+-	Perform these tests, whenever you make changes.
+-	Don't make changes before lunch (or going home, unless
+	you've got remote access and can work on it while at
+	home or having dinner with the family.)
