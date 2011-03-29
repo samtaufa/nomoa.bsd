@@ -32,9 +32,10 @@ Table of Contents
 		</ul>
 	</li><li><a href="#4">CUFlow</a>
 		<ul>
-			<li>Install</li>
+			<li>Get the Source</li>
+			<li>CUGrapher</li>
 		</ul></li>
-	<li><a href="#4">Execution</a>
+	<li><a href="#5">Execution</a>
 		<ul>
 			<li>Capturing netflow</li>
 		</ul>
@@ -394,7 +395,7 @@ Review [Network Flow Analysis](http://networkflowanalysis.com "Michael W. Lucas'
 # cd /tmp
 # tar -zxf /usr/ports/distfiles/FlowScan-1.006.tgz
 # cd FlowScan-1.006
-# ./configure --prefix=/var/data/netflow/
+# ./configure --prefix=/var/netflow/
 </pre>
 
 During configuration you will get an error message of the form:
@@ -425,11 +426,11 @@ something like the below diff:
 Complete the configuration, and install
 
 <pre class="command-line">
-# ./configure --prefix=/var/data/netflow/
+# ./configure --prefix=/var/netflow/
 # make install
 </pre> 
 
-The path /var/data/netflow/bin will now contain the FlowScan software.
+The path /var/netflow/bin/mygatewayMN will now contain the FlowScan software.
 
 ##### Update FlowScan.pm to v. 1.6
 
@@ -475,11 +476,11 @@ my set up for storing flows on the hard drive.
 
 <pre class="command-line">
 /usr/sbin/groupadd _flowscan
-/usr/sbin/useradd -mv -b /var/data/netflow \
+/usr/sbin/useradd -mv -b /var/netflow \
    -c "FlowScan Daemon" -L "default" -g _flowscan \
    -s /sbin/nologin _flowscan
 
-mkdir -p /var/data/netflow/flowscandata
+mkdir -p /var/netflow/flowscandata
 touch /var/log/flowscan.log
 </pre>
 
@@ -489,7 +490,7 @@ The sample configuration files are not copied to the installation folder
 so do this now
 
 <pre class="command-line">
-# cp /tmp/FlowScan-1.006/cf/flowscan.cf /var/data/netflow/bin
+# cp /tmp/FlowScan-1.006/cf/flowscan.cf /var/netflow/bin/mygatewayMN
 </pre>
 
 ##### flowscan.cf::FlowFileGlob
@@ -523,7 +524,7 @@ Modifications to flowscan.cf
  # use this glob (file pattern match) when looking for raw flow files to be  # processed, e.g.:
  # FlowFileGlob /var/local/flows/flows.*:*[0-9] -FlowFileGlob flows.*:*[0-9]
 +#FlowFileGlob flows.*:*[0-9]
-+FlowFileGlob /var/data/log/netflow/flowscandata/gateway1/ft-v*[0-9]
++FlowFileGlob /var/netflow/flowscandata/mygatewayMN/ft-v*[0-9]
 
  # ReportClasses (REQUIRED)
  # a comma-seperated list of FlowScan report classes, e.g.:
@@ -537,8 +538,6 @@ Modifications to flowscan.cf
  # This should be <= the "-s" value passed on the command-line to cflowd, e.g.: 
 </pre>
 
-Another configuration file will be required for gateway2 ($PREFIX/bin/gateway1 && $PREFIX/bin/gateway2)
-
 ### <a name="4">4. </a>CUFlow
 
 #### Get the Source
@@ -548,9 +547,11 @@ Another configuration file will be required for gateway2 ($PREFIX/bin/gateway1 &
 - Link to [Directory listing](http://www.columbia.edu/acis/networks/advanced/CUFlow/)
 
 Extract and copy the files CUFlow.cf and CUFlow.pm to the above FlowScan *bin* 
-directory.
+directory: (/var/netflow/bin/mygatewayMN)
 
-The following needs to be modified on your configuration.
+The following needs to be customised for your environment.
+
+File: CUFlow.cf
 
 <table>
 	<tr>
@@ -559,15 +560,30 @@ The following needs to be modified on your configuration.
 	</tr>
 	<tr>
 		<td>Subnet</td>
-		<td>"Local" subnets for differentiation between "sides" of the edge device.</td>
+		<td>"Local" subnets for differentiation between "sides" of the edge device.
+		
+<pre class="config-file">
+Subnet 192.168.13.0/24
+</pre>
+		</td>
 	</tr>
 	<tr>
 		<td>Network</td>
-		<td>Named network segments for tracking by label.</td>
+		<td>Named network segments for tracking by label.
+
+<pre class="config-file">
+Network 192.168.13.38 domain_server
+</pre>		
+		</td>
 	</tr>
 	<tr>
 		<td>OutputDIR</td>
-		<td>Storage location for RRD Data files (e.g. ./flowscanrrd)</td>
+		<td>Storage location for RRD Data files (e.g. ./flowscanrrd)
+		
+<pre class="config-file">
+OutputDir /var/netflow/flowscanrrd/mygatewayMN
+</pre>		
+		</td>
 	</tr>
 	<tr>
 		<td>Scoreboard</td>
@@ -575,39 +591,152 @@ The following needs to be modified on your configuration.
 	</tr>
 	<tr>
 		<td>AggregateScore</td>
-		<td>Aggregate Top X usage style of report</td>
+		<td>Aggregate Top X usage style of report
+		
+<pre class="config-file">
+AggregateScore /var/netflow/flowscanrrd/mygatewayMN/agg.dat /var/www/flowscan/mygatewayMN/overall.html
+</pre>		
+		</td>
 	</tr>
 	<tr>
 		<td>Router</td>
 		<td>Identify different sensors (edge-devices) collated
-		in this flow data.</td>
+		in this flow data.
+		
+<pre class="config-file">
+Router 10.0.0.1 mygatewayMN
+</pre>		
+		</td>
 	</tr>
 	<tr>
 		<td>Service</td>
-		<td>Named Service ports (TCP/IP) to track by label.</td>
+		<td>Named Service ports (TCP/IP) to track by label.
+		
+<pre class="config-file">
+Service 22/tcp,22/udp ssh
+Service 80/tcp,8000/tcp,8080/tcp,8081/tcp http
+Service 443/tcp https
+Service 1433/tcp,1433/udp mssqlserver
+</pre>		
+		</td>
 	</tr>
 	
 </table>
 
-#### <a name="5"></a> Execution
+#### CUGrapher.pl
+
+CUGrapher.pl is your GUI view into the netflow data. Copy it to
+your cgi-bin directory (e.g. /var/www/cgi-bin) and you can launch
+it from there.
+
+Modify the file to reflect your path environment.
+
+<pre class="config-file">
+--- CUGrapher.pl.orig      Wed Jan 11 07:47:10 2006
++++ CUGrapher.pl      Fri Feb 25 08:47:53 2011
+@@ -16,17 +16,17 @@
+ ### Local settings ###
+
+ # directory with rrd files
+-my $rrddir = "/cflow/reports/rrds";
++my $rrddir = "/var/netflow/flowscanrrd/mygatewayMN";
+ # default number of hours to go back
+ my $hours = 48;
+ # duration of graph, starting from $hours ago  my $duration;  
+ # organization name -my $organization = "Estimated Columbia University Campus";
++my $organization = "Example.COM";
+ # default graph width
+-my $width = 640;
++my $width = 1200;
+ # default graph height
+-my $height = 320;
++my $height = 800;
+ # default image type (png/gif)
+ my $imageType = 'png';
+
+@@ -109,7 +109,7 @@
+     my $q = new CGI::Pretty(""); # Avoid inheriting the parameter list
+
+
+-    print $q->header, $q->start_html( -title => 'Generate FlowScan graphs on the fly',
++    print $q->header, $q->start_html( -title => 'gatewayMN - CUGrapher',
+                                      -bgcolor => 'ffffff' );
+
+     if ($imgurl) {
+@@ -139,11 +139,17 @@
+                                  -values => [sort keys %reportName],
+                                  -default => '' ) );
+
+-    my %hours = ( 24 => '24 hours',
++    my %hours = ( 1  => '1 hours',
++                 2 => '2 hours',
++                 3 => '3 hours',
++                 6 => '6 hours',
++                 24 => '24 hours',
+                  36 => '36 hours',
+                  48 => '48 hours',
+                  168 => '1 week',
+-                 720 => '1 month' );
++                 720 => '1 month',
++                 1440 => '2 month',
++                 8766 => '1 year' );
+
+     print $q->td( { -align => 'right' },
+                  "Time period: ",	 
+
+</pre>
+
+For my reports, I've added more 'generic hours' to the views.
+
+### <a name="5"></a> 5. Execution
 
 We've created the relevant paths, and configuration files
 so it's time to start flowscan to analyse the tools so
 we can start looking at some of the graphs.
 
 <ul>
-	<li>Startup Script</li>
-	<li>flow-capture</li>
+	<li>flow_rotate script</li>
+	<li>flowscan startup script</li>
+	<li>autostart script</li>
 	<li>FlowScan GUI</li>
 	<li>CUFlow GUI</li>
 </ul>
 
-and a startup script
-helps to ensure everything's in the right place.
+#### flow_rotate script
+
+Remember, how we talked about flowscan deleting files after
+analysis? [^top](# "back to the top")
+
+To compensate for this 'feature' we need to use flow-capture's 
+[ -R rotate_program ] option to make a copy of the data. That
+copied data will be what we work on.
+
+<pre class="manpage">
+-R rotate_program
+   Execute rotate_program with the first argument as the flow file
+   name after rotating it.
+</pre>
+
+Our simple copy program will look something like this:
+
+File: /var/netflow/bin/mygatewayMN/flow_rotate.sh
+<pre class="command-line">
+#!/bin/sh
+cp $1 /var/netflow/flowscandata/mygatewayMN/
+</pre>
+
+#### Startup Script
+
+To simplify repeated executions of flowscan (and to capture the
+requirements for effectively launching it) we use a startup script 
+that sets up the execution user and generate logs. We
+can monitor the log to review application execution:
+
+File: /var/netflow/bin/mygatewayMN/startup_flowscan.sh
 
 <pre class="config-file">
 #!/bin/sh
-PREFIX=/var/data/netflow
+PREFIX=/var/netflow
 BIN=$PREFIX/bin
 SCANDATA=$PREFIX/scandata
 LOGFILE=/var/log/flowscan.log
@@ -616,78 +745,42 @@ USER=_flowscan
 nohup sudo -u _flowscan $BIN/flowscan > $LOGFILE 2>&1 &
 </pre>
 
-Startup Scripts, file: startup_flowscan.sh
+#### autostart script
 
-<pre class="command-line">
-#!/bin/sh
+We now have the components needed to launch flowscan with each
+restart of our host (just incase someone decides to move the
+box, turn it off.)
 
-PREFIX=/var/data/log/netflow
-bindir=$PREFIX/bin
-user=_flowscan
+We will add to the /etc/rc.local the following:
 
-echo 'Startup flowscan'
-logfile=/var/log/flowscan-gateway1.log
-scandir=$PREFIX/flowscandata/gateway1
-echo
-echo ' - gateway1'; nohup $bindir/gateway1/flowscan > $logfile &
-
-logfile=/var/log/flowscan-gateway2.log
-scandir=$PREFIX/flowscandata/gateway2
-echo ' - gateway2'; nohup $bindir/gateway2/flowscan > $logfile &
-</pre>
+-	Use our previous flow-capture startup routine
+-	Modify it to use -R and our script flow_rotate.sh
+-	Start the flowscan binary using our startup script 
 
 File Excerpt: /etc/rc.local
 
 <pre class="config-file">
 FLOWCAPTURE=/usr/local/bin/flow-capture
-FLOWPID=/var/run/flow-capture
-FLOWDATA=/var/data/log/netflow
-local_ipaddress=
-gateway1_ipaddress=
-gateway2_ipaddress=
+FLOWPID=/var/run/flow-capture.pid
+FLOWDATA=/var/netflow
+FLOWROTATE=/var/netflow/bin/mygatewayMN/flow_rotate.sh
+GATEWAY=mygatewayMN
+collector_ipaddress=XXXXXXXXX
+sensor_ipaddress=XXXXXXXXX
+port=12345
 
 if [ -x ${FLOWCAPTURE} ]; then
-    echo ' flow-capture'
-    printf ' - gateway1'; ${FLOWCAPTURE} -p ${FLOWPID}.ifw.pid \
-		-R /usr/local/bin/flow-rotate_i.sh -n 287 -w ${FLOWDATA}/gateway1 \
-		-S 5 local_ipaddress/gateway1_ipaddress/12345 && \
-           echo "\t\t [OK]" || echo "\t\t [Failed]";
-    printf ' - gateway2      '; ${FLOWCAPTURE} -p ${FLOWPID}.wan.pid \
-		-R /usr/local/bin/flow-rotate_w.sh -n 287 -w ${FLOWDATA}/gateway2 \
-		-S 5 local_ipaddress/gateway2_ipaddress/12346 && \
-           echo "\t\t [OK]" || echo "\t\t [Failed]"; 
+    printf ' flow-capture'; ${FLOWCAPTURE} -p ${FLOWPID} -w ${FLOWDATA}/${GATEWAY} \
+		-R ${FLOWROTATE} -n 287 -S 5 \
+		${collector_ipaddress}/${sensor_ipaddress}/${port} && \
+        echo "\t\t [OK]" || echo "\t\t [Failed]";
 fi
 
-if [ -f /var/data/log/netflow/bin/start_flowscan.sh ]; then
-   printf ' flowscan'; sh /var/data/log/netflow/bin/start_flowscan.sh && \
-           echo "\t\t [OK]" || echo "\t\t [Failed]"; 
-fi 
+startup=/var/netflow/bin/mygatewayMN/startup_flowscan.sh
+if [ -f $startup ]; then
+	printf ' flowscan'; sh $startup && echo "\t\t [OK]" || echo "\t\t [FAILED]";
+fi
 
-echo '.' 
 </pre>
 
-Related Scripts
-
-- flow-rotate1.sh
-- flow-rotate2.sh
-
-File: flow-rotate1.sh
-
-<pre class="command-line">
-#!/bin/sh
-cp $1 /var/data/log/netflow/flowscandata/gateway1/
-</pre>
-
-File: flow-rotate2.sh
-
-<pre class="command-line">
-#!/bin/sh
-cp $1 /var/data/log/netflow/flowscandata/gateway2/
-</pre>
-
-### <a name="CUFlow"></a>CUFlow
-
-Modify CUFlow.cf
-
-- specify "internal" network subnets
-- specify network ports of interest
+Remember to put in the appropriate collector and sensor IP Addresses.

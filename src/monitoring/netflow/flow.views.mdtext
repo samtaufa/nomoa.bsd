@@ -2,14 +2,27 @@
 
 &#91;Ref: [flow-tools](http://code.google.com/p/flow-tools/),  <a href="http://networkflowanalysis.com" title="Michael W. Lucas' book 'Network Flow Analysis'">Network Flow Analysis.</a>]
 
+<div class="toc">
+
+Table of Contents
+
+	<ul>
+		<li><a href="#sample">Sample Analysis</a></li>
+		<li><a href="#summary">Summary View</a></li>
+	</ul>
+</div>
+
 The most flexible, and difficult way to view your netflow
 data is to use the console tools from flow-tools. These console 
 tools can be linked together (using the output of one utility as
 input to the next) to make detailed analysis/extraction of traffic
 data.
 
-A 'rawish' dump of a point-in-time netflow log file is viewable
-by using flow-cat and flow-print.
+### <a name="sample"></a> 1. Sample Analysis
+
+A simplified view, or raw dump of the netflow, is to take a point-in-time
+view through one of the 5-minute incremented log files. We'll use
+flow-cat and flow-print to take a look at one of the files.
 
 <pre class="command-line">
 # flow-cat ft-v05.2011-02-14.175500+1100 | flow-print | head -10
@@ -28,9 +41,15 @@ srcIP            dstIP            prot  srcPort  dstPort  octets      packets
 </pre>
 
 The above is displaying traffic between hosts on either side of the
-sensor. In the above display, 1 packet was sent from host 192.168.20.61
-across the device to host 10.1.0.7. In the same timeframe, 6 + 6 packets
-were sent from 192.168.110.33 to 192.168.13.38 with a 3 packet response?
+sensor. In the above screen-output:
+
+-	2 packets were sent from 192.168.20.61 to 10.1.0.7. 
+-	2 packets seem to be alternated response
+-	6 packets were sent from 192.168.110.33 to 192.168.13.38 
+-	3 packet response?
+-	6 packets were sent from 192.168.110.33 to 192.168.13.38 
+-	5 packets were sent from 192.168.144.104 to 192.168.18.65
+-	3 packet response?
 
 Some interesting facts are already visible, with the use of different
 protocols in the communications.
@@ -40,9 +59,13 @@ protocols in the communications.
 
 &#91;Ref: [Iana IPv4 Protocol Numbers](http://www.iana.org/assignments/protocol-numbers/protocol-numbers.xml)]
 
-192.168.110.33 is exchanging, what looks like Domain Name Services(DNS)
-(port 53) queries with 192.168.13.38. 432 octets (bytes) to make the request,
-and 168 octets (bytes) for the response.
+192.168.110.33 and 192.168.13.38 seem to be:
+
+-	exchanging Domain Name Services(DNS) (port 53) queries. 
+-	432 octets (bytes) to make the request, and 
+-	168 octets (bytes) for the response.
+
+### <a name="summary"></a> 2. Summary View
 
 Summary information on the packets in the log file can be viewed
 using flow-print
@@ -77,10 +100,13 @@ srcIP            dstIP            prot  srcPort  dstPort  octets      packets
 The log file is a 5 minute segment of the traffic through hostname.example.com
 
 Although the range of console tools allows very detailed analysis of the 
-network data flow, it is also non-intuitive data representation for
-most people. Pretty charts seems to impress and impart information,
+network data flow, it also requires a <a title="aka non-intuitive">deeper knowledge</a>
+of network flow, and
+the flow-tools kit itself. Pretty charts seems to impress and impart information(?),
 which is why such tools have evolved around flow-tools.
 
-Get the book <a href="http://networkflowanalysis.com" title="Michael W. Lucas' book 'Network Flow Analysis'">Network Flow Analysis.</a>
-
-The book shows you how to use the flow-tools commands and how they can be applied (why?)
+Get the book [Network Flow Analysis](
+http://networkflowanalysis.com "Michael W. Lucas' book 'Network Flow Analysis'")
+The book shows you how to use the flow-tools commands, how they can be applied (why?)
+where and a good start to envisioning your prowess bringing world-peace 
+(or at least do so in your own network.)

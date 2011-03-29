@@ -1,4 +1,4 @@
-## Graphs - Custom Analysis using FlowViewer
+## FlowViewer - Custom Graphs and Analysis
 
 Now we have some analysis tools going, we have a basic workflow
 for pro-active investigation of what's happening on our network:-
@@ -8,7 +8,8 @@ for pro-active investigation of what's happening on our network:-
 -	Now what ?
 
 Enter, FlowViewer (for those who don't want to investigate at
-the command-line, flow-tools)
+the command-line, flow-tools) and related tools FlowTracker,
+FlowGrapher.
 
 <div class="toc">
 
@@ -18,7 +19,6 @@ Table of Contents
 		<li><a href="#prereq">Pre-requisites</a></li>
 		<li><a href="#install">Install</a></li>
 		<li><a href="#apache">Apache</a></li>
-		<li><a href="#flowviewer">FlowViewer</a></li>
 	</ul>
 
 </div>
@@ -59,6 +59,16 @@ The Perl Modules (install from CPAN, if ports version is not current enough)
 
 - GDBM
 
+#### The Binaries
+
+The binaries should be installable from the Ports/Packages.
+Check the website for what services require the binaries,
+whether you need them, but they are relatively easy to install
+so while we're learning, just install everything.
+
+In summary, we need the gd related tools for graphing (e.g. FlowGrapher)
+and the RRD tool for Tracking, charting with tracking data.
+
 #### The Perl Modules
 
 <pre class="command-line">
@@ -79,16 +89,7 @@ cpan[2]> quit
 
 Ref: [FlowViewer](http://ensight.eos.nasa.gov/FlowViewer/)
 
-Get the current release from the FlowViewer homesite
-[(http://ensight.eos.nasa.gov/FlowViewer/)](http://ensight.eos.nasa.gov/FlowViewer/)
-and follow the basic install instructions that comes with the software.
-
-<pre class="command-line">
-curl -O http://ensight.eos.nasa.gov/FlowViewer/FlowViewer_3.4.tar
-</pre>
-
-As per the installation instructions ('cause I know you were reading
-it.)
+As per the installation instructions ('cause I know you were reading it.)
 
 1. 'Un-tar' FlowViewer_3.X.tar in an appropriate directory at or below your web server's cgi-bin directory 
 2. Modify the contents of FlowViewer_Configuration.pm for your environment. 
@@ -103,31 +104,25 @@ Installation Tips
 3. Double check that you have configured the proper HTTP protocol (i.e., either HTTP (usually port 80), or HTTPS (usually port 443)). 
 4. For FlowTracker make sure you install an RRDtool version that is 1.2.12 or later.  
 
+#### Get the Source
 
-### <a name="apache"></a> Apache
+Get the current release from the FlowViewer homesite
+[(http://ensight.eos.nasa.gov/FlowViewer/)](http://ensight.eos.nasa.gov/FlowViewer/)
+and follow the basic install instructions that comes with the software.
 
-Customising your configuration, is basically choosing what paths
-you want to show on your browser. The classic example is
-a straight out alias using the Capitalisation of the application
-name FlowViewer.
-
-<pre class="config-file">
-Alias /Flowviewer/ /var/www/flowviewer/
-&lt;Directory /var/www/flowviewer/>
-	Options +ExecCGI
-	AddHandler cgi-script .cgi
-	Allow from [list-of-trusted-hosts]
-&lt;/Directory>
+<pre class="command-line">
+curl -O http://ensight.eos.nasa.gov/FlowViewer/FlowViewer_3.4.tar
 </pre>
 
-As noted in the above, I'm putting my files into the directory
-/var/www/flowviewer/
+#### 1. Copy to Install
 
-### <a name="flowviewer"></a> FlowViewer
+Untar/copy the files to our destination path: /var/www/flowviewer
 
 The next part, after copying the files in the appropriate path
 (/var/www/flowviewer/) is to customise how you want your
 paths to look.
+
+#### 2. Modify FlowViewer_Configuration.pm
 
 Simplicity means keeping things as they are defined by the
 install. But, I'm insane enough to do these documentation
@@ -188,7 +183,7 @@ hostname)
 -$exporter_directory      = "/htp/flows/all_routers";
 -$flow_bin_directory      = "/usr/bin";
 -$rrdtool_bin_directory   = "/usr/local/rrdtool-1.2.12/bin";
-+$flow_data_directory     = "/var/data/log/netflow";
++$flow_data_directory     = "/var/netflow";
 +$exporter_directory      = "/var/www/var/flowviewer/exporter";
 +$flow_bin_directory      = "/usr/local/bin";
 +$rrdtool_bin_directory   = "/usr/local/bin";
@@ -197,8 +192,8 @@ hostname)
 -$trackings_title         = "Your Company Name";
 -$user_logo               = "Generic_Logo.jpg";  # For a nice look make your logo 86 pixels high
 -$user_hyperlink          = "http://www.yourcompany.com/";
-+$trackings_title         = "Your Company";
-+$user_logo               = "Your.Company.Logo.jpg";  # For a nice look make your logo 86 pixels high
++$trackings_title         = "My Company Title";
++$user_logo               = "My.Company.Logo.jpg";  # For a nice look make your logo 86 pixels high
 +$user_hyperlink          = "http://www.example.com/";
 
  # General parameters
@@ -206,12 +201,10 @@ hostname)
  $version                 = "3.3.1";
  $no_devices_or_exporters = "N";
 -@devices                 = ("router_1","router_2","router_3");
--#@exporters               = ("192.168.100.1:New York
-Router","192.168.100.2:Prague Router");
-+#@devices                 =
-("gateway1","gateway2","router_3");
-+@devices                  = ("gateway1","gateway2");
-+@exporters               = ("gateway1_ipaddress:gateway1","gateway2_ipaddress:gateway2");
+-#@exporters               = ("192.168.100.1:New York Router","192.168.100.2:Prague Router");
++#@devices                 = ("gateway1","gateway2","router_3");
++@devices                  = ("mygatewayMN");
++@exporters               = ("mygatewayMN_ipaddress:mygateway MN Title");
 
  $flow_capture_interval   = (30 * 60);
  $flow_file_length        = (15 * 60);
@@ -227,11 +220,45 @@ Router","192.168.100.2:Prague Router");
  $log_collector_long = "N"; 
 </pre>
 
-Last are updates to the startup script /etc/rc.local
+#### Startup
 
-Updates to /etc/rc.local
+To make use of the FlowTracker and FlowGrapher, we need to start the
+daemons to collate the data.
+
+Updates to */etc/rc.local*
 
 <pre class="config-file">
-PERL5LIB=/var/www/cgi-bin/FlowViewer/ /var/www/cgi-bin/FlowViewer/FlowTracker_Collector &
-PERL5LIB=/var/www/cgi-bin/FlowViewer/ /var/www/cgi-bin/FlowViewer/FlowTracker_Grapher &
+PERL5LIB=/var/www/flowviewer/ /var/www/flowviewer/FlowTracker_Collector \
+	>> /var/log/FlowTracker_Collector.log 2>&1 &
+PERL5LIB=/var/www/flowviewer/ /var/wwwflowviewer/FlowTracker_Grapher \
+	>> /var/log/FlowTracker_Grapher.log 2>&1  &
 </pre>
+
+### <a name="apache"></a> Apache
+
+Customising your configuration, is basically choosing what paths
+you want to show on your browser. The classic example is
+a straight out alias using the Capitalisation of the application
+name FlowViewer.
+
+<pre class="config-file">
+Alias /Flowviewer/ /var/www/flowviewer/
+&lt;Directory /var/www/flowviewer/>
+	Options +ExecCGI
+	AddHandler cgi-script .cgi
+	Allow from [list-of-trusted-hosts]
+&lt;/Directory>
+</pre>
+
+As noted in the above, I'm putting my files into the directory
+/var/www/flowviewer/
+
+And now, we can point our browser to the above site to start looking
+at reports:
+
+<pre class="config-file">
+http://collector_ipaddress/FlowViewer/FlowViewer.cgi
+</pre>
+
+Fortunately, that single online URL can connect you to other
+parts of the toolkit.

@@ -80,7 +80,7 @@ Our installation will use the following paths.
 		</td>
 	</tr>
 	<tr>
-		<td>/var/data/netflow</td>
+		<td>/var/netflow</td>
 		<td>Primary Storage Location, all subsequent paths are
 		    rooted in this path. For this installation, /var/data
 			is a large partition with lots of space.</td>
@@ -98,7 +98,7 @@ for validating that the configuration is correct. For our example paths,
 we need to create some directories.
 
 <pre class="command-line">
-# mkdir -p /var/data/netflow/mygatewayMN
+# mkdir -p /var/netflow/mygatewayMN
 # cp -R /usr/local/share/examples/flow-tools/cfg /etc
 </pre>
 
@@ -115,7 +115,7 @@ flow-capture](http://code.google.com/p/flow-tools/wiki/ManFlowCapture)
 which listens on the sensor specified 'destination address' and UDP port.
 
 <pre class="command-line">
-# flow-capture -p /var/run/flow-capture.pid -n 287 -w /var/data/netflow/mygatewayMN \
+# flow-capture -p /var/run/flow-capture.pid -n 287 -w /var/netflow/mygatewayMN \
 	-S 5 10.0.0.2/10.0.0.1/12345
 </pre>
 
@@ -137,7 +137,7 @@ sane to your configuration.
 counters such as the number of flows received, packets processed, 
 and lost flows. 
 
--w workdir set the workdir to /var/data/netflow. 
+-w workdir set the workdir to /var/netflow. 
 </pre>
 
 -n 287 is about every 5 minutes. 
@@ -192,15 +192,14 @@ File extract: /etc/rc.local
 <pre class="config-file">
 FLOWCAPTURE=/usr/local/bin/flow-capture
 FLOWPID=/var/run/flow-capture.pid
-FLOWDATA=/var/data/netflow
+FLOWDATA=/var/netflow
 GATEWAY=mygatewayMN
 collector_ipaddress=XXXXXXXXX
 sensor_ipaddress=XXXXXXXXX
 port=12345
 
 if [ -x ${FLOWCAPTURE} ]; then
-    echo ' flow-capture'
-	printf ' - gateway #1'; ${FLOWCAPTURE} -p ${FLOWPID} -w ${FLOWDATA}/${GATEWAY} \
+	printf ' flow-capture'; ${FLOWCAPTURE} -p ${FLOWPID} -n 287 -w ${FLOWDATA}/${GATEWAY} \
 		-S 5 ${collector_ipaddress}/${sensor_ipaddress}/${port} && \
 		echo "\t\t [OK]" || echo "\t\t [Failed]";
 fi

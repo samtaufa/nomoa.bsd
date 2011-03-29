@@ -118,6 +118,9 @@ ul {
  table {
  	margin-left: 0px;
  }
+ td {
+	vertical-align: text-top;
+ }
 
  /* Anchors */
 a {
