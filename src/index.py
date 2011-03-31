@@ -47,7 +47,7 @@ this.stdHeaders = [
     
 ns.OpenBSD="<a href=\"http://www.openbsd.org\" title=\"Click through to the Project Website\">OpenBSD</a>"
 
-def Image(imagefile, title=None, basepath=None, klass=None):
+def Image(imagefile, title=None, basepath=None, klass=None, kaption=None):
         defaultpath="media/images"
 
         if basepath is None:
@@ -59,13 +59,30 @@ def Image(imagefile, title=None, basepath=None, klass=None):
             title=""
         else:
             title=""" title="%s" """ % title
-            
+        
+        image = """<img %s%s>""" % (src, title)
+        
         if klass is None:
-            klass=""
+            klass =""
         else:
             klass=""" class="%s" """ % klass            
-            
-        url="""<img %s%s%s />""" % (src, title, klass)
+        
+        if kaption is None:
+            kaption = ""
+        else:
+            kaption ="""<p %s>
+    %s 
+</p>""" % (klass, kaption)
+
+        if not klass == "" or not kaption == "":
+            url="""
+<div %s>
+    %s
+    %s
+</div>
+""" % (klass, image, kaption)
+        else:
+                url = image
         return url
             
 ns.Image = Image

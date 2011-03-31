@@ -74,24 +74,27 @@ to hopefully discover how to configure it on your system.
 
 #### Build the flow-tools Ports tree source
 
-To compile the Cflow.pm toolset, we need to use compiled components
-of the flow-tools toolkit.
+This sections assumes you have the ports system on your machine, or
+on another machine.
+
+To **compile the Cflow.pm toolset**, we need to use compiled components
+of the *flow-tools toolkit*. The sane technique we are going to use
+is to compile the *flow-tools* source, in the OpenBSD ports system.
 
 <pre class="command-line">
 # cd /usr/ports/net/flow-tools
 # make
 </pre>
 
-OpenBSD 4.8. To ensure the flow-tools source has now been built with the
-correct configurations for OpenBSD, we choose to use the compiled source
-from the OpenBSD packages. In OpenBSD 4.8, compiled Ports are stored under
+This choice, is to ensure the flow-tools source has now been built with the
+correct configurations for OpenBSD. In OpenBSD 4.8, compiled Ports are stored under
 the path: /usr/ports/pobj, so to find the compiled flow-tools, take a look at:
 
 <pre class="command-line">
 /usr/ports/pobj/flow-tools-0.68.5/flow-tools-0.68.5/
 </pre>
 
-In the above directory, will be the textfile ./contrib/README 
+In the above directory, will be the text file ./contrib/README 
 which provides further information for compiling extensions
 to the flow-tools toolkit (such as Cflow.pm)
 
@@ -374,11 +377,11 @@ curl -O http://net.doit.wisc.edu/~plonka/FlowScan/FlowScan-1.006.tar.gz
 
 Download using your preferred method.
 
-The latest [FlowScan.pm](http://www.letmebingthatforyou.com/?q=FlowScan.pm Dave Plonka 1.6)
+The latest [FlowScan.pm](http://lmgtfy.com/?q=FlowScan.pm Dave Plonka 1.6)
 may require searching on the Internet, with version 1.6 current
 at the time of this install example.
 
-<a href="http://lmgtfy.com/?q=FlowScan.pm+Dave+Plonka+1.6">Google</a> or <a href="http://www.letmebingthatforyou.com/?q=FlowScan.pm Dave Plonka 1.6">Bing</a> for FlowScan.pm 1.6 Dave Plonka</a>
+<a href="http://lmgtfy.com/?q=FlowScan.pm+Dave+Plonka+1.6">Google</a> or <a href="http://lmgtfy.com/?q=FlowScan.pm Dave Plonka 1.6">Bing</a> for FlowScan.pm 1.6 Dave Plonka</a>
 
 On both services, the 1st result is the actual Perl file.
 
@@ -536,6 +539,21 @@ Modifications to flowscan.cf
 
  # WaitSeconds (OPTIONAL)
  # This should be <= the "-s" value passed on the command-line to cflowd, e.g.: 
+</pre>
+
+#### Configuration - Apache
+
+File extract: /var/www/conf/httpd.conf
+
+<pre class="config-file">
+Alias /flowscan/ "/var/www/flowscan/"
+
+&lt;Directory "/var/www/flowscan">
+	Options Indexes MultiViews
+	AllowOverride None
+	Order allow,deny
+	Allow from all
+&lt;/Directory>
 </pre>
 
 ### <a name="4">4. </a>CUFlow

@@ -16,7 +16,8 @@ Table of Contents
 
 Building an OpenBSD Firewall is based on the Packet Filter Engine $!manpage("pf",4)!$  and 
 is well documented in manpages, with additional project documentation
-in the [PF FAQ](http://www.openbsd.org/faq/pf/index.html).
+in the [PF FAQ](http://www.openbsd.org/faq/pf/index.html). There
+are even [Tutorial](http://home.nuug.no/~peter/pf/) Sessions at various conferences.
 
 These notes assist in the maintenance, monitoring of PF.
 

@@ -273,3 +273,10 @@ div.checklist ul {
 div.checklist ul ul {
 	list-style-type: square;
 }
+
+div.center {
+	text-align: center;
+}
+img.center {
+	text-align: center;
+}

@@ -241,8 +241,11 @@ you want to show on your browser. The classic example is
 a straight out alias using the Capitalisation of the application
 name FlowViewer.
 
+File extract: /var/www/conf/httpd.conf
+
 <pre class="config-file">
 Alias /Flowviewer/ /var/www/flowviewer/
+
 &lt;Directory /var/www/flowviewer/>
 	Options +ExecCGI
 	AddHandler cgi-script .cgi
@@ -250,7 +253,7 @@ Alias /Flowviewer/ /var/www/flowviewer/
 &lt;/Directory>
 </pre>
 
-As noted in the above, I'm putting my files into the directory
+As noted in the above, I'm putting my files into the path
 /var/www/flowviewer/
 
 And now, we can point our browser to the above site to start looking

@@ -2,9 +2,17 @@
 
 &#91;Ref: [Network Flow Analysis.](http://networkflowanalysis.com)]
 
-Netflow is a protocol we can use to push out traffic information from
-edge devices (such as routers, gateways) that can be captured at another
-point (e.g. our host which can perform analysis on the data.)
+[Wikipedia Article](http://en.wikipedia.org/wiki/Netflow)
+
+<blockquote>
+NetFlow is a network protocol developed by Cisco Systems for collecting 
+IP traffic information. NetFlow has become an industry standard for traffic 
+monitoring and is supported by platforms other than Cisco IOS and NXOS such 
+as Juniper routers, Enterasys Switches, Linux, FreeBSD, NetBSD and OpenBSD.
+</blockquote>
+
+A related protocol not discussed here, but is also apparently supported
+by the below tools is: [sFlow](http://en.wikipedia.org/wiki/SFlow)
 
 In short, using netflow gives us a clearer picture of actual traffic
 behaviour across the above "edge devices." The challenge is buying or
@@ -42,53 +50,66 @@ First look at [Michael W. Lucas'](http://www.michaelwlucas.com) book
 These notes augment that book because there is just too much valuable
 information there to even attempt to duplicate. Buy the book.
 
-If you have the brain power, and time, then by all means search the web and find 
-the tools listed here. 
-
-- netflow
-- RRDTool
-- Cflow.pm and related Perl utilities
-- FlowScan
-- CUFlow
-
-[Network Flow Analysis.](http://networkflowanalysis.com) is an investment in
-your time. If you've got more time then sense, go ahead and try to get those
-tools together and augment the information out there for how to do it.
-
 There may be preconfigured tools, exorbitantly priced or free, for monitoring the performance
-of your network, but[Michael's book](http://networkflowanalysis.com) gives great examples for 
+of your network, but [Michael's book](http://networkflowanalysis.com) gives great examples for 
 installing and validating and using your new monitoring system 
+
+$!Image("monitoring/netflow_architecture.png", title="Netflow Architecture", klass="center", kaption="""Netflow Architecture source:<a href='http://en.wikipedia.org/wiki/File:Netflow_architecture_en.svg'>WikiPedia</a>, license: <a href="http://creativecommons.org/licenses/by/2.5/deed.en">CC Attribution 2.5 Generic</a>""")!$
+
+What netflow offers us, as shown in the diagram, is the ability to get network flow
+traffic from our routers/gateways (*sensors*), archive that data (*collector*,) 
+and perform analysis on it.
+
+-	Push data using sensors (Netflow Exporter)
+-	Capture data using collectors (Netflow Collector)
+-	Analyse the Data
+
+[Network Flow Analysis](http://networkflowanalysis.com) is an investment in
+your time. If you've got more time then sense, go ahead and try to get Open
+Source tools together and augment the information out there for how to do it.
 
 ### <a name="2"></a> 2. Pushing Data using Sensors 
 
-[Sensors](netflow/sensor.html) on Edge Devices publish netflow data as a 
-directed UDP broadcast.
+We push data out of the router/gateways using [Sensors/Netflow exporter](netflow/sensor.html) 
+using a directed UDP broadcast (i.e. data gets pushed in one direction to one target host.)
 
-On switching appliances, such as Cisco and Juniper, the sensor is normally installed 
-or configurable on the device. Various software tools exist for Unix, including [softflowd](http://code.google.com/p/softflowd) which is available in the [OpenBSD
+On gateway/routing appliances, such as from Cisco and Juniper, the sensor is often found pre-installed. 
+Various software tools exist for Unix, including [softflowd](http://code.google.com/p/softflowd) which is available in the [OpenBSD
 Package Collection](http://www.openbsd.org/faq/faq15.html#Intro).
 
 For OpenBSD, [we use](netflow/sensor.html) $!manpage("pflow",4)!$
 
 ### <a name="3"></a> 3. Capturing Data using Collectors
 
-Network Flow data published by the above 'sensors' are captured by
-a [collector](netflow/collector.html  "A library and collection of programs
-used to collect, send, process, and generate reports from Netflow data."). 
-The data is simply archived to disk in a predictable format/layout on which 
-you can use your analysis tools. 
-	
+A [Netflow Collector](netflow/collector.html "flow-tools: A library and collection of programs
+used to collect, send, process, and generate reports from Netflow data.") captures the above 
+[Sensor](netflow/sensor.html) published data. 
+
+In its simplest form, the collector dumps the data to storage, at which point the data is 
+available to your analysis tools.
+
 ### <a name="4"></a> 4. Analysing Data
 
-In our workflow, we monitor traffic latency using [smokeping](smokeping.html). When latency
-changes dramatically, an indicator of changes in network utilisation, we drill further
-into the problem by analysing the captured netflow data.
+The point of collecting and monitoring is to interpret that data so we can 
+make informed decisions, take action. Data analysis can be on a separate terminal 
+from the Collector, but for our needs we will use the same host.
+
+Our common workflow is to monitor traffic latency using GUI tools such as
+[smokeping](smokeping.html), and [CUFlow](netflow/flow.flowscan.html). When 
+latency and throughput indicators from the above charts show dramatic changes, 
+we seek more information (a more granular view) using [FlowViewer](netflow/flow.flowviewer.html).
+
+Another workflow is to use FlowViewer/FlowTracker to track network traffic for specific services
+(for example, monitor traffic in and out of the primary file server or SMTP through the
+Internet Gateway.) When the traffic is noticeably averaging above a useability threshold, 
+we have this collected data as justification for increase in either host capacity or link 
+capacity for that host.
 
 #### 4.1 Console
 
-[Flow - Console](netflow/flow.views.html)
+&#91;Ref: [Flow - Console](netflow/flow.views.html)]
 
-The most powerful analysis tool, is from the command-line using
+The most powerful analysis tool is from the command-line using
 [flow-tools](netflow/collector.html "A library and collection of programs
 used to collect, send, process, and generate reports from Netflow data.")
 
@@ -104,7 +125,7 @@ tools, but get the book and look at the following GUI tools.
 #### 4.2 GUI Frontends
 
 We review the installation of 3 GUI front-ends to captured
-data. A general overfiew of traffic behaviour can be extracted using
+data. A general overview of traffic behaviour can be extracted using
 link using [FlowScan/CUFlow](netflow/flow.flowscan.html).
 
 To get more specifics on the traffic, and behaviour of specific
