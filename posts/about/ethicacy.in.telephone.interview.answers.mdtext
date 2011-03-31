@@ -1,0 +1,201 @@
+Ethicacy in Telephone Interview Answers
+time: 2011-03-30 22:07
+
+Aka: Googling during a phone interview
+
+This is tangentally relevant to OpenBSD, you can safely ignore it
+and you're life will not have missed anything. Take the road less 
+travelled.
+
+-   Ethics and IT
+-   An example Ethical Dilemma
+-   How many bits in a mac address
+-   In Linux, what is the default signal sent by kill
+-   Of the ps output what is the label D for
+-   Summary
+
+### Ethics and IT
+
+We continue to have some interesting discussions at work about the
+ethicacy of a lot of things we get around to in IT. For example,
+we're the guys that are brought on by various departments and HR  to
+assist them in forensic type stuff which sometimes goes into
+trolling through peoples archives on our backup tapes (email,
+documents, etc.)
+
+The generalised 'ethos' statement in the workplace seems to be: 
+
+<blockquote>
+if it's legal,  then you do it. 
+</blockquote>
+
+But we have an abundant list of recent and current Global Events 
+of totally unethical behaviour dressed 'legal' as defined by the conqueror 
+to not be so enthralled by such simplistic misdirections.
+
+###  An example Ethical Dilemma
+
+Our ethical dilemma, within IT, for today was a phone interview I
+went through where purposeful trip-up questions were
+raised. Given time, some of the questions could possibly have been
+deduced, but why bother when you can easily Google/Bing to
+get your answer ?
+
+Note: The field with a huge library of answers freely published
+online is IT (and fields where the IT crowd are fixated with, such as
+music, science fiction, and fantasy.)
+
+The questions seem to have been good questions, in some manner, 
+and definitely tripped me up because I didn't know, but do the questions
+reveal comparability of skills, or abilities to search the web? 
+
+One of my univesity courses, an Accounting course, had an open book
+final course exam (the only one I've ever been in) and this was largely
+so students didn't have to memorise any of the material, but if you
+didn't understand the material, there wasn't enough time to find
+answers and have it relevant to the problems in the exam.
+
+Was this one of those problems ? Was my error in not asking / clarifying
+whether I could use [choice of favourite search engine]?
+
+Hopefully you find the material educational in what it may be asking
+and how easy it is for IT personnel to find answers on the internet 
+without having to memorise things. You still have to know your stuff
+to make use of the answers, but it is soo easy to find answers to
+IT things on the Internet these days.
+
+Were these questions good IT questions ?
+
+### <a href="http://lmgtfy.com/?q=how+many+bits+in+a+mac+address">How many bits in a mac address</a>
+
+"Urgghhh, I don't know. I recall when I read them in places, that they're
+separated with colons, and theres something like four or more of them."
+
+What races through my mind: "How could I figure this out with-out Googling?"
+
+I'm talking with the interviewer that I'm trying to figure out the answer
+
+-   I knew the address numbers were in hex (0,1,2...,d,e,f) but for the life
+    of me I couldn't remember how many pairs there were.
+-   I flipped over my laptop to look for a mac address, (you know some of
+    the devices these days have it on a sticker) Nope, one of those stupid 
+    devices that has that sticker buried inside on top of the physical device.
+-   The laptop was on, so I got a command-prompt and tried to look for the
+    mac address. No go, Windows doesn't show it if the device isn't active
+    *(Grrrr, should have used ipconfig /all and that may have had the answer,
+    and I just knew there was a reason I should have installed a Unix thing
+    on this device, oh wait, I did and it didn't work for what I was using this
+    laptop for: manpage: $!manpage("ifconfig")!$ )*
+-   OK, I've got a phone and these things have MAC address for their wifi. 
+    Can't use this, 'cause I'm on the phone.
+    
+Wait, ..., What's the difference between using Google/Bing and dissecting the answer
+from getting an example MAC and manually calculating the # of bits ?
+    
+#### What does it reveal
+
+-   Have you had enough exposure in networking, especially at the command-prompt
+    or configuration files, where this knowledge has become ingrained.
+
+#### Why don't I know this ?
+
+-   What was it again that makes it useful to have this knowledge?
+    I recall some of those digits represent a unique id for the device vendor,
+    and then the rest is used by the vendor to 'create' a unique
+    ID for each physical device.
+-   Tech Trivia: Microsoft published their standard where it used the MAC
+    address with other items to create a GUUID for each word document
+    (wow, that's even more useful knowledge) so they can track the origin
+    of any word document around the globe.
+-   We're the l33t of computer nerds, we are a fount of knowledge of
+    the most trivial and irrelevant knowledge. This is just one of those
+    that I now know, but had not come across it in any meaningful way
+    before hand.
+-   Where have I had actual reason to record them? MAC Address
+    ACLs for squid-cache and dhcp, but obviously wasn't taking enough
+    interest to even remember how many digits were involved, let
+    alone the number of bits.
+-   MAC addresses show up on ARP, but I haven't bothered to worry about
+    them unless there was some conflict requiring further investigation.
+
+And that was only the first question!!! Things are definitely not looking up
+for my interview.
+
+We're in trouble and we haven't even passed the first step.
+
+### <a href="http://lmgtfy.com/?q=In Linux, what is the default signal sent by kill">In Linux, what is the default signal sent by kill</a>
+
+Urggggh, never thought of that before. I may have read it somewhere
+but definitely haven't used it 'without an explicit' signal to 'know'
+what to expect as a default behaviour.
+
+This one is simple enough to find from the manpage: $!manpage("kill",1)!$ Straight
+there in the 1st Paragraph of the Description.
+
+#### What does it reveal
+
+-   Have you had enough exposure in Unix administration where this knowledge
+    is ingrained.
+-   [NFI](http://www.urbandictionary.com/define.php?term=nfi "No F*n Idea")
+
+#### Why don't I know this ?
+
+-   Have to say, I've never used the kill command without an explicit
+    signal. Didn't think it was the kind of command that was sane to
+    be launching without explicitly telling it how to behave.
+-   I guess the default is portable enough, since Linux and OpenBSD both agree
+    on the default behaviour (using a sample of '2' to base this simplification)
+-   I guessed at SIGHUP (-1) but that's just bias on what I try to do
+    first before I do the KILL(-9).
+-   Now, here lies a powerful tool not meant for most mortals. Including
+    me 8<
+
+### <a href="http://lmgtfy.com/?q=Of the ps output what is the label D for">Of the ps output what is the label D for</a>
+
+Urgghhh, OK, this interview is seriously becoming a disaster. Haven't
+really bothered with looking at the 'labels' except to see whether the
+service/app was a zombie or didn't even execute.
+
+This one took a little longer to find (had to page through two screens
+to get at the answer), but it's right there in the ole manpage: $!manpage("ps",1)!$ 
+but look for it under the column 'state'
+
+#### What does it reveal
+
+-   Have you had enough exposure in Unix Administration where this
+    information is ingrained?
+-   [NFI](http://www.urbandictionary.com/define.php?term=nfi "No F*n Idea")
+
+#### Why don't I know this ?
+
+-   Truthfully? Don't ever recall seeing this 'state' 'D' before to have 
+    investigated it.
+-   Obviously haven't worked on enough resource constrained systems
+    where the state 'D' was common enough to be noticeable.
+-   The last time I had to really worry about an under resourced machine
+    was with RedHat 4.0 or 4.2 and the i386 was blazingly fast, and we
+    had 4 x 9600Kbps zyxel fax/voice/modem hanging off the box doing 
+    wonders no-one had ever heard off.
+-   Well, the hosts I monitor are more single purposed, over engineered
+    for their purposes (because that's the only hardware you can get
+    these days.)
+
+After learning a little more about 'D' I'm a little more pleased with my
+work environment than I was previously. There are some poor bastards
+out there who either don't get enough resources, or a dealing with real
+cool problems that have these 'D' issues.
+
+### Summary
+
+If anything, I'm glad I've added to my glossary of commands, and leaves us
+with this lesson:
+
+If you get a phone interview on a topic that is thoroughly covered by the Internet,
+clarify with the interviewer whether you're allowed to use the Internet as a
+resource, and if not, are you allowed to use other resources at your finger
+tips (and voice search on your phone doesn't count!!! because my phone runs
+an OS no one talks about.)
+
+There may be no ethical dilemma, just the need to clarify.
+
+8-)
