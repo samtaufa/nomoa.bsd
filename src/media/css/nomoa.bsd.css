@@ -198,6 +198,64 @@ a.rss:visited:hover {
 	text-align: left;
 }
 
+.toc ol {
+	list-style-type: decimal;
+}
+.toc ol ol {
+	list-style-type: lower-roman;
+	margin:1.5em 0 1em 5%; 
+	padding:0; 
+	background:#fff; 
+	float:left; 
+	display:block;
+	width:95%;
+}
+
+.toc ol ol ol {
+	list-style-type: lower-alpha;
+}
+
+.toc ul {
+	list-style-type: disc;
+	margin:1.5em 0 1em 5%;
+	padding:0;
+	/* background:#fff; */
+	float:left;
+	display:block;
+	width:95%;
+}
+.toc ul ul, .toc ol ul {
+	list-style-type: circle;
+	margin:1.5em 0 1em 5%; 
+	padding:0; 
+	/*background:#fff; */
+	float:left; 
+	display:block;
+	width:95%;
+}
+.toc ol ul ul, .toc ol ol ul, .toc ul ul ul, .toc ul ol ul {
+	list-style-type: square;
+}
+.toc ol li {
+	clear:left;
+	border-bottom:dashed 1px #aaa;
+	height:1.05em;
+	margin-top:10px;
+	position:relative;
+}
+.toc ol a, .toc ol span {
+	background:#fff;
+	padding:0 3px 0 0;
+	/*float:left;*/
+	position:absolute;
+	text-decoration:none;
+}
+.toc ol a {
+	padding:0 0 0 3px;
+	right:0;
+}
+
+
 .image {
 	text-align: center;
 }
@@ -274,8 +332,10 @@ div.checklist ul ul {
 	list-style-type: square;
 }
 
-div.center {
+div.imgcenter {
 	text-align: center;
+	border: 1px;
+	border-style: solid;
 }
 img.center {
 	text-align: center;

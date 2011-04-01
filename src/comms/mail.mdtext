@@ -19,7 +19,7 @@ E-mail may just be the lifeblood of the Internet, unless you're younger than 25.
 Various tools come together to provide what is generally termed an E-mail Server, 
 and we bring together some of these key tools on OpenBSD.
 
-$!Image("mail/mailserver.png", title="Serving Electronic Mail", klass="center")!$
+$!Image("mail/mailserver.png", title="Serving Electronic Mail", klass="imgcenter")!$
 
 Optional items, depending on your requirements may include:
 

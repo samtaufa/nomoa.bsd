@@ -9,7 +9,7 @@ approach is to not pre-optimise how your partition should look.
 This is to say, no single configuration will work for you in
 every possible system installation. 
 
-$!Image("partitioning_sample.png", title="Sample Partition", klass="center")!$
+$!Image("partitioning_sample.png", title="Sample Partition", klass="imgcenter")!$
 
 Be prepared to build a few test systems to gauge the relative 
 sizes your disk usage and requirements (if not already known.)

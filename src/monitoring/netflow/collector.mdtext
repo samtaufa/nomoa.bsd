@@ -1,16 +1,5 @@
 ## Collector Flow-Tools
 
-&#91;Ref: [flow-tools](http://code.google.com/p/flow-tools/),  <a href="http://networkflowanalysis.com" title="Michael W. Lucas' book 'Network Flow Analysis'">Network Flow Analysis.</a>]
-
-The primary tool capturing netflow data is [flow-tools](http://code.google.com/p/flow-tools/). 
-
-
-<pre class="manpage">
-a library and a collection of programs used to collect, send, process, 
-and generate reports from NetFlow data. The tools can be used together on a 
-single server or distributed to multiple servers for large deployments.
-</pre>
-
 <div class="toc">
 
 Table of Contents
@@ -29,6 +18,26 @@ Table of Contents
 
 </div>
 
+&#91;Ref: [flow-tools](http://code.google.com/p/flow-tools/),  <a href="http://networkflowanalysis.com" title="Michael W. Lucas' book 'Network Flow Analysis'">Network Flow Analysis.</a>]
+
+Netflow collector(s) capture netflow data exported from [sensors](sensor.html)
+and archive them to disk.
+
+This guide will look at installing a collector, configuring the collector (setting
+paths etc) and testing the capture process. For those wondering about the storage
+requirements, a sample storage use is shown below.
+
+
+The primary tool capturing netflow data is [flow-tools](http://code.google.com/p/flow-tools/). 
+
+<pre class="manpage">
+a library and a collection of programs used to collect, send, process, 
+and generate reports from NetFlow data. The tools can be used together on a 
+single server or distributed to multiple servers for large deployments.
+</pre>
+
+$!Image("monitoring/netflow_collector.png", title="Netflow Architecture", klass="imgcenter")!$
+
 ### <a name="1"></a> 1. Install
 
 Install from [OpenBSD Packages](http://www.openbsd.org/faq/faq15.html).
@@ -42,6 +51,7 @@ and to verify flow-tools can review the captured data.
 <pre class="command-line">
 $ sudo pkg_add flow-tools
 </pre>
+
 
 At a later stage of installing analysis tools, we will build the package 
 from source using the [Ports](http://www.openbsd.org/faq/faq15.html#Ports) 

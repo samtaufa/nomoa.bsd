@@ -2,8 +2,20 @@
 
 Sensors on Edge Devices publish netflow data as a directed UDP broadcast.
 
+<div class="toc">
+
+Table of Contents
+
+<ol>
+	<li><a href="#1">pflow pseudo-device</a></li>
+	<li><a href="#2">Packet Filter (pf)</a></li>
+</ol>
+
+</div>
+
 On switching appliances, such as Cisco and Juniper, the sensor is normally installed 
-or configurable on the device. Various software tools exist for Unix, including [softflowd](http://code.google.com/p/softflowd) which is available in the [OpenBSD
+or configurable on the device. Various software tools exist for Unix, including 
+[softflowd](http://code.google.com/p/softflowd) which is available in the [OpenBSD
 Package Collection](http://www.openbsd.org/faq/faq15.html#Intro).
 
 OpenBSD supports the netflow sensor framework in the default base install
@@ -11,18 +23,15 @@ configuration through a pseudo network device $!manpage("pflow",4)!$
 and the Firewall Packet Filter $!manpage("pf.conf",5)!$. Enabling netflow
 sensor publication is through configuration.
 
-<div class="toc">
+$!Image("monitoring/netflow_sensors.png", title="Netflow Architecture", klass="imgcenter")!$
 
-Table of Contents
+We do not concern ourselves with other sensor devices, and this documentation is
+singularly focused on OpenBSD sensors using:
 
-<ol>
-	<li><a href="#1">Configure pflow pseudo-device</a></li>
-	<li><a href="#2">Configure Packet Filter (pf)</a></li>
-</ol>
+1. $!manpage("pflow",4)!$ pseudo-device, and
+2. Packet Filter
 
-</div>
-
-##### <a name="1">1. </a>Configure pflow pseudo-device $!manpage("pflow",4)!$
+##### <a name="1">1. </a> $!manpage("pflow",4)!$ pseudo-device
 
 &#91;Ref: $!manpage("pflow",4)!$ $!manpage("ifconfig",8)!$
 
@@ -54,7 +63,7 @@ flowsrc 10.0.0.1 flowdst 10.0.0.2:12345
 </pre>
 
 
-##### <a name="2">2. </a>Configure Packet Filter $!manpage("pf.conf",5)!$.
+##### <a name="2">2. </a>Packet Filter $!manpage("pf.conf",5)!$.
 
 As per the $!manpage("pflow",4)!$ and $!manpage("pf.conf",5)!$
 the 'pflow' keyword must be used in the Packet Filter for netflow v5

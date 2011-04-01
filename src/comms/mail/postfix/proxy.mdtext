@@ -10,7 +10,7 @@ Postfix is comparatively simple to configure as an MX Proxy. This guide configur
 basic MX Proxy, with no filtering. For a more 'profound' MX Proxy, refer to the 
 [MX Proxy Extended, using Multiple Instances](instances.html).
 
-$!Image("mail/smtp_proxy.png", title="SMTP Proxy", klass="center")!$
+$!Image("mail/smtp_proxy.png", title="SMTP Proxy", klass="imgcenter")!$
 
 For a our mail proxy server, the effected configuration files are:
 

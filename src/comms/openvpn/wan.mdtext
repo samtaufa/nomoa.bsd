@@ -25,7 +25,7 @@ Our network scenario is:
 -   Remote Site #1 has a subnet we want to share with 
     Central Office
 
-$!Image("WAN.png", title="Wide Area Network Diagram", klass="center")!$
+$!Image("WAN.png", title="Wide Area Network Diagram", klass="imgcenter")!$
 
 Configuration:
 
@@ -96,7 +96,7 @@ client-config-dir /etc/openvpn/ccd
 
 ### 00. Virtual Private Network Subnet.
 
-$!Image("WAN_virtual.png", title="Wide Area Network - Virtual Network", klass="center")!$
+$!Image("WAN_virtual.png", title="Wide Area Network - Virtual Network", klass="imgcenter")!$
 
 <pre class="config-file">
 server 172.16.1.0 255.255.255.0
@@ -172,7 +172,7 @@ traffic.
 -   Specify a pre-determined IP address for the client
 -   Route the client-side subnet to the above IP address
 
-$!Image("WAN_virtual_ccd.png", title="Wide Area Network - Virtual Network with CCD", klass="center")!$
+$!Image("WAN_virtual_ccd.png", title="Wide Area Network - Virtual Network with CCD", klass="imgcenter")!$
 
 File: /etc/openvpn/ccd/Remote1
 

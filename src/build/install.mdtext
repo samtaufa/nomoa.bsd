@@ -4,12 +4,12 @@
 
 Table of Contents
 
-<ul>
+<ol>
   <li><a href="#submit.dmesg">Submit DMESG</a></li>
   <li><a href="#packages">Packages</a></li>
   <li><a href="#user.accounts">User Accounts</a>
   <li><a href="#system.configuration">System Configuration</a>
-      <ol>
+      <ul>
           <li> <a href="#sc.newsyslog">newsyslog - Trim Log Files</a></li>
           <li> <a href="#sc.inetd">inetd.conf - Super Daemon</a></li>
           <li> <a href="#sc.pf">pf.conf - Firewall Config</a></li>
@@ -17,26 +17,26 @@ Table of Contents
           <li> <a href="#sc.ssh">ssh_config - ssh client config</a></li>
           <li> <a href="#sc.sysctl">sysctl.conf - System Knobs</a></li>
           <li> <a href="#sc.aliases">aliases - Mail Aliases</a></li>
-      </ol></li>
+      </ul></li>
   <li><a href="#auditing">Auditing</a>
-      <ol>
+      <ul>
           <li> <a href="#a.patch">Patch Review</a></li>
           <li> <a href="#a.nmapscan">nmap scan</a></li>
           <li> <a href="#a.package">Package checklist</a></li>
-      </ol></li>
+      </ul></li>
   <li><a href="#maintenance">Maintenance</a></a>
 		<ul>
 			<li><a href="#m.config.root">As Root</a>
-				<ul>
+				<ol>
 					<li>Generate Package List</li>
 					<li>Archive Configuration Files</li>
 					<li>Archive Log Files</li>
-				</ul>
+				</ol>
 			</li>
 			<li><a href="#m.config.monitor">As Monitor</a>
 			</li>
 		</ul></li>
-</ul>
+</ol>
 
 </div>
 

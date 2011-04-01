@@ -6,7 +6,7 @@ using CARP and pfsync in an active-active firewall, such that it can
 allows $!OpenBSD!$ to load-balance traffic coming into an $!OpenBSD!$  $!manpage("relayd")!$
 gateway to distribute the traffic amongst off-host servers.
 
-$!Image("ha_relayd.png", title="High Availability - Load Balancing", klass="center")!$
+$!Image("ha_relayd.png", title="High Availability - Load Balancing", klass="imgcenter")!$
 
 Traffic 'sharing' is transparent to the source and destination. The
 the interdepence of those servers determine the complexity required 
@@ -40,7 +40,7 @@ of Firewalls (OpenBSD 4.6 onwards) on carp interfaces using
 In this context, we are referring to a Man in the Middle host, load
 balancing services provisioned on other hosts.
 
-$!Image("ha_relayd.png", title="High Availability - Load Balancing", klass="center")!$
+$!Image("ha_relayd.png", title="High Availability - Load Balancing", klass="imgcenter")!$
 
 OpenBSD's base install supports ISO Level 7 load balancing using 
 $!manpage("relayd",8)!$  (http, tcp, other)

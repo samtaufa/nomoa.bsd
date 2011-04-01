@@ -28,7 +28,7 @@ difficult to maintain or verify. In the warm failover system we
 build System-B as a copy of the live System-A and deploy these
 systems.
 
-$!Image("ha_warm.png", title="High Availability - Warm Failover", klass="center")!$
+$!Image("ha_warm.png", title="High Availability - Warm Failover", klass="imgcenter")!$
 
 Advantage: Simplest to roll-out
 
@@ -64,7 +64,7 @@ such that it can 'share' traffic amongst servers. Additional
 load-balancing tools are available through the Ports Package
 Collection.
 
-$!Image("ha_loadbalance.png", title="High Availability - Load Balancing", klass="center")!$
+$!Image("ha_loadbalance.png", title="High Availability - Load Balancing", klass="imgcenter")!$
 
 Traffic 'sharing' is transparent to the destination servers,
 and the interdepence of those servers determine
@@ -85,7 +85,7 @@ provisioned via other servers in the 'load pool.'
 The Hot Failover of hosts is supported by OpenBSD for [Firewalls 
 using CARP.](highavailability/carp.html)
 
-$!Image("ha_hot.png", title="High Availability - Hot Failover", klass="center")!$
+$!Image("ha_hot.png", title="High Availability - Hot Failover", klass="imgcenter")!$
 
 Servers in the 'hot failover pool' use a sharing system for their IP Addresses. 
 One host is selected as the 'master' host servicing all requests, while the 

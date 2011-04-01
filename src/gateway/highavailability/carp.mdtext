@@ -38,7 +38,7 @@ OpenBSD supports a Hot Failover scenario using $!manpage("carp",8)!$
 provides a pseudo-device to share a single IP between
 multiple hosts. 
 
-$!Image("fw/carp_basic.png", title="Basic CARP Diagram", klass="center")!$
+$!Image("fw/carp_basic.png", title="Basic CARP Diagram", klass="imgcenter")!$
 
 <blockquote>
 <p>
@@ -110,9 +110,8 @@ firewall pair using CARP and pfsync.
   </tr>
 </table>
 
-<div style="text-align: center">
-    $!Image("fw/carp_basic_ips.png", title="Basic CARP Diagram - IP Addresses included", klass="center")!$
-</div>    
+$!Image("fw/carp_basic_ips.png", title="Basic CARP Diagram - IP Addresses included", klass="imgcenter")!$
+  
 
 There are two parts to configuring hot failover:
 
@@ -127,11 +126,7 @@ of the gateway/firewall (eth0 with carp0, and eth1 with carp1.) The 3rd
 interface to configure (eth2 with pfsync0) is used for synchronising PF 
 firewall status information.
 
-
-<div style="text-align: center">
-    $!Image("fw/carp_basic_ips.png", title="Basic CARP Diagram - IP Addresses included", klass="center")!$
-</div>  
-
+$!Image("fw/carp_basic_ips.png", title="Basic CARP Diagram - IP Addresses included", klass="imgcenter")!$
 
 ### Configuring CARP
 
@@ -151,9 +146,7 @@ configuration, but where possible: assigning an IP address to the firewall
 will allow direct connection to the 'backup' firewall without needing
 to jump through the 'master' firewall.
 
-<div style="text-align: center">
-    $!Image("fw/carp_basic_external.png", title="Basic CARP Diagram - External Link", klass="center")!$
-</div>
+$!Image("fw/carp_basic_external.png", title="Basic CARP Diagram - External Link", klass="imgcenter")!$
 
 Gateway A:/etc/hostname.eth0
   
@@ -175,11 +168,7 @@ media options.
 
 Shared CARP IP through vhid 2: 192.168.100.1
 
-
-<div style="text-align: center">
-    $!Image("fw/carp_basic_internal.png", title="Basic CARP Diagram - Internal Link", klass="center")!$
-</div>
-
+$!Image("fw/carp_basic_internal.png", title="Basic CARP Diagram - Internal Link", klass="imgcenter")!$
 
 Gateway A:/etc/hostname.eth1
   
@@ -197,9 +186,8 @@ inet 192.168.100.12 255.255.255.0 192.168.100.255
 
 The third NIC will be used by pfsync0 and the IP address is directly set.
 
-<div style="text-align: center">
-    $!Image("fw/carp_pfsync.png", title="Basic CARP Diagram - PF Sync Interface", klass="center")!$
-</div>
+$!Image("fw/carp_pfsync.png", title="Basic CARP Diagram - PF Sync Interface", klass="imgcenter")!$
+
 
 Gateway A:/etc/hostname.eth2
   
@@ -326,10 +314,8 @@ File: /etc/hostname.carp0
 inet 10.0.0.1 255.255.255.0 vhid1 pass secretpassword carpdev eth0 advskew 100
 </pre>
 
+$!Image("fw/carp_basic_external.png", title="Basic CARP Diagram - External Link", klass="imgcenter")!$
 
-<div style="text-align: center">
-    $!Image("fw/carp_basic_external.png", title="Basic CARP Diagram - External Link", klass="center")!$
-</div>
 
 Gateway A:/etc/hostname.carp0 (text should be a single line)
   
@@ -347,7 +333,7 @@ inet 10.0.0.1 255.255.255.0 10.0.0.255 vhid 1
     BACKUP description "OUTSIDE
 </pre>
 
-$!Image("fw/carp_basic_internal.png", title="Basic CARP Diagram - Internal Link", klass="center")!$
+$!Image("fw/carp_basic_internal.png", title="Basic CARP Diagram - Internal Link", klass="imgcenter")!$
 
 Gateway A:/etc/hostname.carp1 (text should be a single line)
   
@@ -375,7 +361,7 @@ interface requires.
 -   create the interface, and 
 -   configure it.
 
-$!Image("fw/carp_pfsync.png", title="Basic CARP Diagram - PF Sync Interface", klass="center")!$
+$!Image("fw/carp_pfsync.png", title="Basic CARP Diagram - PF Sync Interface", klass="imgcenter")!$
 
 #### create the interface
 

@@ -48,7 +48,7 @@ The $!manpage("bgpctl")!$  program controls the $!manpage('bgpd',8)!$ daemon.
 
 The sample network we use to discuss BGPD is shown in the below diagram.
 
-$!Image("bgpd_network.png", title="BGPD Network Diagram", klass="center")!$
+$!Image("bgpd_network.png", title="BGPD Network Diagram", klass="imgcenter")!$
 
 <a name="upandrunning"></a>
 

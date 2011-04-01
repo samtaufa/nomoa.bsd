@@ -53,7 +53,7 @@ As a conglomeration of various services, there are a
 number of separate tests that can be carried out to 
 confirm, validate a systems activity, performance.
 
-$!Image("mail/mailserver.png", title="Serving Electronic Mail", klass="center")!$
+$!Image("mail/mailserver.png", title="Serving Electronic Mail", klass="imgcenter")!$
 
 General Remote/Local connections are through the standard protocols 
 ( smtp, pop3, and imap ) whereas service behaviour have some other
@@ -524,7 +524,7 @@ messages as quick as possible.
 -   Server
 -   Client
 
-$!Image("mail/smtp_benchmark.png", title="SMTP Benchmark - Traffic Flow", klass="center")!$
+$!Image("mail/smtp_benchmark.png", title="SMTP Benchmark - Traffic Flow", klass="imgcenter")!$
 
 ##### smtp-benchmark: smtpsink
 

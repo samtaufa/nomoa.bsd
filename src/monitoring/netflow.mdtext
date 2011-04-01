@@ -2,23 +2,6 @@
 
 &#91;Ref: [Network Flow Analysis.](http://networkflowanalysis.com)]
 
-[Wikipedia Article](http://en.wikipedia.org/wiki/Netflow)
-
-<blockquote>
-NetFlow is a network protocol developed by Cisco Systems for collecting 
-IP traffic information. NetFlow has become an industry standard for traffic 
-monitoring and is supported by platforms other than Cisco IOS and NXOS such 
-as Juniper routers, Enterasys Switches, Linux, FreeBSD, NetBSD and OpenBSD.
-</blockquote>
-
-A related protocol not discussed here, but is also apparently supported
-by the below tools is: [sFlow](http://en.wikipedia.org/wiki/SFlow)
-
-In short, using netflow gives us a clearer picture of actual traffic
-behaviour across the above "edge devices." The challenge is buying or
-putting together tools to push the data, collect the data and 
-analyse, summarise that data for us.
-
 <div class="toc">
 
 Table of Contents
@@ -33,6 +16,21 @@ Table of Contents
 
 </div>
 
+[Wikipedia Article](http://en.wikipedia.org/wiki/Netflow)
+
+<blockquote>
+NetFlow is a network protocol developed by Cisco Systems for collecting 
+IP traffic information. NetFlow has become an industry standard for traffic 
+monitoring and is supported by platforms other than Cisco IOS and NXOS such 
+as Juniper routers, Enterasys Switches, Linux, FreeBSD, NetBSD and OpenBSD.
+</blockquote>
+
+A related protocol not discussed here, but is apparently supported
+by the described tools is: [sFlow](http://en.wikipedia.org/wiki/SFlow)
+
+Netflow gives us a closer view of traffic behaviour across supported network devices.
+The challenge is deploying tools to use Netflow effectively: collect the 
+data, analyse, and summarise.
 
 ### <a name="1"></a> 1. Monitoring your Network
 
@@ -50,19 +48,21 @@ First look at [Michael W. Lucas'](http://www.michaelwlucas.com) book
 These notes augment that book because there is just too much valuable
 information there to even attempt to duplicate. Buy the book.
 
+These notes are essentially shortcuts to deploying the tools with $!OpenBSD!$.
 There may be preconfigured tools, exorbitantly priced or free, for monitoring the performance
-of your network, but [Michael's book](http://networkflowanalysis.com) gives great examples for 
-installing and validating and using your new monitoring system 
+of your network, but [Michael's book](http://networkflowanalysis.com) gives invaluable examples for 
+installing, validating and understanding your new netflow monitoring system 
 
-$!Image("monitoring/netflow_architecture.png", title="Netflow Architecture", klass="center", kaption="""Netflow Architecture source:<a href='http://en.wikipedia.org/wiki/File:Netflow_architecture_en.svg'>WikiPedia</a>, license: <a href="http://creativecommons.org/licenses/by/2.5/deed.en">CC Attribution 2.5 Generic</a>""")!$
+$!Image("monitoring/netflow_architecture.png", title="Netflow Architecture", klass="imgcenter")!$
 
 What netflow offers us, as shown in the diagram, is the ability to get network flow
-traffic from our routers/gateways (*sensors*), archive that data (*collector*,) 
-and perform analysis on it.
+traffic from our routers/gateways (*sensors*), archive that data (*collector*.) 
+With the data *collected* we can analyse the data either in 'live' data stream
+or from the archives.
 
--	Push data using sensors (Netflow Exporter)
--	Capture data using collectors (Netflow Collector)
--	Analyse the Data
+1. Push data using sensor(s)
+2. Capture data in a collector(s)
+3. Analyse the Data
 
 [Network Flow Analysis](http://networkflowanalysis.com) is an investment in
 your time. If you've got more time then sense, go ahead and try to get Open
@@ -73,17 +73,22 @@ Source tools together and augment the information out there for how to do it.
 We push data out of the router/gateways using [Sensors/Netflow exporter](netflow/sensor.html) 
 using a directed UDP broadcast (i.e. data gets pushed in one direction to one target host.)
 
-On gateway/routing appliances, such as from Cisco and Juniper, the sensor is often found pre-installed. 
-Various software tools exist for Unix, including [softflowd](http://code.google.com/p/softflowd) which is available in the [OpenBSD
-Package Collection](http://www.openbsd.org/faq/faq15.html#Intro).
+$!Image("monitoring/netflow_sensors.png", title="Netflow Architecture", klass="imgcenter")!$
 
-For OpenBSD, [we use](netflow/sensor.html) $!manpage("pflow",4)!$
+As indicated by the diagram, netflow export facilities (i.e. sensors) can exist in various
+devices. On gateway/routing appliances, such as from Cisco and Juniper, the sensor is often 
+found pre-installed. Various software tools exist for Unix, including [softflowd](
+http://code.google.com/p/softflowd) which is available in the [OpenBSD Package Collection](
+http://www.openbsd.org/faq/faq15.html#Intro).
+
+For these exercies in OpenBSD, we [document the use] of(netflow/sensor.html) $!manpage("pflow",4)!$
+deployed in the base install.
 
 ### <a name="3"></a> 3. Capturing Data using Collectors
 
-A [Netflow Collector](netflow/collector.html "flow-tools: A library and collection of programs
+A Netflow [collector](netflow/collector.html "flow-tools: A library and collection of programs
 used to collect, send, process, and generate reports from Netflow data.") captures the above 
-[Sensor](netflow/sensor.html) published data. 
+[sensor](netflow/sensor.html) published data. 
 
 In its simplest form, the collector dumps the data to storage, at which point the data is 
 available to your analysis tools.
@@ -105,7 +110,13 @@ Internet Gateway.) When the traffic is noticeably averaging above a useability t
 we have this collected data as justification for increase in either host capacity or link 
 capacity for that host.
 
-#### 4.1 Console
+We describe here, three toolsets for analysis of the netflow data:
+
+1.	At the console, with flow-tools
+2.	Graphs with CUFlow (using Cflow.pm and FlowScan)
+3.	Graphs with more detail using FlowViewer
+
+#### 4.1 At the Console
 
 &#91;Ref: [Flow - Console](netflow/flow.views.html)]
 
@@ -125,8 +136,9 @@ tools, but get the book and look at the following GUI tools.
 #### 4.2 GUI Frontends
 
 We review the installation of 3 GUI front-ends to captured
-data. A general overview of traffic behaviour can be extracted using
-link using [FlowScan/CUFlow](netflow/flow.flowscan.html).
+data. As with our above described workflows, a general overview of 
+traffic behaviour can be extracted using our first tool:
+[FlowScan/CUFlow](netflow/flow.flowscan.html).
 
 To get more specifics on the traffic, and behaviour of specific
 hosts or ports, we then drill deeper using

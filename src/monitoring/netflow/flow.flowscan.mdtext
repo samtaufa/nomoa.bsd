@@ -2,7 +2,6 @@
 
 &#91;Ref: [flow-tools](http://code.google.com/p/flow-tools/), [Network Flow Analysis](http://networkflowanalysis.com "Michael W. Lucas' book 'Network Flow Analysis'")]
 
-
 <div class="toc">
 
 Table of Contents
@@ -17,7 +16,7 @@ Table of Contents
 			<li>Verifying Build</li>
 		</ul>
 	</li>
-	<li><a href="#2">FlowScan/CUFlow Prerequisites</a>
+	<li><a href="#2">Prerequisites</a>
 		<ul>
 			<li>Perl Modules</li>
 			<li>ConfigReader::DirectiveStyle</li>
@@ -44,26 +43,34 @@ Table of Contents
 
 </div>
 
-Pretty pictures are always nice, and sometimes they make better aggregation
-of data to us. 
+Pretty pictures are always nice, and sometimes they assist the human
+mind to make better decisions. Two tools discussed in these notes
+are: FlowScan and CUFlow. 
 
-Installation notes augment <a href="http://networkflowanalysis.com" title="Michael W. Lucas' book 'Network Flow Analysis'">Network Flow Analysis.</a>
+These installation notes augment [Network Flow Analysis](
+http://networkflowanalysis.com "Michael W. Lucas' book 'Network Flow Analysis'")
+with more particulars about the OpenBSD installation/configuration process.
 
 The Graphical Analysis tools CUFlow, and FlowScan are built on top of another tool 
 Cflow.pm. FlowScan analyses the data and generate some summary use data that
 are viewable through an Internet Browser, whilst CUFlow takes this data and
-provides a different type of analysis.
+provides a different type of analysis. The important note about the FlowScan 
+analysis is that it will delete the data after analysis, as such we want to 
+take a copy of the netflow data before analysis.
 
-The important note about the FlowScan analysis is that it will delete the
-data after analysis, as such we want to take a copy of the netflow data
-before analysis.
+To key install items are:
+
+1.	Cflow.pm install
+2.	FlowScan install
+3.	CUFlow install
 
 ### <a name="1">1. </a> Cflow.pm
 
-[Dave Plonka](http://net.doit.wisc.edu/~plonka/)'s Cflow perl module from: http://net.doit.wisc.edu/~plonka/Cflow/
+[Dave Plonka](http://net.doit.wisc.edu/~plonka/)'s Cflow perl module at: 
+[http://net.doit.wisc.edu/~plonka/Cflow/](http://net.doit.wisc.edu/~plonka/Cflow/)
 is a significant prerequisite for data flow analysis, but it is a little
 convoluted to install. Hopefully, the below notes will give you
-enough noise that if it doesn't work, at least you'll enough material
+enough noise that if it doesn't work, at least you'll have material
 to hopefully discover how to configure it on your system.
 
 - Build the Ports tree source
@@ -290,8 +297,11 @@ There are a number of prerequisites highlighted by [Michael W. Lucas' book "Netw
 that need to be installed for FlowScan/CUFlow. Binary tools I install from OpenBSD
 Packages, but perl tools has been simpler to install from CPAN.
 
-- RRDtool, installed 1.2.30p0 from packages which includes dependencies png and libart
+The Packages
+
+- RRDtool (install from packages, includes dependencies png and libart)
 - p5-RRD (install from packages)
+- mod_perl (install from packages)
 
 The Perl Modules
 
@@ -301,6 +311,10 @@ The Perl Modules
 - HTML::Table
 - Net::Patricia (installation prompts to install dependencies, just say YES)
 - Cflow.pm (we already installed that above)
+
+#### The Packages
+
+Install packages, as specified above.
 
 #### The Perl Modules
 

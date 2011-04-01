@@ -55,9 +55,9 @@ their tasks while maintaining high availability:
 
 Our expanded mail chain looks like the below:
 
-<div style="text-align: center">
-	$!Image("mail/mailchain.png", title="SMTP Proxy", klass="center")!$
-</div>
+
+$!Image("mail/mailchain.png", title="SMTP Proxy", klass="imgcenter")!$
+
 <pre>
 <strong>
 [ user ] <--> [ mail server ] <--> [ filter ] <--> [ MX Proxy ] <--> {Internet}
@@ -100,9 +100,7 @@ internal *[mail server]* as appropriate.
 
 Installing a **Multiple MTA Instances** requires fewer resources.
 
-<div style="text-align: center">
-	$!Image("mail/proxy.instances.png", title="SMTP Proxy Instances", klass="center")!$
-</div>
+$!Image("mail/proxy.instances.png", title="SMTP Proxy Instances", klass="imgcenter")!$
 
 The above diagram highlights the mail flow using our three MTA instances:
 
@@ -110,12 +108,7 @@ The above diagram highlights the mail flow using our three MTA instances:
 * MTA Instance **Inbound** filters and relays Inbound Mail (postfix-inbound)
 * MTA Instance **Outbound** relays Outbound Mail (postfix-outbound)
 
-<div style="text-align: center">
-	$!Image("mail/proxy.instances.filters.png", title="Multiple MTA Instance - Filters", klass="center")!$
-	<br clear="all" />
-	
-	MTA Instance "Summary Filters"
-</div>
+$!Image("mail/proxy.instances.filters.png", title="Multiple MTA Instance - Filters", klass="imgcenter", kaption="""MTA Instance "Summary Filters" """)!$
 
 <a name="package.install"></a>
 

@@ -1,16 +1,5 @@
 ## FlowViewer - Custom Graphs and Analysis
 
-Now we have some analysis tools going, we have a basic workflow
-for pro-active investigation of what's happening on our network:-
-
--	Smokeping shows a spike in traffic latency on your link.
--	CUFlow isolates the ports used in the traffic
--	Now what ?
-
-Enter, FlowViewer (for those who don't want to investigate at
-the command-line, flow-tools) and related tools FlowTracker,
-FlowGrapher.
-
 <div class="toc">
 
 Table of Contents
@@ -22,6 +11,17 @@ Table of Contents
 	</ul>
 
 </div>
+
+Now we have some analysis tools going, we have a basic workflow
+for pro-active investigation of what's happening on our network:-
+
+-	Smokeping shows a spike in traffic latency on your link.
+-	CUFlow isolates the ports used in the traffic
+-	Now what ?
+
+Enter, FlowViewer (for those who don't want to investigate at
+the command-line, flow-tools) and related tools FlowTracker,
+FlowGrapher.
 
 FlowViewer gives you a GUI front-end for interrogate the database
 for quick analysis of the data. For our above scenario, you can 

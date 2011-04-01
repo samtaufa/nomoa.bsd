@@ -67,11 +67,11 @@ to always run as an administrator.
 - Find and select the file _openvpn.exe_  or _openvpn-gui.exe_ ( most likely to be in: c:\Program Files\OpenVPN\bin\ )
 - Right Click on the file, and Select Properties (or highlight the file then select the File Menu, then select Properties)
 - In the "_openvpn.exe Properties_" dialogue box that appears, select the Compatibility tab
-    $!Image("openvpn/openvpn_properties_compatibility.png", title="OpenVPN Client - Properties", klass="center")!$
+    $!Image("openvpn/openvpn_properties_compatibility.png", title="OpenVPN Client - Properties", klass="imgcenter")!$
 - In the Compatibility Tab, select "_Privilege Level | Run this program as an Administrator_" 
 
 You will know you have successfully performed this task if in Windows Explorer the application icon now displays a 
 Four Colour Windows Shield  $!Image("openvpn/shield.elevated.privileges.png", title="OpenVPN - Elevated Privileges")!$
 in the same location it normally has the curved arrow for "shortcut."
 
-$!Image("openvpn/openvpn_elevated_privileges.png", title="OpenVPN - Elevated Privileges", klass="center")!$
+$!Image("openvpn/openvpn_elevated_privileges.png", title="OpenVPN - Elevated Privileges", klass="imgcenter")!$
