@@ -6,10 +6,12 @@
 
 Table of Contents
 
--   Partition
--   vnode disk driver
--   Partition Encryption Node
--   New File System
+<ol>
+	<li>Partition</li>
+	<li>vnode disk driver</li>
+    <li>Partition Encryption Node</li>
+    <li>New File System</li>
+</ol>
 
 </div>
 

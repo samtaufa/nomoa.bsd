@@ -4,17 +4,17 @@
 
 Table of Contents
 
-<ul>
+<ol>
   <li><a href="#introduction">Introduction</a></li>
   <li><a href="#fromdocs">From the Docs</a></li>
   <li>Hard Disk Preparation
   <ul>
       <li><a href="#partition">Partitioning the Hard Disk</a></li>
       <li><a href="#instOpenBSD">Installing OpenBSD</a>
-        <ul>
+        <ol>
           <li><a href="#fdisk">fdisk</a></li>
           <li><a href="#disklabel">disklabel</a></li>
-        </ul></li>
+        </ol></li>
   </ul></li>
   <li><a href="#bootManagers">Different Boot Managers I have tried </a> 
     <ul>
@@ -28,7 +28,7 @@ Table of Contents
   <li><a href="#ReaderComments">Reader Comments</a> </li>
   <li><a href="#relref">Relative Reference</a> </li>
   <li><a href="#author">Author and Copyright</a></li>
-</ul>
+</ol>
 </div>
 
 <p> These instructions should work well for installing OpenBSD dual-boot with 

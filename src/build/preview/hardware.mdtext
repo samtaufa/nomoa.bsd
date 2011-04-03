@@ -3,12 +3,12 @@
 
 <div class="toc">
 
-    <ul>
-        <li><a href="#memory">Memory</a>: memtest86, memtest++, memtester
-        <li><a href="#general">General</a>: stress
-        <li><a href="#storage">Storage</a>: bonnie++
-        <li><a href="#network">Network</a>: tcpbench, tcpblast, iperf
-    </ul>
+<ol>
+	<li><a href="#memory">Memory</a>: memtest86, memtest++, memtester</li>
+	<li><a href="#general">General</a>: stress</li>
+	<li><a href="#storage">Storage</a>: bonnie++</li>
+	<li><a href="#network">Network</a>: tcpbench, tcpblast, iperf</li>
+</ul>
 
 </div>
 
@@ -26,9 +26,7 @@ For example: if building a firewall, then include a performance test between
 the separate network segments to ensure at least some minimal performance
 is achievable.
 
-<a name="memory"></a>
-
-### Memory
+### <a name="memory">1.</a> Memory
 
 Discussions on the Mailing Lists indicate generic RAM tests tools are inadequate 
 to qualify a machine's RAM. An accepted stress/performance tool for RAM
@@ -88,9 +86,9 @@ execuation:
 echo $?
 </pre>
 
-<a name="general"></a>
 
-### General System Testing
+
+### <a name="general">2. </a>General System Testing
 
 [ ports:benchmarks/stress ]
 
@@ -128,9 +126,9 @@ $ stress --cpu 8 --io 4 --vm 2 --vm-bytes 128M --hdd 2 \
 
 For more options read the stress <a href="http://weather.ou.edu/~apw/projects/stress/FAQ">FAQ.</a>
 
-<a name="storage"></a>
 
-### Storage
+
+### <a name="storage">3. </a>Storage
 
 [ ports: benchmarks/bonnie++ ]
 

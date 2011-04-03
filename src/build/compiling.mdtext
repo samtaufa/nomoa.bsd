@@ -8,12 +8,12 @@ of those fine notes I maintain for a localised interpretation.
 
 Table of Contents
 
-<ul>
-    <li> Grab the Source
-    <li> Build the Kernel
-    <li> Build Userland
-    <li> Build Xenocara
-</ul>
+<ol>
+    <li> Grab the Source</li>
+    <li> Build the Kernel</li>
+    <li> Build Userland</li>
+    <li> Build Xenocara</li>
+</ol>
 
 </div>      
     

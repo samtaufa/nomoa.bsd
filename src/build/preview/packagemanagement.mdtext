@@ -4,14 +4,14 @@
 
 Table of Contents
 
-<ul>
-	<ul>Examples
-		<li><a href="#installPMpico">nice little editor</a></li>
-		<li><a href="#bash2">Bash 2 - local</a></li>
-		<li><a href="#bash2ftp">Bash 2 - ftp</a></li>
-		<li><a href="#dontknow">Unknown Location</a></li>
-	</ul>
-</ul>
+
+<ol>Examples
+	<li><a href="#installPMpico">nice little editor</a></li>
+	<li><a href="#bash2">Bash 2 - local</a></li>
+	<li><a href="#bash2ftp">Bash 2 - ftp</a></li>
+	<li><a href="#dontknow">Unknown Location</a></li>
+</ol>
+
 
 </div>
 

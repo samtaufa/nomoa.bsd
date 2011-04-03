@@ -30,19 +30,19 @@ pages = [
         pageTitle="Miscellaneous"),
         
     Page("multiboot.mdtext",
-        title="Dual Boot", 
+        title="7. Dual Boot", 
         pageTitle="Dual Boot"),
         
     Page("rc.conf.mdtext",
-        title="Start Up", 
+        title="8. Start Up", 
         pageTitle="Start Up Configuration"),
         
     Page("hardware.mdtext",
-        title="Hardware Tests", 
+        title="9. Hardware Tests", 
         pageTitle="Hardware Tests"),
         
     Page("cryptpart.mdtext",
-        title="Cyphered Disks", 
+        title="10. Cyphered Disks", 
         pageTitle="Encrypting Partitions"),
         
  ]

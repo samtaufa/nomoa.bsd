@@ -8,7 +8,7 @@
 
 Table of Contents
 
-<ul>
+<ol>
     <li>Planning
         <ul>
             <li>Types of Users</li>
@@ -16,16 +16,16 @@ Table of Contents
             <li>SSH Public Keys</li>
             <li>Shell</li>
             <li>Password Policy
-                <ul>
+                <ol>
                     <li>Installation Password</li>
                     <li>User Passwords</li>
-                </ul>
+                </ol>
             </li>
         </ul>
     </li>
     <li>Configure SUDO privileges</li>
     <li>Audit</li>
-</ul>
+</ol>
 
 </div>
 

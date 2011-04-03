@@ -1,26 +1,25 @@
 ## First Time - After Boot
 
+&#91;Ref: $!manpage("afterboot",8)!$]
+
 <div class="toc">
 
 Table of Contents
 
-<ul>
-    <li><a href="#ab_date">Date. Setting the Date &amp; Time</a></li>
-    <li><a href="#ab_timezone">TimeZone. Setting the Time Zone</a></li>
-    <li><a href="#ab_network">Network. Setting the basic network services.</a></li>
+<ol>
+    <li><a href="#ab_date">Date &amp; Time</a></li>
+    <li><a href="#ab_timezone">Time Zone</a></li>
+    <li><a href="#ab_network">Network services.</a></li>
     <ul>
-        <li><a href="#net_host">host configuration,</a></li>
-        <li><a href="#net_network">network interface configuration,</a> and</li>
-        <li><a href="#net_routing">network routing.</a></li>
+        <li><a href="#net_host">Host</a></li>
+        <li><a href="#net_network">Network Interface</a> and</li>
+        <li><a href="#net_routing">Routing.</a></li>
     </ul>
     <li><a href="#ab_daily">Daily, Weekly, Monthly Scripts</a></li>
-    <li>Root Backup</li>
-    <li>Cron - scheduled commands</li>
-</ul>
+</ol>
 
 </div>
 
-&#91;Ref: $!manpage("afterboot",8)!$]
 
 The $!manpage("afterboot")!$ man pages list a sequence of issues to review after
 the OpenBSD system has been configured and is up and running. For the

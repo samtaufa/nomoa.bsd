@@ -4,7 +4,7 @@
 
 Table of Contents
 
-<ul>
+<ol>
     <li><a href="#instAddUser">Adding a New User</a>
         <ul>
             <li><a href="#instgroup">Specifying group access privileges</a></li>
@@ -17,19 +17,19 @@ Table of Contents
             <li><a href="#usermod">Adding users to an existing Group</a></li>
         </ul></li>
     <li><a href="#instRoot">Root, Super Administrator</a>
-    <ul>
-        <li><a href="#instAssigningPrivilegesToOrdinaryUsers">Assigning Root Privileges 
-          to Ordinary</a> 
-        <ul>
-          <li><a href="#instgroupwheel">Setting wheel during account 
-            creation</a></li>
-          <li><a href="#instusermodwheel">Using the usermod -G command</a></li>
-          <li><a href="#instmanuallyeditgroupwheel">Manually Editing 
-            the file /etc/group</a></li>
-        </ul></li>
-    </ul></li>
+		<ul>
+			<li><a href="#instAssigningPrivilegesToOrdinaryUsers">Assigning Root Privileges 
+			  to Ordinary</a> 
+			<ol>
+			  <li><a href="#instgroupwheel">Setting wheel during account 
+				creation</a></li>
+			  <li><a href="#instusermodwheel">Using the usermod -G command</a></li>
+			  <li><a href="#instmanuallyeditgroupwheel">Manually Editing 
+				the file /etc/group</a></li>
+			</ol></li>
+		</ul></li>
     <li><a href="#instmovetoroot">Moving from UserID to root</a></li>
-</ul>
+</ol>
     
 </div>
 

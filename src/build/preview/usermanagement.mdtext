@@ -1,20 +1,22 @@
 ## First Time - User Management
 
+&#91;Ref: $!manpage("adduser",8)!$, $!manpage("userdel",8)!$,
+[FAQ 10 - System Management](http://www.openbsd.org/faq/faq10.html)]
+
 <div class="toc">
 
 Table of Contents
 
-<ul>
-    <li><a href="#instAddUser">Adding a New User</a></li>
-    <li><a href="#instRootAccess">Specifying root access privileges</a></li>
-    <li><a href="#instchpass">Changing details of a User</a></li>
-    <li><a href="#instSHELL">Shell Profile (bash example)</a></li>
-</ul>
+<ol>
+    <li><a href="#instAddUser">New User</a></li>
+    <li><a href="#instRootAccess">root privileges</a></li>
+    <li><a href="#instchpass">Changing details</a></li>
+    <li><a href="#instSHELL">Shell Profile</a></li>
+</ol>
 
 </div>
 
-&#91;Ref: $!manpage("adduser",8)!$, $!manpage("userdel",8)!$,
-[FAQ 10 - System Management](http://www.openbsd.org/faq/faq10.html)]
+### <a name="instAddUser"></a> Adding a New User
 
 adduser support two flags -silent or -verbose. You don't really need
 to know these at the beginning, but you can check the details in the

@@ -4,7 +4,7 @@
 
 Table of Contents
 
-<ul>
+<ol>
 	<li><a href="#identify">Identifying</a>
 		<ul>
 			<li><a href="#identify.device">Device</a></li>
@@ -18,19 +18,19 @@ Table of Contents
 	<li><a href="#eg">Examples</a>
 		<ul>
 			<li><a href="#eg.identify">Identifying</a>
-				<ul>
+				<ol>
 					<li><a href="#eg.identify.device">Device</a></li>
 					<li><a href="#eg.identify.filesystem">Filesystem</a></li>
-				</ul></li>
+				</ol></li>
 			<li><a href="#eg.filesystem">Connect File Systems</a>
-			<ul>
+			<ol>
 				<li><a href="#eg.mount.points">Mount Points</a></li>
 				<li><a href="#eg.mounting">Mounting</a></li>
-			</ul></li>
+			</ol></li>
 		</ul></li>
 	<li><a href="#retained">Retained Information</a></li>
 	
-</ul>
+</ol>
 
 </div>
 

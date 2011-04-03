@@ -12,15 +12,15 @@ Table of Contents
     <li>Note username, user-#, group-#</li>
     <li>Ensure user isn't logged in</li>
     <li>Remove user account
-        <ol>
+        <ul>
             <li>Home Directory</li>
             <li>$USERNAME cron settings</li>
             <li>$USERNAME /etc/passwd settings</li>
             <li>$USERNAME /etc/groups settings</li>
-        </ol>
+        </ul>
     </li>
     <li>Sanity Check
-        <ol>
+        <ul>
             <li>SSH Authorized Keys</li>
             <li>Orphaned Files</li>
             <li>Root Password</li>
@@ -28,7 +28,7 @@ Table of Contents
             <li>User configuration files in /etc</li>
             <li>WWW configuration files</li>
             <li>Accounts in Databases</li>
-        </ol>
+        </ul>
     </li>
 </ol>
 

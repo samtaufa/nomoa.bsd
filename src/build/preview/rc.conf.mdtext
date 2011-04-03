@@ -4,16 +4,11 @@
 
     Table of Contents
     
-    <ul>
-      <li><a href="#rc.conf.local">Localised Configuration</a> 
-        <ul>
-          <li><a href="#Section1" class="anchBlue">Section 1 Turn Features On</a></li>
-          <li><a href="#Section2" class="anchBlue">Section 2 Switch Programs On</a></li>
-          <li><a href="#Section3" class="anchBlue">Section 3 Configuration Options</a></li>
-        </ul>
-      </li>
-      <li><a href="#author">Author and Copyright</a></li>
-    </ul>
+<ol>
+  <li><a href="#Section1" class="anchBlue">Section 1</a> Turn Features On</li>
+  <li><a href="#Section2" class="anchBlue">Section 2</a> Switch Programs On</li>
+  <li><a href="#Section3" class="anchBlue">Section 3</a> Configuration Options</li>
+</ol>
 
 </div>
 
