@@ -6,10 +6,11 @@
 
 Table of Contents
 
-	<ul>
-		<li><a href="#sample">Sample Analysis</a></li>
-		<li><a href="#summary">Summary View</a></li>
-	</ul>
+<ol>
+	<li><a href="#sample">Sample Analysis</a></li>
+	<li><a href="#summary">Summary View</a></li>
+</ol>
+
 </div>
 
 The most flexible, and difficult way to view your netflow
