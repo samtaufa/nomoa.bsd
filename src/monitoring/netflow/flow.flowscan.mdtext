@@ -399,21 +399,21 @@ at the time of this install example.
 
 On both services, the 1st result is the actual Perl file.
 
-<pre class="command-line">
+<!--(block | cubescript | syntax("bash") )-->
 curl -o FlowScan.pm \
   http://net.doit.wisc.edu/~plonka/list/flowscan/archive/att-0848/01-FlowScan.pm
-</pre>
+<!--(end)-->
 
 #### b. Build and Install
 
 Review [Network Flow Analysis](http://networkflowanalysis.com "Michael W. Lucas' book 'Network Flow Analysis'") for rationales
 
-<pre class="command-line">
-# cd /tmp
-# tar -zxf /usr/ports/distfiles/FlowScan-1.006.tgz
-# cd FlowScan-1.006
-# ./configure --prefix=/var/netflow/
-</pre>
+<!--(block | cubescript | syntax("bash") )-->
+cd /tmp
+tar -zxf /usr/ports/distfiles/FlowScan-1.006.tgz
+cd FlowScan-1.006
+./configure --prefix=/var/netflow/
+<!--(end)-->
 
 During configuration you will get an error message of the form:
 
@@ -491,31 +491,31 @@ my set up for storing flows on the hard drive.
 
 #### c. Create Account and Paths
 
-<pre class="command-line">
+<!--(block | cubescript | syntax("bash") )-->
 /usr/sbin/groupadd _flowscan
 /usr/sbin/useradd -mv -b /var/netflow \
    -c "FlowScan Daemon" -L "default" -g _flowscan \
    -s /sbin/nologin _flowscan
 
-mkdir -p /var/netflow/flowscandata
+mkdir -p /var/netflow/scandata
 touch /var/log/flowscan.log
-</pre>
+<!--(end)-->
 
 #### d. Configuration - FlowScan
 
 The sample configuration files are not copied to the installation folder
 so do this now
 
-<pre class="command-line">
-# cp /tmp/FlowScan-1.006/cf/flowscan.cf /var/netflow/bin/mygatewayMN
-</pre>
+<!--(block | cubescript | syntax("bash") )-->
+cp /tmp/FlowScan-1.006/cf/flowscan.cf /var/netflow/bin/mygatewayMN
+<!--(end)-->
 
 ##### flowscan.cf::FlowFileGlob
 
 Be explicit with the directory path.
 
 <pre class="config-file">
-FlowFileGlob /var/data//netflow/flowscandata/ft-v*[0-9]
+FlowFileGlob /var/data//netflow/scandata/ft-v*[0-9]
 </pre>
 
 ##### flowscan.cf::ReportClasses
@@ -529,46 +529,29 @@ ReportClasses CUFlow
 
 ##### flowscan.cf::Verbose
 
-<pre class="config-file">
-</pre>
-
 Modifications to flowscan.cf
 
-<pre class="command-line">
---- flowscan.cf.org        Fri Oct  6 12:40:35 2000
-+++ flowscan.cf      Wed Jan  5 15:44:01 2011
-@@ -5,13 +5,15 @@
- # use this glob (file pattern match) when looking for raw flow files to be  # processed, e.g.:
- # FlowFileGlob /var/local/flows/flows.*:*[0-9] -FlowFileGlob flows.*:*[0-9]
-+#FlowFileGlob flows.*:*[0-9]
-+FlowFileGlob /var/netflow/flowscandata/mygatewayMN/ft-v*[0-9]
+<!--(block | cubescript | syntax("apache_conf") )-->
+FlowFileGlob /var/netflow/scandata/mygatewayMN/ft-v*[0-9]
 
- # ReportClasses (REQUIRED)
- # a comma-seperated list of FlowScan report classes, e.g.:
- # ReportClasses CampusIO
- # ReportClasses SubNetIO
--ReportClasses CampusIO
-+#ReportClasses CampusIO
-+ReportClasses CUFlow
-
- # WaitSeconds (OPTIONAL)
- # This should be <= the "-s" value passed on the command-line to cflowd, e.g.: 
-</pre>
+#ReportClasses CampusIO
+ReportClasses CUFlow
+<!--(end)-->
 
 #### Configuration - Apache
 
 File extract: /var/www/conf/httpd.conf
 
-<pre class="config-file">
+<!--(block | cubescript | syntax("apache_conf") )-->
 Alias /flowscan/ "/var/www/flowscan/"
 
-&lt;Directory "/var/www/flowscan">
+<Directory "/var/www/flowscan">
 	Options Indexes MultiViews
 	AllowOverride None
 	Order allow,deny
 	Allow from all
-&lt;/Directory>
-</pre>
+</Directory>
+<!--(end)-->
 
 ### <a name="4">4. </a>CUFlow
 
@@ -610,10 +593,10 @@ Network 192.168.13.38 domain_server
 	</tr>
 	<tr>
 		<td>OutputDIR</td>
-		<td>Storage location for RRD Data files (e.g. ./flowscanrrd)
+		<td>Storage location for RRD Data files (e.g. ./rrd)
 		
 <pre class="config-file">
-OutputDir /var/netflow/flowscanrrd/mygatewayMN
+OutputDir /var/netflow/rrd/mygatewayMN
 </pre>		
 		</td>
 	</tr>
@@ -626,7 +609,7 @@ OutputDir /var/netflow/flowscanrrd/mygatewayMN
 		<td>Aggregate Top X usage style of report
 		
 <pre class="config-file">
-AggregateScore /var/netflow/flowscanrrd/mygatewayMN/agg.dat /var/www/flowscan/mygatewayMN/overall.html
+AggregateScore /var/netflow/rrd/mygatewayMN/agg.dat /var/www/flowscan/mygatewayMN/overall.html
 </pre>		
 		</td>
 	</tr>
@@ -663,61 +646,26 @@ it from there.
 
 Modify the file to reflect your path environment.
 
-<pre class="config-file">
---- CUGrapher.pl.orig      Wed Jan 11 07:47:10 2006
-+++ CUGrapher.pl      Fri Feb 25 08:47:53 2011
-@@ -16,17 +16,17 @@
- ### Local settings ###
+<!--(block | cubescript | syntax("perl") )-->
+my $rrddir = "/var/netflow/rrd/mygatewayMN";
+my $organization = "Example.COM";
+my $width = 1200;
+my $height = 800;
 
- # directory with rrd files
--my $rrddir = "/cflow/reports/rrds";
-+my $rrddir = "/var/netflow/flowscanrrd/mygatewayMN";
- # default number of hours to go back
- my $hours = 48;
- # duration of graph, starting from $hours ago  my $duration;  
- # organization name -my $organization = "Estimated Columbia University Campus";
-+my $organization = "Example.COM";
- # default graph width
--my $width = 640;
-+my $width = 1200;
- # default graph height
--my $height = 320;
-+my $height = 800;
- # default image type (png/gif)
- my $imageType = 'png';
-
-@@ -109,7 +109,7 @@
-     my $q = new CGI::Pretty(""); # Avoid inheriting the parameter list
-
-
--    print $q->header, $q->start_html( -title => 'Generate FlowScan graphs on the fly',
-+    print $q->header, $q->start_html( -title => 'gatewayMN - CUGrapher',
+print $q->header, $q->start_html( -title => 'gatewayMN - CUGrapher',
                                       -bgcolor => 'ffffff' );
-
-     if ($imgurl) {
-@@ -139,11 +139,17 @@
-                                  -values => [sort keys %reportName],
-                                  -default => '' ) );
-
--    my %hours = ( 24 => '24 hours',
-+    my %hours = ( 1  => '1 hours',
-+                 2 => '2 hours',
-+                 3 => '3 hours',
-+                 6 => '6 hours',
-+                 24 => '24 hours',
-                  36 => '36 hours',
-                  48 => '48 hours',
-                  168 => '1 week',
--                 720 => '1 month' );
-+                 720 => '1 month',
-+                 1440 => '2 month',
-+                 8766 => '1 year' );
-
-     print $q->td( { -align => 'right' },
-                  "Time period: ",	 
-
-</pre>
-
+    my %hours = ( 1  => '1 hours',
+                 2 => '2 hours',
+                 3 => '3 hours',
+                 6 => '6 hours',
+                 24 => '24 hours',
+                 36 => '36 hours',
+                 48 => '48 hours',
+                 168 => '1 week',
+                 720 => '1 month',
+                 1440 => '2 month',
+                 8766 => '1 year' );
+<!--(end)-->
 For my reports, I've added more 'generic hours' to the views.
 
 ### <a name="5"></a> 5. Execution
@@ -754,7 +702,7 @@ Our simple copy program will look something like this:
 File: /var/netflow/bin/mygatewayMN/flow_rotate.sh
 <pre class="command-line">
 #!/bin/sh
-cp $1 /var/netflow/flowscandata/mygatewayMN/
+cp $1 /var/netflow/scandata/mygatewayMN/
 </pre>
 
 #### Startup Script
@@ -766,7 +714,7 @@ can monitor the log to review application execution:
 
 File: /var/netflow/bin/mygatewayMN/startup_flowscan.sh
 
-<pre class="config-file">
+<!--(block | cubescript | syntax("bash") )-->
 #!/bin/sh
 PREFIX=/var/netflow
 BIN=$PREFIX/bin
@@ -775,7 +723,7 @@ LOGFILE=/var/log/flowscan.log
 USER=_flowscan
 
 nohup sudo -u _flowscan $BIN/flowscan > $LOGFILE 2>&1 &
-</pre>
+<!--(end)-->
 
 #### autostart script
 
@@ -791,7 +739,7 @@ We will add to the /etc/rc.local the following:
 
 File Excerpt: /etc/rc.local
 
-<pre class="config-file">
+<!--(block | cubescript | syntax("bash") )-->
 FLOWCAPTURE=/usr/local/bin/flow-capture
 FLOWPID=/var/run/flow-capture.pid
 FLOWDATA=/var/netflow
@@ -812,7 +760,6 @@ startup=/var/netflow/bin/mygatewayMN/startup_flowscan.sh
 if [ -f $startup ]; then
 	printf ' flowscan'; sh $startup && echo "\t\t [OK]" || echo "\t\t [FAILED]";
 fi
-
-</pre>
+<!--(end)-->
 
 Remember to put in the appropriate collector and sensor IP Addresses.

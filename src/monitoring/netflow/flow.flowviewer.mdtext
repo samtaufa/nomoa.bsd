@@ -136,7 +136,9 @@ and have decided on my own 'path'ing. The following
 sample shows installation modifications that have worked
 with FlowViewer 3.3.1 and 3.4. Your Mileage May Vary (YMMV)
 
-<pre class="config-file">
+File: FlowViewer_Configuration.pm
+
+<!--(block | cubescript | syntax("perl") )-->
 $FlowViewer_server       = "192.168.21.193";     # (IP address or hostname)
 
 $reports_directory       = "/var/www/htdocs/FlowViewer";
@@ -168,7 +170,18 @@ $user_hyperlink          = "http://www.example.com/";
 @exporters               = ("mygatewayMN_ipaddress:mygateway MN Title");
 
 $log_directory      = "/var/www/var/flowviewer/log";
-</pre>
+<!--(end)-->
+
+During the initial startup of the CGI scripts, they will attempt to
+create the relevant reporting paths. Otherwise, you can execute something
+like the below script to manually create those paths:
+
+<!--(block | cubescript | syntax("py") )-->
+for d in `cat FlowViewer_Configuration.pm | grep directory | awk -F \" '{ print $2 }'`; \
+    do mkdir -p $d/; chmod -R a=rwx $d/; done
+<!--(end)-->
+
+Of course, you need to realise what changing the above will do.
 
 #### Startup
 
@@ -177,12 +190,12 @@ daemons to collate the data.
 
 Updates to */etc/rc.local*
 
-<pre class="config-file">
+<!--(block | cubescript | syntax("bash") )-->
 PERL5LIB=/var/www/flowviewer/ /var/www/flowviewer/FlowTracker_Collector \
 	>> /var/log/FlowTracker_Collector.log 2>&1 &
 PERL5LIB=/var/www/flowviewer/ /var/wwwflowviewer/FlowTracker_Grapher \
 	>> /var/log/FlowTracker_Grapher.log 2>&1  &
-</pre>
+<!--(end)-->
 
 ### <a name="apache"></a> Apache
 
@@ -193,15 +206,15 @@ name FlowViewer.
 
 File extract: /var/www/conf/httpd.conf
 
-<pre class="config-file">
+<!--(block | cubescript | syntax("apache_conf") )-->
 Alias /FlowViewer/ /var/www/flowviewer/
 
-&lt;Directory /var/www/flowviewer/>
+<Directory /var/www/flowviewer/>
 	Options +ExecCGI
 	AddHandler cgi-script .cgi
 	Allow from [list-of-trusted-hosts]
-&lt;/Directory>
-</pre>
+</Directory>
+<!--(end)-->
 
 As noted in the above, I'm putting my files into the path
 /var/www/flowviewer/
@@ -230,6 +243,11 @@ environment. To use FlowViewer, disable this environment using the "-u" option.
 If you're really paranoid, you could configure all the relevant tools to work within
 a chroot'd environment.
 
+#### /var/www/var
+
+Some directories may not have been, or permissions not useable.
+
+Review the /var/www/log/error_log file
 
 ### <a name="workflow"></a> Workflow Sample
 
@@ -239,18 +257,26 @@ A simple, active monitoring day's activities could revolve such as the scenario 
 - View historic chart of  host/traffic behaviour using FlowGrapher
 - Track continued behaviour of that host/traffic pattern using FlowTracker
 
-#### <a name="flowviewer">FlowViewer</a>
+#### <a name="flowviewer"></a>FlowViewer
 
 FlowViewer is good for getting snapshot views of traffic behaviour, whether the
 snapshot is 5 minutes or 10 days. It is a good way of isolating the hosts, 
 patterns of heavy use such that we can isolate further points of investigation.
 
-#### <a name="flowgrapher">FlowGrapher</a>
+#### <a name="flowgrapher"></a>FlowGrapher
 
 To view historical data on the identified traffic pattern, we can use FlowGrapher
 to generate a chart to give us a better view of previous behaviour.
 
-#### <a name="flowtracker">FlowTracker</a>
+#### <a name="flowtracker"></a>FlowTracker
 
 Love using this feature to justify what modifications may or may not
 be required on the infrastructure.
+
+### <a name="rel.links"></a> Relative Links
+
+Other links that may be relevant, or give better clues.
+
+-	[Pierky's](http://pierky.wordpress.com/) [
+	How to install and configure flwo-tools and FlowViewer on a fresh Debian setup](
+	http://pierky.wordpress.com/2010/03/06/netflow-how-to-install-and-configure-flow-tools-and-flowviewer-on-a-fresh-debian-setup/)
