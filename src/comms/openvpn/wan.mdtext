@@ -4,13 +4,14 @@
 
     Table of contents
         
-    <ul>
-        <li>Virtual Private Network Subnet
-        <li>Client Configurations
-        <li>Unique route for client
-        <li>Subnets at the OpenVPN Server
-        <li>Subnets at the OpenVPN Client
-    </ul>
+<ol>
+	<li>Virtual Private Network Subnet
+	<li>Client Configurations
+	<li>Unique route for client
+	<li>Subnets at the OpenVPN Server
+	<li>Subnets at the OpenVPN Client
+</ol>
+
 </div>
 
 When using OpenVPN to secure traffic between two sites (where each

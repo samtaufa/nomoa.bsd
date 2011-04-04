@@ -2,7 +2,7 @@
 
 <div class="toc">
     <p>Table of Contents: </p>
-    <ul>
+    <ol>
       <li>Content Filtering
       <li>Our Configuration
         <ul>
@@ -10,12 +10,12 @@
           <li>(b) DansGuardian</li>
           <li>(c) caching  </li>
         </ul>
-      <li>Execution Script 
+		<li>Execution Script 
             <ul><li>Squid</li>
               <li>DansGuardian</li>
             </ul>
-      <li><a href="#author">Author and Copyright</a></li>
-    </ul>
+		</li>
+    </ol>
     
 </div>
 

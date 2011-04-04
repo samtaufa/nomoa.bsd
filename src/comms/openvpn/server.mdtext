@@ -3,35 +3,39 @@
 Verified on OpenBSD 4.4 amd64 with OpenVPN 2.1 rc7; OpenBSD 4.6 i386 with OpenVPN 2.1rc22
 
 <div class="toc">
-    <ol>
-        <li>Install
-            <ul>
-                <li>Base System Configuration</li>
-                <li><a href="#preinstall">Pre-install Modifications</a>
-                    <ul>
-                        <li> <a href="#mod.vars">./vars</a> default environment variables</li>
-                        <li> <a href="#mod.pkitool">./pkitool</a> openssl front-end tool</li>
-                        <li> <a href="#mod.openssl.cnf">./openssl.cnf</a> OpenSSL sample configuration file</li>
-                    </ul></li>
-            </ul></li>
-        <li> <a href="#createcertificates">Build our Certificates</a>
-            <ol>
-                <li> <a href="#createcertificates.cleanup">Prepping the environment, Cleaning Up</a></li>
-                <li> <a href="#createcertificates.ca">Build the Certificate Authority</a></li>
-                <li> <a href="#createcertificates.server">Build the Server Keys, Self Sign</a></li>
-                <li> <a href="#createcertificates.control">Build a Control Channel Shared Key</a></li>
-                <li> <a href="#createcertificates.client">Build Client Keys/Certificates</a></li>
-                <li> <a href="#createcertificates.DH">Build the DH key</a></li>
-            </ol></li>
-        <li><a href="#server.config">Sample Configuration File</a>
-            <ol>
-                <li><a href="#server.config.modification">Example Modification</a></li>
-                <li><a href="#server.server.config">Sample Server to Server Configuration</a></li>
-            </ol></li>
-        <li><a href="#server.interfaces">Configuring the interfaces</a></li>
-        <li><a href="#server.start">Starting the Server</a></li>
-        <li><a href="#server.firewall">Configuring the Firewall (PF)</a></li>
-    </ol>
+
+Table of Contents
+
+<ol>
+	<li>Install
+		<ul>
+			<li>Base System Configuration</li>
+			<li><a href="#preinstall">Pre-install Modifications</a>
+				<ol>
+					<li> <a href="#mod.vars">./vars</a> default environment variables</li>
+					<li> <a href="#mod.pkitool">./pkitool</a> openssl front-end tool</li>
+					<li> <a href="#mod.openssl.cnf">./openssl.cnf</a> OpenSSL sample configuration file</li>
+				</ol></li>
+		</ul></li>
+	<li> <a href="#createcertificates">Build our Certificates</a>
+		<ul>
+			<li> <a href="#createcertificates.cleanup">Environment, Cleaning Up</a></li>
+			<li> <a href="#createcertificates.ca">Certificate Authority</a></li>
+			<li> <a href="#createcertificates.server">Server Keys, Self Sign</a></li>
+			<li> <a href="#createcertificates.control">Control Channel Shared Key</a></li>
+			<li> <a href="#createcertificates.client">Client Keys/Certificates</a></li>
+			<li> <a href="#createcertificates.DH">DH key</a></li>
+		</ul></li>
+	<li><a href="#server.config">Sample Configuration File</a>
+		<ul>
+			<li><a href="#server.config.modification">Example Modification</a></li>
+			<li><a href="#server.server.config">Server to Server</a></li>
+		</ul></li>
+	<li><a href="#server.interfaces">Interfaces</a></li>
+	<li><a href="#server.start">Starting the Server</a></li>
+	<li><a href="#server.firewall">Firewall (PF)</a></li>
+</ol>
+
 </div>
 
 ### Install
@@ -58,7 +62,7 @@ On the command-line
 /sbin/sysctl net.inet.ip.forwarding=1
 </pre>
 
-### Base System Configuration
+#### Base System Configuration
 
 
 To retain consistency with how other OpenBSD applications are installed, and configured we pre-select a standard configuration for our installation as per the below structure.

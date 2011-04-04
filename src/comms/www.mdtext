@@ -4,26 +4,25 @@
 
 Table of Contents:
 
-    <ul>
-        <li>Setting Apache to <a href="#setup">start every time</a> the system is started/restarted 
-         </li>
-        <li><a href="#apachectl">Manually starting Apache </a> </li>
-        <li><a href="#test">Testing that it works </a> </li>
-        <li><a href="#mod_status">Setting some status configurations </a> </li>
-        <li><a href="#mod_userdir">Creating User personal web pages </a> 
-        <ul>
-            <li><a href="#restart"> Restart apache </a> </li>
-            <li><a href="#public_html"> Link from user accounts to chroot'd account 
-                directory</a> </li>
-            <li><a href="#userid"> Access user accounts with the URL form http://server-name/~user-id/ 
-                </a></li>
-        </ul></li>
-        <li><a href="#securessl">Securing the Site with SSL</a>
-            <ul>
-                <li>Problems with Browsers</li>
-                <li><a href="#secureVH">Securing Virtual Hosts</a></li>
-            </ul></li>
-    </ul>
+<ol>
+	<li>Setting Apache to <a href="#setup">Auto Start</a> 
+	 </li>
+	<li><a href="#apachectl">Manual Start</a> </li>
+	<li><a href="#test">Test</a> </li>
+	<li><a href="#mod_status">Status Configurations </a> </li>
+	<li><a href="#mod_userdir">User Web Pages </a> 
+	<ul>
+		<li><a href="#restart"> Restart apache </a> </li>
+		<li><a href="#public_html"> User chroot'd account</a> </li>
+		<li><a href="#userid">http://server-name/~user-id/</a></li>
+	</ul></li>
+	<li><a href="#securessl">Securing with SSL</a>
+		<ul>
+			<li>Problems with Browsers</li>
+			<li><a href="#secureVH">Virtual Hosts</a></li>
+		</ul>
+	</li>
+</ol>
 
 </div>
 

@@ -8,16 +8,14 @@ Portions Reviewed in OpenBSD 4.6, and 4.7
 
 <p>Table of Contents</p>
 
-<ul>
-  <li><a href="#createcerts">Self-signed Certificates</a>
-  <ul>
-    <li><a href="#sscKey" class="anchBlue">Generate a Signing Key</a></li>
-    <li><a href="#sscCSR">Server Certificate Signing Request</a></li>
-    <li><a href="#sscCRT" class="anchBlue">Signing the Certificate</a></li>
-    <li><a href="#sscTest" class="anchBlue">Testing the Keys</a></li>
-    <li><a href="#sscVirtualHosts" class="anchBlue">Virtual Hosts</a></li>
-  </ul></li>
-</ul>
+<ol>
+	<li><a href="#createcerts">Self-signed Certificates</a></li>
+	<li><a href="#sscKey" class="anchBlue">Generate a Signing Key</a></li>
+	<li><a href="#sscCSR">Server Certificate Signing Request</a></li>
+	<li><a href="#sscCRT" class="anchBlue">Signing the Certificate</a></li>
+	<li><a href="#sscTest" class="anchBlue">Testing the Keys</a></li>
+	<li><a href="#sscVirtualHosts" class="anchBlue">Virtual Hosts</a></li>
+</ol>
 
 </div>
 
@@ -25,9 +23,7 @@ OpenBSD ships with built in support for OpenSSL and OpenSSH for secure encrypted
 end-to-end communication between a localhost and a remotehost. Following are 
 notes on configuring and using SS# (pronounced S-S-Sharp, that's a pun)
   
-<a name="createcerts"></a>
-
-### Creating Self-Signed Certificates
+### <a name="createcerts"></a> Creating Self-Signed Certificates
 
 &#91;Ref: <a href="http://www.openbsd.org/faq/">OpenBSD   FAQ</a> | 
 mod_ssl/ssl_faq.html#ToC17 - html documentation of mod_ssl |

@@ -6,76 +6,51 @@
 
 Table of Contents:
     
-<ul>
-  <li><a href="#cacheSquidOptimise">Squid - Optimizing Web Access</a> 
-    <ul>
-      <li><a href="#cacheSquidStart">Starting Squid</a></li>
-      <li><a href="#cacheSquidOpenBSD">Localised settings in 
-        OpenBSD package</a></li>
-      <li><a href="#cacheSquidConfig">Example Configuration</a>
-      <ul>
-        <li><a href="#squidEXport">The port we want squid to 
-          listen on</a></li>
-      </ul>
-      <ul>
-        <li><a href="#squidEXsubnet">Network IPs we will support 
-          in squid</a></li>
-      </ul>
-      <ul>
-        <li><a href="#squidEXTIME">Time intervals we will support</a></li>
-        <li><a href="#squidEXurl"> Organisational Policies (Restricted 
-          Sites)</a></li>
-        <li><a href="#squidEXcustomerrs"> Informative Messages 
-          relevant to Organisational Policies</a></li>
-        <li><a href="#squidEXhttp_access">Configuring Access 
-          to the Cache</a></li>
-        <ul>
-          <li><a href="#squidEXdeny">Restricting Access to External 
-            Sites - supporting organisat policies</a></li>
-          <li><a href="#squidEXcache">Allowing Specified networks 
-            access to the cache</a></li>
-          <li><a href="#squidEXTIMEbased">Restricting Internal 
-            Access - relevant to organisational policies</a></li>
-          <li><a href="#squidEXdirect">Ignoring the cache when 
-            requesting from Local Area Network</a> </li>
-        </ul>
-        <li><a href="#squidEXgo">Let's Go</a></li>
-      </ul></li>
-      <li><a href="#squidEX2">Extending The Sample Configuration</a>
-      <ul>
-        <li><a href="#squidEX2auth">Authenticating Users</a></li>
-        <li><a href="#squidEX2url"> Organisational Policies (Restricted 
-          Sites)</a></li>
-        <li><a href="#squidEX2customerrs"> Informative Messages 
-          relevant to Organisational Policies</a></li>
-        <li><a href="#squidEX2access">Configuring Access to the 
-          Cache</a>
-        <ul>
-          <li><a href="#squidEX2deny">Restricting Access to External 
-            Sites - relevant to organisational policies</a></li>
-          <li><a href="#squidEX2cache">Allowing Specified networks 
-            access to the cache</a></li>
-          <li><a href="#squidEX2TIMEbased">Restricting Internal 
-            Access - supporting organisat policies</a></li>
-        </ul></li>
-        <li><a href="#squidEX2go">Let's Go</a></li>
-      </ul></li>
-      <li>Managing the Log Files</li>
-      <li><a href="#squidMisc">Other Miscellaneous Issues</a>
-      <ul>
-        <li><a href="#squidMiscDNS">Squids DNS Startup Test</a></li>
-        <li><a href="#squidMiscDebug">Debugging Your Configuration</a></li>
-        <li><a href="#squidMiscUser">Squid User &amp; Group</a></li>
-      </ul></li>
-    </ul></li>
+<ol>
+  <li><a href="#cacheSquidOptimise">Squid - Optimizing Web Access</a></li>
+  <li><a href="#cacheSquidStart">Starting Squid</a></li>
+  <li><a href="#cacheSquidOpenBSD">Localised settings in 
+	OpenBSD package</a></li>
+  <li><a href="#cacheSquidConfig">Example Configuration</a>
+  <ul>
+	<li><a href="#squidEXport">Port to listen on</a></li>
+	<li><a href="#squidEXsubnet">Network IPs to support</a></li>
+	<li><a href="#squidEXTIME">Time intervals</a></li>
+	<li><a href="#squidEXurl"> Organisational Policies</a></li>
+	<li><a href="#squidEXcustomerrs">Informative Messages</a></li>
+	<li><a href="#squidEXhttp_access">Configuring Access</a></li>
+	  <li><a href="#squidEXdeny">Restricting Access</a></li>
+	  <li><a href="#squidEXcache">Networks Access</a></li>
+	  <li><a href="#squidEXTIMEbased">Restricting Access</a></li>
+	  <li><a href="#squidEXdirect">Ignoring the cache</a> </li>
+	<li><a href="#squidEXgo">Let's Go</a></li>
+  </ul></li>
+  <li><a href="#squidEX2">Extending The Sample</a>
+  <ul>
+	<li><a href="#squidEX2auth">Authenticating Users</a></li>
+	<li><a href="#squidEX2url">Restricted Sites</a></li>
+	<li><a href="#squidEX2customerrs">Informative Messages</a></li>
+	<li><a href="#squidEX2access">Access to the Cache</a>
+	<ul>
+	  <li><a href="#squidEX2deny">Restricting Access to External Sites</a></li>
+	  <li><a href="#squidEX2cache">Allowing Specified networks</a></li>
+	  <li><a href="#squidEX2TIMEbased">Internal Access</a></li>
+	</ul></li>
+	<li><a href="#squidEX2go">Let's Go</a></li>
+  </ul></li>
+  <li>Managing the Log Files</li>
+  <li><a href="#squidMisc">Miscellaneous</a>
+  <ul>
+	<li><a href="#squidMiscDNS">DNS Startup Test</a></li>
+	<li><a href="#squidMiscDebug">Debug</a></li>
+	<li><a href="#squidMiscUser">Squid User &amp; Group</a></li>
+  </ul></li>
   <li><a href="#squidAuth">Authentication - the MSNT module</a></li> 
-  <li><a href="#transproxy">Transparent Proxy</a> - Not having to manually update 
-    all clients </li>
+  <li><a href="#transproxy">Transparent Proxy</a></li>
   <li>FTP Proxy</li>
   <li>SOCKS 5 Proxy</li>
-  <li><a href="#CUAT">Cache Utilisation Analysis Tools </a> </li>
-  <li><a href="#author">Author and Copyright</a></li>
-</ul>
+  <li><a href="#CUAT">Cache Utilisation </a> </li>
+</ol>
     
 </div>
     
