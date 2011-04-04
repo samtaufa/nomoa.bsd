@@ -193,8 +193,15 @@ class ShowSrc:
         return f + post
 
     def py(self, path, **kwargs):
-        return self._wrap(ns.pySyntax.withConf(**kwargs), path)
-
+        p = countershape.template.Syntax(
+                "py",
+                style="emacs",
+                linenos="inline",
+                linenostep=5,
+                cssClass="bar"
+            )
+        return self._wrap(p, path)
+            
     def _preProc(self, f):
         return """
 <pre class="%s">
