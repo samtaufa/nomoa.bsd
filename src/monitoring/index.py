@@ -17,9 +17,15 @@ pages = [
         title="Announcements",
         pageTitle="Announcements"),    
 
+    Page("configuration.mdtext", 
+        title="Configuration",
+        pageTitle="Configuration Management"),    
+	Directory ("config"),
+
     Page("nagios.mdtext", 
         title="Nagios",
         pageTitle="Nagios Monitoring"),    
+	Directory ("nagios"),
         
     Page("netflow.mdtext", 
         title="Netflow",
@@ -30,7 +36,4 @@ pages = [
         title="Smokeping",
         pageTitle="Smokeping"),
     
-	Page("sms.mdtext",
-		title="SMS",
-		pageTitle="Simple Message System"),
 ]

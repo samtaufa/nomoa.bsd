@@ -2,7 +2,7 @@ import os, os.path, subprocess
 import countershape, pygments
 from countershape import Page, Directory, model, template, state, blog, markup
 
-this.markup = markup.Markdown()
+this.markup = markup.Markdown(extras=["code-friendly"])
 ns.titlePrefix = "=8> nomoa.com/bsd/ "
 this.titlePrefix = ns.titlePrefix
 

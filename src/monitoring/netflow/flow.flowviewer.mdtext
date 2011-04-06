@@ -138,7 +138,7 @@ with FlowViewer 3.3.1 and 3.4. Your Mileage May Vary (YMMV)
 
 File: FlowViewer_Configuration.pm
 
-<!--(block | cubescript | syntax("perl") )-->
+<!--(block  | syntax("perl") )-->
 $FlowViewer_server       = "192.168.21.193";     # (IP address or hostname)
 
 $reports_directory       = "/var/www/htdocs/FlowViewer";
@@ -176,7 +176,7 @@ During the initial startup of the CGI scripts, they will attempt to
 create the relevant reporting paths. Otherwise, you can execute something
 like the below script to manually create those paths:
 
-<!--(block | cubescript | syntax("py") )-->
+<!--(block  | syntax("py") )-->
 for d in `cat FlowViewer_Configuration.pm | grep directory | awk -F \" '{ print $2 }'`; \
     do mkdir -p $d/; chmod -R a=rwx $d/; done
 <!--(end)-->
@@ -190,7 +190,7 @@ daemons to collate the data.
 
 Updates to */etc/rc.local*
 
-<!--(block | cubescript | syntax("bash") )-->
+<!--(block  | syntax("bash") )-->
 PERL5LIB=/var/www/flowviewer/ /var/www/flowviewer/FlowTracker_Collector \
 	>> /var/log/FlowTracker_Collector.log 2>&1 &
 PERL5LIB=/var/www/flowviewer/ /var/wwwflowviewer/FlowTracker_Grapher \
@@ -206,7 +206,7 @@ name FlowViewer.
 
 File extract: /var/www/conf/httpd.conf
 
-<!--(block | cubescript | syntax("apache_conf") )-->
+<!--(block  | syntax("apache_conf") )-->
 Alias /FlowViewer/ /var/www/flowviewer/
 
 <Directory /var/www/flowviewer/>
