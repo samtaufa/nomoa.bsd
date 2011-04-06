@@ -64,8 +64,7 @@ $!Image("mail/mailchain.png", title="SMTP Proxy", klass="imgcenter")!$
 </strong>
 </pre>
 
-Alluding to the ["Single Purpose Host" principle](
-http://www.bing.com/search?q=%22single+purpose+host%22&form=QBRE&filt=all&qs=n&sk=)
+Alluding to the ["Single Purpose Host" principle](http://www.letmebingthatforyou.com/?q=single+purpose+host)
 each server in the mail flow foci defined realm.
 . 
 In reality, such segmentation is difficult with various access controls and filtering 

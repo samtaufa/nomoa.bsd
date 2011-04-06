@@ -395,11 +395,13 @@ The latest [FlowScan.pm](http://lmgtfy.com/?q=FlowScan.pm Dave Plonka 1.6)
 may require searching on the Internet, with version 1.6 current
 at the time of this install example.
 
-<a href="http://lmgtfy.com/?q=FlowScan.pm+Dave+Plonka+1.6">Google</a> or <a href="http://lmgtfy.com/?q=FlowScan.pm Dave Plonka 1.6">Bing</a> for FlowScan.pm 1.6 Dave Plonka</a>
+[Google](http://lmgtfy.com/?q=FlowScan.pm+Dave+Plonka+1.6) or
+[Bing](http://www.letmebingthatforyou.com/?q=FlowScan.pm Dave Plonka 1.6) for 
+"FlowScan.pm 1.6 Dave Plonka"
 
 On both services, the 1st result is the actual Perl file.
 
-<!--(block | cubescript | syntax("bash") )-->
+<!--(block  | syntax("bash") )-->
 curl -o FlowScan.pm \
   http://net.doit.wisc.edu/~plonka/list/flowscan/archive/att-0848/01-FlowScan.pm
 <!--(end)-->
@@ -408,7 +410,7 @@ curl -o FlowScan.pm \
 
 Review [Network Flow Analysis](http://networkflowanalysis.com "Michael W. Lucas' book 'Network Flow Analysis'") for rationales
 
-<!--(block | cubescript | syntax("bash") )-->
+<!--(block  | syntax("bash") )-->
 cd /tmp
 tar -zxf /usr/ports/distfiles/FlowScan-1.006.tgz
 cd FlowScan-1.006
@@ -491,7 +493,7 @@ my set up for storing flows on the hard drive.
 
 #### c. Create Account and Paths
 
-<!--(block | cubescript | syntax("bash") )-->
+<!--(block  | syntax("bash") )-->
 /usr/sbin/groupadd _flowscan
 /usr/sbin/useradd -mv -b /var/netflow \
    -c "FlowScan Daemon" -L "default" -g _flowscan \
@@ -506,7 +508,7 @@ touch /var/log/flowscan.log
 The sample configuration files are not copied to the installation folder
 so do this now
 
-<!--(block | cubescript | syntax("bash") )-->
+<!--(block  | syntax("bash") )-->
 cp /tmp/FlowScan-1.006/cf/flowscan.cf /var/netflow/bin/mygatewayMN
 <!--(end)-->
 
@@ -531,7 +533,7 @@ ReportClasses CUFlow
 
 Modifications to flowscan.cf
 
-<!--(block | cubescript | syntax("apache_conf") )-->
+<!--(block  | syntax("apache_conf") )-->
 FlowFileGlob /var/netflow/scandata/mygatewayMN/ft-v*[0-9]
 
 #ReportClasses CampusIO
@@ -542,7 +544,7 @@ ReportClasses CUFlow
 
 File extract: /var/www/conf/httpd.conf
 
-<!--(block | cubescript | syntax("apache_conf") )-->
+<!--(block  | syntax("apache_conf") )-->
 Alias /flowscan/ "/var/www/flowscan/"
 
 <Directory "/var/www/flowscan">
@@ -646,7 +648,7 @@ it from there.
 
 Modify the file to reflect your path environment.
 
-<!--(block | cubescript | syntax("perl") )-->
+<!--(block  | syntax("perl") )-->
 my $rrddir = "/var/netflow/rrd/mygatewayMN";
 my $organization = "Example.COM";
 my $width = 1200;
@@ -714,7 +716,7 @@ can monitor the log to review application execution:
 
 File: /var/netflow/bin/mygatewayMN/startup_flowscan.sh
 
-<!--(block | cubescript | syntax("bash") )-->
+<!--(block  | syntax("bash") )-->
 #!/bin/sh
 PREFIX=/var/netflow
 BIN=$PREFIX/bin
@@ -739,7 +741,7 @@ We will add to the /etc/rc.local the following:
 
 File Excerpt: /etc/rc.local
 
-<!--(block | cubescript | syntax("bash") )-->
+<!--(block  | syntax("bash") )-->
 FLOWCAPTURE=/usr/local/bin/flow-capture
 FLOWPID=/var/run/flow-capture.pid
 FLOWDATA=/var/netflow
