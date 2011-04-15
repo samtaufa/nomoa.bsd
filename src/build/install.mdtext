@@ -259,7 +259,7 @@ File: /etc/ssh/sshd_config
 $ grep -v "^#" /etc/ssh/sshd_config | grep -v "^$"
 </pre>
 
-<pre class="config-file">
+<pre class="screen-output">
 Protocol 2
 PermitRootLogin no
 PasswordAuthentication no
@@ -634,9 +634,9 @@ needs.
 #### <a name="m.config.monitor"></a> **monitor's cron**
 
 
-<pre class="config-file">
+<!--(block | syntax("apache"))-->
 20  19  *  *  *  /bin/sh /usr/local/sbin/backup.peer.configs.sh > /dev/null 2>&amp;1
-</pre>
+<!--(end)-->
 
 Basic **monitor** user configuration includes maintaining current state of peer
 hosts not accessible from other hosts. The backup.peer.configs.sh script is

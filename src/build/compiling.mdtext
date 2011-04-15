@@ -138,4 +138,4 @@ mkdir -p ${DESTDIR} ${RELEASEDIR}
 make release
 </pre>
 
-$!showsrc.py("build/compiling/mkopenbsd.sh")!$
+$!showsrc.script("build/compiling/mkopenbsd.sh")!$

@@ -4,7 +4,7 @@ As discussed in the [Site Directions](directions.html) these notes
 are morphing (or evolving) from my own needs to record what I've
 gone through, and make it possible for me to rebuild or reinstall
 a configuration with OpenBSD. In this context, I have a few close
-friends who find these notes invaluable(?) so I continue to review
+friends who find these notes [in]valuable(?) so I continue to review
 the notes when possible.
 
 -	Read It in the context of greater OpenBSD documentation
@@ -26,24 +26,28 @@ Use the notes where useful, but when you're done with it (or better
 yet while you're using it) refer to the ['real' documentation](
 http://www.openbsd.org/cgi-bin/man.cgi "OpenBSD Online manpages")
 
-I've tried most of these notes on 3 or more installations, but 
+I've tried most of these notes on multiple installations, but 
 
 -	that doesn't mean I actually got it right (stable, secure, etc.)
 -	these hosts were either i386 (and more recently) amd64 and as
 	such is a very limited test for the context of OpenBSD
+	
+And, it gets worse, some of these notes are just placeholders for
+documentation in the works (and there's no real distinction between
+what is tried, and what is 'in development')
 
 ### Do not copy / paste
 
-I present a lot of sample scripts, configurations, with the notes
-but their intentions are not for copy /paste (well, actually they 
+I present a lot of sample command-line, scripts, configurations
+but their intentions are not for copy / paste (well, actually they 
 are, but that will only work in a few contexts)
 
 Please, do not copy and paste. Use the samples as something that
 may have worked for me, but always make sure that the material
 is relevant for your intended host design.
 
-If you want to copy/paste, then I suggest your first builds with
-these notes be on test (of a test) install.
+If you want to copy/paste, then I suggest a test install with
+these notes as a beginning to your own internal documentation.
 
 ### Use a Test Environment/Network
 

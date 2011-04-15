@@ -1,0 +1,257 @@
+Preparation Pays Off - Big time
+time: 2011-04-07 17:39
+
+One of those days, when the disaster you didn't want, barges
+through the door, but forward planning, preparations, testing
+gets you through the day. Also known as, we and our gweeky
+friends say "Ku-oool," while the rest of the family say, "uhhh,
+ok, we're happy for you."
+
+We could have had a major disaster (i.e. my day ruined, as
+opposed to things melting down) which were nicely averted 
+because of (as said before.)
+
+- forward planning
+- preparations
+- tests to verify the preparation.
+- activate on live system
+- what have we learned
+
+### The Disaster
+
+Our PRIMARY data link provider suddenly went off the air.
+More of our workers are at remote sites, than are at
+the central office (where I'm sitting.) The WAN going
+down means that a lot of people are not able to do their
+work (or are impaired from using IT services they are
+normally reliant on.)
+
+$!Image("posts/openbsd/datacenter.dependencies.png", title="Data Center Dependencies", klass="imgcenter")!$
+
+The diagram indicates the level of dependence those satellite
+sites have on this primary data center. Site A has a completely
+independent data service, so loss of the link limits a few operational
+issues for IT, but no loss of service to the business.
+
+Site's B, and C, are independent for the majority of their business
+needs, but in the current situation are dependent on our Primary 
+Data Center for shared services such as e-mail. Other than that,
+they can operate without the WAN link.
+
+Sites D, E, and F can't work while the Primary Data Center is OFFLINE.
+
+We couldn't connect to the provider's next hop link, and
+we definitely couldn't get any traffic, let alone BGP routing
+information.
+
+All those nice tricks for verifying that your BGPD server
+is up and running are nice, but they don't do you any good
+when your 5 other sites confirm that the primary vendor's
+BGP Server is **definitely not online**
+
+#### Forward Planning ?
+
+After years of <a title="to persuade (someone) by flattery or 
+pleasing talk to do what one wants; wheedle; coax">cajouling</a>, 
+the powers above folded and added a **SECONDARY WAN** service
+instead of the previous dependence we had of tunneling VPN
+through an Internet ISP connection.
+
+Unfortunately, since there were budget constraints and
+the original WAN Data Link service was commissioned without
+regard for a secondary, we had to come up with some
+mechanisms for getting the SECONDARY connected.
+
+After balancing different options with what the business
+operations required and our limited resources, we decided
+to configure the two systems as ACTIVE-STANDBY. One Link was ACTIVE 
+(the Primary link) and the other configured as a STANDBY service. 
+We could automate the switch, but given the reality of the 
+infrastructure, we would meet a requirement of X hours to switch
+the data between the services(i.e. go from ACTIVE-STANDBY to 
+OFF-ACTIVE)
+
+#### Preparations
+
+We gradually rolled out the secondary, backup, data link using 
+off-the-shelf desktops as the routing/gateways.
+The routing, access policies were updated to include the
+potential for routing through the secondary link.
+
+For some sites, and services, we load balanced traffic
+along both data links.
+
+#### TEST
+
+All the preparations were nice and dandy, but what would 
+we actually have to do to make sure things were flipped
+from one service to the other? We needed to do a partial
+test on the actual network instead of our test network.
+
+After some time, we just pushed through that downtime was
+required and a full service test is required taking all OFFLINE 
+while we routing changes, tests (of course we had to do it during 
+organisation down-time, which inevitably means that IT are up at 
+odd hours or working during everyone else's downtime/bedtime)
+
+Going through the preparations and controlled tests forced us 
+to look at ways to minimise operator error during the process 
+(controlled automation in as many bits of the process as possible.)
+
+We successfully completed the tests on a subset of the
+full WAN network (site B, and D with the Primary Data Center,)
+found some further points in the operation that we wanted to 
+improve and went through evolving those bits of the operation.
+
+Suffice it to say, after that test, we were confident
+that we could switch over from FAILED-STANDBY to FAILED-ACTIVE
+well within the 2 ~ 4 hour window that was part of our
+agreement with business.
+
+### Activating on LIVE System
+
+Doing my bit sleeping during one of those interminable meetings
+where you watch paint drying on the wall, or the back of your
+eye-lids (depending on how lucky you are.) One of the IT team 
+woke me up, seriously disturbing the meeting, to say that all
+hell has broken loose. All sites were down, the WAN Link has disappeared. 
+People were running trying to figure what to do next.
+
+<blockquote>
+What do I tell XYZ at Site-A?
+</blockquote>
+
+<blockquote>
+What do I tell everyone here at main office ?
+</blockquote>
+
+<blockquote>
+What, when, where, who ?
+</blockquote>
+
+I walk calmly to my desk, to find that my offsider (partner
+in these things) wasn't at his desk. 
+
+That's odd ?
+
+Sit myself down at the desk. OK, look at through some of the charts
+generated by Smokeping, yup the primary link looks like it disappears
+about *here (pointing at the screen.) The charts also show that the
+secondary link is humming along just fine, although latency to Site B
+is off the charts (200 ms, is that even possible?) 
+
+My boss sees me working and goes to get a cup of coffee.
+
+Log onto our WAN Gateway box, and yup our BGP Server is humming along just fine,
+we're advertising our LAN routes through BGP but that's all I can see (as mentioned 
+earlier, the Primary linkn next hop is not responding to pings so we can't get to it
+and there's no hope of trying to get BGP traffic from/through there.)
+
+#### Switching from the Primary Link to the Backup Link
+
+ACTIVE-STANDBY to FAILED-ACTIVE
+
+Using the shortcuts I've got, log onto 3 of the 6 remote sites through the
+secondary data link. Site D, E, and F. Site B is not connecting on either
+of its redundant active-passive gateways. Yep, BGPD is running fine
+on those sites, and showing advertising but no other routing information
+on those servers.
+
+Run a script on each active gateway and we are now flipped over to the secondary link.
+
+Total time to flip the link between 4 sites ? About 3 ~ 4 minutes after
+sitting down at the desk.
+
+What happened to the other 3 sites? 
+
+Site A, and C we haven't rolled out the secondary links (Site A is 
+wired but we haven't had anyone available to go down and plug things in. 
+It's also a low prioarity. Site C is only a month old and just hasn't had 
+reason for the secondary link, if the link failure is prolonged then users 
+can work through the User VPN or we can set up a slow tunnel through the 
+Internet. 
+
+Site B had the 200ms latency problem. My admin-buddy had to walk across
+to that office.
+
+#### Testing the Service
+
+Spent another 30~40 minutes going through the routing validation process, 
+and refining the routing et. al. (yeah, you've really got to get
+a document together of these things, largely so you've actually
+gone through the exercise and have a clearer experience with
+what needs to be done.)
+
+Fortunately, because we have QOS Queues on our gateways, specific for
+each Data Link Service, it is easy to confirm whether data
+is still routed through the Failed Primary Service, or if they
+are all going through the Active Secondary/Backup Service.
+
+<pre class="command-line">
+systat queue
+</pre>
+
+We make some corrections in our queueing that were showing some traffic still
+showing up on the FAILED link. Adjusted a few things here and
+there that would simplify the whole process in the future.
+
+#### Switch from STANDBY-ACTIVE to ACTIVE-STANDBY
+
+Another 30 minutes passes, and the Primary Service comes back online.
+Since the Primary Service provides a much much bigger Data Link than
+our Secondary link, we are definitely very keen to put everything
+back onto it.
+
+In two minutes, we were able to re-route all remote WAN sites to talk
+to each other through the Primary Link (to ease some of the traffic
+from the Secondary link) especially since this is a very minimal part
+of the traffic, but let's us look at the routing issue as well as
+whether the service can at least stay up for more than a few seconds.
+
+After another while, we re-route all traffic back to the Primary link.
+That took another two minutes (at most.)
+
+The last switch, no-one knew about.
+
+### What have we learned
+
+Even with the knowledge we gained from the controlled TEST, we 
+gained a whole lot more knowledge when having to perform the
+same process on the WHOLE network.
+
+We've identified a few more areas that we can better administer,
+automate, and are in the process of updating those.
+
+Putting the effort down up front sure saved my bacon, more important
+for the business, it meant that after jumping up and down that their
+network connection was down, the users could sit down and get on
+with work (making money for the company, serving customers et. al.)
+
+#### Active - Active ?
+
+Why aren't the Data Link's on Active-Active ?
+
+Not really worth the effort at this point (not our call)
+
+- 	The Data Links are not equivalent, they have their different 
+	benefits but are not equal to make it an easy load balancing equation
+-	Doable, but with a lot of 'moving parts' that will be difficult
+	to maintain within our current resource constraints.
+	- Remember that whatever knobs are tuned to get ACTIVE-ACTIVE
+		has to be easy and quick to switch back when one of the
+		services fail and we have ACTIVE-FAIL or FAIL-ACTIVE.
+	
+#### Where was my admin-buddy ?
+
+Sometimes the <a title="He was busting, and had to go to the toilet.
+Sorry, one of those things that can't hold for anybody">call of nature</a> 
+is of even higher priority than your IT needs.
+
+## Summary
+
+Smiling on the train home, 'cause I'm not working overtime tonight
+(you do get overtime don't you ? (smiling because we know we don't.))
+
+Oh yeah, those six sites? They're connected using $!OpenBSD!$ 4.8 redundant 
+ACTIVE-PASSIVE gateways. Connecting to them, monitoring, managing during uptime 
+and downtime are just a blast!!

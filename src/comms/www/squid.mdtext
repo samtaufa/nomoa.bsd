@@ -298,7 +298,7 @@ be managed by the Firewall.</p>
 To be safer (or am I just pedantic) I set the below 
 restriction on where the squid server is listening.
 
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 # http_port 3128
 http_port internal_nic1:3128
 http_port internal_nic2:3128
@@ -316,7 +316,7 @@ Next I set up my Access Control Lists (ACLs) defining
 the range of machines I have on the Internal Network.
 
 
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 # Networks allowed to use this Cache
 acl subnet_lab1     src ip-address_lab1/netmask
 acl subnet_lab2     src ip-address_lab2/netmask
@@ -339,7 +339,7 @@ Related to the subnet information will be certain
 time periods for which we want to disable specific subnets. So I have to set 
 up the ACL for that
 
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 # After Hours Settings
 acl TIMEafterhoursMORN time MTWHF 00:00-08:00
 acl TIMEafterhoursAFT  time MTWHF 16:30-24:00
@@ -363,7 +363,7 @@ restrict use of the Internet and for that we have collected a list of urls and
 domains from the Internet. We are storing these urls in text files related to 
 the categorisation we have chosen (eg. entertainment, porn, etc.)
 
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 # Regular Expression Review of URLs, and Destination Domains
 
 # The first list are sites known to be wrongly blocked by the later list
@@ -385,7 +385,7 @@ the words or phrase we wish to block access to (such as domain adresses.)
 
 Location: /usr/local/share/squid/errors
 
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 # TAG: deny_info
 # Usage: deny_info err_page_name acl
 #
@@ -414,7 +414,7 @@ The final major thing, is to set up our rules for
 accessing the cache.
 
 
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 # TAG: http_access
 # Allowing or Denying access based on defined access lists
 #
@@ -434,7 +434,7 @@ to our scenario.</p>
 #### <a name="squidEXdeny"></a>Restricting Access to External 
   Sites - relevant to organisational policies
 
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 # INSERT YOUR OWN RULE(S) HERE TO ALLOW ACCESS FROM YOUR CLIENTS
 #
 # http ACCESS PRIVILEGES
@@ -455,7 +455,7 @@ Our first action is to block those sites which are
 
 Specifying access to cache from LAN machines</p>
 
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 # --&gt; Subnet Access to the NET
 
 http_access allow localhost
@@ -475,7 +475,7 @@ Internet access to the public access machines. 1st they are two buildings away
 and we cannot supervise them at the moment, and 2nd we haven't gone through 
 our education program for staff use.
 
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 # --&gt; Subnet Access to the NET
 
 <b>http_access deny  subnet_pub </b>
@@ -501,7 +501,7 @@ access from the public terminals within specified hours.</p>
 Next, we tell squid to not cache requests for the 
 internal Local Area Network sites.</p>
 
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 # always go direct to LAN sites
 # always cache, and always cache (never_direct) all other sites.
 always_direct allow localhost 
@@ -522,7 +522,7 @@ The final part is to specifically state that we want to be able to access
 the rest of the world, and we want to specifically deny access to the cache 
 from anyone we have not specifically allowed access.
 
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 # And finally deny all other access to this proxy
 http_access allow dst_all
 http_access deny  all
@@ -567,7 +567,7 @@ by including the following directives in the /etc/squid/squid.conf file
 
 Edit the file /etc/squid/squid.conf:
 
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 authenticate_program /usr/local/bin/msntauth
 authenticate_children   15 
 authenticate_ttl       900 seconds
@@ -597,7 +597,7 @@ running for which purpose you want to use authentication.
 For authentication to be useful, we next have to specify 
 an acl.
 
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 # Authentication
 acl authenticated  proxy_auth REQUIRED
 acl users_sysadmin proxy_auth  AdminID1 AdminID2
@@ -612,7 +612,7 @@ The AdminID1, AdminID2 are users on the server that will provide the authenticat
 
 ##### <a name="squidEX2url"></a>Specifying Organisational Policies (Restricted Sites)
 
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 # Regular Expression Review of URLs, and Destination Domains
 acl unblock_pornURL        url_regex    -i "/etc/squid/unblock_pornURL.txt"
 acl unblock_domainDOM      dstdom_regex -i "/etc/squid/unblock_domainDOM.txt"
@@ -649,7 +649,7 @@ a host (allow earthquake, deadquake, aquake) and block only domain names where
 quake. is at the very beginning, but allow quaken etc.
 
 
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 acl block_filesURLPATH     urlpath_regex -i "/etc/squid/block_filesURLPATH.txt"
 <!--(end)-->
 
@@ -665,7 +665,7 @@ The next acl we configure is to specify the maximum number of connections we
 want users to be doing. This is mostly relevant to the power users, who inexplicably 
 consume significant bandwidth by running multiple browsers.
  
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 acl MaxCONNECTIONS        maxconn 5
 <!--(end)-->
 
@@ -682,7 +682,7 @@ established connections is greater than the value you specify.
 
 ##### <a name="squidEX2customerrs"></a>Specifying Informative Messages relevant to Organisational Policies
  
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 deny_info CUSTOM_ERRS_ADVERTISERSurl   block_advertisersURL
 deny_info CUSTOM_ERRS_ADVERTISERSdom   block_advertisersDOM
 deny_info CUSTOM_ERRS_ANONYMIZERSdom   block_anonymizersDOM
@@ -709,7 +709,7 @@ to analyse whether the ruleset is accurate/effective.
 
 ##### <a name="squidEX2deny"></a>Restricting Access to External Sites - relevant to organisational policies
 
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 # --&gt; Domains &amp; URLS to block
 http_access deny block_pornURL
 http_access deny block_pornDOM
@@ -722,7 +722,7 @@ http_access deny block_anonymizersDOM
 
 Our access configuration remains largely the same, we're just using more acls.</p>
  
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 ##
 ## SPECIAL PRIVILEGE SECTION FOR ADMINISTRATORS
 ## 
@@ -738,7 +738,7 @@ acl, so this allow sequence will only be made available if the client user can
 authenticate to the users listed with users_sysadmin (in our example: AdminID1, 
 and AdminID2)
 
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 http_access deny block_webhostURL
 http_access deny block_webhostDOM
 http_access deny block_badlangURL
@@ -752,7 +752,7 @@ greater freedom to use words that would otherwise cause significant problem
 if used in the complete URL. We can also provide a set of limited users extra 
 privileges, independent of the machines they are using.
 
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 http_access allow block_filesURLPATH authenticated TIMEafterhoursMORN !MaxCONNECTIONS
 http_access allow block_filesURLPATH authenticated TIMEafterhoursAFT !MaxCONNECTIONS
 http_access allow block_filesURLPATH authenticated TIMEsatMORN !MaxCONNECTIONS
@@ -769,7 +769,7 @@ Otherwise, we will block file downloads.
 
 ##### <a name="squidEX2cache"></a>Allowing Specified networks access to the cache
 
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 # --&gt; Subnet Access to the NET
 http_access allow localhost
 http_access allow subnet_lab1 authenticated !MaxCONNECTIONS
@@ -787,7 +787,7 @@ To gain access to the cache, the client must
 
 ##### <a name="squidEX2TIMEbased"></a>Restricting Internal Access - relevant to organisational policies
 
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 http_access deny subnet_pub TIMEafterhoursMORN
 http_access deny subnet_pub TIMEafterhoursAFT
 http_access deny subnet_pub TIMEsatMORN
@@ -801,7 +801,7 @@ and maxconn requirements to the commented access specifications.
 
 ##### <a name="squidEX2go"></a>Let's Go 
 
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 http_access allow dst_all authenticated !MaxCONNECTIONS
 http_access deny all
 <!--(end)-->
@@ -830,7 +830,7 @@ DNS names for squid. Failing to find the dns entries for netscape.com, internic.
 nlanr.net, microsoft.com the squid server will just hang-around and then eventually 
 quit. </p>
 
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 # TAG: dns_testnames
 # The DNS tests exit as soon as the first site is successfully looked up
 #
@@ -847,7 +847,7 @@ our host details, which is configured in our internal DNS Server.</p>
 
 #### <a name="squidMiscDebug"></a>Debugging your Configuration
 
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 # TAG: debug_options
 # Logging options are set as section,level where each source file
 # is assigned a unique section. Lower levels result in less
@@ -876,7 +876,7 @@ accounts between Samba, Squid, &amp; Windows 2000) is the fact that the source
 distribution will use nobody but the OpenBSD ports use www:www</p>
 
 
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 # TAG: cache_effective_user
 # TAG: cache_effective_group
 #
@@ -911,7 +911,7 @@ the default directory settings.</p>
 Edit File: confload.c (reference is out of date in the readme file)</p>
 
 
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 #define CONFIGFILE        "/usr/local/squid/etc/msntauth.conf" 
 #define DENYUSERSDEFAULT  "/usr/local/squid/etc/denyusers"
 #define ALLOWUSERSDEFAULT "/usr/local/squid/etc/allowusers"
@@ -920,7 +920,7 @@ Edit File: confload.c (reference is out of date in the readme file)</p>
 Change the settings to what is the general directory 
 structure for OpenBSD</p>
 
-<!--(block | syntax("squid_conf")  )-->
+<!--(block | syntax("squid")  )-->
 #define CONFIGFILE        "/etc/squid/msntauth.conf" /* Path to configuration file */
 #define DENYUSERSDEFAULT  "/etc/squid/denyusers"
 #define ALLOWUSERSDEFAULT "/etc/squid/allowusers"
@@ -1022,7 +1022,8 @@ Assumptions in the script are:
 
 #### sqmgrlog, sarg
 
-&#91;Ref: <a href="http://web.onda.com.br/orso/index.html">http://web.onda.com.br/orso/index.html</a>]</p>
+&#91;Ref: [Google](http://lmgtfy.com/?q=Sarg Squid Analysis Report Generator) / 
+[Bing](http://letmebingthatforyou.com?q=Sarg is a Squid Analysis Report Generator) it]
 
 Sarg is a Squid Analysis Report Generator that allow you to view "where" 
 your users are going to on the Internet. Sarg generate reports in html, with 
