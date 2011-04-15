@@ -197,8 +197,8 @@ class ShowSrc:
                 "py",
                 style="emacs",
                 linenos="inline",
-                linenostep=5,
-                cssClass="bar"
+                linenostep=1,
+                cssClass="highlight"
             )
         return self._wrap(p, path)
             
@@ -210,11 +210,34 @@ class ShowSrc:
 """ % (self.klass, f)
 
     def plain(self, path):
-        return self._wrap(self._preProc, path)
+        p = countershape.template.Syntax(
+                "xml",
+                style="emacs",
+                linenos="inline",
+                linenostep=1,
+                cssClass="highlight"
+            )
+        return self._wrap(p, path)
+
+    def script(self, path):
+        p = countershape.template.Syntax(
+                "bash",
+                style="trac",
+                linenos="inline",
+                linenostep=1,
+                cssClass="highlight"
+            )
+        return self._wrap(p, path)
 
     def config(self, path):
-        self.klass="config-file"
-        return self._wrap(self._preProc, path)
+        p = countershape.template.Syntax(
+                "apache",
+                style="colorful",
+                linenos="inline",
+                linenostep=1,
+                cssClass="highlight"
+            )
+        return self._wrap(p, path)
 
     def pry(self, path, args):
         cur = os.getcwd()
@@ -234,24 +257,28 @@ class ShowSrc:
 ns.showsrc = ShowSrc(".")
 ns.breadcrumbs = countershape.widgets.PageTrail
 
-def manpage(app, sektion=None, architecture=None):
+def manpage(keyword, sektion=None, arch=None):
     query_sektion = ""
-    query_architecture = ""
-    title="""OpenBSD Project Manual Pages (%s)""" % app
+    query_arch = ""
+    title="""OpenBSD Project Manual Pages (%s)""" % keyword
     if sektion is not None:
         query_sektion="&sektion=%s" % sektion
-    if architecture is not None:
-        query_architecture = "&arch=%s"% architecture
+    if arch is not None:
+        query_arch = "&arch=%s"% arch
         
     url = "http://www.openbsd.org/cgi-bin/man.cgi?query=%s%s%s" % (
-        app, query_sektion, query_architecture)
-
-    if sektion is None:
-        manref = """<a href="%s" title="%s">%s</a>""" % (
-            url, title, app)
-    else:
-        manref = """<a href="%s" title="%s">%s(%s)</a>""" % (
-            url, title, app, sektion)
+        keyword, query_sektion, query_arch)
+    aref =  """<a href="%s" title="%s">""" % (
+            url, title)
+    manshort = keyword
+    if sektion is not None:
+        if arch is not None:
+            manshort = "%s(%s/%s)" % (keyword, sektion, arch)
+        else:
+            manshort = "%s(%s)" % (keyword, sektion)
+            
+    manref="%s%s</a>" % (aref, manshort)
+    
     return manref
 
 ns.manpage = manpage

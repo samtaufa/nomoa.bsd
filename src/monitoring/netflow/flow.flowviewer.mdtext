@@ -206,7 +206,7 @@ name FlowViewer.
 
 File extract: /var/www/conf/httpd.conf
 
-<!--(block  | syntax("apache_conf") )-->
+<!--(block  | syntax("apache") )-->
 Alias /FlowViewer/ /var/www/flowviewer/
 
 <Directory /var/www/flowviewer/>

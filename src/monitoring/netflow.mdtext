@@ -45,13 +45,14 @@ granularity to be able to extract useable information.
 
 First look at [Michael W. Lucas'](http://www.michaelwlucas.com) book 
 [Network Flow Analysis.](http://networkflowanalysis.com)
-These notes augment that book because there is just too much valuable
-information there to even attempt to duplicate. Buy the book.
+These notes augment the tool installation instructions from that book,
+where the human factor is important, in customisation/localisation,
+interpretation, we don't do any of that here. Buy the book.
 
-These notes are essentially shortcuts to deploying the tools with $!OpenBSD!$.
-There may be preconfigured tools, exorbitantly priced or free, for monitoring the performance
-of your network, but [Michael's book](http://networkflowanalysis.com) gives invaluable examples for 
-installing, validating and understanding your new netflow monitoring system 
+These notes are what we've done to successfully deploy netflow tools with $!OpenBSD!$.
+You will find other exorbitantly priced or free tools for monitoring the performance
+of your network, but [Michael's book](http://networkflowanalysis.com) gives invaluable 
+examples for  installing, validating and understanding your new netflow monitoring system 
 
 $!Image("monitoring/netflow_architecture.png", title="Netflow Architecture", klass="imgcenter")!$
 

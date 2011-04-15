@@ -33,6 +33,17 @@ easy_install pip
 
 You can copy the distribute-X.Y.tgz to new hosts for installation.
 
+Other dependencies for git-python include:
+
+-	[async](http://gitorious.org/git-python/async)
+-	
+
+#### [async](http://gitorious.org/git-python/async)
+
+<pre class="command-line">
+
+</pre>
+
 ### [GitPython](http://gitorious.org/git-python) v0.3 or later
 
 <pre class="command-line">
@@ -44,6 +55,8 @@ easy_install dist/GitPython-X.Y.Z-py2.X.egg
 </pre>
 
 You can copy the GitPython EGG to hosts for installation.
+
+
 
 ### [Git](http://git-scm.com) v1.7.1 or later
 

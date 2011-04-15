@@ -533,7 +533,7 @@ ReportClasses CUFlow
 
 Modifications to flowscan.cf
 
-<!--(block  | syntax("apache_conf") )-->
+<!--(block  | syntax("apache") )-->
 FlowFileGlob /var/netflow/scandata/mygatewayMN/ft-v*[0-9]
 
 #ReportClasses CampusIO
@@ -544,7 +544,7 @@ ReportClasses CUFlow
 
 File extract: /var/www/conf/httpd.conf
 
-<!--(block  | syntax("apache_conf") )-->
+<!--(block  | syntax("apache") )-->
 Alias /flowscan/ "/var/www/flowscan/"
 
 <Directory "/var/www/flowscan">
