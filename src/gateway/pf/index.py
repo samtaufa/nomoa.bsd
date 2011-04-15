@@ -18,4 +18,8 @@ pages = [
         pageTitle="Firewall Management"),
     Directory("manage"),
 
+    Page("other.mdtext", 
+        title="d. Other",
+        pageTitle="Other"),
+
 ]

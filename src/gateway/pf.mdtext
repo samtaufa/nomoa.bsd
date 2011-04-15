@@ -255,14 +255,14 @@ your rulesets.
 
 -   *keep state* became default rule behavior circa release 4.1
 -   nat/rdr/binat rules are evaluated before pass rules (up to 4.6)
--   4.7+ nat/rdr/binat rules are now 'actions' on regular rules, separate execution no longer exists.
+-   nat/rdr/binat rules are now 'actions' on regular rules (4.7 onwards) separate execution no longer exists.
 
 ### <a name="reference">References</a>:
 
 -   The [Packet Filter FAQ](http://www.openbsd.org/faq/pf/index.html) always documents RELEASE
--	Daniel Hartmeier's articles on PF @ Undeadly 
+-	Articles
 	[PF: Testing your Firewall](http://undeadly.org/cgi?action=article&sid=20060928081238) | 
 	[Firewall Rule Optimization](http://undeadly.org/cgi?action=article&sid=20060927091645) |
-	[Firewall Management](http://undeadly.org/cgi?action=article&sid=20060929080943)
+	[Firewall Management](http://undeadly.org/cgi?action=article&sid=20060929080943) by Daniel Hartmeier's @ Undeadly 
 -   [Book: Building Firewalls with OpenBSD and PF, 2nd ed.](http://www.amazon.com/Building-Firewalls-OpenBSD-PF-2nd/product-reviews/8391665119)
 -	[Book: Absolute OpenBSD: UNIX for the Practical Paranoid](http://www.amazon.com/Absolute-OpenBSD-UNIX-Practical-Paranoid/dp/1886411999/ref=cm_cr_pr_sims_t)
