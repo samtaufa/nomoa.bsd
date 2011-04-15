@@ -129,4 +129,5 @@ mount -t cd9660 /dev/cd0c /mnt
 </pre>
 
 ## Appendix
-$ ! showsrc.py("../admintools/build/mkopenbsd.sh")!$
+
+$!showsrc.py("build/compiling/mkopenbsd.sh")!$

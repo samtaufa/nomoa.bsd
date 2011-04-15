@@ -6,77 +6,79 @@
 #
 # Testing ISO (FAQ14)
 #	vnconfig svnd0 ISOPATH
-#      mount -t cd9660 /dev/svnd0c /MNT_ISO
+#      mount -t cd9660 /dev/svnd0c /MOUNTPOINT
 #
-#      umount /MNT_ISO
+#      umount /MOUNTPOINT
 #      vnconfig -u svnd0
 #
 # Burning ISO
 #     /usr/local/bin/cdrecord dev=/dev/cd0c -v -tao -data -eject ISOPATH
 set +u
 APPNAME=$0
+USERNAME=samt
+HOSTNAME=`/bin/hostname -s`
+#~ CVSHOST=192.168.21.68
+DIRECTORY=/var/CVSROOT/openbsd
+case $HOSTNAME in
+    'b48b') DIRECTORY=/var/data/CVSROOT/openbsd
+            ;;
+    'b48') DIRECTORY=/var/CVSROOT/openbsd
+esac
 
-function set_env {
-    USERNAME=samt
-    CVSHOST=192.168.21.202
-    DIRECTORY=/var/CVSROOT/openbsd
-    CVSROOT=$USERNAME@$CVSHOST:$DIRECTORY
-    MYIP_ADDR=`ifconfig | grep inet | grep -v inet6 | grep -v 127.0.0.1 | awk '{print $2}'  | sed s"/addr://" | awk '{ print $1 }'`
-    for ipaddr in $MYIP_ADDR; do
-        if [ $ipaddr  = $CVSHOST ]; then
-            CVSROOT=$DIRECTORY
-        fi
-    done
-    CVSROOT=$DIRECTORY
+#~ CVSROOT=$USERNAME@$CVSHOST:$DIRECTORY
+#~ MYIP_ADDR=`ifconfig | grep inet | grep -v inet6 | grep -v 127.0.0.1 | awk '{print $2}'  | sed s"/addr://" | awk '{ print $1 }'`
+#~ for ipaddr in $MYIP_ADDR; do
+	#~ if [ $ipaddr  = $CVSHOST ]; then
+		#~ CVSROOT=$DIRECTORY
+	#~ fi
+#~ done
+CVSROOT=$DIRECTORY
 
-    OSREV=`uname -a | awk '{print $3 }'`
-    BUILDREV=`echo ${OSREV} | sed s'/\./_/g'`
-    REVISO=`echo ${OSREV} | sed s'/\.//g'`
-    BUILDVER="OPENBSD_$BUILDREV"
-    MACHINE=`uname -a | awk '{ print $5 }'`
-    KERNEL="GENERIC"
+OSREV=`/usr/bin/uname -r`
+BUILDREV=`echo ${OSREV} | sed s'/\./_/g'`
+ISOREV=`echo ${OSREV} | sed s'/\.//g'`
+BUILDVER="OPENBSD_$BUILDREV"
+MACHINE=`/usr/bin/uname -m`
+KERNEL="GENERIC"
 
-    cvs_BASE=/usr
-    cvs_EXPORTDIR=$cvs_BASE/dest/distrib
+cvs_BASE=/usr
+XSRCDIR=${cvs_BASE}/xenocara
+cvs_EXPORTDIR=$cvs_BASE/dest/export
 
-    checkoutLIST="src ports xenocara"
-    updateLIST="src xenocara"
-    exportLIST="src ports xenocara"
-    exportLIST=""
-    buildLIST="src xenocara"
-    releaseLIST="src xenocara"
+checkoutLIST="src ports xenocara"
+updateLIST="src xenocara"
+exportLIST="src ports xenocara"
+exportLIST=""
+buildLIST="src xenocara"
+releaseLIST="src xenocara"
 
-    DESTBASEDIR=$cvs_BASE/dest/base
-    RELEASEBASEDIR=$cvs_BASE/rel/base
-    SRCRELEASE=$cvs_BASE/rel/src
-    DESTXENDIR=$cvs_BASE/dest/xen
-    RELEASEXENDIR=$cvs_BASE/rel/xen
+DESTBASEDIR=$cvs_BASE/dest/base
+RELEASEBASEDIR=$cvs_BASE/rel/base
+SRCRELEASE=$cvs_BASE/rel/src
+DESTXENDIR=$cvs_BASE/dest/xen
+RELEASEXENDIR=$cvs_BASE/rel/xen
 
-    # CD BUILD Configuration Info
-    STAGING_DIR="/var/tmp/staging"
-    CDDIR=${STAGING_DIR}/cd-dr
-    STATE=stable.`date "+%Y%m%d"`
-    PACKAGE_SRC=$cvs_BASE/ports/packages/${MACHINE}/all
-    PACKAGE_DST="${CDDIR}/${OSREV}/packages/${MACHINE}"
-    PUBLISHER="Employers Mutual Ltd"
-    PREPAIRER="EML, http://www.employersmutual.com.au, info@employersmutual.com.au"
-    MNT_ISO=/mnt/iso
-    # Launch options
-    oCheckout=0
-    oUpdate=0
-    oExport=0
-    oBuild=0
-    oRelease=0
-    oMkiso=0
-    oTestIso=0
-}
-function set_paths {
-    mkdir -p $STAGING_DIR
-    mkdir -p ${CDDIR}/${OSREV}/${MACHINE}
-    mkdir -p ${CDDIR}/${OSREV}/packages/${MACHINE}
-	mkdir -p ${CDDIR}/.buildinfo
-}
-function appusage {
+# CD BUILD Configuration Info
+REP_DIR="/var/tmp/staging"
+CDBUILD=${REP_DIR}/cd-build
+STATE=stable.`date "+%Y%m%d"`
+PACKAGE_SRC=$cvs_BASE/ports/packages/${MACHINE}/all
+if [ -d /var/openbsd/${OSREV}/packages/${MACHINE} ]; then
+    PACKAGE_SRC=/var/openbsd/${OSREV}/packages/${MACHINE}
+fi
+PACKAGE_DST="${CDBUILD}/${OSREV}/packages/${MACHINE}"
+MOUNTPOINT=/mnt.iso
+# Launch options
+oCheckout=0
+oUpdate=0
+oExport=0
+oBuild=0
+oRelease=0
+oMkiso=0
+oTestIso=0
+oBldiso=0
+
+appusage() {
         echo "Useage: $APPNAME [ options ]"
         echo ""
         echo "Manage your OpenBSD Source Builds"
@@ -84,7 +86,8 @@ function appusage {
         echo "-?|-h|--help This help screen"
         echo "-b|--build [kernel|src|xenocara] make build LIST"
         echo "-c|--checkout [src|ports|xenocara] cvs checkout LIST "
-        echo "-m|--mkiso   create an ISO image from the 'release' build"
+        echo "-m|--mkiso   create an ISO image from the 'release' build and packages"
+        echo "-i|--iso     Build ISO image from existing --mkiso configurations"
         echo "-r|--release [src|xenocara]  make build release"
         echo "-t|--testiso mount the iso for testing"
         echo "-u|--update [src|ports|xenocara] cvs update LIST"
@@ -97,144 +100,156 @@ function appusage {
         echo ""
         
 }
-function get_options {
-    if [ $# -eq 0 ]; then
-            appusage
-            exit 1
-    fi
-    while [ $# -gt 0 ]
-    do
-            case "$1" in
-                    '-c'|'--checkout') 
-                            PARAM2=`echo $2 | awk '{ print substr($1,1,1) }'`
-            if [ ! -z "$PARAM2" -a ! "X$PARAM2" = "X-" ]; then
-                checkoutLIST=""
-                while [  ! -z "$PARAM2" -a ! "$PARAM2" = "-" ]
-                do
-                    checkoutLIST="$checkoutLIST $2"
-                    shift
-                    PARAM2=`echo $2 | awk '{ print substr($1,1,1) }'`
-                done
-            fi
-            oCheckout=1
-                            ;;
-                    '-u'|'--update') 
-                            PARAM2=`echo $2 | awk '{ print substr($1,1,1) }'`
-            if [ ! -z "$PARAM2" -a ! "X$PARAM2" = "X-" ]; then
-                updateLIST=""
-                while [  ! -z "$PARAM2" -a ! "$PARAM2" = "-" ]
-                do
-                    updateLIST="$updateLIST $2"
-                    shift
-                    PARAM2=`echo $2 | awk '{ print substr($1,1,1) }'`
-                done
-            fi
-            oUpdate=1
-                            ;;
-                    '-x'|'--export') 
-                            PARAM2=`echo $2 | awk '{ print substr($1,1,1) }'`
-            if [ ! -z "$PARAM2" -a ! "X$PARAM2" = "X-" ]; then
-                exportLIST=""
-                while [  ! -z "$PARAM2" -a ! "$PARAM2" = "-" ]
-                do
-                    exportLIST="$exportLIST $2"
-                    shift
-                    PARAM2=`echo $2 | awk '{ print substr($1,1,1) }'`
-                done
-            fi
-            oExport=1
-                            ;;
-                    '-b'|'--build') 
-                            PARAM2=`echo $2 | awk '{ print substr($1,1,1) }'`
-            if [ ! -z "$PARAM2" -a ! "X$PARAM2" = "X-" ]; then
-                buildLIST=""
-                while [  ! -z "$PARAM2" -a ! "$PARAM2" = "-" ]
-                do
-                    buildLIST="$buildLIST $2"
-                    shift
-                    PARAM2=`echo $2 | awk '{ print substr($1,1,1) }'`
-                done
-            fi
-                            oBuild=1
-                            ;;
-                    '-r'|'--release') 
-                            PARAM2=`echo $2 | awk '{ print substr($1,1,1) }'`
-            if [ ! -z "$PARAM2" -a ! "X$PARAM2" = "X-" ]; then
-                releaseLIST=""
-                while [  ! -z "$PARAM2" -a ! "$PARAM2" = "-" ]
-                do
-                    releaseLIST="$releaseLIST $2"
-                    shift
-                    PARAM2=`echo $2 | awk '{ print substr($1,1,1) }'`
-                done
-            fi
-                            oRelease=1
-                            ;;
-        '-t'|'--testiso')
-            oTestIso=1
-            ;;
-                    '-m'|'--mkiso') 
-                            oMkiso=1
-                            ;;
-                    '-a'|'--all')
-                            oUpdate=1
-                            oExport=1
-                            oBuild=1
-                            oRelease=1
-                            oMkiso=1
-            oTestIso=1
-                            ;;
-                    '-?'|'-h'|'--help'|*)
-                            appusage
-                            exit 1
-                            ;;
-            esac
-            shift
-    done
+get_options() {
+        if [ $# -eq 0 ]; then
+                appusage
+                exit 1
+        fi
+        while [ $# -gt 0 ]
+        do
+                case "$1" in
+                        '-c'|'--checkout') 
+                                PARAM2=`echo $2 | awk '{ print substr($1,1,1) }'`
+				if [ ! -z "$PARAM2" -a ! "X$PARAM2" = "X-" ]; then
+					checkoutLIST=""
+					while [  ! -z "$PARAM2" -a ! "$PARAM2" = "-" ]
+					do
+						checkoutLIST="$checkoutLIST $2"
+						shift
+						PARAM2=`echo $2 | awk '{ print substr($1,1,1) }'`
+					done
+				fi
+				oCheckout=1
+                                ;;
+                        '-u'|'--update') 
+                                PARAM2=`echo $2 | awk '{ print substr($1,1,1) }'`
+				if [ ! -z "$PARAM2" -a ! "X$PARAM2" = "X-" ]; then
+					updateLIST=""
+					while [  ! -z "$PARAM2" -a ! "$PARAM2" = "-" ]
+					do
+						updateLIST="$updateLIST $2"
+						shift
+						PARAM2=`echo $2 | awk '{ print substr($1,1,1) }'`
+					done
+				fi
+				oUpdate=1
+                                ;;
+                        '-x'|'--export') 
+                                PARAM2=`echo $2 | awk '{ print substr($1,1,1) }'`
+				if [ ! -z "$PARAM2" -a ! "X$PARAM2" = "X-" ]; then
+					exportLIST=""
+					while [  ! -z "$PARAM2" -a ! "$PARAM2" = "-" ]
+					do
+						exportLIST="$exportLIST $2"
+						shift
+						PARAM2=`echo $2 | awk '{ print substr($1,1,1) }'`
+					done
+				fi
+				oExport=1
+                                ;;
+                        '-b'|'--build') 
+                                PARAM2=`echo $2 | awk '{ print substr($1,1,1) }'`
+				if [ ! -z "$PARAM2" -a ! "X$PARAM2" = "X-" ]; then
+					buildLIST=""
+					while [  ! -z "$PARAM2" -a ! "$PARAM2" = "-" ]
+					do
+						buildLIST="$buildLIST $2"
+						shift
+						PARAM2=`echo $2 | awk '{ print substr($1,1,1) }'`
+					done
+				fi
+                                oBuild=1
+                                ;;
+                        '-r'|'--release') 
+                                PARAM2=`echo $2 | awk '{ print substr($1,1,1) }'`
+				if [ ! -z "$PARAM2" -a ! "X$PARAM2" = "X-" ]; then
+					releaseLIST=""
+					while [  ! -z "$PARAM2" -a ! "$PARAM2" = "-" ]
+					do
+						releaseLIST="$releaseLIST $2"
+						shift
+						PARAM2=`echo $2 | awk '{ print substr($1,1,1) }'`
+					done
+				fi
+                                oRelease=1
+                                ;;
+			'-t'|'--testiso')
+				oTestIso=1
+				;;
+                        '-m'|'--mkiso') 
+                                oMkiso=1
+                                ;;
+                        '-i'|'--iso') 
+                                oBldiso=1
+                                ;;
+                        
+                        '-a'|'--all')
+                                oUpdate=1
+                                oExport=1
+                                oBuild=1
+                                oRelease=1
+                                oMkiso=1
+				oTestIso=1
+                                ;;
+                        '-?'|'-h'|'--help'|*)
+                                appusage
+                                exit 1
+                                ;;
+                esac
+                shift
+        done
 }
-function cvs_checkout {
+cvs_checkout() {
     cd $cvs_BASE
     echo ">>>CVS Checking out $CVSROOT $BUILDVER"
+    LOGFILE="$REP_DIR/.cvs.checkout"
     echo "   $checkoutLIST"
-    REPORT="${STAGING_DIR}/.cvs.checkout"
-    REPORT_ERR="$REPORT.err"
 	case ${OSREV} in
-		'4.3'|'4.2'|'4.1'|'4.0'|'3.9') 
-			CVSAPP=cvs
+		'4.8'|'4.7'|'4.6'|'4.5'|'4.4'|'4.3'|'4.2'|'4.1'|'4.0'|'3.9') 
+			CVSAPP=/usr/bin/cvs
 			;;
-		*)	CVSAPP=opencvs
+		*)	CVSAPP=/usr/bin/cvs
+            if [ -x /usr/bin/opencvs ]; then
+                CVSAPP=/usr/bin/opencvs
+            fi
 			;;
 	esac
-    $CVSAPP -d ${CVSROOT} checkout -r$BUILDVER -P $checkoutLIST > "$REPORT" 2> "$REPORT_ERR"
-    echo "(done)" >> "$REPORT" 2> "$REPORT_ERR"
+    $CVSAPP -d ${CVSROOT} checkout -r $BUILDVER -P $checkoutLIST > "$LOGFILE.txt" 2> "$LOGFILE.err.txt"
+    check_error $?
+    echo "(done)" >> "$LOGFILE.txt"
+    echo "(done)" >> "$LOGFILE.err.txt"
 }
 
-function cvs_update {
+cvs_update() {
     echo ">>>CVS updating [$updateLIST]"
-    REPORT="$STAGING_DIR/.cvs.update.txt"
-    REPORT_ERR="${REPORT}.err"
+    LOGFILE="$REP_DIR/.cvs.update"
 	case ${OSREV} in
-		'4.4'|'4.3'|'4.2'|'4.1'|'4.0'|'3.9') 
-			CVSAPP=cvs
+		'4.8'|'4.7'|'4.6'|'4.5'|'4.4'|'4.3'|'4.2'|'4.1'|'4.0'|'3.9') 
+			CVSAPP=/usr/bin/cvs
 			;;
-		*)	CVSAPP=opencvs
+		*)	CVSAPP=/usr/bin/cvs
+            if [ -x /usr/bin/opencvs ]; then
+                CVSAPP=/usr/bin/opencvs
+            fi
 			;;
 	esac
 	
     for subdir in $updateLIST; do
         echo "   $subdir ..."
-        REPORT="${REPORT}.$subdir"
         cd $cvs_BASE/$subdir;
-        $CVSAPP -d${CVSROOT} update -Pd > "$REPORT" 2> "$REPORT_ERR"
-        echo "(done)" >> "$REPORT" 
+        $CVSAPP -d${CVSROOT} update -Pd > "$LOGFILE.$subdir.txt" 2> "$LOGFILE.$subdir.err.txt"
+        check_error $?
+        echo "(done)" >> "$LOGFILE.$subdir.txt"
+        echo "(done)" >> "$LOGFILE.$subdir.err.txt"
     done
 }
 
-function cvs_export {
+cvs_export() {
     echo ">>>CVS Export for Src Distribution: [${cvs_EXPORTDIR}]"
+    LOGFILE="$REP_DIR/.cvs.export"
     if [ -z "${cvs_EXPORTDIR}" -o "${cvs_EXPORTDIR}" == "/" ]; then
-        echo "ERROR: invalid value for src distribution dir: [${cvs_EXPORTDIR}]"
-        exit 1
+            echo "ERROR: invalid value for src distribution dir: [${cvs_EXPORTDIR}]"
+            exit 1
     fi
     
     echo "   [${cvs_EXPORTDIR}] clearing source export directory"
@@ -250,253 +265,279 @@ function cvs_export {
 	sleep 5
 	
 	mkdir -p ${SRCRELEASE}
-	if [ ! -d  ${SRCRELEASE} ]; then
-		echo "Error Making ${SRCRELEASE} "
-		exit 1
-	fi
+    check_error $? "Error Making ${SRCRELEASE} "
 	mkdir -p ${cvs_EXPORTDIR}
-	if [ ! -d  ${cvs_EXPORTDIR} ]; then
-		echo "Error Making ${cvs_EXPORTDIR} "
-		exit 1
-	fi
+    check_error $? "Error Making ${cvs_EXPORTDIR} "
         
     cd ${cvs_EXPORTDIR}
-	case ${OSREV} in
-		'4.3'|'4.2'|'4.1'|'4.0'|'3.9') CVSAPP=cvs
+
+    case ${OSREV} in
+		'4.8'|'4.7'|'4.6'|'4.5'|'4.4'|'4.3'|'4.2'|'4.1'|'4.0'|'3.9') 
+			CVSAPP=/usr/bin/cvs
 			;;
-		*)	CVSAPP=opencvs
+		*)	CVSAPP=/usr/bin/cvs
+            if [ -x /usr/bin/opencvs ]; then
+                CVSAPP=/usr/bin/opencvs
+            fi
 			;;
 	esac
 
-    REPORT="$STAGING_DIR/.cvs.export"
-
     for BRANCH in ${exportLIST}; do
         echo -n "   exporting ${BRANCH} ..."
-        REPORT="${REPORT}.${BRANCH}.txt"
-        REPORT_ERR="${REPORT}.err"
-        $CVSAPP -d$CVSROOT -q export -r$BUILDVER -d ${BRANCH} ${BRANCH} > "$REPORT" 2> "$REPORT_ERR"
-        echo " . archiving (tgz)"
+        $CVSAPP -d$CVSROOT -q export -r $BUILDVER -d ${BRANCH} ${BRANCH} > "$LOGFILE.${BRANCH}.txt" 2> "$LOGFILE.${BRANCH}.err.txt"
+        check_error $?   "ERROR: Exporting ${BRANCH}"
+        echo -n "    tar ${BRANCH}"
         if [ "X${BRANCH}" == "Xports" -o "X${BRANCH}" == "Xxenocara"  ]; then
-            tar -zcf ${SRCRELEASE}/${BRANCH}.tgz ${BRANCH} >> "$REPORT" 2>> "$REPORT_ERR"
-        fi
-        if [ "X${BRANCH}" == "Xsrc" ]; then
+            tar -zcf ${SRCRELEASE}/${BRANCH}.tgz ${BRANCH} >> "$LOGFILE.${BRANCH}.txt" 
+            check_error $? "ERROR: Archiving ${BRANCH}"
+            cd ..
+        else
             cd ${BRANCH}
-            tar -zcf ${SRCRELEASE}/${BRANCH}.tgz . >> "$REPORT" 2> "$REPORT_ERR"                      
+            tar -zcf ${SRCRELEASE}/${BRANCH}.tgz . >> "$LOGFILE.${BRANCH}.txt"                         
+            check_error $? "ERROR: Archiving ${BRANCH}"
             cd ${cvs_EXPORTDIR}
         fi
-        echo "(done)" >> "${REPORT}" 
+        echo "(done)" >> "$LOGFILE.${BRANCH}.txt" 
     done
 }
 
-function bld_kernel {
-    echo ">>>Building Kernel: $KERNEL"
-    REPORT="$STAGING_DIR/.bld.kernel.txt"
-    REPORT_ERR="${REPORT}.err"
+bld_kernel() {
+    echo ">>>Building Kernel release(8): $KERNEL"
+    LOGFILE="$REP_DIR/.bld.kernel"
 	if [ ! -z "$KERNEL" ]; then
 		rm -rf "$cvs_BASE/src/sys/arch/${MACHINE}/compile/$KERNEL"
 	fi
     cd $cvs_BASE/src/sys/arch/${MACHINE}/conf
+    echo -n "    config $KERNEL"
     config $KERNEL
+    check_error $?
     cd ../compile/$KERNEL
-    make clean  > "${REPORT}" 2> "${REPORT}.err" \
-            && make depend  >> "${REPORT}" 2> "${REPORT_ERR}" \
-            && make >> "${REPORT}" 2> "${REPORT_ERR}"
-    echo "   installing kernel"
-    make install >> "${REPORT}" 2> "${REPORT_ERR}"
-    echo "(done)" >> "${REPORT}" 2> "${REPORT_ERR}" 
+    echo -n "    a. make clean"
+    make clean  > "$LOGFILE.txt" 2> "$LOGFILE.err.txt"
+    check_error $?
+    echo -n "    b. make depend"
+    make depend  >> "$LOGFILE.txt" 2>> "$LOGFILE.err.txt" 
+    check_error $?
+    echo -n "    c. make"
+    make >> "$LOGFILE.txt" 2>> "$LOGFILE.err.txt"
+    check_error $?
+    echo -n "   d. make install"
+    make install >> "$LOGFILE.txt" 2>> "$LOGFILE.err.txt"
+    check_error $?
+    echo "(done)" >> "$LOGFILE.txt" 
+    echo "(done)" >> "$LOGFILE.err.txt" 
 	echo "KERNEL BUILD COMPLETE - REBOOT RECOMMENDED"
 	echo ""
-	echo "Verify Kernel Build [$REPORT]"
-	echo "Ctrl+C and reboot, or Enter to ignore my advice"
+	echo "Verify Kernel Build [$LOGFILE.txt]"
+    echo "-------------"
+    tail -10 $LOGFILE.txt
+    echo "-------------"
+	echo "Ctrl+C and reboot, or Enter to ignore my advice (sleep 180s)"
 	sleep 180
 }
-
-function bld_userland {
+bld_userland(){
     echo ">>>Building USERLAND"
+    LOGFILE="$REP_DIR/.bld.userland"
     echo "   rm -rf $cvs_BASE/obj/*"
-    REPORT="$STAGING_DIR/.bld.userland.txt"
-    REPORT_ERR="${REPORT}.err"
-	cd $cvs_BASE/obj && mkdir -p .old && sudo mv * .old &&\
+	cd $cvs_BASE/obj && rm -rf .old && mkdir -p .old && sudo mv * .old &&\
     sudo rm -rf .old &
     cd $cvs_BASE/src
-    echo "   make obj"
-    make obj > "${REPORT}" 2> "${REPORT_ERR}"
-
-    echo "   make distrib-dirs"        
-    cd $cvs_BASE/src/etc && env DESTDIR=/ make distrib-dirs  >> "${REPORT}" 2> "${REPORT_ERR}"
+    echo -n "   a. make obj"
+    LOGFILE="$REP_DIR/.bld.obj.userland"
+    make obj > "$LOGFILE.txt" 2> "$LOGFILE.err.txt"
+    check_error $?
+    echo "(done)" >> "$LOGFILE.txt"
+    echo "(done)" >> "$LOGFILE.err.txt"
+    
+    echo -n "   b. make distrib-dirs"        
+    LOGFILE="$REP_DIR/.bld.distrib.userland"
+    cd $cvs_BASE/src/etc && env DESTDIR=/ sudo make distrib-dirs  > "$LOGFILE.txt" 2> "$LOGFILE.err.txt"
+    check_error $?
+    echo "(done)" >> "$LOGFILE.txt"
+    echo "(done)" >> "$LOGFILE.err.txt"
+    
     cd $cvs_BASE/src
-    echo "   make build (compiles and install all 'userland' utilities in the appropriate order)"
-    make build  >> "${REPORT}" 2> "${REPORT_ERR}"
-    echo "(done)" >> "${REPORT}" 2> "${REPORT_ERR}"
+    echo -n "   c. make build (compiles and install all 'userland' utilities in the appropriate order)"
+    LOGFILE="$REP_DIR/.bld.userland"
+    make SUDO=sudo build  > "$LOGFILE.txt" 2> "$LOGFILE.err.txt"
+    check_error $?
+    echo "(done)" >> "$LOGFILE.txt"
+    echo "(done)" >> "$LOGFILE.err.txt"
 }
 
-function rel_base {
-    echo ">>>Building RELEASE BASE: $BUILDVER"
-    REPORT="$STAGING_DIR/.bld.crunchgen.txt"
-    REPORT_ERR="${REPORT}.err"
-    if [ ! -d $cvs_BASE/src ]; then
-            "Base src not availabe [${cvs_BASE}/src"
-            exit 1
-    fi
+rel_base() {
+    echo ">>>Building RELEASE BASE release(8): $BUILDVER "
+    LOGFILE="$REP_DIR/.rel.base"
+    test -d $cvs_BASE/src 
+    check_error $? "Base src not available [${cvs_BASE}/src]"
 	
-	case ${REVISO} in
+	case ${ISOREV} in
 		44|43|42|41|40|39) 
 			echo "   build crunchgen"
-			cd $cvs_BASE/src/distrib/crunch && make obj depend all install  > "${REPORT}" 2> "${REPORT_ERR}"
+			cd $cvs_BASE/src/distrib/crunch && make obj depend all install  > "$REP_DIR/.bld.crunchgen.txt" 2> "$REP_DIR/.bld.crunchgen.err.txt"
+            check_error $?
 			;;
 	esac
 
 	export DESTDIR=${DESTBASEDIR} ; export RELEASEDIR=${RELEASEBASEDIR}
-        echo "   [${DESTDIR}] clear old destdir "
+    echo "   clear old release build dir [${DESTDIR}]"
 	OLD=${DESTDIR}.old
 	test -d ${OLD} && rm -rf ${OLD}
-        test -d ${DESTDIR} && mv ${DESTDIR} ${OLD} 
+    test -d ${DESTDIR} && mv ${DESTDIR} ${OLD} 
 	rm -rf ${OLD} &
-	mkdir -p ${DESTDIR}
-	if [ ! -d  ${DESTDIR} ]; then
-		echo "Failed to mkdir [${DESTDIR}]"
-		exit 1
-	fi
-	
-        #~ echo "   [$RELEASEBASEDIR] clear old releasedir "
+
+    #~ echo "   [$RELEASEBASEDIR] clear old releasedir "
 	#~ test -d ${RELEASEDIR}.old && rm -rf ${RELEASEDIR}.old
-        #~ test -d ${RELEASEDIR} && mv ${RELEASEDIR} ${RELEASEDIR}.old 
+    #~ test -d ${RELEASEDIR} && mv ${RELEASEDIR} ${RELEASEDIR}.old 
 	#~ rm -rf ${RELEASEDIR}.old &
+
+    mkdir -p ${DESTDIR}
+    check_error $? "ERROR: Failed makedir ${DESTDIR}"
+	
 	
 	mkdir -p ${RELEASEDIR}
-	if [ ! -d  ${RELEASEDIR} ]; then
-		echo "Failed to mkdir [${RELEASEDIR}]"
-		exit 1
-	fi
+    check_error $? "ERROR: Failed makedir ${RELEASEDIR}"
 
-    echo "   make release"
-    REPORT="$STAGING_DIR/.rel.base.txt"
-    REPORT_ERR="${REPORT}"
     cd $cvs_BASE/src/etc
-    make release > "${REPORT}" 2> "${REPORT_ERR}"
-    echo "(done)" >> "${REPORT}" 2> "${REPORT_ERR}"
+    echo -n "   a. make release @ $cvs_BASE/src/etc"
+	make release > "$LOGFILE.txt" 2> "$LOGFILE.err.txt"
+    check_error $?
+    echo "(done)" >> "$LOGFILE.txt"
+    echo "(done)" >> "$LOGFILE.err.txt"
 
-    echo "   verify distrib/sets"
-    REPORT="${STAGING_DIR}/.bld.base.checklist.txt"
-    REPORT_ERR="${REPORT}.err"
-    cd $cvs_BASE/src/distrib/sets && sh checkflist > "${REPORT}" 2> "${REPORT_ERR}"
-    echo "(done)" >> "${REPORT}" 2> "${REPORT_ERR}"
+    echo -n "   b. verify distrib/sets"
+    LOGFILE="$REP_DIR/.rel.vrfy.base"
+    cd $cvs_BASE/src/distrib/sets && sh checkflist > "$LOGFILE.txt" 2>&1
+    check_error $?
+    echo "(done)" >>   "$LOGFILE.txt"
 }
 
-function bld_xenocara {
-        echo ">>>Building XENOCARA"
-        REPORT="${STAGING_DIR}/.bld.xenocara"
-        REPORT_ERR="${REPORT}"
-        if [ ! -d $cvs_BASE/xenocara ]; then
-                "Xenocara src not available"
-                exit 1
-        fi
-	
-        cd $cvs_BASE/xenocara
-        echo "   rm -rf $cvs_BASE/xobj/*"
-        rm -rf $cvs_BASE/xobj/*
-        echo "   make bootstrap"
-        make bootstrap  > "${REPORT}.bootstrap.txt" 2> "${REPORT_ERR}.bootstrap.txt.err"
-        echo "   make obj"
-        make obj  > "${REPORT}.obj.txt" 2> "${REPORT_ERR}.obj.txt.err"
-        echo "   make build"
-        make build  > "${REPORT}.txt" 2> "${REPORT_ERR}.txt.err"
-        echo "(done)" >> "${REPORT}" 2> "${REPORT_ERR}"
+bld_xenocara() {
+    echo ">>>Building XENOCARA"
+    LOGFILE="$REP_DIR/.bld.xenocara"
+    test -d ${XSRCDIR}
+    check_error $? "Xenocara src not available"
+
+    cd ${XSRCDIR}
+    echo -n "   a. rm -rf $cvs_BASE/xobj/*"
+    rm -rf $cvs_BASE/xobj/*
+    check_error $?
+    echo -n "   b. make bootstrap"
+    LOGFILE="$REP_DIR/.bld.bootstrap.xenocara"
+    make bootstrap  > "$LOGFILE.txt" 2> "$LOGFILE.err.txt"
+    check_error $?
+    echo "(done)" >> "$LOGFILE.txt"
+    echo "(done)" >> "$LOGFILE.err.txt"
+    
+    echo -n "   c. make obj"
+    LOGFILE="$REP_DIR/.bld.obj.xenocara"
+    make obj  > "$LOGFILE.txt" 2> "$LOGFILE.err.txt"
+    check_error $?
+    echo "(done)" >> "$LOGFILE.txt"
+    echo "(done)" >> "$LOGFILE.err.txt"
+    
+    echo -n "   d. make build"
+    LOGFILE="$REP_DIR/.bld.xenocara"
+    make build  > "$LOGFILE.txt" 2> "$LOGFILE.err.txt"
+    check_error $?
+    echo "(done)" >> "$LOGFILE.txt"
+    echo "(done)" >> "$LOGFILE.err.txt"
 }
 
-function rel_xenocara {
-    cd $cvs_BASE/xenocara
+rel_xenocara() {
+    cd ${XSRCDIR}
     echo ">>>Building RELEASE XENOCARA: $BUILDVER"
-    REPORT="$STAGING_DIR/.rel.xenocara.txt"
-    REPORT_ERR="${REPORT}.err"
-    echo -n "   clear old dest [$DESTXENDIR]"
+    LOGFILE="$REP_DIR/.rel.xenocara"
 	export DESTDIR=${DESTXENDIR} ; export RELEASEDIR=${RELEASEXENDIR}	
+    
+    echo -n "   clear old release build dir [${DESTDIR}]"
 	OLD=${DESTDIR}.old
 	test -d ${OLD} && rm -rf ${OLD}
-        test -d ${DESTDIR} && mv ${DESTDIR} ${OLD}
+    test -d ${DESTDIR} && mv ${DESTDIR} ${OLD}
 	rm -rf ${OLD} &
-	mkdir -p ${DESTDIR}
-	
-	if [ ! -d ${DESTDIR} ]; then
-		echo "Failed to mkdir [${DESTDIR}]"
-		exit 1
-	else
-		test -d ${DESTDIR} && echo "   created [${DESTDIR}]"
-	fi
-				
-	mkdir -p "${RELEASEDIR}"
-	if [ ! -d ${RELEASEDIR} ]; then
-		echo "Failed to mkdir [${RELEASEDIR}]"
-		exit 1
-	else
-		test -d ${RELEASEDIR} && echo "   created [${RELEASEDIR}]"
-	fi
+    
+    #~ echo -n "   clear old release [${RELEASEDIR}]"
+    #~ test -d ${RELEASEDIR}.old && rm -rf "${RELEASEDIR}.old"
+    #~ test -d ${RELEASEDIR} && mv ${RELEASEDIR} ${RELEASEDIR}.old && \
+    #~ rm -rf "${RELEASEDIR}.old" &
 		
-    echo "   make release"
-    cd $cvs_BASE/xenocara
-    make release > "${REPORT}" 2> "${REPORT_ERR}"
-    echo "(done)" >> "${REPORT}" 2> "${REPORT_ERR}"
+	mkdir -p ${DESTDIR}
+    check_error $? "ERROR: Failed makedir ${DESTDIR}"
+	
+	mkdir -p ${RELEASEDIR}
+    check_error $? "ERROR: Failed makedir ${RELEASEDIR}"
+		
+    cd ${XSRCDIR}
+    echo "   a. make release"
+    make release > "$LOGFILE.txt" 2> "$LOGFILE.err.txt"
+    check_error $?
+    echo "(done)" >> "$LOGFILE.txt"
+    echo "(done)" >> "$LOGFILE.err.txt"
 }
-function iso_layout {
+iso_layout() {
+    # Ref: /usr/src/distrib/amd64/iso/Makefile
     echo ">>>AGGREGATING CD Content - Builds"
         
-	rm -rf ${CDDIR}/${OSREV}/${MACHINE}
-	rm -rf ${CDDIR}/${OSREV}/packages/${MACHINE}
-	
-	mkdir -p ${CDDIR}/${OSREV}/${MACHINE}
-	mkdir -p ${CDDIR}/${OSREV}/packages/${MACHINE}
-	mkdir -p ${CDDIR}/.buildinfo
-	mkdir -p ${CDDIR}/etc
-	echo "set image /${OSREV}/${MACHINE}/bsd.rd" > ${CDDIR}/etc/boot.conf
-	
-	mv ${STAGING_DIR}/.* ${CDDIR}/.buildinfo
+    rm -rf ${CDBUILD}
 
+	mkdir -p ${CDBUILD}/${OSREV}/${MACHINE}
+	mkdir -p ${CDBUILD}/${OSREV}/packages/${MACHINE}
+	mkdir -p ${CDBUILD}/etc
+	echo "set image /${OSREV}/${MACHINE}/bsd.rd" > ${CDBUILD}/etc/boot.conf
+    DESTINATION=${CDBUILD}/${OSREV}/${MACHINE}
+	
     if [ -d "$RELEASEBASEDIR" ]; then
-        echo "   copying $RELEASEBASEDIR"
-        cp -p $RELEASEBASEDIR/* ${CDDIR}/${OSREV}/${MACHINE}
+        echo -n "   copying $RELEASEBASEDIR: " && \
+        FILES="base${ISOREV}.tgz comp${ISOREV}.tgz etc${ISOREV}.tgz game${ISOREV}.tgz man${ISOREV}.tgz"
+        FILES="$FILES misc${ISOREV}.tgz bsd bsd.rd bsd.mp INSTALL.${MACHINE}"
+        for file in $FILES; do
+            echo -n " $file" && cp -p ${RELEASEBASEDIR}/$file ${DESTINATION}
+        done
+        echo ""
     fi
     if [ -d "$RELEASEXENDIR" ]; then
-        echo "   copying $RELEASEXENDIR"
-        cp -p $RELEASEXENDIR/* ${CDDIR}/${OSREV}/${MACHINE}
+        echo -n "   copying $RELEASEXENDIR: "
+        FILES="xbase${ISOREV}.tgz xetc${ISOREV}.tgz xfont${ISOREV}.tgz xshare${ISOREV}.tgz xserv${ISOREV}.tgz"
+        for file in $FILES; do
+            echo -n " $file" && cp -p ${RELEASEXENDIR}/$file ${DESTINATION}
+        done        
+        echo ""
     fi
-
-    echo "   Source Distributions"
+    echo "    cdbr" && cp -p ${RELEASEBASEDIR}/cdbr ${DESTINATION}
+    echo "    cdboot" && cp -p ${RELEASEBASEDIR}/cdboot ${DESTINATION}/cdboot
+    
     if [ ! -z "${SRCRELEASE}" ]; then
-        if [ -f ${SRCRELEASE}/ports.tgz ]; then
-            echo "   - ports"
-            cp -p ${SRCRELEASE}/ports.tgz ${CDDIR}/${OSREV}/
-        fi
-        if [ -f ${SRCRELEASE}/src.tgz ]; then
-            echo "   - src"
-            cp -p ${SRCRELEASE}/src.tgz ${CDDIR}/${OSREV}/
-        fi
-        if [ -f ${SRCRELEASE}/xenocara.tgz ]; then
-            echo "   - xenocara"
-            cp -p ${SRCRELEASE}/xenocara.tgz ${CDDIR}/${OSREV}/
-        fi
+        echo "   Source Distributions"
+        test -f ${SRCRELEASE}/ports.tgz && echo "    ports.tgz" && \
+            cp -p ${SRCRELEASE}/ports.tgz ${CDBUILD}/${OSREV}/
+        test -f ${SRCRELEASE}/src.tgz && echo "    src.tgz" && \
+            cp -p ${SRCRELEASE}/src.tgz ${CDBUILD}/${OSREV}/
+        test -f ${SRCRELEASE}/xenocara.tgz && echo "    xenocara.tgz" && \
+            cp -p ${SRCRELEASE}/xenocara.tgz ${CDBUILD}/${OSREV}/
     fi        
 }
 
-function iso_packages_base {
+iso_packages_base() {
     # Base - default install
-    PKGS="bzip2 colorls curl gettext gnupg gnuwatch libdnet libiconv"
-    PKGS="$PKGS libidn lua- lzo- multitail mutt nmap- pcre- pstree python qdbm rsync"
-    PKGS="$PKGS sqlite3 screen vim wget zsh libtool gmake"
+    PKGS="bzip2 colorls curl gettext gnuwatch libdnet libiconv"
+    PKGS="$PKGS libidn lua- lzo- multitail mutt nmap- pcre- pstree qdbm rsync"
+    PKGS="$PKGS vim wget zsh libtool gmake"
 
     # Base - Benchmarking
     PKGS="$PKGS blogbench bonnie bytebench iogen lmbench netperf netpipe"
     PKGS="$PKGS netstrain pear-Benchmark randread smtp-benchmark"
     PKGS="$PKGS stress sysbench tcpblast ubench xengine"
-    PKGS="$PKGS libxslt libgcrypt libgpg py-libxml mysql-client mysql-server"
+    PKGS="$PKGS libxslt libgcrypt libgpg py-libxml"
+    PKGS="$PKGS pfstat pftop tcpflow trafshow"
     iso_packages_copy        
 }
-function iso_packages_mailserver {
+iso_packages_mailserver() {
     # Mail Proxy Servers
     PKGS="postfix dovecot pflogsumm "
     PKGS="$PKGS p5-Date-Calc p5-Bit-Vector p5-Carp-Clan"
     iso_packages_copy
 }
-function iso_packages_monitorbox {
+iso_packages_monitorbox() {
     # Monitoring Host 
     PKGS="procmail fetchmail php5 smstools"
 
@@ -514,11 +555,11 @@ function iso_packages_monitorbox {
     PKGS="$PKGS p5-Crypt- p5-HTML- p5-HTTP- libghttp"
     iso_packages_copy
 }
-function iso_packages_git {
-        PKGS="git p5-Error-"
-        iso_packages_copy
+iso_packages_git() {
+    PKGS="git p5-Error-"
+    iso_packages_copy
 }
-function iso_packages_optional {
+iso_packages_optional() {
     # web proxy
     PKGS="squid"
 
@@ -531,82 +572,102 @@ function iso_packages_optional {
     PKGS="trafshow tcpflow tcpstat pftop pfstat hatchet"
     iso_packages_copy
 }
-function iso_packages_copy {
+iso_packages_copy() {
     for package in $PKGS; do
-        echo -n "$package ";
-        cp -f ${package}* "$PACKAGE_DST" >> "$STAGING_DIR/.iso.packages.txt" 2>> "$STAGING_DIR/.iso.packages.err.txt" 
+        cp -f ${package}* "$PACKAGE_DST" >> "$REP_DIR/.iso.packages.txt" 2>> "$REP_DIR/.iso.packages.err.txt"  &&   echo -n "$package "
     done
 }
-function iso_packages {
+iso_packages() {
     if [ ! -d "$PACKAGE_SRC" -o ! -d "$PACKAGE_DST" ]; then
-            echo "package path not found [$PACKAGE_SRC] or ${PACKAGE_DST}"
-            exit 1
+        echo "ERROR: package path not found [$PACKAGE_SRC] or ${PACKAGE_DST}"
+        exit 1
     fi
 
     echo ">>>AGGREGATING Package Collection"
+    rm -f $REP_DIR/.iso.packages.txt
+    rm -f $REP_DIR/.iso.packages.err.txt
     cd $PACKAGE_SRC
 
-    iso_packages_base
-    iso_packages_mailserver
-    iso_packages_monitorbox
-    iso_packages_optional
-    iso_packages_git
+    #~ iso_packages_base
+    #iso_packages_mailserver
+    #iso_packages_monitorbox
+    #iso_packages_optional
+    #~ iso_packages_git
 }
-function iso_buildimage {
+iso_buildimage() {
 	echo ""
-        echo ">>>ISO BUILD"
+    echo ">>>ISO BUILD"
 	#iso_mkiso
 	iso_mkhybrid
 }
-function iso_mkiso {
-    cd ${CDDIR}
-	ISOFILE=${CDDIR}/../openbsd${REVISO}_${MACHINE}.${STATE}.iso
-    echo "   mkiso"
-    mkisofs -rvTV "OpenBSD${REVISO} ${MACHINE} $STATE" \
-        -no-emul-boot \
-        -b ${OSREV}/${MACHINE}/cdbr -c boot.catalog \
-        -o ${ISOFILE} \
-        -A "OpenBSD Build Install CD" \
-        -p "$PREPAIRER" \
-        -P "$PUBLISHER" \
-        -publisher "$PUBLISHER" \
-        ${CDDIR} \
-         > "$STAGING_DIR/.mkiso.build.txt" 2> "$STAGING_DIR/.mkiso.build.err.txt" 
-}
-function iso_mkhybrid {
-        echo "   mkhybrid"
-	cd ${CDDIR}
-	ISOFILE=${CDDIR}/../openbsd${REVISO}_${MACHINE}.${STATE}.iso
-	mkhybrid -a -R -T -L -l -d -D -N \
-		-b ${OSREV}/${MACHINE}/cdbr -c boot.catalog \
-		-o ${ISOFILE} -v -v \
-		-A "OpenBSD ${OSREV} ${MACHINE} Install CD" \
-		-P "$PUBLISHER" \
-		-p "$PREPAIRER" \
+
+iso_mkhybrid() {
+    # Ref: /usr/src/distrib/amd64/iso/Makefile
+    echo "   mkhybrid"
+    
+	cd ${CDBUILD}
+	ISOFILE=${CDBUILD}/../openbsd${ISOREV}_${MACHINE}.${STATE}.iso
+    
+	mkhybrid -a -R -T -L -l -d -D -N -o ${ISOFILE} -v -v \
+        -A "OpenBSD ${OSREV} ${MACHINE} Install CD" \
+		-P "Copyright (c) `date +%Y` Employers Mutual Ltd" \
+		-p "EML Install Media" \
 		-V "OpenBSD/${MACHINE} ${OSREV} Install CD" \
-		. \
-         > "$STAGING_DIR/.mkhybrid.build.txt" 2> "$STAGING_DIR/.mkhybrid.build.err.txt" 
+        -b ${OSREV}/${MACHINE}/cdbr \
+        -c ${OSREV}/${MACHINE}/boot.catalog \
+		${CDBUILD} \
+         > "$REP_DIR/.mkhybrid.build.txt" 2> "$REP_DIR/.mkhybrid.build.err.txt" 
+    check_error $?
+    echo "(done)" >> "$REP_DIR/.mkhybrid.build.txt"
+    echo "(done)" >> "$REP_DIR/.mkhybrid.build.err.txt" 
+    iso_tip
 }
-function cvs_getfiles {
+function iso_tip {
+
+echo "
+TEST Using:
+
+    vnconfig svnd0 ${ISOFILE}
+    mkdir -p $MOUNTPOINT
+    mount -t cd9660 /dev/svnd0c $MOUNTPOINT
+    
+    ... do your tests ...
+    
+    umount $MOUNTPOINT
+    vnconfig -u svnd0
+    
+    ---or----
+    
+    qemu -cdrom ${ISOFILE} -hda /tmp/qemu_disk.img -m 256 -boot d
+        
+BURN Using:
+
+    /usr/bin/cdio -v -f /dev/rcd0c tao ${ISOFILE}"
+
+}
+cvs_getfiles() {
     if [ $oCheckout -eq 1 ]; then
-            cvs_checkout
+        cvs_checkout
     fi
     if [ $oExport -eq 1 ]; then
-            cvs_export
+        cvs_export
     fi
     if [ $oUpdate -eq 1 ]; then
-            cvs_update
+        cvs_update
     fi
 }
 function build_binaries {
     if [ $oBuild -eq 1 ]; then
         for target in $buildLIST; do
             case $target in
-            'kernel') bld_kernel
+            'kernel') 
+                    bld_kernel
                     ;;
-            'src') 	bld_userland
+            'src') 	
+                    bld_userland
                     ;;
-            'xenocara') bld_xenocara
+            'xenocara') 
+                    bld_xenocara
                     ;;
             *) echo "Somethings Broken"
                 exit 1
@@ -619,9 +680,11 @@ function build_release {
     if [ $oRelease -eq 1 ]; then	
     for target in $releaseLIST; do
         case $target in
-            'src') rel_base
+            'src') 
+                rel_base
                 ;;
-            'xenocara') rel_xenocara
+            'xenocara') 
+                rel_xenocara
                 ;;
             *) echo "Somethings broken"
                 exit 1
@@ -630,51 +693,62 @@ function build_release {
     done
     fi
 }
-function iso_test {
+iso_test() {
 
-	ISO="$STAGING_DIR/openbsd${REVISO}_${MACHINE}.${STATE}.iso"
+	ISO="$REP_DIR/openbsd${ISOREV}_${MACHINE}.${STATE}.iso"
 	if [ ! -f ${ISO} ]; then
-		ISO="$STAGING_DIR/openbsd${REVISO}_${MACHINE}.${STATE}.mkhybrid.iso"
+		ISO="$REP_DIR/openbsd${ISOREV}_${MACHINE}.${STATE}.mkhybrid.iso"
 	fi
-	if [ -f  ${ISO} -a ! -z ${MNT_ISO} ]; then
+	if [ -f  ${ISO} -a ! -z ${MOUNTPOINT} ]; then
 	
-		if [ ! -d ${MNT_ISO} ]; then
-			mkdir ${MNT_ISO}
+		if [ ! -d ${MOUNTPOINT} ]; then
+			mkdir ${MOUNTPOINT}
 		fi
-		umount ${MNT_ISO}
+		umount ${MOUNTPOINT}
 		vnconfig -u svnd3 
 		
-		echo "Mount Point [${MNT_ISO}] for ISO [${ISO}]"
+		echo "Mount Point [${MOUNTPOINT}] for ISO [${ISO}]"
 		vnconfig -c svnd3 ${ISO}
-		mount -t cd9660 /dev/svnd3c ${MNT_ISO}
+		mount -t cd9660 /dev/svnd3c ${MOUNTPOINT}
 		echo "REMEMBER: remove mount when you are finished"
-		echo "          # umount ${MNT_ISO}"
+		echo "          # umount ${MOUNTPOINT}"
 		echo "          # vnconfig -u svnd3"
 	fi
 }
-function iso_build {
+iso_build() {
     if [ $oMkiso -eq 1 ]; then
-            iso_layout
-            iso_packages
-            iso_buildimage
+        iso_layout
+        iso_packages
+    fi
+    if [ $oMkiso -eq 1 -o $oBldiso -eq 1 ]; then
+        iso_buildimage
     fi
 	if [ $oTestIso -eq 1 ]; then
 		iso_test
 	fi
 }
-function main {
-    set_env
+function check_error {
+    echo " ... "
+    if [ "$1" != "0" ]; then
+        echo "Something Broke $*"
+        exit 1
+    fi
+}
+main() {
     get_options "$@"
-    
-	if [ ! -z ${CDDIR} -a -d ${CDDIR} ]; then
-		rm -rf "${CDDIR}"
+        
+	if [ ! -z ${CDBUILD} -a -d ${CDBUILD} ]; then
+		rm -rf "${CDBUILD}"
 	fi
-    set_paths
+    mkdir -p ${CDBUILD}/${OSREV}/${MACHINE}
+    mkdir -p ${CDBUILD}/${OSREV}/packages/${MACHINE}
+	#~ mkdir -p ${CDBUILD}/.buildinfo
 
     cvs_getfiles
     build_binaries
     build_release
     iso_build
 }
+
 
 main $@
