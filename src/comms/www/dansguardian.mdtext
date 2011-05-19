@@ -22,19 +22,24 @@
 <p >We had a requirement to support content filtering but we also still required 
   our overlook available from squid analysis tools that were not available from 
   our content filtering program (dansguardian.)</p>
-<p >These notes are intended to be used together with the existing notes on configuring squid @ <a href="squid.htm" class="anchBlue2">squid.htm</a>. Information already covered in those notes will not necessarily be reviewed here. </p>
+  
+<p >These notes are intended to be used together with the existing [notes on configuring squid](squid.4.9.html). Information already covered in those notes will not necessarily be reviewed here. </p>
 <p >If you have not installed a working version of squid, then I recommend the above mentioned notes and ensure that you can get a standard install of squid working before delving further into these notes. </p>
-<p ></p>
+
+
 ### Content Filtering
+
 <p>What is it?</p>
 <p>People seem to take extreme views on the legitimacy of content filetering of the Internet, but nonetheless if you need to restrict web access in your environment then DansGuardian is a good Open Source program for the task. If you don't have our other requirement, then you can just install that.</p>
 <p>Essentially, content-filtering is the ability to determine access privileges to websites, web-pages, depending on the 'content' of the page, instead of depending on the URL (host and links) of the pages.</p>
 <p>Our additional requirement, as hinted above, was to retain knowledge of who was accessing what on the Internet and to limit access to the internet to legitimate users of our service (i.e. authentication) </p>
+
 ### Our Configuration:
 <p>We have/had an OpenBSD server as our gateway, caching box between the WAN and the Internet.</p>
 <p>The proposal is to send all connections to an Authentication Proxy, from that Proxy to the Content Filter (DansGuardian) and then to a Caching Server. </p>
 <p>client --&gt; cache (authentication) --&gt; content filter --&gt; cache (caching)</p>
 <p>In this workspace, we are running two instances of squid (a) authentication and (c) caching with the content filter (b) DansGuardian in between.</p>
+
 #### (a) authentication 
 <p>The (a) authentication instance of squid is configured to:</p>
 <p>1. Listen on the standard squid port (3128)</p>
@@ -42,11 +47,15 @@
 <p>3. don't cache anything, allow DansGuardian to review all connections</p>
 <p>4. allow access from anyone on our network (only) </p>
 <p>5. Distinguish this revision of squid by using log and caching names of <strong>*_authenticate</strong> </p>
+
 #### (b) DansGuardian 
+
 <p>Configuration is per its documentation with the following revisions.</p>
 <p>1. Listen on port 8080 (or change the settings in this documentation)</p>
 <p>2. Forward Internet Access to the caching squid proxy at port 3138 </p>
+
 #### (c) caching
+
 <p>The (c) caching instance of squid is configured to:</p>
 <p>1. Listen on a non-standard squid port (3138) or whichever you choose.</p>
 <p>2. DO NOT AUTHENTICATE users.</p>
@@ -156,17 +165,24 @@
   </tr>
 </table>
 <p>&nbsp;</p>
+
 ### Execution Script
-<p>Because three different servers need to be initiated (started) and there are times you may just wish to stop / start these things, I've set up documenting a script for the squid processes, and DansGuardian comes with a script that seems to work well enough for it.</p>
+
+<p>Because three different servers need to be initiated (started) and there 
+are times you may just wish to stop / start these things, I've set up documenting 
+a script for the squid processes, and DansGuardian comes with a script that seems 
+to work well enough for it.</p>
+
 #### squid.sh  
+
 <p>To ensure required squid processes are both running, the below script can be 
   used. A good place to locate the script would be /etc/rc.d/init.d/squid.sh</p>
+  
 <p>File: squid.sh</p>
-<table width="80%" border="0" class="pScreenOutput">
-  <tr>
-    <td><pre class="command-line">#!/bin/sh
 
-        echo -n ' Squid '
+<pre class="command-line">
+#!/bin/sh
+echo -n ' Squid '
 
 case "$1" in
         start)
@@ -189,18 +205,19 @@ case "$1" in
         echo "Usage: `basename $0` {start|stop|restart|rotate}"
         ;;
 esac
-</pre></td>
-  </tr>
-</table>
+</pre>
+
 <p>The script merely ensures that both versions of the running squid are terminated, 
   started, restarted when required.</p>
+  
 #### dansguardian
+
 <p>The following script is generally supplied with dansguardian and is placed 
     here for completeness of documentation.</p>
 <p class="pFileReference">File: dansguardian.sh</p>
-<table width="80%" border="0" class="pScreenOutput">
-  <tr>
-    <td><pre class="command-line">#!/bin/sh
+
+<pre class="command-line">
+#!/bin/sh
 #
 # BSD startup script for dansguardian
 # partly based on httpd startup script
@@ -229,6 +246,5 @@ case "$1" in
         echo "Usage: configure {start|stop|restart}" >&2
         ;;
 esac
-exit 0</pre></td>
-  </tr>
-</table>
+exit 0
+</pre>

@@ -7,8 +7,12 @@ this.titlePrefix = ns.titlePrefix + "[Communications | WWW] "
 
 pages = [
        
-    Page("squid.mdtext", 
-        title="Caching",
+    Page("squid.4.9.mdtext", 
+        title="Caching 4.9",
+        pageTitle="Web Caching with Squid"),
+    
+    Page("squid.4.8.mdtext", 
+        title="Caching 4.8",
         pageTitle="Web Caching with Squid"),
     
     Page("dansguardian.mdtext", 
