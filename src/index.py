@@ -1,10 +1,11 @@
 import os, os.path, subprocess
 import countershape, pygments
-from countershape import Page, Directory, model, template, state, blog, markup
+from countershape import Page, Directory, model, template, state, blog, markup, sitemap
 
 this.markup = markup.Markdown(extras=["code-friendly"])
 ns.titlePrefix = "=8> nomoa.com/bsd/ "
 this.titlePrefix = ns.titlePrefix
+this.site_url = "http://www.nomoa.com/bsd/dev.html"
 
 ns.blk_banner  = template.File(None, "../templates/_banner.tpl")
 ns.blk_relatedsites = template.File(None, "../templates/_relatedsites.tpl")
@@ -74,6 +75,7 @@ def Image(imagefile, title=None, basepath=None, klass=None, kaption=None):
     %s 
 </p>""" % (klass, kaption)
 
+        url = image
         if not klass == "" or not kaption == "":
             url="""
 <div %s>
@@ -81,8 +83,7 @@ def Image(imagefile, title=None, basepath=None, klass=None, kaption=None):
     %s
 </div>
 """ % (klass, image, kaption)
-        else:
-                url = image
+
         return url
             
 ns.Image = Image
@@ -114,12 +115,11 @@ def section(fname, dirname, title, pageTitle):
 
 
 ns.blog = blog.Blog(
-        blogname="{; !nomoa", 
-        blogdesc="Cacophony of Sound", 
-        url="http://www.nomoa.com/bsd/", 
+        blogname="!nomoa", 
+        blogdesc="echo $? in the chamber", 
         base="null", 
         src="../posts")
-
+       
 blogindex = ns.blog.index("dev.html", "echo $?")
 blogindex.namespace["blk_submenu"] = countershape.widgets.ExtendedParentPageIndex(
     '/dev.html',
@@ -128,6 +128,7 @@ blogindex.namespace["blk_submenu"] = countershape.widgets.ExtendedParentPageInde
     currentActive = True
 )
 blogindex.namespace["submenuTitle"] = "log"
+
 #blogindex.layout = ns.tpl_bloglayout
 blogindex.markup = markup.Markdown()
 blogdir = Directory("dev")
@@ -171,7 +172,7 @@ pages += section(
 pages.extend(
     [
         blogindex, blogdir,
-        ns.blog.rss("rss.xml", "Nomoa.com/bsd"),
+        ns.blog.rss( name="rss.xml", title="Nomoa.com/bsd", fullrss=True ),
     ]
 )
 
