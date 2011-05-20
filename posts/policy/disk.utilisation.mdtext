@@ -1,0 +1,58 @@
+Disk Utilisation i386 4.9
+time: 2011-05-19 09:27
+tags: Disk Partitioning
+
+Every now and then people ask how they should partition their hard disk,
+this doesn't answer that question, but gives some view on how much
+disk space is used up on a bare system built for compiling OpenBSD
+from source.
+
+Reference OpenBSD 4.9 i386, [FAQ 5](http://www.openbsd.org/faq/faq5.html)
+
+The following is a summary of disk space used on a bare install built for and
+after compiling OpenBSD 4.9 i386. No packages installed.
+
+<table>
+    <tr>
+        <th>path</th>
+        <th>Used</th>
+        <th>More Info</th>
+    </tr>
+    <tr>      <td>/etc</td>
+                <td>60M</td>
+                <td>Bare install, no modifications</td>
+    </tr><tr><td>/usr</td>
+                <td>6.0G</td>
+                <td>STABLE source extracted to src, xenocara, and compiled using ./obj, ./xobj, as well
+                as ./rel for release files, and ./dest for pre-release files</td>
+    </tr><tr><td>/usr/src</td>
+                <td>851M</td>
+                <td>includes compiled kernel GENERIC.MP</td>
+    </tr><tr><td>/usr/ports</td>
+                <td>332M</td>
+                <td>No compiled packages, no distfiles</td>
+    </tr><tr><td>/usr/obj</td>
+                <td>1G</td>
+                <td></td>
+    </tr><tr><td>/usr/xenocara</td>
+                <td>540M</td>
+                <td></td>
+    </tr><tr><td>/usr/xobj</td>
+                <td>420M</td>
+                <td></td>
+    </tr><tr><td>$DESTDIR</td>
+                <td>2G</td>
+                <td>/usr/dest Includes cvs export for src, xenocara, and ports</td>
+    </tr><tr><td>$RELEASEDIR</td>
+                <td>500M</td>
+                <td>/usr/rel Includes tgz source for src, xenocara, ports</td>
+    </tr><tr><td>$CVSROOT</td>
+                <td>4.4G</td>
+                <td>CVS Tree scp'd from another server/workstation.</td>
+    </tr><tr><td>$CDBUILD</td>
+                <td>1.1G</td>
+                <td>Contains pre-build CD directory and install.iso created with $!manpage("mkhybrid",8)!$
+                (no packages) approximately 490MB each</td>
+    </tr>
+</table>
+    
