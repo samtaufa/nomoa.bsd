@@ -1,4 +1,6 @@
-<!-- _banner -->
+
+<!-- begin: template: _banner.tpl -->
+
 <div id="navBar">
     <div id="navBarContent">   
         <a href="$!homelink!$" style="float:right"
@@ -21,4 +23,4 @@
     </div>
     <div class="clear"></div>
 </div>
-<!-- !_banner -->
+<!-- end: template: _banner.tpl -->
