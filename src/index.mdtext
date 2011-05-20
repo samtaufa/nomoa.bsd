@@ -1,5 +1,4 @@
-$!OpenBSD!$ 
-is a **fun platform** to immerse in software, networking, security, 
+$!OpenBSD!$ is a **fun platform** to immerse in software, networking, security, 
 and Operating Systems principals. Even more so if you're delusional, 
 into gratification through pain, deprivation, self-learning. Although
 many users choose to use it for their desktop, and it's not too 
@@ -14,8 +13,7 @@ and maintenance.
 These notes reference how we got/keep  $!OpenBSD!$ up and running. 
 Verify what you read here through the $!OpenBSD!$ supported documentation
 systems described above, ask questions on their mailing lists, use
-search engines such as 
-<a href="http://lmgtfy.com/?q=Ask Your question here">Google</a> or 
+search engines such as <a href="http://lmgtfy.com/?q=Ask Your question here">Google</a> or 
 <a href="http://www.letmebingthatforyou.com/?q=Ask your question here">Bing</a>
 and practise safe Computing (tm).
 
@@ -49,22 +47,47 @@ document. And then, read it again.
 
 Afterwards,  we can explore end-user communication services with your $!OpenBSD!$.
 
--   [File Sharing](comms/misc/samba.html) with Windows clients
--   [FTP Server](comms/misc/ftp.html)
 -   [Mail Services](comms/mail.html)
 -   [Virtual Private Networks](comms/openvpn.html)
+-   [File/Print Sharing](comms/misc/samba.4.9.html) with Windows clients
+-   [Miscellaneous](comms/misc.html) such as [FTP](comms/misc/ftp.html),
+    [MySQL](comms/misc/mysql.html)
 
-#### [Mail Server](comms/mail.html)
+#### Mail Server
 
 E-mail may just be the lifeblood of the Internet, unless you're younger than 25. 
 Various tools come together to provide what is generally termed an E-mail Server, 
 ([MTA](comms/mail.html "Mail Transport Agent")) and we bring together some of 
 these key tools on $!OpenBSD!$.
 
--   an SMTP Server, using [Sendmail](comms/mail.html) or
+-   [SMTP Server](comms/mail.html), using 
+    [Sendmail](comms/mail/sendmail.html) or
     [Postfix](comms/mail/postfix.html)
--   Client access (POP3, IMAP, TLS server) using [Dovecot](
-    comms/mail/dovecot.html)
+-   Client access (POP3, IMAP, TLS server) using 
+    [Dovecot](comms/mail/dovecot.html)
+-   [Proxy](comms/mail/postfix/proxy.instances.html) 
+-   [Virtual Accounts](comms/mail/postfix/virtual_accounts.html)
+    
+#### VPN - Virtual Private Networks 
+
+Install and configure a VPN using [OpenVPN](comms/openvpn.html) 
+
+-   Configuring your [OpenVPN Server](comms/openvpn/server.html)
+-   Generating, maintaining [Certificates](comms/openvpn/certificates.html)
+-   [Wide Area Network - WAN](comms/openvpn/wan.html) using OpenVPN, with
+    a sample configuration
+-   Connecting [Windows Client](comms/openvpn/winclient.html)
+
+#### Web Services
+    
+Configure the base [Apache Server](comms/www.html) and complementary
+services such as.
+
+-   [Caching](comms/www/squid.4.9.html) for access control and
+    service utilisation.
+-   [Content Filter](comms/www/dansguardian.html) for access control
+-   [SSL Certificates](comms/www/ssl.html) for setting up your
+    own SSL sites.
 
 ### Gateways and Perimeter Systems
 
