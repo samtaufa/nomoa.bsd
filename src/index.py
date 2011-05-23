@@ -5,7 +5,7 @@ from countershape import Page, Directory, model, template, state, blog, markup, 
 this.markup = markup.Markdown(extras=["code-friendly"])
 ns.titlePrefix = "=8> nomoa.com/bsd/ "
 this.titlePrefix = ns.titlePrefix
-this.site_url = "http://www.nomoa.com/bsd/dev.html"
+this.site_url = "http://www.nomoa.com/bsd/"
 
 ns.blk_banner  = template.File(None, "../templates/_banner.tpl")
 ns.blk_relatedsites = template.File(None, "../templates/_relatedsites.tpl")
