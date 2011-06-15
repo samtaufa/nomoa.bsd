@@ -6,19 +6,42 @@ performance metrics.
 
 Various tools are available in base and ports for this purpose.
 
+<div class="toc">
+
+Table of Contents
+
 <li><a href="performance.html">Performance / Throughput</a>
     <ul>
+        <li><a href="#netstat">netstat</a>
         <li><a href="#pfstat">pfstat from ports/net</a>
-        <li><a href="#tcpbench">tcpbench from base</a>
+        <li><a href="#tcpbench">tcpbench</a>
         <li><a href="#tcpblast">tcpblast from ports/benchmarks</a>
         <li><a href="#netpipe">netpipe from ports/benchmarks</a>
     </ul>
 </li>
-    
-pfstat  is a small utility that collects packet filter statistics and
-produces graphs.
 
-### <a name="pfstat">pfstat - graphing PF performance data</a>
+</div>
+
+### <a name="netstat"></a> netstat
+
+<pre class="command-line">
+netstat -s -p carp
+</pre>
+
+<pre class="manpage">
+-s  Show per-protocol statistics.  If this option is repeated,
+    counters with a value of zero are suppressed.
+-p protocol
+    Restrict the output to protocol, which is either a well-known
+    name for a protocol or an alias for it.  Some protocol names and
+    aliases are listed in the file /etc/protocols.  The program will
+    complain if protocol is unknown.  If the -s option is specified,
+    the per-protocol statistics are displayed.  Otherwise the states
+    of the matching sockets are shown.
+</pre>
+
+    
+### <a name="pfstat"></a>pfstat - graphing PF performance data
 
 The pfstat utility can be used to collect and graph statistics exported
 through the /dev/pf pseudo-device. pfstat can be installed from the
@@ -92,7 +115,7 @@ $ pfstat -c /etc/pfstat/pfstat.conf -d /var/log/pfstat/pfstat >/dev/null
 </pre>
 
 
-### <a name="tcpbench">tcpbench</a>
+### <a name="tcpbench"></a>tcpbench
     
  $!manpage("tcpbench",1)!$ 
  is a small tool that performs throughput benchmarking and 
@@ -121,7 +144,7 @@ tcpbench server-ip
 </pre>
 
 
-### <a name="tcpblast">tcpblast</a>
+### <a name="tcpblast"></a>tcpblast
 
 tcpblast from ports/benchmarks
 measure the throughput of a TCP connection

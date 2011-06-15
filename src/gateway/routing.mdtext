@@ -68,7 +68,7 @@ a number available can be active.
 
 ### Routing Information Base
 
-Ref: [Wikipedia](http://en.wikipedia.org/wiki/Routing_Information_Base)
+&#91;Ref: [Wikipedia](http://en.wikipedia.org/wiki/Routing_Information_Base)
 
 <blockquote>
 A routing table, or Routing Information Base (RIB), is a data structure in the form of a table-like object stored in a router or a networked computer that lists the routes to particular network destinations, and in some cases, metrics associated with those routes. The routing table contains information about the topology of the network immediately around it. The construction of routing tables is the primary goal of routing protocols. 

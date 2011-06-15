@@ -14,7 +14,7 @@ Table of Contents
 
 ### <a name="lb"></a> Load Balancing
 
-Ref: [PF: Address Pools and Load Balancing](http://www.openbsd.org/faq/pf/pools.html)
+&#91;Ref: [PF: Address Pools and Load Balancing](http://www.openbsd.org/faq/pf/pools.html)
 
 Scenario: You have two or more external connections you wish to 
 more effectively utilise by sharing the external traffic across
