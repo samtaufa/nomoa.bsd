@@ -7,11 +7,11 @@ ns.titlePrefix = "=8> nomoa.com/bsd/ "
 this.titlePrefix = ns.titlePrefix
 this.site_url = "http://www.nomoa.com/bsd/"
 
-ns.blk_banner  = template.File(None, "../templates/_banner.tpl")
+ns.blk_banner       = template.File(None, "../templates/_banner.tpl")
 ns.blk_relatedsites = template.File(None, "../templates/_relatedsites.tpl")
-ns.blk_footer  = template.File(None, "../templates/_footer.tpl")
+ns.blk_footer       = template.File(None, "../templates/_footer.tpl")
 ns.blk_rss = template.File(None, "../templates/_rss.tpl")
-ns.blk_copyright = template.File(None, "../templates/_copyright.tpl")
+ns.blk_copyright    = template.File(None, "../templates/_copyright.tpl")
 
 ns.tpl_layout = countershape.Layout("../templates/_layout.tpl", bgcolor="#fffacd", onLoad="preloadImages();")
 ns.tpl_bloglayout = countershape.Layout("../templates/_blog.tpl", bgcolor="#fffacd", onLoad="preloadImages();")
@@ -115,8 +115,8 @@ def section(fname, dirname, title, pageTitle):
 
 
 ns.blog = blog.Blog(
-        blogname="!nomoa", 
-        blogdesc="echo $? in the chamber", 
+        blogname="!NO Moa 'O Sauce", 
+        blogdesc="! the echo $? chamber", 
         base="null", 
         src="../posts")
        
@@ -130,12 +130,12 @@ blogindex.namespace["blk_submenu"] = countershape.widgets.ExtendedParentPageInde
 blogindex.namespace["submenuTitle"] = "log"
 
 #blogindex.layout = ns.tpl_bloglayout
-blogindex.markup = markup.Markdown()
+blogindex.markup = markup.Markdown(extras=["code-friendly"])
 blogdir = Directory("dev")
 blogdir.namespace["blk_submenu"] = blogindex.namespace["blk_submenu"]
 blogdir.namespace["submenuTitle"] = blogindex.namespace["submenuTitle"]
 blogdir.layout = ns.tpl_bloglayout
-blogdir.markup = markup.Markdown()
+blogdir.markup = markup.Markdown(extras=["code-friendly"])
 
 pages = [    
 ]
@@ -169,93 +169,20 @@ pages += section(
             "Monitoring and Maintenance"
         )
 
-pages.extend(
-    [
-        blogindex, blogdir,
+#pages.extend(
+pages +=    [
+        blogindex, 
+        blogdir,
         ns.blog.rss( name="rss.xml", title="Nomoa.com/bsd", fullrss=True ),
     ]
-)
+#)
 
-# This should be factored out into a library and tested...
-class ShowSrc:
-    def __init__(self, d):
-        self.klass = "output"
-        self.d = os.path.abspath(d)
-    
-    def _wrap(self, proc, path):
-        f = file(os.path.join(self.d, path)).read()
-        if proc:
-            f = proc(f)
-        post = """
-<div class="filename">
-(%s)
-</div>
-"""%path
-        return f + post
+rootPath = os.path.abspath(".")
 
-    def py(self, path, **kwargs):
-        p = countershape.template.Syntax(
-                "py",
-                style="emacs",
-                linenos="inline",
-                linenostep=1,
-                cssClass="highlight"
-            )
-        return self._wrap(p, path)
-            
-    def _preProc(self, f):
-        return """
-<pre class="%s">
-%s
-</pre>
-""" % (self.klass, f)
+def showsrc(path):        
+    return readFrom(os.path.join(rootPath, path))
 
-    def plain(self, path):
-        p = countershape.template.Syntax(
-                "xml",
-                style="emacs",
-                linenos="inline",
-                linenostep=1,
-                cssClass="highlight"
-            )
-        return self._wrap(p, path)
-
-    def script(self, path):
-        p = countershape.template.Syntax(
-                "bash",
-                style="trac",
-                linenos="inline",
-                linenostep=1,
-                cssClass="highlight"
-            )
-        return self._wrap(p, path)
-
-    def config(self, path):
-        p = countershape.template.Syntax(
-                "apache",
-                style="colorful",
-                linenos="inline",
-                linenostep=1,
-                cssClass="highlight"
-            )
-        return self._wrap(p, path)
-
-    def pry(self, path, args):
-        cur = os.getcwd()
-        os.chdir(os.path.join(self.d, path))
-        prog = os.path.join(self.d, "doc")
-        pipe = subprocess.Popen(
-                    "%s "%prog + args,
-                    shell=True,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE
-                ).stdout
-        os.chdir(cur)
-
-        content = "> pry %s\n"%args + pipe.read()
-        return self._preProc(content)
-
-ns.showsrc = ShowSrc(".")
+ns.showsrc = showsrc
 ns.breadcrumbs = countershape.widgets.PageTrail
 
 def manpage(keyword, sektion=None, arch=None):
