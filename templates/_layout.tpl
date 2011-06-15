@@ -12,6 +12,7 @@
         </div>  
         <div class="yui-b">
             <!-- Navigation -->
+            <div> $!blk_rss!$ </div>            
             @!blk_sidemenu!@
         </div>   
     </div>  

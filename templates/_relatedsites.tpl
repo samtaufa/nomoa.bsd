@@ -1,6 +1,7 @@
 <!-- <div id="relatedsites"> -->
+    $!blk_rss!$
+    
     <h3> U R Ls</h3>
-
     <b>The OS</b>
 
     <ul>

@@ -7,6 +7,7 @@
             <div style="" class="yui-b">$!body!$</div>
         </div>
         <div style="" class="yui-b">
+            <div> $!blk_rss!$ </div>
             <div> @!blk_sidemenu!@</div>
         </div>
     </div>

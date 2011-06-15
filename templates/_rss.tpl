@@ -1,1 +1,1 @@
-<a class="rss" href='@!urlTo("/rss.xml")!@'>Posts RSS</a>
+<a class="rss" href='@!urlTo("/rss.xml")!@'>RSS</a>
