@@ -12,7 +12,7 @@
 
 </div>
 
-[ ref $!manpage("rc",8)!$, $!manpage("rc.conf",8)!$ ]
+[ ref OpenBSD 4.9, $!manpage("rc",8)!$, $!manpage("rc.conf",8)!$ ]
 
 OpenBSD's startup instructions are built into the script /etc/rc
 "command scripts for system startup" which are normally configured 
@@ -21,30 +21,61 @@ through the 'localised' files:
 - /etc/rc.conf.local
 - /etc/rc.local
 
-We don't make updates to the 'standard' files __rc__ or __rc.conf__
-because this will simplify upgrading to future versions of the
+We do not make updates to the 'standard' files __rc__ or __rc.conf__
+because this discipline will simplify upgrading to future versions of the
 Operating System. We make our modifications to 'localised' versions. 
 rc.conf.local is the localised version for rc.conf, and rc.local 
 is the localised additions to to rc.
 
-rc.conf - contains 'configuration' options for rc, so we can modify
-rc's behaviour by making configuration changes to our 'localised'
-version rc.conf.local. 
+With 4.9, OpenBSD introduced rcscripts $!manpage("rc.d")!$ the use of
+scripts stored in /etc/rc.d and are started by an entry in the /etc/rc.conf.local
+
+<pre class="config-file">
+rc_scripts="script1 script2 script3"
+</pre>
+
+/etc/rc.conf - contains 'configuration' options for startup instructions in /etc/rc. 
+To modify /etc/rc's behaviour, we create the 'localised' configuration file /etc/rc.conf.local
+and copy the flag you want to modify, and set the parameter changes. 
 
 The configuration options may include variable/feature assignments such as:
+
+File: /etc/rc.conf
 
 <pre class="config-file">
 httpd_flags=NO
 </pre>
 
-One suggested procedure is to copy rc.conf
-as your new rc.conf.local and delete the last two lines. Make your
-configuration changes to this rc.conf.local and it overrides the
-default settings in the 'original' rc.conf.
+The preferred methodology is to copy rc.conf as your new rc.conf.local and 
+**delete the last two lines**. 
+
+<pre class="command-line">
+# cp /etc/rc.conf /etc/rc.conf.local
+</pre>
+
+Lines to delete from /etc/rc.conf.local
+
+<pre class="config-file">
+local_rcconf="/etc/rc.conf.local"
+
+[ -f ${local_rcconf} ] && . ${local_rcconf} # Do not edit this line
+</pre>
+
+
+Make your configuration changes to rc.conf.local and it overrides the 
+default settings in rc.conf.
 
 For example: the apache web server is not started by default, but by
 adding a configuration entry into rc.conf.local, we tell OpenBSD
 to start the apache server, with specific options.
+
+File: /etc/rc.conf
+
+<pre class="config-file">
+httpd_flags=NO
+</pre>
+
+File: /etc/rc.conf.local
 
 <pre class="config-file">
 httpd_flags=""

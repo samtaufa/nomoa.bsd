@@ -1,6 +1,12 @@
 from countershape.doc import *
+import countershape
 
 this.titlePrefix = ns.titlePrefix + "[Build | Install] "
+
+ns.blk_sidemenu = countershape.widgets.SiblingPageIndex(
+                '/build/install/useradmin.html',
+        )
+
 
 pages = [
 

@@ -160,7 +160,7 @@ of this information using the '$!manpage('chpass')!$' command (discussed below).
 
 #### Changing User Information 
     
- &#91;Ref: $!manpage('chpass',1)!$, $!manpage('vipw',8)!$]</p>
+&#91;Ref: $!manpage('chpass',1)!$, $!manpage('vipw',8)!$]
 
 Once you've configured the base system for working, we can look at basic configuration of users. Note, for those
 with some previous Unix experience, Do not just edit /etc/passwd or /etc/Master.passwd

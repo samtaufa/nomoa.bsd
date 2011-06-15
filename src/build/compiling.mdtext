@@ -138,4 +138,6 @@ mkdir -p ${DESTDIR} ${RELEASEDIR}
 make release
 </pre>
 
-$!showsrc.script("build/compiling/mkopenbsd.sh")!$
+<!--( block | syntax("bash") )-->
+$!showsrc("build/compiling/mkopenbsd.sh")!$
+<!--(end)-->

@@ -137,7 +137,9 @@ of log files (simple cut-off dates 'monthly'.)
 
 Edit: /etc/newsyslog.conf
 
-$!showsrc.config("build/newsyslog.conf")!$
+<!--( block | syntax("apache") )-->
+$!showsrc("build/newsyslog.conf")!$
+<!--(end)-->
 
 In the context on some of the servers we continue to manage, we
 have additional/different entries such as the below:
@@ -336,7 +338,7 @@ ForwardAgent yes
 
 #### <a name="sc.sysctl"></a> sysctl.conf - System Startup Knobs
 
-[Ref: $!manpage("sysctl.conf",5)!$, $!manpage("sysctl",8)!$ ]
+&#91;Ref: $!manpage("sysctl.conf",5)!$, $!manpage("sysctl",8)!$ ]
 
 Disable unnecessary features.
 
@@ -615,7 +617,9 @@ File: /etc/backup.configs.exclude
 
 File: backup.configs.sh
 
-$!showsrc.config("build/install/backup.configs.sh")!$
+<!--(block | syntax("bash") )-->
+$!showsrc("build/install/backup.configs.sh")!$
+<!--(end)
 
 The sample script may be a bit too verbose, cut it down for your own
 needs.
@@ -626,7 +630,9 @@ Install and review the **archlog** script
 
 File: archlogs
 
-$!showsrc.config("build/install/archlogs")!$
+<!--(block | syntax("apache") )-->
+$!showsrc("build/install/archlogs")!$
+<!--(end)-->
 
 The sample script may be a bit too verbose, cut it down for your own
 needs.
@@ -643,4 +649,6 @@ hosts not accessible from other hosts. The backup.peer.configs.sh script is
 responsible for hosts hidden behind this host (such as CARP peers without
 accessible IP addresses, or hosts behind a firewall.)
 
-$!showsrc.config("build/install/backup.peer.configs.sh")!$
+<!--(block | syntax("bash"))-->
+$!showsrc("build/install/backup.peer.configs.sh")!$
+<!--(end)-->

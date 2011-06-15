@@ -1,6 +1,11 @@
 from countershape.doc import *
+import countershape
 
 this.titlePrefix = ns.titlePrefix + "[Build | Consistency] "
+
+ns.blk_sidemenu = countershape.widgets.SiblingPageIndex(
+                '/build/consistency/auscert.html',
+        )
 
 pages = [
             

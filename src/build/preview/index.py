@@ -1,8 +1,14 @@
 from countershape.doc import *
-from countershape import  markup
+import countershape
 
-this.markup = markup.Markdown()
+from countershape import  markup
+this.markup = markup.Markdown(extras=["code-friendly"])
 this.titlePrefix = ns.titlePrefix + "[Build | Preview] "
+
+ns.blk_sidemenu = countershape.widgets.SiblingPageIndex(
+                '/build/preview/partitioning.html',
+        )
+
 
 pages = [
     Page("partitioning.mdtext",

@@ -130,4 +130,6 @@ mount -t cd9660 /dev/cd0c /mnt
 
 ## Appendix
 
-$!showsrc.py("build/compiling/mkopenbsd.sh")!$
+<!--( block | syntax("py") )-->
+$!showsrc("build/compiling/mkopenbsd.sh")!$
+<!--(end)-->
