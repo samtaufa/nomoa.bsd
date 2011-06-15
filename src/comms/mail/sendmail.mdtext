@@ -546,7 +546,7 @@ eee.fff.ggg.hhh myhost.example.com myhost
 
 #### <a name="relay"></a> Relaying access denied
 
-[Ref OpenBSD <a
+&#91;Ref: OpenBSD <a
  href="http://www.openbsd.org/faq/faq10.html">FAQ - 10.0 System
 Management</a> -&gt; <a
  href="http://www.openbsd.org/faq/faq10.html#10.4">10.4 ... Relay
