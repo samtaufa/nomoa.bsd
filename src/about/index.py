@@ -1,7 +1,7 @@
 from countershape.doc import *
 import countershape
-from countershape import  markup
-this.markup = markup.Markdown()
+#from countershape import  markup
+#this.markup = markup.Markdown(extras=["code-friendly"])
 
 this.layout = ns.tpl_layout
 
@@ -13,15 +13,15 @@ this.titlePrefix = ns.titlePrefix + "[About] "
 
    
 pages = [
-    Page("site.mdtext",
+    Page("site.md",
         title="Site Info",
         pageTitle="Site Information"),
         
-    Page("directions.mdtext",
+    Page("directions.md",
         title="Directions",
         pageTitle="Future Site Directions"),
 		
-    Page("guides.mdtext",
+    Page("guides.md",
         title="Guides",
         pageTitle="The Guides"),
 ]
