@@ -1,5 +1,7 @@
 ## FlowViewer - Custom Graphs and Analysis
 
+&#91;Ref: OpenBSD 4.8 amd64, 4.9 amd64 & i386]
+
 <div class="toc">
 
 Table of Contents
@@ -22,7 +24,10 @@ Now we have some analysis tools going, we have a basic workflow
 for pro-active investigation of what's happening on our network:-
 
 -	Smokeping shows a spike in traffic latency on your link.
--	CUFlow isolates the ports used in the traffic
+-	CUFlow assists in isolating various parts of the traffc including:
+    -   specific time period, 
+    -   Networks and Servers (Network, Subnet)
+    -   Protocol and Ports (Services)
 -	Now what ?
 
 Enter, FlowViewer (for those who don't want to investigate at
@@ -54,18 +59,14 @@ If you got here, without installing and testing the [FlowScan/CUFlow](
 flow.flowscan.html), things should work but interpretation of data
 will really need more support from the above book.
 
-The Binaries
+The Package Binaries
 
-- 	RRDtool, installed 1.2.30p0 from packages which includes 
-	dependencies png and libart
-- 	gd 2.0.35 installed from packages (graphics/gd)
-- 	gd::graph (p5-GD-Graph-1.44 from ports)
+- 	RRDtool (rrdtool from packages, includes dependencies libiconv, jpeg)
+- 	gd 2.0.35 (gd from packages )
+- 	gd::graph (p5-GD-Graph from packages, includes dependencies p5-GD-TextUtil)
+-   GDBM_File (p5-GDBM_File from packages, includes dependencies gdbm)
 	
-The Perl Modules (install from CPAN, if ports version is not current enough)
-
-- GDBM
-
-#### The Binaries
+#### The Package Binaries
 
 The binaries should be installable from the Ports/Packages.
 Check the website for what services require the binaries,
@@ -74,22 +75,6 @@ so while we're learning, just install everything.
 
 In summary, we need the gd related tools for graphing (e.g. FlowGrapher)
 and the RRD tool for Tracking, charting with tracking data.
-
-#### The Perl Modules
-
-<pre class="command-line">
-# perl -MCPAN -e shell
-</pre>
-<pre class="screen-output">
-Terminal does not support AddHistory.
-
-cpan shell -- CPAN exploration and modules installation (v1.9402)
-Enter 'h' for help.
-</pre>
-<pre class="command-line">
-cpan[1]> install GDBM
-cpan[2]> quit
-</pre>
 
 ### <a name="install"></a> Install
 
@@ -122,11 +107,7 @@ curl -O http://ensight.eos.nasa.gov/FlowViewer/FlowViewer_3.4.tar
 
 #### 1. Copy to Install
 
-Untar/copy the files to our destination path: /var/www/flowviewer
-
-The next part, after copying the files in the appropriate path
-(/var/www/flowviewer/) is to customise how you want your
-paths to look.
+Untar/copy the files to our destination path: /var/www/cgi-bin/FlowViewer
 
 #### 2. Modify FlowViewer_Configuration.pm
 
@@ -139,49 +120,72 @@ with FlowViewer 3.3.1 and 3.4. Your Mileage May Vary (YMMV)
 File: FlowViewer_Configuration.pm
 
 <!--(block  | syntax("perl") )-->
-$FlowViewer_server       = "192.168.21.193";     # (IP address or hostname)
-
-$reports_directory       = "/var/www/htdocs/FlowViewer";
-$reports_short           = "/FlowViewer";
-$graphs_directory        = "/var/www/htdocs/FlowGrapher";
-$graphs_short            = "/FlowGrapher";
-$tracker_directory       = "/var/www/htdocs/FlowTracker";
-$tracker_short           = "/FlowTracker";
-$cgi_bin_directory       = "/var/www/cgi-bin/FlowViewer";
-$cgi_bin_short           = "/cgi-bin/FlowViewer";
-$work_directory          = "/var/www/htdocs/FlowWorking";
-$work_short              = "/FlowWorking";
-$save_directory          = "/var/www/htdocs/FlowViewer";
-$save_short              = "/FlowViewer";
-$names_directory         = "/var/www/var/flowviewer/names";
-$filter_directory        = "/var/www/var/flowviewer/filters";
-$rrdtool_directory       = "/var/www/var/flowviewer/rrdtool";
-
-$flow_data_directory     = "/var/netflow";
-$exporter_directory      = "/var/www/var/flowviewer/exporter";
-$flow_bin_directory      = "/usr/local/bin";
-$rrdtool_bin_directory   = "/usr/local/bin";
+$FlowViewer_server       = "10.0.0.2";     # (IP address or hostname)
 
 $trackings_title         = "My Company Title";
 $user_logo               = "My.Company.Logo.jpg";  # For a nice look make your logo 86 pixels high
 $user_hyperlink          = "http://www.example.com/";
 
-@devices                  = ("mygatewayMN");
-@exporters               = ("mygatewayMN_ipaddress:mygateway MN Title");
+@devices                  = ("sensorXY");
+#@exporters               = ("sensorXY_ipaddress:sensorXY Title");
+<!--(end)-->
+
+Basic configuration of titles and what sensors are being reviewed.
+
+<!--(block  | syntax("perl") )-->
+$fviewdocs               = "/var/www/flowviewer";
+$fviewwork                = "/var/www/var/flowviewer";
+$reports_directory       = "$fviewdocs";
+$reports_short           = "/FlowViewer";
+$graphs_directory        = "$fviewdocs/FlowGrapher";
+$graphs_short            = "/FlowViewer/FlowGrapher";
+$tracker_directory       = "$fviewdocs/FlowTracker";
+$tracker_short           = "/FlowViewer/FlowTracker";
+$cgi_bin_directory       = "/var/www/cgi-bin/FlowViewer";
+$cgi_bin_short           = "/cgi-bin/FlowViewer";
+$work_directory          = "$fviewdocs/FlowWorking";
+$work_short              = "/FlowViewer/FlowWorking";
+$save_directory          = "$fviewdocs";
+$save_short              = "/FlowViewer";
+$names_directory         = "$fviewwork/names";
+$filter_directory        = "$fviewwork/filters";
+$rrdtool_directory       = "$fviewwork/rrd";
+<!--(end)-->
+
+URL Paths as matched to file directories.
+
+<!--(block  | syntax("perl") )-->
+$flow_data_directory     = "/var/netflow";
+$exporter_directory      = "/var/www/var/flowviewer/exporter";
+$flow_bin_directory      = "/usr/local/bin";
+$rrdtool_bin_directory   = "/usr/local/bin";
 
 $log_directory      = "/var/www/var/flowviewer/log";
 <!--(end)-->
 
 During the initial startup of the CGI scripts, they will attempt to
 create the relevant reporting paths. Otherwise, you can execute something
-like the below script to manually create those paths:
+like the below script to manually create those paths and set
+permissions where appropriate:
 
-<!--(block  | syntax("py") )-->
-for d in `cat FlowViewer_Configuration.pm | grep directory | awk -F \" '{ print $2 }'`; \
-    do mkdir -p $d/; chmod -R a=rwx $d/; done
+<!--(block  | syntax("bash") )-->
+fviewdocs=/var/www/flowviewer
+fviewwork=/var/www/var/flowviewer
+for d in FlowGrapher FlowTracker FlowWorking; \
+    do mkdir -p $fviewdocs/$d/; chmod -R a=rwx $fviewwork/$d/; done
+for d in names filters rrd exporter log; \
+    do mkdir -p $fviewwork/$d/; chmod -R a=rwx $fviewwork/$d/; done
 <!--(end)-->
 
-Of course, you need to realise what changing the above will do.
+Of course, you need to realise what changing the above will do. Review, try and if it 
+doesn't work for you, fix-it and try again (tm)
+
+Copy some of the images to the new "working-directories"
+
+<!--(block  | syntax("bash") )-->
+cp /var/www/cgi-bin/FlowViewer/Generic_Logo.jpg $fviewdocs
+cp /var/www/cgi-bin/FlowViewer/FlowViewerS.png $fviewdocs
+<!--(end)-->
 
 #### Startup
 
@@ -191,9 +195,9 @@ daemons to collate the data.
 Updates to */etc/rc.local*
 
 <!--(block  | syntax("bash") )-->
-PERL5LIB=/var/www/flowviewer/ /var/www/flowviewer/FlowTracker_Collector \
+PERL5LIB=/var/www/cgi-bin/FlowViewer/ /var/www/cgi-bin/FlowViewer/FlowTracker_Collector \
 	>> /var/log/FlowTracker_Collector.log 2>&1 &
-PERL5LIB=/var/www/flowviewer/ /var/wwwflowviewer/FlowTracker_Grapher \
+PERL5LIB=/var/www/cgi-bin/FlowViewer/ /var/www/cgi-bin/FlowViewer/FlowTracker_Grapher \
 	>> /var/log/FlowTracker_Grapher.log 2>&1  &
 <!--(end)-->
 
@@ -210,9 +214,10 @@ File extract: /var/www/conf/httpd.conf
 Alias /FlowViewer/ /var/www/flowviewer/
 
 <Directory /var/www/flowviewer/>
-	Options +ExecCGI
-	AddHandler cgi-script .cgi
-	Allow from [list-of-trusted-hosts]
+	Options Indexes MultiViews
+    AllowOverride None
+    Order allow,deny
+    Allow from [list.of.ips.you.trust]
 </Directory>
 <!--(end)-->
 
@@ -223,7 +228,7 @@ And now, we can point our browser to the above site to start looking
 at reports:
 
 <pre class="config-file">
-http://collector_ipaddress/FlowViewer/FlowViewer.cgi
+http://collector-ip-address/FlowViewer/FlowViewer.cgi
 </pre>
 
 Fortunately, that single online URL can connect you to other

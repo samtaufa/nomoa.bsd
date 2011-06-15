@@ -34,9 +34,9 @@ srcIP            dstIP            prot  srcPort  dstPort  octets      packets
 10.1.0.7         192.168.20.61    6     1116     1117     40          1
 192.168.20.61    10.1.0.7         6     1117     1116     48          1
 10.1.0.7         192.168.20.61    6     1116     1117     40          1
-192.168.110.33   192.168.13.38    17    10830    53       432         6
-192.168.13.38    192.168.110.33   17    53       10830    168         3
-192.168.110.33   192.168.13.38    17    10830    53       432         6
+192.168.110.33   10.0.0..38    17    10830    53       432         6
+10.0.0..38    192.168.110.33   17    53       10830    168         3
+192.168.110.33   10.0.0..38    17    10830    53       432         6
 192.168.144.104  192.168.18.65    6     2680     1116     393         5
 192.168.18.65    192.168.144.104  6     1116     2680     128         3
 </pre>
@@ -46,9 +46,9 @@ sensor. In the above screen-output:
 
 -	2 packets were sent from 192.168.20.61 to 10.1.0.7. 
 -	2 packets seem to be alternated response
--	6 packets were sent from 192.168.110.33 to 192.168.13.38 
+-	6 packets were sent from 192.168.110.33 to 10.0.0..38 
 -	3 packet response?
--	6 packets were sent from 192.168.110.33 to 192.168.13.38 
+-	6 packets were sent from 192.168.110.33 to 10.0.0..38 
 -	5 packets were sent from 192.168.144.104 to 192.168.18.65
 -	3 packet response?
 
@@ -60,7 +60,7 @@ protocols in the communications.
 
 &#91;Ref: [Iana IPv4 Protocol Numbers](http://www.iana.org/assignments/protocol-numbers/protocol-numbers.xml)]
 
-192.168.110.33 and 192.168.13.38 seem to be:
+192.168.110.33 and 10.0.0..38 seem to be:
 
 -	exchanging Domain Name Services(DNS) (port 53) queries. 
 -	432 octets (bytes) to make the request, and 
