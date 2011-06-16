@@ -1,0 +1,44 @@
+Watching over your wall
+time: 2011-06-10 15:39
+
+As networks continue to grow, sometimes against our wishes, sometimes with 
+our full support, it becomes more important to get some overview of how
+and what is moving across your network(s.)
+
+In the beginning, in a land far away, we only had a few machines wired
+up and life was simple.
+
+Now, most of us have too many machines with an unknown quantity of malware
+pounding on them (and subsequently on your network.) That's before
+we even get to our beloved users.
+
+
+
+If you get blamed when things go bad on your network, it's time you started
+taking charge of knowing what's going across your network. 
+[Michael W. Lucas'](http://www.michaelwlucas.com) published an insightful
+book to help us with that [Network Flow Analysis.](http://networkflowanalysis.com)
+More importantly, for us, is that he chose to describe the solution
+using tools accessible to everyone (aka Open Source.) We've finally cleaned
+up some internal notes for getting the software to work well in our 
+favourite os (tm) $!OpenBSD!$
+
+These notes augment the installation instructions from that book.
+Where the human factor is important, in customisation/localisation,
+interpretation, we don't do any of that here. 
+
+[Buy the book](http://www.nostarch.com/networkflow_mlucas.htm).
+
+Now you're back, follow through to find out how we put it together for 
+[Netflow with flow-tools](@!urlTo("monitoring/netflow.html")!@)
+
+It's saved our bacon a number of times, we know who's packets are causing
+congestion, what times congestions occur, why things occur. AND, we
+can print out those meaningless charts that senior dweebs nod their
+heads and just love.
+
+[Michael W. Lucas](http://www.michaelwlucas.com) has some war stories
+where traffic flow monitoring has helped him out, and we can attest
+to it's daily, weekly value.
+
+Our notes on [Netflow with flow-tools](@!urlTo("monitoring/netflow.html")!@)
