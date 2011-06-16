@@ -7,19 +7,19 @@ this.titlePrefix = ns.titlePrefix + "[Communications | OpenVPN] "
 
 pages = [
    
-    Page("certificates.mdtext", 
+    Page("certificates.md", 
         title="Certificates",
         pageTitle=""),
         
-    Page("server.mdtext", 
+    Page("server.md", 
         title="Server",
         pageTitle=""),
 
-    Page("wan.mdtext", 
+    Page("wan.md", 
         title="WAN",
         pageTitle="Wide Area Network"),
         
-    Page("winclient.mdtext", 
+    Page("winclient.md", 
         title="Win Clients",
         pageTitle="Windows Clients"),
         

@@ -11,43 +11,43 @@ ns.blk_sidemenu = countershape.widgets.SiblingPageIndex(
 
 
 pages = [
-    Page("partitioning.mdtext",
+    Page("partitioning.md",
         title="1. Partitioning", 
         pageTitle="Drive Partitioning"),
         
-    Page("removablestorage.mdtext",
+    Page("removablestorage.md",
         title="2. Removable", 
         pageTitle="Removable Storage"),
         
-    Page("packagemanagement.mdtext",
+    Page("packagemanagement.md",
         title="3. Packages", 
         pageTitle="Package Management"),
         
-    Page("usermanagement.mdtext",
+    Page("usermanagement.md",
         title="4. Users", 
         pageTitle="User Management"),
         
-    Page("afterboot.mdtext",
+    Page("afterboot.md",
         title="5. After Boot", 
         pageTitle="After Boot"),
         
-    Page("misc.mdtext",
+    Page("misc.md",
         title="6. Miscellaneous", 
         pageTitle="Miscellaneous"),
         
-    Page("multiboot.mdtext",
+    Page("multiboot.md",
         title="7. Dual Boot", 
         pageTitle="Dual Boot"),
         
-    Page("rc.conf.mdtext",
+    Page("rc.conf.md",
         title="8. Start Up", 
         pageTitle="Start Up Configuration"),
         
-    Page("hardware.mdtext",
+    Page("hardware.md",
         title="9. Hardware Tests", 
         pageTitle="Hardware Tests"),
         
-    Page("cryptpart.mdtext",
+    Page("cryptpart.md",
         title="10. Cyphered Disks", 
         pageTitle="Encrypting Partitions"),
         

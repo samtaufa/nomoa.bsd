@@ -8,7 +8,7 @@ ns.blk_sidemenu = countershape.widgets.SiblingPageIndex(
         )
 
 pages = [
-    Page("buildiso.mdtext", 
+    Page("buildiso.md", 
         title="Build ISO", 
         pageTitle="Building an Install ISO"),
 ]

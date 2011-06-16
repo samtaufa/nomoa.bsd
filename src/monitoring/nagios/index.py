@@ -10,7 +10,7 @@ this.titlePrefix = ns.titlePrefix + "[Nagios] "
 
 pages = [
                
-	Page("sms.mdtext",
-		title="SMS",
-		pageTitle="Simple Message System"),
+    Page("sms.md",
+        title="SMS",
+        pageTitle="Simple Message System"),
 ]

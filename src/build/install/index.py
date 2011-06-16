@@ -10,23 +10,23 @@ ns.blk_sidemenu = countershape.widgets.SiblingPageIndex(
 
 pages = [
 
-    Page("checklist.mdtext", 
+    Page("checklist.md", 
         title="Checklist", 
         pageTitle="Checklist"),    
 		
-    Page("useradmin.mdtext", 
+    Page("useradmin.md", 
         title="User Admin", 
         pageTitle="User Administration"),    
 
-    Page("usercreate.mdtext",
+    Page("usercreate.md",
         title="User Creation", 
         pageTitle="User Creation"),
             
-    Page("userdelete.mdtext",
+    Page("userdelete.md",
         title="User Deletion", 
         pageTitle="User Deletion"),
         
-    Page("sudoers.mdtext", 
+    Page("sudoers.md", 
         title="Sudo Users", 
         pageTitle="sudo Users"),
 ]

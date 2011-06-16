@@ -13,17 +13,17 @@ ns.blk_sidemenu = countershape.widgets.SiblingPageIndex(
 this.titlePrefix = ns.titlePrefix + "[Gateway Services] "
 
 pages = [
-    Page("highavailability.mdtext", 
+    Page("highavailability.md", 
         title="High Availability",
         pageTitle="High Availability Gateways"),
     Directory("highavailability"),
     
-    Page("pf.mdtext", 
+    Page("pf.md", 
         title="Firewall",
         pageTitle="Firewalls with Packet Filter PF"),
     Directory("pf"),
 
-    Page("routing.mdtext", 
+    Page("routing.md", 
         title="Routing",
         pageTitle="Gateways and Routing"),
     Directory("routing"),

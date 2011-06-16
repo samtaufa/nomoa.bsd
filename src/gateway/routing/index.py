@@ -4,11 +4,11 @@ this.titlePrefix = ns.titlePrefix + "[Gateway | Routing] "
 
 pages = [
 
-    Page("bgp.mdtext", 
+    Page("bgp.md", 
         title="BGP", 
         pageTitle="Routing with OpenBSD BGPD"),
         
-    Page("cisco.mdtext", 
+    Page("cisco.md", 
         title="Cisco", 
         pageTitle="Routing with Cisco Routers/Switches"),
     Directory("cisco"),

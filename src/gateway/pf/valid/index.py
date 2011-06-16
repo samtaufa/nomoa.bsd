@@ -3,23 +3,23 @@ from countershape.doc import *
 this.titlePrefix = ns.titlePrefix + "[Gateway | Firewall | Validation] "
 
 pages = [
-    Page("pfctl.mdtext", 
+    Page("pfctl.md", 
         title="1. pfctl",
         pageTitle="pfctl PF Userland Control Tool"),
 
-    Page("flow.mdtext", 
+    Page("flow.md", 
         title="2. Traffic Flow",
         pageTitle="Firewall Traffic Flow"),
         
-    Page("performance.mdtext", 
+    Page("performance.md", 
         title="3. Performance",
         pageTitle="Firewall Performance Review"),
         
-    Page("validation.mdtext", 
+    Page("validation.md", 
         title="4. Validation",
         pageTitle="Firewall Ruleset Validation"),
     
-    Page("other.mdtext", 
+    Page("other.md", 
         title="5. Tools",
         pageTitle="Firewall - Ancilliary Tools"),
 ]

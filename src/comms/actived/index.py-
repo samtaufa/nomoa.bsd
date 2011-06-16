@@ -4,11 +4,11 @@ from countershape.doc import *
 ns.docTitle = "Active Directory"
 
 pages = [   
-        Page("samba.html", 
+        Page("samba.md", 
         title="Samba", 
         pageTitle="Samba"),
 
-        Page("squid.html", 
+        Page("squid.md", 
         title="Squid", 
         pageTitle="Squid"),
 ]

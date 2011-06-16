@@ -10,7 +10,7 @@ this.titlePrefix = ns.titlePrefix + "[Configuration] "
 
 pages = [
                
-	Page("install.mdtext",
-		title="Install",
-		pageTitle="Simple Message System"),
+        Page("install.md",
+            title="Install",
+            pageTitle="Simple Message System"),
 ]

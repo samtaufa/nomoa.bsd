@@ -15,22 +15,22 @@ this.titlePrefix = ns.titlePrefix + "[Build Consistency] "
 
 pages = [
        
-    Page("preview.mdtext",
+    Page("preview.md",
         title="Preview", 
         pageTitle="Pre Installation"),
     Directory("preview"),
             
-    Page("install.mdtext", 
+    Page("install.md", 
         title="Install", 
         pageTitle="Base Install"),
     Directory("install"),
     
-    Page("compiling.mdtext", 
+    Page("compiling.md", 
         title="Compiling", 
         pageTitle="Compiling from Src"),
     Directory("compiling"),
     
-    Page("consistency.mdtext",
+    Page("consistency.md",
         title="Consistency", 
         pageTitle="Consistency"),
     Directory("consistency"),

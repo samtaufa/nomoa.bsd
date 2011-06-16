@@ -6,23 +6,23 @@ from countershape.doc import *
 this.titlePrefix = ns.titlePrefix + "[Communications | Mail] "
 
 pages = [
-    Page("sendmail.mdtext",
+    Page("sendmail.md",
         title="Sendmail",
         pageTitle=""),
 
-    Page("dovecot.mdtext",
+    Page("dovecot.md",
         title="Client Access",
         pageTitle="'dovecot' POP3, IMAP Connection"),
         
-    Page("web.mdtext",
+    Page("web.md",
         title="Web",
         pageTitle="Web Clients"),
         
-    Page("validate.mdtext",
+    Page("validate.md",
         title="Validate",
         pageTitle="Validate Connectivity"),
         
-    Page("postfix.mdtext",
+    Page("postfix.md",
         title="Postfix",
         pageTitle="Postfix Mail Server"),
         

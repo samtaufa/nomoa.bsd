@@ -10,23 +10,23 @@ this.titlePrefix = ns.titlePrefix + "[Netflow] "
 
 pages = [
                
-    Page("sensor.mdtext", 
+    Page("sensor.md", 
         title="Sensor",
         pageTitle="Sensor"),    
 
-    Page("collector.mdtext", 
+    Page("collector.md", 
         title="Collector",
         pageTitle="Collector"),    
 
-	Page("flow.views.mdtext",
+	Page("flow.views.md",
 		title="Flow - Console",
 		pageTitle="netflow Views"),
 
-	Page("flow.flowscan.mdtext",
+	Page("flow.flowscan.md",
 		title="Flow - Graphs",
 		pageTitle="netflow Graphs - Flowscan and CUFlow"),
 
-	Page("flow.flowviewer.mdtext",
+	Page("flow.flowviewer.md",
 		title="Flow - Custom",
 		pageTitle="netflow Graphs - FlowViewer"),
 ]

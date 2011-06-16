@@ -14,26 +14,26 @@ this.titlePrefix = ns.titlePrefix + "[Monitoring] "
 
 pages = [
                
-    Page("announcements.mdtext", 
+    Page("announcements.md", 
         title="Announcements",
         pageTitle="Announcements"),    
 
-    Page("configuration.mdtext", 
+    Page("configuration.md", 
         title="Configuration",
         pageTitle="Configuration Management"),    
-	Directory ("config"),
+    Directory ("config"),
 
-    Page("nagios.mdtext", 
+    Page("nagios.md", 
         title="Nagios",
         pageTitle="Nagios Monitoring"),    
-	Directory ("nagios"),
+    Directory ("nagios"),
         
-    Page("netflow.mdtext", 
+    Page("netflow.md", 
         title="Netflow",
         pageTitle="Netflow"),    
     Directory("netflow"),    
-	
-    Page("smokeping.mdtext",
+    
+    Page("smokeping.md",
         title="Smokeping",
         pageTitle="Smokeping"),
     

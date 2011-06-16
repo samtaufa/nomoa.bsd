@@ -9,15 +9,15 @@ ns.blk_sidemenu = countershape.widgets.SiblingPageIndex(
 
 pages = [
             
-    Page("auscert.mdtext",
+    Page("auscert.md",
         title="auscert - Build", 
         pageTitle="auscert - Build Checklist"),
             
-    # Page("diagnostics.mdtext",
-        # title="Diagnostics", 
-        # pageTitle="Build Diagnostics"),
+    Page("diagnostics.md",
+        title="Diagnostics", 
+        pageTitle="Build Diagnostics"),
             
-    # Page("monitoring.mdtext",
+    # Page("monitoring.md",
         # title="Monitoring", 
         # pageTitle="Monitoring"),
             
