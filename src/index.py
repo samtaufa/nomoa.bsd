@@ -42,8 +42,8 @@ this.stdHeaders = [
     model.UrlTo("media/css/syntax.css"),
     
     model.UrlTo("media/js/imagerollover.js"),
-    model.UrlTo("media/js/menu.js"),
-    model.UrlTo("media/js/simpletreemenu.js"),
+#    model.UrlTo("media/js/menu.js"),
+#    model.UrlTo("media/js/simpletreemenu.js"),
 ]
     
 ns.OpenBSD="<a href=\"http://www.openbsd.org\" title=\"Click through to the Project Website\">OpenBSD</a>"
