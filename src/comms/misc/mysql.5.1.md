@@ -169,8 +169,10 @@ _mysql:*************:502:502:mysqld:0:0:MySQL Account:/nonexistent:/sbin/nologin
 we can do that we need to temporarily start mysql.
 
 <pre class="command-line">
-/usr/local/bin/mysqld_safe &amp;
-/usr/local/bin/mysqladmin -u root password mypassword
+/etc/rc.d/mysqld start
+/usr/local/bin/mysqladmin -u root password 'new-password'
+/usr/local/bin/mysqladmin -u root -h hostname.example.com password 'new-password'
+
 </pre>
 
 If you already have accounts/users on the system, it is possible that
@@ -182,12 +184,7 @@ For example, after 'mysqld_safe &amp;' do something like the below.
 (courtesy of <a href="http://www.revunix.tk/">http://www.revunix.tk/</a>)
 
 <pre class="command-line">
-/usr/local/bin/mysqld_safe &amp;
-</pre>
-<pre class="screen-output">
-time-stamp mysqld_safe Logging to '/var/mysql/hostname.example.com.err'.
-time-stamp mysqld_safe Starting mysqld daemon with databases from /var/mysql
-</pre>
+/etc/rc.d/mysqld start
 /usr/local/bin/mysql -u root
 </pre>
 
