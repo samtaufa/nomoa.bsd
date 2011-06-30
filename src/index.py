@@ -42,11 +42,9 @@ this.stdHeaders = [
     model.UrlTo("media/css/syntax.css"),
     
     model.UrlTo("media/js/imagerollover.js"),
-#    model.UrlTo("media/js/menu.js"),
-#    model.UrlTo("media/js/simpletreemenu.js"),
 ]
     
-ns.OpenBSD="<a href=\"http://www.openbsd.org\" title=\"Click through to the Project Website\">OpenBSD</a>"
+ns.OpenBSD="<a href=\"http://www.openbsd.org\" title=\"The OpenBSD project produces a FREE, multi-platform 4.4BSD-based UNIX-like operating system. Our efforts emphasize portability, standardization, correctness, proactive security and integrated cryptography. \">OpenBSD</a>"
 
 def Image(imagefile, title=None, basepath=None, klass=None, kaption=None):
         defaultpath="media/images"
