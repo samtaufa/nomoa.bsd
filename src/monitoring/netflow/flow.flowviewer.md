@@ -82,7 +82,7 @@ Ref: [FlowViewer](http://ensight.eos.nasa.gov/FlowViewer/)
 
 As per the installation instructions ('cause I know you were reading it.)
 
-1. 'Un-tar' FlowViewer_3.X.tar in an appropriate directory at or below your web server's cgi-bin directory 
+1. 'Un-tar' FlowViewer_3.X.tar in an appropriate directory such as your web server's cgi-bin directory 
 2. Modify the contents of FlowViewer_Configuration.pm for your environment. 
 3. If you are going to use FlowGrapher, you will need to install both the GD and the GD::Graph packages for Perl. 
 4. If you are going to use FlowTracker, you will need to install the RRDtool package (at least version 1.2.12.) Create FlowTracker_Filters and FlowTracker_RRDtool subdirectories. 
@@ -107,7 +107,9 @@ curl -O http://ensight.eos.nasa.gov/FlowViewer/FlowViewer_3.4.tar
 
 #### 1. Copy to Install
 
-Untar/copy the files to our destination path: /var/www/cgi-bin/FlowViewer
+Untar/copy the files to our destination path: 
+
+Normally, /var/www/cgi-bin/FlowViewer
 
 #### 2. Modify FlowViewer_Configuration.pm
 
@@ -130,29 +132,35 @@ $user_hyperlink          = "http://www.example.com/";
 #@exporters               = ("sensorXY_ipaddress:sensorXY Title");
 <!--(end)-->
 
-Basic configuration of titles and what sensors are being reviewed.
+Set the Basic configuration of Service Title and what sensors are being reviewed.
+
+File: FlowViewer_Configuration.pm
 
 <!--(block  | syntax("perl") )-->
 $fviewdocs               = "/var/www/flowviewer";
+$fviewdocs_url		 = "/FlowViewer";
 $fviewwork                = "/var/www/var/flowviewer";
 $reports_directory       = "$fviewdocs";
-$reports_short           = "/FlowViewer";
+$reports_short           = $fviewdocs_url;
 $graphs_directory        = "$fviewdocs/FlowGrapher";
-$graphs_short            = "/FlowViewer/FlowGrapher";
+$graphs_short            = "$fviewdocs_url/FlowGrapher";
 $tracker_directory       = "$fviewdocs/FlowTracker";
-$tracker_short           = "/FlowViewer/FlowTracker";
+$tracker_short           = "$fviewdocs_url/FlowTracker";
 $cgi_bin_directory       = "/var/www/cgi-bin/FlowViewer";
 $cgi_bin_short           = "/cgi-bin/FlowViewer";
 $work_directory          = "$fviewdocs/FlowWorking";
-$work_short              = "/FlowViewer/FlowWorking";
+$work_short              = "$fviewdocs_url/FlowWorking";
 $save_directory          = "$fviewdocs";
-$save_short              = "/FlowViewer";
+$save_short              = "$fviewdocs_url";
 $names_directory         = "$fviewwork/names";
 $filter_directory        = "$fviewwork/filters";
 $rrdtool_directory       = "$fviewwork/rrd";
 <!--(end)-->
 
-URL Paths as matched to file directories.
+Set the directories where files are to be stored (X_directory), 
+and the URL (X_short) matched to that directory.
+
+File: FlowViewer_Configuration.pm
 
 <!--(block  | syntax("perl") )-->
 $flow_data_directory     = "/var/netflow";
@@ -160,19 +168,26 @@ $exporter_directory      = "/var/www/var/flowviewer/exporter";
 $flow_bin_directory      = "/usr/local/bin";
 $rrdtool_bin_directory   = "/usr/local/bin";
 
-$log_directory      = "/var/www/var/flowviewer/log";
+$log_directory           = "/var/www/var/flowviewer/log";
 <!--(end)-->
 
+Make sure that the data and binary folders are correct for
+your configuration. The binaries on a regular install
+(using ports/packages) for OpenBSD should be as in the
+above.
+
 During the initial startup of the CGI scripts, they will attempt to
-create the relevant reporting paths. Otherwise, you can execute something
-like the below script to manually create those paths and set
-permissions where appropriate:
+create the relevant reporting paths. 
+
+You will need to ensure that all paths from the above are valid
+for your configuration. The below sample script creates paths for
+the above configuration set permissions where appropriate:
 
 <!--(block  | syntax("bash") )-->
 fviewdocs=/var/www/flowviewer
 fviewwork=/var/www/var/flowviewer
 for d in FlowGrapher FlowTracker FlowWorking; \
-    do mkdir -p $fviewdocs/$d/; chmod -R a=rwx $fviewwork/$d/; done
+    do mkdir -p $fviewdocs/$d/; chmod -R a=rwx $fviewdocs/$d/; done
 for d in names filters rrd exporter log; \
     do mkdir -p $fviewwork/$d/; chmod -R a=rwx $fviewwork/$d/; done
 <!--(end)-->
@@ -180,10 +195,10 @@ for d in names filters rrd exporter log; \
 Of course, you need to realise what changing the above will do. Review, try and if it 
 doesn't work for you, fix-it and try again (tm)
 
-Copy some of the images to the new "working-directories"
+Copy your images to the new "working-directories"
 
 <!--(block  | syntax("bash") )-->
-cp /var/www/cgi-bin/FlowViewer/Generic_Logo.jpg $fviewdocs
+cp My.Company.Logo.jpg $fviewdocs
 cp /var/www/cgi-bin/FlowViewer/FlowViewerS.png $fviewdocs
 <!--(end)-->
 
@@ -214,21 +229,21 @@ File extract: /var/www/conf/httpd.conf
 Alias /FlowViewer/ /var/www/flowviewer/
 
 <Directory /var/www/flowviewer/>
-	Options Indexes MultiViews
+    Options Indexes MultiViews
     AllowOverride None
     Order allow,deny
     Allow from [list.of.ips.you.trust]
 </Directory>
 <!--(end)-->
 
-As noted in the above, I'm putting my files into the path
+As noted in the above, working files are in the path
 /var/www/flowviewer/
 
 And now, we can point our browser to the above site to start looking
 at reports:
 
 <pre class="config-file">
-http://collector-ip-address/FlowViewer/FlowViewer.cgi
+http://collector-ip-address/cgi-bin/FlowViewer/FlowViewer.cgi
 </pre>
 
 Fortunately, that single online URL can connect you to other
