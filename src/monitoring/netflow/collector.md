@@ -288,7 +288,7 @@ ipa_collector=XXX.XXX.XXX.XXX
 ipa_sensor=XXX.XXX.XXX.XXX
 port=12345
 
-if [ -x ${FLOWCAPTURE} ]; then
+if [ -x ${CAPTURE} ]; then
 	printf ' flow-capture'; ${CAPTURE} -p ${FLOWPID} -n 287 -w ${DATA}/${SENSOR} \
 		-S 5 ${ipa_collector}/${ipa_sensor}/${port} && \
 		echo "\t\t [OK]" || echo "\t\t [Failed]";
