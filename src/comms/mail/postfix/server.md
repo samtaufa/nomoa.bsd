@@ -213,7 +213,7 @@ Likewise, we need to run the above commands after changes to related files
 After postfix has been started, you can then use 
 
 <pre class="command-line">
-postconf | grep mynetworks
+# /usr/local/sbin/postconf | grep mynetworks
 </pre>
 
 as a basis for fine-tuning your configuration.
@@ -318,13 +318,14 @@ which at this stage is a nice 5 step process.
 -   Start postfix (using our 'new' Sendmail)
 
 
-<pre class="command-line">
+<!--(block|syntax("bash"))-->
 # pkill -HUP syslogd
-# pkill Sendmail
+# pkill sendmail
 # /usr/local/sbin/newaliases
 # /usr/local/sbin/postfix check
 # /usr/local/sbin/sendmail -bd -q30m
-</pre>
+<!--(end)-->
+
 <pre class="screen-output">
 <strong>postfix/postfix-script: starting the Postfix mail system</strong>
 </pre>
@@ -407,7 +408,8 @@ This essentially lets us quickly find out any blatant errors. For
 example, an output could look like this.
 
 <pre class="command-line">
-<strong># postconf </strong>| grep ^my</pre>
+# /usr/local/sbin/postconf | grep ^my
+</pre>
 
 <pre class="screen-output">
 mydestination = $myhostname, localhost.$mydomain, localhost

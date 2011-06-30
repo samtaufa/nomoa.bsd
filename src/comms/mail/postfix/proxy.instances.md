@@ -14,9 +14,9 @@ Table of Contents
 			<li>Start and Reload</li>
 		</ul>
 	</li>
-	<li><a href="#mta.instances">2. MTA Instances</a>
+	<li><a href="#instances">2. MTA Instances</a>
 	</li>
-	<li><a href="#">3. Inbound Instance</a>
+	<li><a href="#inbound">3. Inbound Instance</a>
 		<ul>
 			<li>Incorporate chroot files</li>
 			<li>Relay Domains</li>
@@ -29,15 +29,16 @@ Table of Contents
 			<li>Unknown Cost/Value</li>
 		</ul>
 	</li>
-	<li><a href="#">4. Outbound Instance</a>
+	<li><a href="#outbound">4. Outbound Instance</a>
 		<ul>
 			<li>Incorporate choort files</li>
 			<li>Trusted SMTP Hosts</li>
 			<li>Start and Reload</li>
 		</ul>
 	</li>
-	<li><a href="#">5. Logging</a></li>
-	<li><a href="#">6. Test and Verification</a></li>
+	<li><a href="#log">5. Logging</a></li>
+	<li><a href="#verify">6. Verify</a></li>
+	<li><a href="#monitor">7. Monitoring</a></li>
 </ul>
 
 </div>
@@ -109,9 +110,9 @@ The above diagram highlights the mail flow using our three MTA instances:
 
 $!Image("mail/proxy.instances.filters.png", title="Multiple MTA Instance - Filters", klass="imgcenter", kaption="""MTA Instance "Summary Filters" """)!$
 
-<a name="package.install"></a>
 
-### 1. Package Install
+
+### <a name="package.install"></a> 1. Package Install
 
 
 Install the OpenBSD Postfix Package.
@@ -207,7 +208,7 @@ example.net			smtp:[ip-address]
 /usr/local/sbin/postfix reload
 </pre>
 
-### 2. MTA Instances
+### <a name="instances"></a> 2. MTA Instances
 
 &#91;Ref: [Adding a second postfix instance](http://advosys.ca/papers/email/58-postfix-instance.html) |
 [Managing multiple Postfix instances on a single host](http://www.postfix.org/MULTI_INSTANCE_README.html)]
@@ -231,7 +232,7 @@ multi_instance_enable = yes
 
 Verify the configuration is operational as previously expected.
 
-### 3. Inbound Instance
+### <a name="inbound"></a> 3. Inbound Instance
 
 After which we can initialise the other MTA instances (inbound and outbound)
 
@@ -470,7 +471,7 @@ enabled in your configuration.
 reject_unverified_sender
 </pre>
 
-### Outbound Instance
+### <a name="outbound"></a> Outbound Instance
 
 Use submission port instead of smtp, and enable
 smtp for localhost.
@@ -570,7 +571,7 @@ and we can start|reload using the below command.
 /usr/local/sbin/postmulti -i postfix-outbound -p start
 </pre>
 
-### 5. Logs
+### <a name="log"></a> 5. Logs
 
 Do not forget to add the new postfix logs to $!manpage("newsyslog")!$
 
@@ -580,7 +581,7 @@ We should have a line in /etc/rc.conf.local with at least the following:
 syslogd_flag="-a /var/spool/postfix/dev/log -a /var/spool/postfix-inbound/dev/log -a /var/spool/postfix-outbound/dev/log"
 </pre>
 
-### 6. Verification
+### <a name="verify"></a> 6. Verification
 
 You can test, verify, behaviour of the above options by using the <b>warn_if_reject</b>
 to increase verbosity in your log file.
@@ -592,4 +593,25 @@ to increase verbosity in your log file.
 	a request (look for logfile records that contain "reject_warning"). This is useful for
 	testing new restrictions in a "live" environment without risking unnecessary loss of mail. 
 </pre>
+
+### <a name="monitor"></a> 7. Monitoring
+
+use [postmulti](#) to monitor the status of running services. Postmulti makes it easier
+to review all running instances, or individual instances.
+
+For example:
+
+Instead of using [mailq](#) to look at the mail queue, you would use
+
+To view all instances
+
+<!--(block|syntax("bash"))-->
+$ sudo /usr/local/sbin/postmulti -x mailq
+<!--(end)-->
+
+or to see the mailq for a a specific postfix instance
+
+<!--(block|syntax("bash"))-->
+$ sudo /usr/local/sbin/postmulti -i postfix-inbound -x mailq
+<!--(end)-->
 

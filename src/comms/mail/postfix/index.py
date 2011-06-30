@@ -4,9 +4,10 @@ from countershape.doc import *
 this.titlePrefix = ns.titlePrefix + "[Mail | Postfix] "
 
 pages = [
+
     Page("admin.md",
-        title="GUI Admin",
-        pageTitle="GUI Administration - PostfixAdmin"),
+        title="Admin GUI",
+        pageTitle="Administration - PostfixAdmin"),
                
     Page("server.md",
         title="Mail Server",
@@ -20,6 +21,14 @@ pages = [
         title="MX Proxy++",
         pageTitle="MX Proxy Extended, using Multiple Instances"),
 
+    Page("tls.md",
+        title="TLS/SSL",
+        pageTitle="TLS/SSL"),
+               
+    Page("certificates.md",
+        title="SSL Certificates",
+        pageTitle="SSL Certificates"),
+               
     Page("virtual_accounts.md",
         title="Virtual Accounts",
         pageTitle="Virtual Accounts"),

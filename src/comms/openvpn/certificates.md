@@ -1,6 +1,6 @@
 ## OpenSSL Certificates
 
-[ OpenBSD 3.5 ]
+&#91;Ref: OpenBSD 3.5 ]
 
 Portions Reviewed in OpenBSD 4.6, and 4.7
 
@@ -8,178 +8,39 @@ Portions Reviewed in OpenBSD 4.6, and 4.7
 
 <p>Table of Contents</p>
 
-<ol>
-	<li><a href="#createcerts">Self-signed Certificates</a></li>
-	<li><a href="#sscKey" class="anchBlue">Generate a Signing Key</a></li>
-	<li><a href="#sscCSR">Server Certificate Signing Request</a></li>
-	<li><a href="#sscCRT" class="anchBlue">Signing the Certificate</a></li>
-	<li><a href="#sscTest" class="anchBlue">Testing the Keys</a></li>
-	<li><a href="#sscVirtualHosts" class="anchBlue">Virtual Hosts</a></li>
-</ol>
+<ul>
+	<li><a href="#certificate.authority">Certificate Authority</a></li>
+	<li><a href="#certificate.client">Client Certificates</a></li>
+	<li><a href="#certificate.revocation">Certificate Revocation</a></li>
+</ul>
 
 </div>
 
-OpenBSD ships with built in support for OpenSSL and OpenSSH for secure encrypted 
-end-to-end communication between a localhost and a remotehost. Following are 
-notes on configuring and using SS# (pronounced S-S-Sharp, that's a pun)
+OpenBSD ships with built in support for OpenSSL and OpenSSH in the base
+install for encrypted communication. Both systems use public key algorithms,
+where key-pairs are used with one half is public, and the other half 
+private.
   
-### <a name="createcerts"></a> Creating Self-Signed Certificates
-
-&#91;Ref: <a href="http://www.openbsd.org/faq/">OpenBSD   FAQ</a> | 
-mod_ssl/ssl_faq.html#ToC17 - html documentation of mod_ssl |
-/var/www/conf/httpd.conf ]
-
-SSL Communications assume the server has an authentication certificate which 
-acts as a verification for whom the server publishes itself to be, and provides 
-an envelope for the server's public key with which clients can encrypt communications 
-bound for the server.
-
-Creating a certificate was initially meant for a third-party authority to assist 
-you in verifying that the server is who they say they are, so the creation of 
-a self signing certificates requires 3 stages 
-  
--   <a href="#sscKey">creating a private signing key</a>
--   <a href="#ccertificaterequest">creating a certificate request, </a>and
--   <a href="#selfsign">self-authenticating your certificate</a>   request.
-
-We are choosing our file names based on the standard OpenBSD/Apache configuration 
-for SSLfiles
-
-File: /var/www/conf/httpd.conf
-
-<pre class="config-file">
-SSLCertificateFile    /etc/ssl/<b>server.crt</b>
-SSLCertificateKeyFile /etc/ssl/<b>private/server.key</b>
-</pre>
-
-#### <a name="sscKey"></a>1. Generate a Signing key (1024 bit size) : 
-
-<pre class="command-line">
- #  /usr/sbin/openssl genrsa -out /etc/ssl/private/server.key 1024
-</pre>
-
-The generated key acts as our RSA private key for our 'internal' CA (Certificate 
-Authority.) 
-
-
-We can call the key anything we want, and the general mod_ssl example is ca.key, 
-but in the above scenario we will use server.key. Check the mod_ssl documentation 
-for why we are only using a key size of 1024.
-
-<b>Security Warning:</b> When you gravitate to a production system you should 
-(at minimum) use -des3 Triple DES encryption and use an authentication pass-phrase 
-for this key. Otherwise, someone can simply steal your key file and sign, authorise 
-other servers masquerading as you.
-
-<a name="sscCSR"></a>
-
-#### 2. Generate a certificate signing request (csr)
-
-We now generate a csr using the server key generated above (output will be 
-PEM formatted.)
-
-<pre class="command-line">
-# /usr/sbin/openssl req -new \
-    -key /etc/ssl/private/server.key       \
-    -out /etc/ssl/private/server.csr 
-</pre>
-
-The above certificate request will prompt you to reply to a number of questions, 
-most of which can be left as the default. You will be asked for the Fully Qualified 
-Domain Name for this host. In my experience this requires the legitimate DNS 
-name that the host will be responding to.
-
-The last part of the above instructions is to ask for 'extra' attributes.
-
-<pre class="screen-output">
-Please enter the following 'extra' attributes
-to be sent with your certificate request
-A challenge password []:
-An optional company name []:
-</pre>
-
-For my test configuration (ie. I don't want to enter the password everytime 
-I want to start Apache) I do not enter a 'challange password.' On a security 
-conscious system, you probably want to specify a challenge password here and 
-have someone on 24-hour availability incase the server restarts and someone 
-must enter the 'challenge password' before the server starts.
-
-The concept is that you send the above CSR for a trusted third party to sign, 
-and record in their system, so users who recieve your key can validate from 
-the trusted third party that you are who you are. But we don't want no third 
-party saying who we are (for now anyway.)
-  
-#### <a name="sscCRT"></a>3. Create a self-signed certificate (X509 structure.)
-
-the output will be PEM formatted. (The documentation discusses a script sign.sh 
-to do this task for you, but I can only find CA.pl and CA.sh with similar 'purpose.') 
-
-<pre class="command-line">
-# /usr/sbin/openssl x509 -req -days 365 \
-    -in      /etc/ssl/private/server.csr \
-    -signkey /etc/ssl/private/server.key \
-     -out     /etc/ssl/server.crt
-</pre>
-
--x509 is the certificate structure we are using.
--days 365 is the number of days for which we want the certificate to be valid
-  
-#### <a name="sscTest"></a>Testing your Keys
-
-You can test from a terminal connection the status of your keys by using the 
-following commands
-  
-<pre class="command-line">
-# openssl rsa -noout -text -in /etc/ssl/private/<b>server.</b>key   
-# openssl req -noout -text -in /etc/ssl/private/<b>server.</b>csr
-# openssl x509 -noout -text -in /etc/ssl/<b>server.</b>crt
-</pre>
-
-#### <a name="sscVirtualHosts"></a>Virtual Hosts
-
-<p>Server CRTs for Virtual sites can be generated using the same above process, 
-except you choose a different name for the CSR and CRT. One nice convention 
-is to use the domain name of the site, for example: 
-Certificate Request: <i>/etc/ssl/private/virtualsite.com.csr </i>and 
-Certificate:<i> /etc/ssl/virtualsite.com.crt </i></p>
-
-<p>Within the Virtual Host configuration you will then need to specify the appropriate 
-  SSL Directive.</p>
-  
-
-<pre class="screen-output">
-NameVirtualHost 192.168.101.49:*
-&lt;VirtualHost 192.168.101.49:*&gt;
-ServerAdmin samt@qsc.com
-DocumentRoot /var/www/twig
-ServerName virtualsite.com
-ErrorLog logs/virtualsite.com-error_log
-CustomLog logs/virtualsite.com-access_log common
-SSLEngine on
-SSLCipherSuite ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP
-SSLCertificateFile /etc/ssl/<b>virtualsite.com.crt</b>
-SSLCertificateKeyFile /etc/ssl/private/server.key
-&lt;/VirtualHost&gt;
-</pre>
-
-<p><b>Security Warning:</b> Remember I know less than you about this stuff, the 
-above are just notations of something that worked. It doesn't mean it works 
+**Warning:** Remember I know less than you about this stuff, these 
+are notations of something that worked. It doesn't mean it works 
 well.
-</p>
 
--   <a href="#certificate.authority">Certificate Authority</a>
--   <a href="#certificate.client">Client Certificates</a>
--   <a href="#certificate.revocation">Certificate Revocation</a>
+For OpenVPN we need a Public Key Infrastructure (PKI) which essentially
+is a recognised:
+
+*	Certificate Authority that signs 
+*	Client Certificates, presented by clients and then
+*	Revoke Certificiates, for disabled accounts.
 
 <a name="certificate.authority"></a>
 
 ### Certificate Authority (CA)
 
-We generate and sign all our own certificates, which means we need to set
-ourselves up a CA certificate with will act as the master certificate with which
-we sign all server and client certificates.
+We want to be our own Certificate Authority so that we can generate and sign all 
+our client certificates. We need to set ourselves up a CA certificate with will 
+act as the master certificate with which we sign all server and client certificates.
 
-With the OpenSSL PKITOOLS, we document <a href="server.html#createcertificates">the process for Creating Certificates</a>:
+These notes provided the steps using the OpenSSL PKITOOLS:
 
 <a href="server.html#createcertirficates.ca">Creating a CA Certificate</a> manually involves:
 
@@ -209,7 +70,8 @@ openssl x509 -noout -text -in path-to/private/ca.crt
 
 #### Client Certificates
 
-OpenVPN Client Certificates are generated using <a href="server.html#createcertificate.client">./build-key</a> client_details1.
+For each OpenVPN Client, we need to generate independent certificates using 
+[./build-key](server.html#createcertificate.client) *client_details1*.
 
 which invokes PKITOOL and the following command:
 
@@ -219,6 +81,14 @@ openssl req -days 3650 -new -newkey rsa:4096 \
     -out path-to/keys/client_details1.csr \
     -config -path-to/openssl.cnf
 </pre>
+
+In practise, we generally name client certificates something like the below:
+
+- client_firstname.lastname, or
+- firstname.lastnmame
+
+The client_ desginator works to quickly identify VPN user clients, as opposed to
+other test accounts.
 
 <a name="certificate.revocation"></a>
 
@@ -245,12 +115,11 @@ openssl crl -inform DER -text -noout
 
 The output of these commands will look like the following:
 
-
 <pre class="command-line">
 Certificate Revocation List (CRL):
         Version 1 (0x0)
         Signature Algorithm: md5WithRSAEncryption
-        Issuer: /C=AU/ST=NSW/L=SYDNEY/O=Nullcube/CN=Nullcube CA/emailAddress=...
+        Issuer: /C=AU/ST=NSW/L=SYDNEY/O=Example Corp/CN=Example Corp CA/emailAddress=...
         Last Update: Jun  3 23:12:48 2008 GMT
         Next Update: Jul  3 23:12:48 2008 GMT
     Revoked Certificates:
@@ -338,4 +207,121 @@ do grep $i $INDEX | grep -v "^R" | awk '{print $1, $3, $5}' | \
 done 
 echo "-------------------------------------"
 echo "State Serial Client-Details"
+</pre>
+
+<ol>
+	<li><a href="#ssc.intro">Self-signed Certificates</a></li>
+	<li><a href="#ssc.key" class="anchBlue">Signing Key</a></li>
+	<li><a href="#ssc.csr">Certificate Signing Request</a></li>
+	<li><a href="#ssc.crt" class="anchBlue">Sign the Certificate</a></li>
+	<li><a href="#ssc.verify" class="anchBlue">Verify the Keys</a></li>
+	<li><a href="#client">OpenVPN Client Certificates</a>
+</ol>
+
+### <a name="ssc.intro"></a> Self-Signed Certificates
+
+Ref: [OpenSSL HOWTO](http://www.openssl.org/docs/HOWTO/certificates.txt)
+
+SSL assume the server has a private key paired with a public key made available
+to the remote client. The remote client encrypts communications using the public
+key, and the server decrypts the information using the private key.
+
+Creating a certificate was initially meant for a third-party authority to assist 
+you in verifying that the server is who they say they are, so the creation of 
+a self signing certificates requires 3 stages 
+  
+-   <a href="#ssc.key">creating a private key</a>
+-   <a href="#ccertificaterequest">creating a certificate request, </a>and
+-   <a href="#selfsign">self-authenticating your certificate</a>   request.
+
+We are choosing our file names based on the standard OpenBSD/Apache configuration 
+for SSLfiles
+
+#### <a name="ssc.key"></a>1. Generate a Private key (4096 bit size) : 
+
+Public Keys are easily derived from Private Keys, Generate a Private 
+Key using OpenSSL's [genrsa](http://www.openssl.org/docs/apps/genrsa.html)
+
+<pre class="command-line">
+ #  /usr/sbin/openssl genrsa -des3 -out /etc/ssl/private/server.key 4096
+</pre>
+
+The generated key acts as our SSL private key to be used as our 'internal' CA 
+(Certificate Authority.) 
+
+We can call the key anything we want, and the general mod\_ssl example is ca.key, 
+but in the above scenario we will use server.key. The mod_ssl documentation 
+recommends 1024 for compatibility with older Internet Browsers, which for this
+work is not a concern. Refer to the documentation for the current minimum recommended
+keysize.
+
+<b>-des|-des3|-idea</b> You must specify the method to encrypte the private key, otherwise is 
+no encryption is used.
+
+<a name="ssc.csr"></a>
+
+#### 2. Generate a certificate request (csr)
+
+A certificate combines data identifying your server, and the authority that accepts
+authentication of your identity. Create a certificate request (also
+known as a certificate signing request) to be signed by the certificate authority.
+
+Generate a csr using the server key generated above (output will be 
+PEM formatted.)
+
+<pre class="command-line">
+# /usr/sbin/openssl req -new \
+    -key /etc/ssl/private/server.key       \
+    -out /etc/ssl/private/server.csr 
+</pre>
+
+The above certificate request will prompt you to reply to a number of questions, 
+most of which can be left as the default. You will be asked for the Fully Qualified 
+Domain Name for this host. In my experience this requires the legitimate DNS 
+name that the host will be responding to.
+
+The last part of the above instructions is to ask for 'extra' attributes.
+
+<pre class="screen-output">
+Please enter the following 'extra' attributes
+to be sent with your certificate request
+A challenge password []:
+An optional company name []:
+</pre>
+
+For my test configuration (ie. I don't want to enter the password everytime 
+I want to start a server) I do not enter a 'challenge password.' On a security 
+conscious system, you probably want to specify a challenge password here and 
+have someone on 24-hour availability incase the server restarts and someone 
+must enter the 'challenge password' before the server starts.
+
+The concept is that you send the above CSR for a trusted third party to sign, 
+and record in their system, so users who recieve your key can validate from 
+the trusted third party that you are who you are. But we don't want no third 
+party saying who we are (for now anyway.)
+  
+#### <a name="ssc.crt"></a>3. Create a self-signed certificate (X509 structure.)
+
+the output will be PEM formatted. (The documentation discusses a script sign.sh 
+to do this task for you, but I can only find CA.pl and CA.sh with similar 'purpose.') 
+
+<pre class="command-line">
+# /usr/sbin/openssl x509 -req -days 365 \
+    -in      /etc/ssl/private/server.csr \
+    -signkey /etc/ssl/private/server.key \
+     -out     /etc/ssl/server.crt
+</pre>
+
+-x509 is the certificate structure we are using.
+-days 365 is the number of days for which we want the certificate to be valid
+  
+#### <a name="ssc.verify"></a>Verify your Keys
+
+You can test from a terminal connection the status of your keys by using the 
+following commands
+  
+<pre class="command-line">
+# openssl rsa -noout -text -in /etc/ssl/private/<b>server.</b>key   
+# openssl req -noout -text -in /etc/ssl/private/<b>server.</b>csr
+# openssl x509 -noout -text -in /etc/ssl/<b>server.</b>crt
 </pre>
