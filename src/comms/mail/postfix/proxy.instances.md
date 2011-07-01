@@ -148,9 +148,11 @@ transport_maps = hash:$config_directory/transport
 inet_interfaces = loopback-only
 
 syslog_name = postfix-default
-
-#alternate_config_directories=
 </pre>
+
+Because our intentions will be to run the default instance of Postfix
+only listening to the loop-back device, we update the master.cf file
+to not listen to the rest of the network.
 
 File excerpt: /etc/postfix/master.cf
 
@@ -223,14 +225,32 @@ Per the Postfix documentation, we enable multi-instance support in our default i
 /usr/local/sbin/postmulti -e init
 </pre>
 
-Which adds the following configuration settings into our /etc/postfix/main.cf
+Which adds the following configuration settings:
+
+File extract /etc/postfix/main.cf
 
 <pre class="config-file">
-multi_instance_wrapper = ${command_directory}/postmulti -p --
+multi_instance_directories =
 multi_instance_enable = yes
 </pre>
 
-Verify the configuration is operational as previously expected.
+We want some additional operational items defined, so we add the following
+configuration items.
+
+File extract /etc/postfix/main.cf (add these settings if not already in the file)
+
+<pre class="config-file">
+multi_instance_wrapper = ${command_directory}/postmulti -p --
+multi_instance_name = postfix-default
+multi_instance_group = mta
+</pre>
+
+Verify the configuration is operational as previously expected, including
+viewing the postmulti view of running services.
+
+<pre class="command-line">
+/usr/local/sbin/postmulti -l
+</pre>
 
 ### <a name="inbound"></a> 3. Inbound Instance
 
@@ -248,14 +268,20 @@ File excerpt: /etc/postfix-inbound/main.cf
 queue_directory = /var/spool/postfix-inbound
 data_directory = /var/postfix-inbound
 
-# -- initially created by postmulti 
-#    the first 2 tuned before starting
 master_service_disable = 
 authorized_submit_users = root
 multi_instance_group = mta
 multi_instance_name = postfix-inbound
 multi_instance_enable = yes
+</pre>
 
+Note we change the initial values for *master_service_disable* and *authorized_submit_users*
+so that we can accept email through *inet*, and accept e-mail from the *root* 
+account during verification of our service.
+
+We add the following customisations for our configuration
+
+<pre class="config-file">
 # -- Customisations for our configuration
 relay_domains    = $config_directory/relaydomains
 transport_maps   = hash:$config_directory/transport
@@ -344,12 +370,12 @@ subdomain.example.org  	REJECT Forged Source. If I needed a mirror I'd visit the
 
 Where example.com and example.org are domains hosted by our Inbound.
 
-Remember to update the db file by using postmap, and to reload your configuration
+Remember to update the db file by using postmap, and to start the  your configuration
 files.
 
 <pre class="command-line">
 /usr/local/sbin/postmap /etc/postfix-inbound/helo_access
-/usr/local/sbin/postmulti -i postfix-inbound -p reload
+/usr/local/sbin/postmulti -i postfix-inbound -p start
 </pre>
 
 #### Sender restrictions
