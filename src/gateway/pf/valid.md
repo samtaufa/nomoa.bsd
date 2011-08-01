@@ -1,5 +1,7 @@
 ## Test Environment
 
+&#91;Ref: [PF: Testing your Firewall](http://undeadly.org/cgi?action=article&sid=20060928081238)]
+
 The test environment provides a secure environment for validating
 presumptions of traffic flow behaviour encapsulated in our Policy 
 and subsequent firewall ruleset.

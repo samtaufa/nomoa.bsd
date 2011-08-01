@@ -28,7 +28,7 @@ of grief by buying the knowledge of those who've spent some quality effort
 to document real-life use of PF, with experience in diverse applications.
 
 What ever you do from here, you really do need to read a series of free resources
-published by Daniel Hartmeier on Undeadly:
+published by Daniel Hartmeier on [Undeadly](http://undeadly.org):
 
 -	[PF: Testing your Firewall](http://undeadly.org/cgi?action=article&sid=20060928081238), 
 -	[Firewall Rule Optimization](http://undeadly.org/cgi?action=article&sid=20060927091645), 
