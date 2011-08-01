@@ -62,7 +62,7 @@ will do here (and reference.)
 For the 1st time installer, I suggest either installing from a CD or
 by downloading the main installation files onto a local network machine
 or local hard-disk. Of course you can burn your own CD after
-downloading. Current OpenBSD mirrors will also have an install_$version_.iso
+downloading. Current OpenBSD mirrors will also have an install*$version*.iso
 that can be burned to a CD for installation.
 
 ### 1st Timer

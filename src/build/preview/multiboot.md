@@ -1,13 +1,14 @@
 ## MultiBoot - OpenBSD and FAT/NTFS Windows
+
+&#91;Ref: OpenBSD 2.7 i386, Windows NT 4 FAT32/NTFS]
     
 <div class="toc">
 
 Table of Contents
 
 <ol>
-  <li><a href="#introduction">Introduction</a></li>
   <li><a href="#fromdocs">From the Docs</a></li>
-  <li>Hard Disk Preparation
+  <li><a href="#hdprep">Hard Disk Preparation</a>
   <ul>
       <li><a href="#partition">Partitioning the Hard Disk</a></li>
       <li><a href="#instOpenBSD">Installing OpenBSD</a>
@@ -16,9 +17,9 @@ Table of Contents
           <li><a href="#disklabel">disklabel</a></li>
         </ol></li>
   </ul></li>
-  <li><a href="#bootManagers">Different Boot Managers I have tried </a> 
+  <li><a href="#bootManagers">Boot Managers </a> 
     <ul>
-      <li><a href="#osbs1">Installing OS Boot Selector</a> </li>
+      <li><a href="#osbs1">OS Boot Selector</a> </li>
       <li><a href="#osbs2b8">OS-BS 2.0Beta8</a> </li>
       <li><a href="#mattsoft">mattsoft Boot Manager</a> </li>
       <li><a href="#pm5">Partition Magic 5.0</a></li>
@@ -27,7 +28,6 @@ Table of Contents
   <li><a href="#ntfs">Windows NTFS File System and OpenBSD</a> </li>
   <li><a href="#ReaderComments">Reader Comments</a> </li>
   <li><a href="#relref">Relative Reference</a> </li>
-  <li><a href="#author">Author and Copyright</a></li>
 </ol>
 </div>
 
@@ -84,7 +84,7 @@ Table of Contents
     comes with an operating system for creating their partition.</li>
 </ol>
 
-### Hard Disk Preparation 
+### <a name="hdprep"></a>Hard Disk Preparation 
 
 #### <a name="partition"></a>Partitioning the Hard Disk
 
@@ -165,22 +165,12 @@ Disk: wd0       geometry:
 
 Offset: 0       Signatures: 0xAA55,0x2F342F33
          Starting        Ending
-#: id  cyl  hd sec -   cyl  hd 
-sec [     start -       
-size]
+#: id   cyl  hd sec -   cyl  hd sec [     start -       size]
 -------------------------------------------------------------------------
-*0: 0B    0   1   1 -   
-788 254  63 [        <b>63</b> 
--   <b>12675222</b>] Win95 FAT-32
- 1: 00    0   0   1 -     
-0   0   0 [         
-0 -          0] unused
- 2: 00    0   0   1 -     
-0   0   0 [         
-0 -          0] unused
- 3: 00    0   0   1 -     
-0   0   0 [         
-0 -          0] unused 
+*0: 0B    0   1   1 -   788 254  63 [        <b>63</b> -   <b>12675222</b>] Win95 FAT-32
+ 1: 00    0   0   1 -     0   0   0 [         0 -          0] unused
+ 2: 00    0   0   1 -     0   0   0 [         0 -          0] unused
+ 3: 00    0   0   1 -     0   0   0 [         0 -          0] unused 
 </pre>
 
 <p>The display shows the current allocation of partitions for the hard-drive. 
@@ -213,12 +203,9 @@ fdisk: 1&gt; <b>e 1</b>
 fdisk: 1&gt; <b>e 1</b>
          
 Starting        Ending
- #: id  cyl  hd sec -   cyl  hd sec [     
-start -       size]
+ #: id  cyl  hd sec -   cyl  hd sec [     start -       size]
 -------------------------------------------------------------------------
- 1: 00    0   0   1 -     
-0   0   0 [         
-0 -          0] unused
+ 1: 00    0   0   1 -     0   0   0 [         0 -          0] unused
 Partition id ('0' to disable)  [0 - FF]: [0] (? for help) <b>A6</b>
 Do you wish to edit in CHS mode? [n]<b>&lt;HIT ENTER&gt;</b>
 Partition offset [0 - 12691350]: [0] <b>12675286</b>
@@ -231,25 +218,15 @@ fdisk:*1&gt;</pre>
   
 <pre class="screen-output">
 fdisk:*1&gt; <b>p</b>
-Disk: wd0       geometry: 790/255/63 [12691350 
-sectors]
+Disk: wd0       geometry: 790/255/63 [12691350 sectors]
 Offset: 0       Signatures: 0xAA55,0x2F342F33
-         Starting        
-Ending
- #: id  cyl  hd sec -   cyl  hd sec [     
-start -       size]
+         Starting        Ending
+ #: id  cyl  hd sec -   cyl  hd sec [     start -       size]
 -------------------------------------------------------------------------
-*0: 0B    0   1   1 -   788 
-254  63 [        63 -   
-12675222] Win95 FAT-32
- 1: A6  788 254  63 -   789 254  63 [  
-12675284 -      16066] OpenBSD
- 2: 00    0   0   1 -     
-0   0   0 [         
-0 -          0] unused
- 3: 00    0   0   1 -     
-0   0   0 [         
-0 -          0] unused
+*0: 0B    0   1   1 -   788 254  63 [        63 -   12675222] Win95 FAT-32
+ 1: A6  788 254  63 -   789 254  63 [  12675284 -      16066] OpenBSD
+ 2: 00    0   0   1 -     0   0   0 [         0 -          0] unused
+ 3: 00    0   0   1 -     0   0   0 [         0 -          0] unused
 fdisk:*1&gt;
  
 fdisk:*1&gt; <b>q</b> 
@@ -289,16 +266,16 @@ other values. fsize/bsize/cpg should typically be '1024 8192 16' for a
 4.2BSD filesystem (or '512 4096 16' except on alpha, sun4, amiga, sun3...) 
 </pre>
 
-### <a name="bootManagers"></a>Different Boot Managers I have tried 
+### <a name="bootManagers"></a>Boot Managers 
 
-<p>I have listed the Boot Managers as I have found them, 1st through the OpenBSD 
-  CD distributions, ftp site, and as I have come across discussions in the mailing 
-  lists. Hopefully this non-alphabetic listing helps you if you have difficulty 
-  in obtaining a boot manager.</p>
+I have listed the Boot Managers as I have found them, 1st through the OpenBSD 
+CD distributions, ftp site, and as I have come across discussions in the mailing 
+lists. Hopefully this non-alphabetic listing helps you if you have difficulty 
+in obtaining a boot manager.
 
-<p>Most of these Boot Managers have good documentation for installation and configuration. 
+Most of these Boot Managers have good documentation for installation and configuration. 
 Please remember to read their documentation, together with this, to ensure your 
-  dual boot system works.</p>
+dual boot system works.
 
 <p>My favourite, easiest to install (in most situations) is the GAG</p>
 
@@ -307,12 +284,12 @@ Please remember to read their documentation, together with this, to ensure your
 &#91;Ref: installation CD, go on and get radical, buy one. 
 It is also available from the OpenBSD ftp site.]
   
-<p>Operating System Boot Selector (OS-BS) is supplied as a self-extracting MSDOS 
+Operating System Boot Selector (OS-BS) is supplied as a self-extracting MSDOS 
 program (os-bs135.exe) in the 2.X/tools directory. [It's there in 2.7, I think 
 I recall seeing it in 2.6, and I have no idea where my 2.5 CDs gone to sleep, 
-prior to that I didn't exist.]</p>
+prior to that I didn't exist.]
 
-<p>If you are installing OpenBSD from the Internet, download the os-bs135.exe 
+If you are installing OpenBSD from the Internet, download the os-bs135.exe 
 and place it on the FAT partition or save it to a floppy diskette.</p>
   
 <ol>
@@ -533,20 +510,17 @@ Fuf. English is tight for me ;-)
 
 ### <a name="relref"></a>Relative Reference 
 <ul>
-  <li>FAQ 14. Disk Setup <a href="http://www.openbsd.org/faq/faq14.html">http://www.openbsd.org/faq/faq14.html</a> 
+  <li><a href="http://webhostingrating.com/libs/nomoa-dualboot-be">Belorussian translation</a> by Mikalay Lisica</li>
+  <li><a href="http://www.openbsd.org/faq/faq14.html">FAQ 14. Disk Setup</a> 
   <li> $!manpage("fdisk",8)!$  
   <li><a href="http://geodsoft.com/howto/dualboot/">Dual and Multi Booting FreeBSD, 
     Linux, and OpenBSD</a> George Shaffer's tutorial
   <li> J. Joseph Max Katz' Using OSBS and Windows95 <a href="http://www.monkey.org/openbsd/FUQ/">http://www.monkey.org/openbsd/FUQ/</a> 
   <li> OS-BS 2.0 Beta 8 - OS Boot Selector: <a href="http://www.prz.tu-berlin.de/%7Ewolf/os-bs.html">http://www.prz.tu-berlin.de/~wolf/os-bs.html</a> 
   <li> The Retail Version of OS-BS, the tool that ships with OpenBSD <a href="http://www.bootmanager.com">http://www.bootmanager.com</a> 
-  <li>Mattsoft Boot Manager <a href="http://www.penguin.cz/%7Emhi/mbtmgr">http://www.penguin.cz/~mhi/mbtmgr</a> 
-  <li>The GNU GRUB Boot Loader <a href="http://www.linuxgazette.com/issue64/kohli.html" class="anchBlue">http://www.linuxgazette.com/issue64/kohli.html</a> 
-  </li>
-  <li>Jim Rees' Multi-booting OpenBSD <a href="http://www.citi.umich.edu/users/rees/openbsd/multi.html">http://www.citi.umich.edu/users/rees/openbsd/multi.html</a></li>
-  <li>Ranish Partition Manager - It will help you to install and dualboot Linux 
-    and multiple copies of Windows. <a href="http://www.ranish.com/part/">http://www.ranish.com/part/</a></li>
-  <li>XOSL Boot Manager - Extended Operating System Loader (XOSL) is the world's 
-    only full-featured free boot manager with a real, easy-to-use and full-blown 
-    graphical user interface. <a href="http://www.xosl.org/">http://www.xosl.org/</a></li>
+  <li>Mattsoft Boot Manager <a href="http://martin.hinner.info/mbtmgr/">http://www.penguin.cz/~mhi/mbtmgr</a> 
+  <li>Jim Rees' <a href="http://www.citi.umich.edu/users/rees/openbsd/multi.html">Multi-booting OpenBSD</a></li>
+  <li><a href="http://www.ranish.com/part/">Ranish Partition Manager</a> - It will help you to install and dualboot Linux 
+    and multiple copies of Windows.</li>
+  <li><a href="http://www.ranish.com/part/">XOSL Boot Manager</a> Extended Operating System Loader (XOSL)</li>
 </ul>
