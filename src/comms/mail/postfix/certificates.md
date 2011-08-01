@@ -24,9 +24,28 @@ private.
   
 **Warning:** Remember I know less than you about this stuff, these 
 are notations of something that worked. It doesn't mean it works 
-well.
+well. If you really want to know more about the tools, refer to the
+OpenSSL website, and [madboa's Command-Line HOWTO](http://www.madboa.com/geek/openssl/)
 
+The base install defaults to storing OpenSSL configuration files and
+keys/certificates in the directory /etc/ssl. OpenSSL will look in the sub-directory
+certs for trusted certificates. 
 
+Verify the path for OpenSSL files using
+
+<!--(block|syntax("bash"))-->
+$ sudo openssl version -d
+<!--(end)-->
+
+<pre class="screen-output">
+OPENSSLDIR: "/etc/ssl"
+</pre>
+
+If the path for trusted certs does not exist, create it:
+
+<!--(block|syntax("bash"))-->
+$ sudo mkdir -p /etc/ssl/certs
+<!--(end)-->
 
 ### <a name="ca"></a> Certificate Authority (CA)
 
@@ -39,7 +58,7 @@ both a certificate and key:
 <!--(block|syntax("bash"))-->
 $ sudo openssl req -days 365 -new -newkey rsa:4096 -sha1 -x509 \
 	-keyout /path-to/private/ca.key.pem \
-    -out    /path-to/private/ca.crt.pem \
+    -out    /path-to/certs/ca.crt.pem \
     -config /path-to/openssl.cnf
 <!--(end)-->
 
@@ -68,15 +87,15 @@ Validate the key creation by using OpenSSL.
 
 <!--(block|syntax("bash"))-->
 $ openssl rsa -noout -text -in  /path-to/private/ca.key.pem
-$ openssl x509 -noout -text -in /path-to/private/ca.crt.pem
+$ openssl x509 -noout -text -in /path-to/certs/ca.crt.pem
 <!--(end)-->
 
 You can pre-fill the content for the CA by using the -subj option
 
 <!--(block|syntax("bash"))-->
 $ sudo openssl req -days 365 -new -newkey rsa:4096 -sha1 -x509 \
-	-keyout /path-to/private/ca.key.pem \
-    -out    /path-to/private/ca.crt.pem \
+    -keyout /path-to/private/ca.key.pem \
+    -out    /path-to/certs/ca.crt.pem \
     -subj   '/CN=coco.nut.to/O=Coconut Games/C=TO/ST=Tongatapu/L=Nukualofa/emailAddress=samt@coco.nut.to' \
     -config /path-to/openssl.cnf
 <!--(end)-->
@@ -148,7 +167,6 @@ Verify that the Certificate Signing Request has been created.
 <!--(block|syntax("bash"))-->
 $ sudo openssl req -noout -text -in /path-to/private/server.csr.pem
 $ sudo openssl rsa -noout -text -in /path-to/private/server.key.pem
-$ sudo openssl rsa -noout -text -in /path-to/private/server.key.rsa.pem
 <!--(end)-->
   
 ### <a name="selfsigned"></a> Self Signed certificate (X509 structure.)
@@ -156,11 +174,11 @@ $ sudo openssl rsa -noout -text -in /path-to/private/server.key.rsa.pem
 <!--(block|syntax("bash"))-->
 $ sudo /usr/sbin/openssl x509 -req -days 365 \
     -in      /path-to/private/server.csr.pem \
-    -CA      /path-to/private/ca.crt.pem \
+    -CA      /path-to/certs/ca.crt.pem \
     -CAkey   /path-to/private/ca.key.pem \
     -CAcreateserial \
     -signkey /path-to/private/server.key.pem \
-    -out    /path-to/server.crt.pem
+    -out    /path-to/certs/server.crt.pem
 <!--(end)-->
 
 <pre class="screen-output">
@@ -178,7 +196,7 @@ following commands
 <!--(block|syntax("bash"))-->
 $ sudo openssl rsa -noout -text -in /path-to/private/ca.key.pem
 $ sudo openssl req -noout -text -in /path-to/private/server.csr.pem
-$ sudo openssl x509 -noout -text -in /path-to/server.crt.pem
+$ sudo openssl x509 -noout -text -in /path-to/certs/server.crt.pem
 <!--(end)-->
 
 To verify that the key is paired with the certificate you just created, 
@@ -187,7 +205,7 @@ compare modulus (they should be the same)
 <!--(block|syntax("bash"))-->
 $ sudo openssl rsa -noout -text -in /path-to/private/server.key.pem -modulus \
     | grep ^Modulus | openssl md5
-$ sudo openssl x509 -noout -text -in /path-to/server.crt.pem -modulus \
+$ sudo openssl x509 -noout -text -in /path-to/certs/server.crt.pem -modulus \
     | grep ^Modulus | openssl md5
 <!--(end)-->
 
@@ -201,13 +219,71 @@ Ref: Postfix HOWTO TLS/SSL
 
 <pre class="manpage">
 To enable a remote SMTP client to verify the Postfix SMTP server certificate,
-the issuing CA certificates must be made available to the client. You should
-include the required certificates in the server certificate file.
+the issuing CA certificates must be made available to the client.
 </pre>
 
+ A simple way
+of providing the CA certificates, is to bundle it together with your server
+certificate (such as in the sample below: bundle = server cert + ca cert) where
+the order of inclusion is significant.
+
 <!--(block|syntax("bash"))-->
-# cat /path-to/server.crt.pem /path-to/private/ca.crt.pem > /path-to/server.pem
+# cat /path-to/certs/server.crt.pem /path-to/certs/ca.crt.pem > /path-to/server.pem
 <!--(end)-->
+
+After which you should test the resulting PEM file to ensure that it will work
+for us, using *'openssl verify'*
+
+<!--(block|syntax("bash"))-->
+# openssl verify -purpose sslserver /path-to/server.pem
+<!--(end)-->
+
+<pre class="screen-output">
+server.pem: C=TO,ST=Tongatapu,L=Nukualofa,O=Coconut Games, CN=coco.nut.to, emailAddress=samt@coco.nut.to
+error 18 at 0 depth lookup:self signed certificate
+</pre>
+
+The test failed!! Kind-of?
+
+From the [manpage](http://www.openssl.org/docs/apps/verify.html)
+
+<pre class="manpage">
+The first line contains the name of the certificate being verified followed 
+by the subject name of the certificate. The second line contains the error 
+number and the depth. The depth is number of the certificate being verified 
+when a problem was detected starting with zero for the certificate being verified 
+itself then 1 for the CA that signed the certificate and so on. Finally a text 
+version of the error number is presented. 
+
+18 X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT: self signed certificate
+
+    the passed certificate is self signed and the same certificate cannot be found in the list of trusted certificates.
+</pre>
+
+Review [madboa's Command-Line HOWTO](http://www.madboa.com/geek/openssl/) to
+remove the error message, which is stripped from the sample code at the above
+page as below root level command-lines.
+
+<!--(block|syntax("bash"))-->
+# cd /path-to/certs
+# HASH=$(openssl x509 -noout -hash -in server.crt.pem)
+# echo $HASH
+# ln -s server.crt.pem ${HASH}.0
+<!--(end)-->
+
+If we've understood madboa's notes, and you've understood our mis-interpretation,
+then you should get the following response:
+
+<!--(block|syntax("bash"))-->
+# openssl verify -purpose sslserver /path-to/server.pem
+<!--(end)-->
+
+<pre class="screen-output">
+server.pem: OK
+</pre>
+
+Wooo hoo, It works.
+
 
 ### <a name="diffie"></a> Diffie Helman
 
@@ -215,3 +291,7 @@ include the required certificates in the server certificate file.
 $ sudo openssl dhparam -out /path-to/dh_512.pem  -2 512
 $ sudo openssl dhparam -out /path-to/dh_1024.pem -2 1024
 <!--(end)-->
+
+### <a name="other"></a> Other
+
+-   [Testing for SSL-TLS (OWASP-CM-001)](https://www.owasp.org/index.php/Testing_for_SSL-TLS_%28OWASP-CM-001%29)

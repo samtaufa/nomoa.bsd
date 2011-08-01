@@ -111,7 +111,7 @@ Client Side smtp configuration.
 
 #### Opportunistic TLS
 
-**smtp_tls_security_level = may**
+**smtp\_tls\_security_level = may**
 
 Opportunistic TLS, the SMTP transaction is encrypted if the STARTTLS ESMTP is supported
 by the server.
@@ -181,11 +181,20 @@ smtps   inet   n    -    -    -    -    smtpd
 
 When the configuration is working, you should not get any warning or error messages 
 in /var/log/maillog during startup, nor when explicitly initiating TLS communications.
+The following connection methods are to allow you to simulate what a valid
+client connection will be, and to monitor your logs for errors that may
+occur (and to rectify them, obviously.)
 
-### <a name="verify.starttls"></a> SMTP using STARTTLS
+### STARTTLS
 
 To confirm that TLS is supported, you can connect to the Postfix daemon,
-and list supported services with the EHLO command.
+and list supported services with the EHLO command. If STARTTLS is supported,
+configured, then in the list of features listed should be STARTTLS.
+
+To negotiate an encrypted channel (TLS), use the command STARTTLS as in the example below.
+Obviously, it's difficult to respond to encrypted communications
+using the keyboard, so once you can intiate TLS without error messages
+you are one step further to reviewing more complete tests.
 
 <!--(block|syntax("bash"))-->
 telnet localhost smtp
@@ -214,9 +223,13 @@ STARTTLS
 Incorrect configuration should be readily detected in console error messages,
 or by watching /var/log/maillog.
 
-Obviously, it's going to be difficult (at the console) to encrypt data,
-so just get out of the connection and we can use 
-[openssl s_client](http://www.openssl.org/docs/apps/s_client.html).
+Get out of the connection.
+
+### <a name="verify.starttls"></a> SMTP using STARTTLS
+
+[openssl s_client](http://www.openssl.org/docs/apps/s_client.html) provides a
+command-line mechanism for initiating a connection, and starting STARTTLS
+to encrypte connection link.
 
 <!--(block|syntax("bash"))-->
 openssl s_client -starttls smtp -crlf -connect localhost:25
@@ -263,8 +276,8 @@ quit
 221 2.0.0 Bye
 </pre>
 
-We use openssl's -starttls feature to allow it to make the encryption/decrypting
-between our console and the server. Once connected, then we can go through our
+**openssl's s_client -starttls smtp** tells it to make the encryption/decrypting
+between our console and an SMTP server. Once connected, then we can go through our
 normal smtp test message commands. (Shown in CAPITAL letters above.)
 
 ### <a name="verify.smtps"></a> SMTPS
@@ -284,4 +297,8 @@ Plenty of Certificate negotiation/information
 </pre>
 
 At this point, you should be able to complete the SMTP test connection
-using the same example as above for SMTP STARTTLS
+using the same example as above for SMTP STARTTLS.
+
+If all things work out, you now have a working TLS server for mail going into your
+server. Use the above information for verifying your mail server can also send out
+using TLS.
