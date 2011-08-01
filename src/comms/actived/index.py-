@@ -1,5 +1,4 @@
 from countershape.doc import *
-#this.markup = markup.Markdown(extras=["code-friendly"])
 
 ns.docTitle = "Active Directory"
 
