@@ -2,7 +2,7 @@ import os, os.path, subprocess
 import countershape, pygments
 from countershape import Page, Directory, model, template, state, blog, markup, sitemap
 
-this.markup = markup.Markdown(extras=["code-friendly"])
+this.markup = markup.Markdown( extras=["code-friendly"] )
 ns.titlePrefix = "=8> nomoa.com/bsd/ "
 this.titlePrefix = ns.titlePrefix
 this.site_url = "http://www.nomoa.com/bsd/"
@@ -128,12 +128,12 @@ blogindex.namespace["blk_submenu"] = countershape.widgets.ExtendedParentPageInde
 blogindex.namespace["submenuTitle"] = "log"
 
 #blogindex.layout = ns.tpl_bloglayout
-blogindex.markup = markup.Markdown(extras=["code-friendly"])
+blogindex.markup = markup.Markdown( extras=["code-friendly"] )
 blogdir = Directory("dev")
 blogdir.namespace["blk_submenu"] = blogindex.namespace["blk_submenu"]
 blogdir.namespace["submenuTitle"] = blogindex.namespace["submenuTitle"]
 blogdir.layout = ns.tpl_bloglayout
-blogdir.markup = markup.Markdown(extras=["code-friendly"])
+blogdir.markup = markup.Markdown( extras=["code-friendly"] )
 
 pages = [    
 ]
