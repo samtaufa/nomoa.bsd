@@ -4,7 +4,7 @@ import countershape
 this.layout = ns.tpl_layout
 
 ns.blk_sidemenu = countershape.widgets.SiblingPageIndex(
-                '/monitoring/nagios.html',
+                '/monitoring/announcements.html',
         )
 
 this.titlePrefix = ns.titlePrefix + "[Monitoring] "
@@ -15,23 +15,13 @@ pages = [
         title="Announcements",
         pageTitle="Announcements"),    
 
-    Page("configuration.md", 
-        title="Configuration",
-        pageTitle="Configuration Management"),    
-    Directory ("config"),
-
-    Page("nagios.md", 
-        title="Nagios",
-        pageTitle="Nagios Monitoring"),    
-    Directory ("nagios"),
-        
-    Page("netflow.md", 
-        title="Netflow",
-        pageTitle="Netflow"),    
-    Directory("netflow"),    
+    Page("hosts.md", 
+        title="Hosts",
+        pageTitle="Host Information State"),    
+    Directory ("hosts"),
     
-    Page("smokeping.md",
-        title="Smokeping",
-        pageTitle="Smokeping"),
-    
-]
+    Page("network.md", 
+        title="Network",
+        pageTitle="Network Traffic Analysis"),    
+    Directory ("network"),
+ ]
