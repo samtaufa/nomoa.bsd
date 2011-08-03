@@ -30,7 +30,7 @@ interpretation, we don't do any of that here.
 [Buy the book](http://www.nostarch.com/networkflow_mlucas.htm).
 
 Now you're back, follow through to find out how we put it together for 
-[Netflow with flow-tools](@!urlTo("monitoring/netflow.html")!@)
+[Netflow with flow-tools](@!urlTo("monitoring/network/netflow.html")!@)
 
 It's saved our bacon a number of times, we know who's packets are causing
 congestion, what times congestions occur, why things occur. AND, we
@@ -41,4 +41,4 @@ heads and just love.
 where traffic flow monitoring has helped him out, and we can attest
 to it's daily, weekly value.
 
-Our notes on [Netflow with flow-tools](@!urlTo("monitoring/netflow.html")!@)
+Our notes on [Netflow with flow-tools](@!urlTo("monitoring/network/netflow.html")!@)
