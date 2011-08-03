@@ -226,7 +226,7 @@ you monitor and manage tables.
 -s Tables                            Show Tables
 -T show -t table-name                Display entries in table 'table-name'
 -T show -vt table-name               Display table counters for 'table-name'
---vs Tables                          Display global information
+-vs Tables                          Display global information
 -T add -t table-name ip-address      Add an 'ip-address' to table 'table-name'
 -T delete -t table-name ip-address   Delete an 'ip-address' from table 'table-name'
 </pre>
