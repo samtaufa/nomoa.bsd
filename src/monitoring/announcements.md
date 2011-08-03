@@ -13,13 +13,17 @@ broad range of tools deployed. Below are a list of must monitor tools.
 
 ### OpenBSD Mailing Lists (misc, tech, cvs)
 
-The mailing lists at <a href="http://www.openbsd.org/mail.html">http://www.openbsd.org/mail.html</a>
-is the general location for discussions involving OpenBSD developers. Fortunately
-the number of vulnerabilities in OpenBSD are rare and far between, but the mailing
-list can also provide stability and diagnosis discussions.
+The [mailing lists](http://www.openbsd.org/mail.html 
+"Read the Netiquette Guide to Community Behaviour Guidelines for better results.")
+is the public forum where OpenBSD developers get together with the interested
+parties (you and me.) Fortunately the number of vulnerabilities in OpenBSD are 
+rare and far between, but the [mailing lists](http://www.openbsd.org/mail.html 
+"Read the Netiquette Guide to Community Behaviour Guidelines for better results.")
+are a source of discussions, diagnosis and learning.
 
-Tracking Source Code changes may be simpler using Squish.net's 
-<a href="http://www.squish.net/mailman/listinfo/odc">SRC Tracker</a>.
+Services providing summaries of source code changes include Squish.net's 
+<a href="http://www.squish.net/mailman/listinfo/odc">SRC Tracker</a>, which
+I use to provide a daily digest/snapshot for perusal.
 
 ### Vulnerability Announcements
 

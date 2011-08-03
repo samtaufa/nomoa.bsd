@@ -12,10 +12,11 @@ and maintenance.
    
 These notes reference how we got/keep  $!OpenBSD!$ up and running. 
 Verify what you read here through the $!OpenBSD!$ supported documentation
-systems described above, ask questions on their mailing lists, use
+systems described above, ask questions on their [mailing lists](http://www.openbsd.org/mail.html 
+"Read the Netiquette Guide to Community Behaviour Guidelines for better results."), use
 search engines such as <a href="http://lmgtfy.com/?q=Ask Your question here">Google</a> or 
 <a href="http://www.letmebingthatforyou.com/?q=Ask your question here">Bing</a>
-and practise safe Computing (tm).
+and **P**ractise **S**afe **C**omputing (tm).
 
 -   Build and Consistency
 -   Communications Systems

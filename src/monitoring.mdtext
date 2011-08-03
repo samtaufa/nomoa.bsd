@@ -32,7 +32,7 @@ on your network. Nagios being one of the more popular, although a
 <a href="http://www.google.com">Google</a>/<a href="http://www.bing.com">Bing</a> 
 search will quickly highlight alternatives.
 
-[Nagios](monitoring/nagios.html) is very good for monitoring up/down status, and 
+[Nagios](monitoring/hosts/nagios.html) is very good for monitoring up/down status, and 
 is also able to use SNMP and custom NRPE for determining more detailed status 
 information on hosts. Example things you can monitor using nagios include:
 

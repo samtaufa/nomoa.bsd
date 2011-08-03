@@ -5,10 +5,12 @@ The standard installation of Smokeping provides two categories of charts
 - Charts (Loss, by Max, by Median, Std Deviation)
 - Hosts
 
-We use smokeping to monitor network latency for 5 disparate sites, using
-3 types of network connections (2 x Leased VPN lines, 1 x Internet link)
+An example use for smokeping is our network latency monitor used to 
+oversight the network performance/behaviour for 5 WAN connected sites, using
+3 types of network connections (Most sights having 2 x Leased VPN lines, with
+a few also having 1 x WAN Internet link)
 
-We do not touch the "Charts" section but use a separate menu (category) for
+In our use, we do not touch the "Charts" section but use a separate menu (category) for
 various 'connectivity' points.
 
 - Link Category
