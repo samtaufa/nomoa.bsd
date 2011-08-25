@@ -12,7 +12,7 @@ Table of Contents
 
 </div>
 
-The following guides are for connecting Unix Clients (principally OpenBSD)
+The following guides are for connecting OpenBSD clients
 to authenticate and join Microsoft Active Directory Services (ADS.)
 
 In this guide we'll be authenticating to the ADS using Kerberos and will
@@ -37,7 +37,8 @@ install the CSVDE tool. Doing the interrogation on the Active Directory Server s
 significantly cut down on the trial/error work on the Unix clients.
 
 CSVDE is part of the ADAM Active Directory Application Mode toolkit from Microsoft.
-(Use web search: ADAM Microsoft Active Directory Mode Toolkit) to find the current
+(Use web search: [ADAM Microsoft Active Directory Mode Toolkit](
+http://lmgtfy.com/?q=ADAM+Microsoft+Active+Directory+Mode+Toolkit)) to find the current
 download.
         
 Example execution lines are shown below for extracting data from ADS to a text
