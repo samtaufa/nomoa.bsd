@@ -278,6 +278,8 @@ ssh user@remotehost
 
 ### SSH Tunnel
 
+[O'Reilly SSH: The Secure Shell 9.2 Port Forwarding](http://www.docstore.mik.ua/orelly/networking_2ndEd/ssh/ch09_02.htm)
+
 SSH Tunnels are simpler to execute using authentication keys.
 
 <ul>
@@ -322,14 +324,26 @@ Local Host to Remote Host
 ssh -4 -f -L1125:127.0.0.1:110 $REMOTEHOST -N
 </pre>
 
-or
+We can now encrypt traffic to POP3 port on REMOTEHOST by talking to
+port 1125 on our current machine.
+
+An interesting permutation of port forwarding, is accessing
+a REMOTEHOST through a proxy server (e.g. gateway box.)
 
 <pre class="command-line">
-ssh -4 -f user@REMOTEHOST -L1125:$REMOTEHOST -N
+ssh -4 -f -L6389:$RDPHOST:3389 $PROXY -N
 </pre>
 
-We can now access the POP3 port on REMOTEHOST by talking to
-port 1125 on our current machine.
+The above example, links port 6389 on our local machine **through** $PROXY to port 3389 
+at $RDPHOST. Another valid permutation, is to not use "-N" by executing a "sleep" command
+(which will tell SSH to teardown the connection if not used within the sleep timeperiod.
+
+<pre class="command-line">
+ssh -4 -f -L6389:$RDPHOST:3389 $PROXY "sleep 10" && rdesktop -T '$WINDOW_TITLE' uUsername -g800x600 -a8 -rsound:off -5 localhost:6389
+</pre>
+
+
+
 
 #### <a name="remoteportforwarding">Remote Port Forwading</a>
 
