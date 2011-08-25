@@ -3,11 +3,11 @@
 <div class="toc">
 
 Table of Contents
-<ol>
-    <li><a href="#findfile">Making it easier to find files</a></li>
-    <li><a href="#singleuser">Booting in Single User Mode</a></li>
-    <li><a href="#movdir">Moving Directories Safely</a></li>
-</ol>
+<ul>
+    <li><a href="#findfile">find files</a></li>
+    <li><a href="#singleuser">Single User Mode</a></li>
+    <li><a href="#movdir">Moving Directories</a></li>
+</ul>
 
 </div>
 
