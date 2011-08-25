@@ -11,19 +11,24 @@ this.titlePrefix = ns.titlePrefix + "[Communications] "
 
 pages = [
 
+    Page("xmpp.md", 
+        title="Chat XMPP",
+        pageTitle="Chat/XMPP Services"),
+    Directory("xmpp"),
+    
     Page("mail.md", 
         title="Mail",
         pageTitle="Electronic Mail Service"),
     Directory("mail"),
     
     Page("openvpn.md", 
-        title="OpenVPN", 
-        pageTitle="OpenVPN"),
+        title="VPN", 
+        pageTitle="OpenVPN Virtual Private Networks"),
     Directory("openvpn"),
 
     Page("www.md", 
         title="Web", 
-        pageTitle="WWW Access - Apache"),
+        pageTitle="Web Services with Apache"),
     Directory("www"),
 
     Page("misc.md", 
