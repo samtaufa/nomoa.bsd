@@ -6,11 +6,12 @@
 Table of Contents
 
 <ul>
-    <li><a href="#sscKey" class="anchBlue">Generate a Signing Key</a></li>
-    <li><a href="#sscCSR">Server Certificate Signing Request</a></li>
-    <li><a href="#sscCRT" class="anchBlue">Signing the Certificate</a></li>
-    <li><a href="#sscTest" class="anchBlue">Testing the Keys</a></li>
-    <li><a href="#sscVirtualHosts" class="anchBlue">Virtual Hosts</a></li>
+    <li><a href="#sscKey">Generate a Signing Key</a></li>
+    <li><a href="#sscCSR">Certificate Signing Request</a></li>
+    <li><a href="#sscCRT">Certificate Signing</a></li>
+    <li><a href="#sscTest">Key Validation</a></li>
+    <li><a href="#sscVirtualHosts">Apache Virtual Hosts</a></li>
+    <li><a href="#formats">Certificate Formats</a></li>
 </ul>
 
 </div>
@@ -42,15 +43,15 @@ for SSLfiles
 from /var/www/conf/httpd.conf
 
 <pre class="config-file">
-SSLCertificateFile    /etc/ssl/<font color="#0000FF"><b>server.crt</b></font>
-SSLCertificateKeyFile /etc/ssl/<font color="#0000ff"><b>private/server.key</b></font>
+SSLCertificateFile    /etc/ssl/server.crt
+SSLCertificateKeyFile /etc/ssl/private/server.key
 </pre>
 
 #### <a name="sscKey"></a>1. Generate a Signing key (1024 bit size) : 
 
-<pre class="command-line">
-# <b>/usr/sbin/openssl genrsa -out /etc/ssl/private/<font color="#0000FF">server.</font>key 1024 </b> 
-</pre>
+<!--(block | syntax("bash") )-->
+# /usr/sbin/openssl genrsa -out /etc/ssl/private/server.key 1024
+<!--(end)-->
 
 The generated key acts as our RSA private key for our 'internal' CA (Certificate 
 Authority.) 
@@ -64,11 +65,11 @@ for why we are only using a key size of 1024.
 We now generate a csr using the server key generated above (output will be 
 PEM formatted.) 
 
-<pre class="command-line"> 
+<!--(block | syntax("bash") )--> 
 # /usr/sbin/openssl req -new \
-    -key /etc/ssl/private/<font color="#0000FF">server.</font>key \
-    -out /etc/ssl/private/<font color="#0000FF">server.</font>csr 
-</pre>
+    -key /etc/ssl/private/server.key \
+    -out /etc/ssl/private/server.csr 
+<!--(end)-->
 
 The above certificate request will prompt you to reply to a number of questions, 
 most of which can be left as the default. You will be asked for the Fully Qualified 
@@ -101,12 +102,12 @@ the output will be PEM formatted. (The documentation discusses a script sign.sh
 to do this task for you, but I can only find CA.pl and CA.sh with similar 'purpose.') 
 
 
-<pre class="command-line"> 
-# <b>/usr/sbin/openssl x509 -req -days 365 \</b>
-    /etc/ssl/private/<font color="#0000FF">server.</font>csr \
-    -signkey /etc/ssl/private/<font color="#0000FF">server.</font>key \
-    -out     /etc/ssl/<font color="#0000FF">server.</font>crt
-</pre>
+<!--(block | syntax("bash") )--> 
+# /usr/sbin/openssl x509 -req -days 365 \
+    /etc/ssl/private/server.csr \
+    -signkey /etc/ssl/private/server.key \
+    -out     /etc/ssl/server.crt
+<!--(end)-->
     
 <li>-x509 is the certificate structure we are using.
 <li>-days 365 is the number of days for which we want the certificate to be valid
@@ -117,19 +118,19 @@ You can test from a terminal connection the status of your keys by using the
 following commands
 
 
-<pre class="command-line"> 
-# openssl rsa -noout -text -in /etc/ssl/private/<b><font color="#0000FF">server.</font></b>key 
-# openssl req -noout -text -in /etc/ssl/private/<b><font color="#0000FF">server.</font></b>csr
-# openssl x509 -noout -text -in /etc/ssl/<b><font color="#0000FF">server.</font></b>crt
-</pre>
+<!--(block | syntax("bash") )--> 
+# openssl rsa -noout -text -in /etc/ssl/private/server.key 
+# openssl req -noout -text -in /etc/ssl/private/server.csr
+# openssl x509 -noout -text -in /etc/ssl/server.crt
+<!--(end)-->
 
 #### <a name="sscVirtualHosts"></a>Virtual Hosts
 
 Server CRTs for Virtual sites can be generated using the same above process, 
 except you choose a different name for the CSR and CRT. One nice convention 
 is to use the domain name of the site, for example: 
-Certificate Request: <i>/etc/ssl/private/virtualsite.com.csr </i>and 
-Certificate:<i> /etc/ssl/virtualsite.com.crt </i>
+Certificate Request: */etc/ssl/private/virtualsite.com.csr* and 
+Certificate: */etc/ssl/virtualsite.com.crt*
 
 Within the Virtual Host configuration you will then need to specify the appropriate 
 SSL Directive.
@@ -144,42 +145,115 @@ NameVirtualHost 192.168.101.49:*
     CustomLog logs/virtualsite.com-access_log common
     SSLEngine on
     SSLCipherSuite ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP
-    SSLCertificateFile /etc/ssl/<b><font color="#0000FF">virtualsite.com.crt</font></b>
+    SSLCertificateFile /etc/ssl/virtualsite.com.crt
     SSLCertificateKeyFile /etc/ssl/private/server.key
 &lt;/VirtualHost&gt;
 </pre>
 
 
+<a name="formats"></a>
+
 ### Converting between formats.
 
-<ul>
-<li>Certificate from DER (.crt .cer .der) to PEM
-<pre class="command-line">
+&#91;Ref: IE9 Help - Certificate File Formats ]
+
+Because we can't agree on the "one-size-fits-all" file format for the SSL
+certificates, different applications/services use different formats for certificates.
+Thus, we need a brief overview of these formats, and hints for converting
+files between the different formats.
+
+**Personal Information Exchange (PKCS #12)**
+
+The Personal Information Exchange format (PFX, also called PKCS #12) 
+supports secure storage of certificates, private keys, and all 
+certificates in a certification path.
+
+The PKCS #12 format is the only file format that can be used to
+export a certificate and its private key.
+
+**Cryptographic Message Syntax Standard (PKCS #7)**
+
+The PKCS #7 format supports storage of certificates and all 
+certificates in the certification path. 
+
+**DER-encoded binary X.509**
+
+The Distinguished Encoding Rules (DER) format supports storage 
+of a single certificate. This format does not support storage 
+of the private key or certification path.
+
+**Base64-encoded X.509**
+
+The Base64 format supports storage of a single certificate. 
+This format does not support storage of the private key or 
+certification path.
+
+#### Converting Certificates
+
+<table>
+	<tr>
+	<th>From / To </th>
+	<th>Command</th>
+	</tr><tr><td nowrap>
+DER (.crt .cer .der) to PEM
+	</td><td nowrap>
+<!--(block | syntax("bash") )-->
 openssl x509 -in input.crt -inform DER -out output.crt -outform PEM
-</pre>
-<li>Certificate from PEM to PKCS#12 (.pfx .p12)
-<pre class="command-line">
+<!--(end)-->
+	</td></tr>
+	<tr><td nowrap>
+	PEM to PKCS#12 (.pfx .p12)
+	</td><td nowrap>
+<!--(block | syntax("bash") )-->
 openssl pkcs12 -export -in input.pem -inkey key.pem -out output.p12
-</pre>
-<li>Certificate from PEM to PKCS#12 (.pfx .p12) containing a private key
-<pre class="command-line">
+<!--(end)-->
+	</td></tr>
+	<tr><td nowrap>
+	PEM to PKCS#12 (.pfx .p12) 
+	</td><td nowrap>
+May contain a private key.	
+<!--(block | syntax("bash") )-->
 openssl pkcs12 -export -out certificate.pfx -inkey privateKey.key \
 -in certificate.crt -certfile CACert.crt
-</pre>
-<li>Certificate from PKCS#12 to PEM, certificates only
-<pre class="command-line">
+<!--(end)-->
+	</td></tr>
+	<tr><td nowrap>
+PKCS#12 to PEM
+	</td><td nowrap>
+<!--(block | syntax("bash") )-->
 openssl pkcs12 -in input.p12 -out output.pem -nodes -clcerts
-</pre>
-<li>Certificate from PKCS#12 (.pfx .p12) to PEM containing a private key and certificates 
-<pre class="command-line">
+<!--(end)-->
+	</td></tr>
+	<tr><td nowrap>
+PKCS#12 (.pfx .p12) to PEM  
+	</td><td nowrap>
+	May contain a private key and certificates
+<!--(block | syntax("bash") )-->
 openssl pkcs12 -in keyStore.pfx -out keyStore.pem -nodes
-</pre>
-<li>KEY from DER to PEM
-<pre class="command-line">
+<!--(end)-->
+	</td></tr>
+</table>
+
+#### Converting KEYS
+
+<table>
+	<tr>
+	<th>From / To </th>
+	<th>Command</th>
+	</tr><tr><td nowrap>
+	DER to PEM
+	</td><td nowrap>
+<!--(block | syntax("bash") )-->
 openssl rsa -in input.key -inform DER -out output.key -outform PEM
-</pre>
-<li>KEY from NET to PEM
-<pre class="command-line">
+<!--(end)-->
+	</td>
+	</tr><tr>
+	<td nowrap>
+		NET to PEM
+	</td><td nowrap>
+<!--(block | syntax("bash") )-->
 openssl rsa -in input.key -inform NET -out output.key -outform PEM
-</pre>
-</ul>
+<!--(end)-->
+	</td>
+	</tr>
+</table>
