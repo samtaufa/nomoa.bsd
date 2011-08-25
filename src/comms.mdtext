@@ -1,6 +1,6 @@
 ## Communication Services
 
-[Mail](comms/mail.html) | [VPN](comms/openvpn.html) | 
+[Chat](comms/xmpp.html) | [Mail](comms/mail.html) | [VPN](comms/openvpn.html) | 
 [Web](comms/www.html) | [Miscellaneous](comms/misc.html)
 
 Communication Services on the Internet include the perennial Web Presence,
@@ -14,10 +14,17 @@ this effort has been the [OpenSSH Project](www.openssh.com).
 We reference some useful notes here, together with notes on other mechanisms
 for securing communciations such as:
 
+### Chat
+
+Instant Messaging is an enabling tool for immediate communications between your
+clients/staff. 
+
+-   [Chat/Jabber](comms/xmpp.html) XMPP Server
+
 ### Mail
 
-We've also had the opportunity to deploy Mail specific configurations, such as Proxy 
-Servers and sites using Virtual User Accounts (both using Postfix) :
+Once you install your basic mail server, you find there are various deployment
+options, such as Proxy Servers and sites using Virtual User Accounts (both using Postfix) :
 
 -	[Sendmail](comms/mail/sendmail.html) the internet standard MTA, in your base install
 -	[Client Access](comms/mail/dovecot.html) getting at your e-mail

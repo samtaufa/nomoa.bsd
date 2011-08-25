@@ -40,7 +40,7 @@ planning to roll-out a consistent deployment of $!OpenBSD!$.
 
 ### Communications
 
-[Mail](comms/mail.html) | [VPN](comms/openvpn.html) | [Web](comms/www.html) | [Miscellaneous](comms/misc.html)
+[Chat](comms/xmpp.html) | [Mail](comms/mail.html) | [VPN](comms/openvpn.html) | [Web](comms/www.html) | [Miscellaneous](comms/misc.html)
 
 Your first step in connecting your new $!OpenBSD!$ box, to anything, is
 to read the [OpenBSD FAQ 6 - Networking](http://www.openbsd.org/faq/faq6.html)
@@ -48,6 +48,7 @@ document. And then, read it again.
 
 Afterwards,  we can explore end-user communication services with your $!OpenBSD!$.
 
+-   [Chat/Jabber](comms/xmpp.html) XMPP Server
 -   [Mail Services](comms/mail.html)
 -   [Virtual Private Networks](comms/openvpn.html)
 -   [File/Print Sharing](comms/misc/samba.4.9.html) with Windows clients
