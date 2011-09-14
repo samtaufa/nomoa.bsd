@@ -79,13 +79,13 @@ by changing the url file extension to the marked text file extension
 such as: 'filename.mdtext'.
 
 For example, change the Address bar URL for this page from 'site.html' to
-['site.mdtext'](site.mdtext) and hit enter you can read the 'markdown' version 
+['site.md'](site.md) and hit enter you can read the 'markdown' version 
 of the page content. (Your browser may interpret the page as partial html,
 so some of the embedded html may not show up correctly.)
 
 The majority of pages on this site have been written in Markdown 2
 text format, with a convention of the text file having the extension
-'.mdtext'. The original files are copied onto the site together with 
+'.md'. The original files are copied onto the site together with 
 the generated '.html' file.
 
 ### Workflow - Freedom to choose
@@ -94,7 +94,6 @@ Using **countershape** allows me to update knowledge for the site in
 a disconnected environment. There are no requirements to be connected to
 a database.
 
-
-**Countershape** gives me independence of the markup language (so I don't have to
+**Countershape** gives independence of the markup language (so I don't have to
 know anymore than I don't, and it gives macros, such as $_!OpenBSD!_$ to always
 give me the $!OpenBSD!$ text and url embedded.
