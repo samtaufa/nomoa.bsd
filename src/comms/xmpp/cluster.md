@@ -42,20 +42,20 @@ and likewise the domain name for **second** is resolvable at node **first**.
 
 <blockquote>
 Erlang systems which talk to each other must have the same <strong>magic cookie.</strong>
-The easiest way to achieve this is by having a file called .erlang.cookie in you home
+The easiest way to achieve this is by having a file called <em>.erlang.cookie</em> in you home
 directory on all machines on which you are going to run Erlang systems communicating
 with each other.
 </blockquote>
 
-Copy /var/db/ejabberd/.erlang.cookie from the *first* node to replace the cookie in the
+Copy */var/db/ejabberd/.erlang.cookie* from the *first* node to replace the cookie in the
 *second* node.
 
-/var/db/ejabberd is the $!OpenBSD!$ Package default $HOME directory for the ejabberd server
-user _ejabberd.
+*/var/db/ejabberd* is the $!OpenBSD!$ Package default $HOME directory for the ejabberd server
+user *_ejabberd*.
 
 Keeping the cookie in the $HOME directory means that ejabberd on node *first* and *second* will
 allow RPC between the two servers. When you need to run as root, with the same privileges, you
-can specify the **-setcookie COOKIE-CONTENT**
+can specify the *-setcookie COOKIE-CONTENT*
 
 <a name="cluster.nodes"></a>
 
