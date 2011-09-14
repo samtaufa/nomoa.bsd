@@ -13,6 +13,14 @@ access to the servers)
 
 There's a reason they built 'visudo', use it 
 
+[Why do I have to edit /etc/sudoers with visudo](http://serverfault.com/questions/26303/why-do-i-have-to-edit-etc-sudoers-with-visudo)
+
+Otherwise, you can join me and several others who have locked themselves out of their
+machines (including ones on another island/continent.)
+
+It's inconvenient, but not as inconvenient as waiting for the next boat to get to that
+machine.
+
 ### Preview
 
 Grep /etc/sudoers file for a quick overview of sudo's current configuration.
