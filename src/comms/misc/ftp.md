@@ -29,9 +29,8 @@
     
 </div>
 
-[ref. OpenBSD <a href="http://www.openbsd.org/faq/faq10.html">FAQ 
-: 10.0 System Management</a> -&gt; <a href="http://www.openbsd.org/faq/faq10.html#10.12">10.12 
-Setting up Anonymous FTP Services</a>]
+[ref. OpenBSD FAQ <a href="http://www.openbsd.org/faq/faq10.html">System Management</a> -&gt; <a href="http://www.openbsd.org/faq/faq10.html#AnonFTP">Setting up Anonymous FTP Services</a> |
+[PF: Issues with FTP](http://www.openbsd.org/faq/pf/ftp.html)]
   
 Security Warning: Default ftpd behaviour is to allow all users access to the 
 root-directory, this can be a significant compromise. Use -A, anonymous access 

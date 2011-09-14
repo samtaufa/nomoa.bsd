@@ -327,7 +327,9 @@ virtual_gid_maps = static:901
 The 'static' map type tells Postfix that you want the uid/gid to be for all 
 accounts.
 
-We can now create the system user account to manage virtual email mailboxes.
+We can now create the system user account "**_vmail**" to manage virtual email mailboxes.
+Review [OpenBSD Porting Guide - Update Checklist](http://www.openbsd.org/faq/ports/guide.html#UpdateChecklist)
+for appropriate selection of port related user-accounts **/usr/ports/infrastructure/db/user.list**
 
 Screen Session
 
