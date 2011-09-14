@@ -25,7 +25,7 @@ h1  {
     font-weight: bold;
     font-size: 180%; 
     background : #FFFF99;    
-    border : thick outset #FFFF99;
+    /* border : thick outset #FFFF99; */
     margin-top : 0;
     margin-right:0cm;
     margin-bottom:3.0pt;
