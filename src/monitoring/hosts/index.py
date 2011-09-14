@@ -14,4 +14,8 @@ pages = [
         title="Nagios",
         pageTitle="Nagios Infrastructure Monitor"),    
     Directory ("nagios"),
+	
+    Page("snmp.md", 
+        title="SNMP",
+        pageTitle="SNMP - Simple Network Management Protocol"),    
  ]
