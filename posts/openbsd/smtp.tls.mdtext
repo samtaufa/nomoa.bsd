@@ -1,0 +1,140 @@
+TLS and Postfix
+time: 2011-06-30 16:15
+Tags: Postfix, TLS
+
+Upgrading some of our Mail Servers to support for TLS (Transport Layer Security) 
+in Postfix and apart from learning how to do it, also learned a key maxim
+of programmers (readily applicable to system administrators)
+
+<blockquote>
+DO NOT PRE-OPTIMISE
+</blockquote>
+
+Wasted two days of my life, with increased anxiety during the install,
+configuration process because I was trying to be too smart too early.
+
+After a Duhhh moment, I went back to the very beginning of the install
+process, and did everything as per the known guides (without that little
+tweak I had preconceived, and the install worked in less than an 1 hour)
+
+**My failure?** I got too far ahead of myself, with bright ideas, untested
+of how I wanted things to work, and started modifying my plans (and
+solidifying assumptions about how things **will** work) before collecting
+evidence for that the assumptions for each stage, were valid.
+
+My idea was for the TLS roll-out on 5 different servers (all requiring
+SSL certificates) could all use one Certificate Authority. I'd made
+self-signed certificates before, so presumed/guessed at an approach
+for one centralised Certificate Authority. Unfortunately, instead of 
+verifying my assumptions of how that can be done, I steam-rolled ahead
+ass-uming some minor modifications to the process would **just work.**
+
+1.  Create Certificate Authority (CA) key
+2.  Create Certificate Signing Request (CSR) for the host
+3.  Create a Certificate (CRT) from the CSR, signed by my new the CA key
+
+The install failed, but gave error messages hinting at problems with the
+key created in my step #2, or the certificate created in step #3. After
+agonising through different diagnostic processes from the various
+error messages. It took 2 whole days to throw away the assumption that
+caused the error, my change in how I was generating (or using a Certificate
+Authority.) Arggghhhh!!!
+
+I had been blindly looking at various avenues for why Step #2 or Step #3 were
+not working correctly, including trying stupid hints from random websites.
+
+The error that Postfix was throwing up said that:
+
+File extract: /var/log/maillog
+
+<pre class="screen-output">
+warning: cannot get RSA private key from file /etc/ssl/private/server.key.pem:disabling TLS support
+warning: TLS library problem: xxxxxx certificates routine xxxx key values mismatch xxxxx src/crypto/x509/x509_cmp.c:318:
+</pre>
+
+1.  Can't read the Key
+2.  There is no match between the key and certificate
+
+OK, the key file is there, I can see it in the file system. I can open it
+up with openssl and verify that it is a valid key file by using:
+
+<!--(block|syntax("bash"))-->
+sudo openssl rsa -noout -text -in /path-to/private/server.key.pem
+<!--(end)-->
+
+I could even validate that the signed certificate is a valid certificate,
+likewise the Certificate Authority certificate (so far as our current
+understanding tells us.) 
+
+<!--(block|syntax("bash"))-->
+sudo openssl req -noout -text -in /path-to/server.crt.pem
+sudo openssl req -noout -text -in /path-to/private/ca.crt.pem
+<!--(end)-->
+
+I blissfully ignore the 2nd error message until I could resolve why my
+Postfix server was complaining about the Server Key. The **ass**umption,
+it's probably an 'artifact,' an error caused by the previous error
+(can't open the key.) We find all sorts of "solutions" on the web, 
+which may work on other OS's, but  irrelevant for our OpenBSD install 
+(most related to using 'openssl rsa -in server.key.pem -out 
+server.key.rsa.pem to make sure that the key file is not password protected ?) 
+Not relevant for our OpenBSD install.
+
+It was well into the third day before I found references to verifying that
+a certificate is created from a key.
+
+<!--(block|syntax("bash"))-->
+$ sudo openssl rsa -noout -text -in /path-to/private/server.key.pem -modulus \
+    | grep ^Modulus | openssl md5
+$ sudo openssl x509 -noout -text -in /path-to/server.crt.pem -modulus \
+    | grep ^Modulus | openssl md5
+<!--(end)-->
+
+The use of "| openssl md5" just simplifies the comparison of the Modulus values
+which are supposed to be the same if they are paired (i.e. certificate was generated
+from the key.) There's also the requirement that both "public exponent" are
+equal but the above Modulus comparison is a quick verification process.
+
+OK, I'm running the above command line on my self-signed certificate, and
+server key. The Modulus **DO NOT MATCH.**
+
+<blockquote>
+What?? That doesn't make sense?
+</blockquote>
+
+I wander through comparisons of all the key & certificate pairs, to find 
+out that the **Modulus for my designated CA Key, matches with the 
+Self-Signed Certificate.**
+
+<blockquote>
+What?? That doesn't make sense?
+</blockquote>
+
+Obviously (duhh) there must be something wrong with my signing process. 
+We trace back our implementation steps and re-do, re-test.
+
+-   Step #3. No that didn't work. No, don't repeat it again. Go back to
+-   Step #2 then #3. No that didn't work. No, don't repeat it again. Go back to 
+-   Step #1 then #2, then #3. No that didn't work. 
+
+<blockquote>
+OK, something is seriously wrong!!!
+</blockquote>
+
+The 2nd error (and quick perusal into the source code) definitely indicates
+that the key file is not related to the certificate. Our *Modulus* investigations
+above shows that the key/certificate pairs are not created correctly.
+Could my CA ideas be the cause of my install failures?
+
+Throw that assumption away and create certificates how you've always done it.
+
+-   Step #2 Sign the CSR using the Server Key.
+
+Normal self-signed instructions always use the same key for the CA as well
+as the Server.
+
+5 minutes later, we have Postfix TLS working as expected, and our [documentation
+is complete](@!urlTo('comms/mail/postfix/tls.html')!@). Postfix TLS without 
+dovecot, without cyrus-sasl, woohoo, too easy.
+
+Now to [verify that TLS actually encrypts](@!urlTo('comms/mail/postfix/tls.html')!@#verify) ?
