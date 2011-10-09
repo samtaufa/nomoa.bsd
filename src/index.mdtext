@@ -67,7 +67,7 @@ these key tools on $!OpenBSD!$.
     [Postfix](comms/mail/postfix.html)
 -   Client access (POP3, IMAP, TLS server) using 
     [Dovecot](comms/mail/dovecot.html)
--   [Proxy](comms/mail/postfix/proxy.instances.html) 
+-   [Proxy](gateway/proxy/mail.html) 
 -   [Virtual Accounts](comms/mail/postfix/virtual_accounts.html)
     
 #### VPN - Virtual Private Networks 

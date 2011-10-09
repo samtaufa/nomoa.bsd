@@ -17,9 +17,9 @@ explore configurations for Postfix we have deployed.
 -	[GUI Admin](postfix/admin.html)istration using PostfixAdmin for User Administration
 	of Mail Accounts maintained through SQL Databases
 -	[Mail Server](postfix/server.html) Postfix as a replacement for sendmail
--	[MX Proxy](postfix/proxy.html) Postfix as a passthrough Proxy between
+-	[MX Proxy](../../gateway/proxies/mail.html) Postfix as a passthrough Proxy between
 	your Internal Mail Servers and the bad Internet.
--	[MX Proxy Multiple Instances](postfix/instances.html) Postfix as an MX Proxy, but
+-	[MX Proxy Multiple Instances](../../gateway/proxies/postfix/proxy.instances.html) Postfix as an MX Proxy, but
 	with some low-cost, high-value filtering enabled.
 -	[Virtual Accounts](postfix/virtual_accounts.html) A basic Postfix configuration
 	for email virtual accounts.

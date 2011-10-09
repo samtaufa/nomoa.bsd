@@ -13,14 +13,6 @@ pages = [
         title="Mail Server",
         pageTitle="Mail Server"),
 
-    Page("proxy.md",
-        title="MX Proxy",
-        pageTitle="Mail Proxy"),
-
-    Page("proxy.instances.md",
-        title="MX Proxy++",
-        pageTitle="MX Proxy Extended, using Multiple Instances"),
-
     Page("tls.md",
         title="TLS/SSL",
         pageTitle="TLS/SSL"),

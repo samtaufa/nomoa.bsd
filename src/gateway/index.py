@@ -20,6 +20,11 @@ pages = [
         pageTitle="Firewalls with Packet Filter PF"),
     Directory("pf"),
 
+    Page("proxies.md", 
+        title="Proxies",
+        pageTitle="Proxies"),
+    Directory("proxies"),
+
     Page("routing.md", 
         title="Routing",
         pageTitle="Gateways and Routing"),

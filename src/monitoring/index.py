@@ -14,6 +14,7 @@ pages = [
     Page("announcements.md", 
         title="Announcements",
         pageTitle="Announcements"),    
+    Directory ("notify"),
 
     Page("hosts.md", 
         title="Hosts",

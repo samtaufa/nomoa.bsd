@@ -44,7 +44,7 @@ Wikipedia's entry [Comparison of mail servers](http://en.wikipedia.org/wiki/Comp
 
 Custom configurations for MTA's can include:
 
--   [Proxy Mail Service](mail/postfix/proxy.html)
+-   [Proxy Mail Service](../gateway/proxies/mail.html)
 -   [Virtual User Accounts](mail/postfix/virtual_accounts.html)
 
 ###  Clients Access through POP3, IMAP Server

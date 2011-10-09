@@ -12,6 +12,17 @@ These notes will not help you build a secure system,
 but will hopefully provide some strategy for monitoring
 or debugging your configuration.
 
+### [Firewall](gateway/pf.html)
+
+The Packet Filter Engine, PF, is a stateful packet filtering system developed
+by the OpenBSD developers. PF supports providing access controls for
+network traffic including QOS, Traffic Shaping, and Network Address
+Translation (NAT.)
+
+In this context, we discuss using OpenBSD's High Availability
+Features, which supports warm/hot failover between different
+hosts.
+
 ### <a href="gateway/highavailability.html">High Availability</a>
 
 OpenBSD offers some unique (?) tools for systems requiring 
@@ -23,19 +34,9 @@ The default distribution of OpenBSD includes a Firewall
 Packet Filter extending on the above features to support
 various scenarios of high availability for the firewall.
 
+### [Proxies](gateway/proxies.html)
 
-### <a href="gateway/pf.html">Firewall</a>
-
-The Packet Filter Engine, PF, is a stateful packet filtering system developed
-by the OpenBSD developers. PF supports providing access controls for
-network traffic including QOS, Traffic Shaping, and Network Address
-Translation (NAT.)
-
-In this context, we discuss using OpenBSD's High Availability
-Features, which supports warm/hot failover between different
-hosts.
-
-### <a href="gateway/routing.html">Routing</a>
+### [Routing](gateway/routing.html)
 
 Gateways route traffic between different networks. OpenBSD supports forwarding 
 IP traffic as a gateway. For larger network configurations, OpenBSD also

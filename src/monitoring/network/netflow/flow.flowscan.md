@@ -341,9 +341,9 @@ Install the OpenBSD binary packages listed above from your nearest OpenBSD packa
 If you forget, you can take a look at some of the requirements after installing
 packages. For example,
 
-<!--(block|syntax("bash"))-->
+<pre class="command-line">
 $ cat /var/db/pkg/mod_perl-1.31p2/+DISPLAY
-<!--(end)-->
+</pre>
 <pre class="screen-output">
 ...
 
@@ -375,7 +375,8 @@ cpan[5]> quit
 </pre>
 
 Some packages may install dependencies (such as Socket6 and Net::CIDR::Lite by Net::Patricia)
-while others may require manual dependency installation (such as XML::Parser which is required by Boulder::Stream)
+while others may require manual dependency installation 
+(such as XML::Parser which is required by Boulder::Stream)
 
 Remember that you have to watch the screen-output from the installation to ensure
 that all the requested modules are downloaded successfully, built successfully, 
@@ -383,13 +384,13 @@ verified successfully, and installed successfully. If a module doesn't
 install correctly, you'll have unknown other problems going forward until
 this is resolved.
 
-A *"sort-of list" of installed Perl Modules is sometimes available in the directory
+A *"sort-of list"* of installed Perl Modules is sometimes available in the directory
 path:
 
-<!--(block | syntax("bash") )-->
+<pre class="command-line">
 $ export PMPATH=/usr/local/libdata/perl5/site_perl
 $ (cd $PMPATH; find . -name "*.pm" -print)
-<!--(end)-->
+</pre>
 
 #### Other Perl Modules
 
@@ -415,6 +416,7 @@ Get the source from the <a title="Andrew Wilcox">author's</a>
 $ cd /path-to-local-src
 $ curl -O http://cpan.perl.org/authors/id/A/AM/AMW/ConfigReader-0.5.tar.gz
 </pre>
+
 <pre class="screen-output">
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed

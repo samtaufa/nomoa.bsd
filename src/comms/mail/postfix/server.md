@@ -42,11 +42,11 @@ Table of Contents
 
 OpenBSD ships preconfigured with [Sendmail](http://www.sendmail.org) as 
 the mail server (MTA.) For [Virtual User Accounts](postfix/virtual.htm),
-[Mail Proxy](mail/proxy.html) postfix simplifies the buildprocess.
+[Mail Proxy](../../../gateway/proxies/mail.html) postfix simplifies the buildprocess.
 
 Customisations are referenced for:
 
--   [Proxy Configuration](postfix/proxy.html)
+-   [Proxy Configuration](../../../gateway/proxies/mail.html)
 -   [Virtual Accounts](postfix/virtual.html)
 
 ###  <a name="InstallingPostfix"></a>Installing Postfix
