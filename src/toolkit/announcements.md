@@ -38,6 +38,6 @@ across a range of Operating Systems and Applications.
 RSS/Atom Feeds: <a href="security.opml" title="OPML Format">security.opml</a>
 
 <!--(block | syntax("xml"))-->
-$!showsrc("monitoring/security.opml")!$
+$!showsrc("toolkit/security.opml")!$
 <!--(end)-->
 

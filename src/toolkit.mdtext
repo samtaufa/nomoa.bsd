@@ -16,7 +16,7 @@ successfully deployed.
 ### Announcements
 
 Unfortunately, for the general populace, the only way to find out
-about vulnerabilities is to monitor [announcements](monitoring/announcements.html) 
+about vulnerabilities is to monitor [announcements](toolkit/announcements.html) 
 made through public forums, such as project mailing lists, or press-releases
 from various researchers and vendors.
 
@@ -32,7 +32,7 @@ on your network. Nagios being one of the more popular, although a
 <a href="http://www.google.com">Google</a>/<a href="http://www.bing.com">Bing</a> 
 search will quickly highlight alternatives.
 
-[Nagios](monitoring/hosts/nagios.html) is very good for monitoring up/down status, and 
+[Nagios](toolkit/hosts/nagios.html) is very good for monitoring up/down status, and 
 is also able to use SNMP and custom NRPE for determining more detailed status 
 information on hosts. Example things you can monitor using nagios include:
 
@@ -49,7 +49,7 @@ pipes to gauge some aspect of what is happening there.
 We've effectively deployed, with Nagios, Smokeping and Netflow analysis as 
 tools for monitoring the network performance.
 
--	[Smokeping](monitoring/network/smokeping.html) gives a quick graphical view of network 
+-	[Smokeping](toolkit/network/smokeping.html) gives a quick graphical view of network 
 latency.
--	[Netflow](monitoring/network/netflow.html) is a protocol to provide historical network 
+-	[Netflow](toolkit/network/netflow.html) is a protocol to provide historical network 
 traffic data that can be analysed, graphed for broad and minute review.

@@ -4,7 +4,7 @@ import countershape
 this.layout = ns.tpl_layout
 
 ns.blk_sidemenu = countershape.widgets.SiblingPageIndex(
-                '/monitoring/announcements.html',
+                '/toolkit/announcements.html',
         )
 
 this.titlePrefix = ns.titlePrefix + "[Monitoring] "
