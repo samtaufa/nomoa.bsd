@@ -20,7 +20,7 @@ pages = [
     Page("directions.md",
         title="Directions",
         pageTitle="Future Site Directions"),
-		
+
     Page("guides.md",
         title="Guides",
         pageTitle="The Guides"),
