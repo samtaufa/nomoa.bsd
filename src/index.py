@@ -163,8 +163,10 @@ pages += section(
         )
 
 pages += section(
-            "monitoring.mdtext", "monitoring", "Monitoring",
-            "Monitoring and Maintenance"
+            fname="toolkit.mdtext", 
+            dirname="toolkit", 
+            title="Toolkit",
+            pageTitle="Monitoring and Maintenance"
         )
 
 #pages.extend(
