@@ -229,3 +229,16 @@ $ svn commit myrepo https://svn-host/svn/repo/
 <!--(end)-->
 
 
+## Synchronising
+
+&#91;Ref: [Replication with svnsync](http://svnbook.red-bean.com/nightly/en/svn-book.html#svn.reposadmin.maint.replication.svnsync)]
+
+Follow the instructions in the above reference, with especial attention to
+the init/synchronisation command-line:
+
+    svnsync initialize DEST_URL SOURCE_URL
+
+<!--(block|syntax("bash"))-->
+svnsync initialize DEST_URL SOURCE_URL --sync-username dest_username --sync-password dest_password \
+    --source-username src_username --source-password src_password
+<!--(end)-->
