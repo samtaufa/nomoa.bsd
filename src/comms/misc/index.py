@@ -3,6 +3,10 @@ import countershape
 
 this.titlePrefix = ns.titlePrefix + "[Communications | Miscellaneous] "
 
+ns.blk_sidemenu = countershape.widgets.SiblingPageIndex(
+                '/comms/misc/ftp.html',
+        )
+
 pages = [
 
     Page("ftp.md", 

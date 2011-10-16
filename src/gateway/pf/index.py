@@ -1,6 +1,12 @@
 from countershape.doc import *
+import countershape
 
 this.titlePrefix = ns.titlePrefix + "[Gateway | Firewall] "
+
+ns.blk_sidemenu = countershape.widgets.SiblingPageIndex(
+                '/gateway/pf/maint.html',
+        )
+
 
 pages = [
     Page("valid.md", 

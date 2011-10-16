@@ -1,9 +1,11 @@
 from countershape.doc import *
-#from countershape import  markup
-
-#this.markup = markup.Markdown(extras=["code-friendly"])
+import countershape
 
 this.titlePrefix = ns.titlePrefix + "[Communications | Mail] "
+
+ns.blk_sidemenu = countershape.widgets.SiblingPageIndex(
+                '/comms/mail/sendmail.html',
+        )
 
 pages = [
     Page("sendmail.md",
