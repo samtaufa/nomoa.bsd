@@ -26,23 +26,23 @@ to follow:
 - current: no tag
 - stable: tagged (OPENBSD_X_Y)
 
-In our environment, we choose to make a single cvs suck down onto
-a local host, using cvsync. With a local copy of the repository
-you can then have your build hosts building
+Where X_Y is the release version such as 4_2 3_5 or 5_0.
+In our environment, we use a central cvs, using cvsync and from
+this local repository distribute to the various build hosts.
 
-<pre class="command-line">
+<!--(block|syntax("bash"))-->
 for subdir in src ports xenocara; do
     cd /usr/${subdir};
     cvs update -Pd &
 done
-</pre>
+<!--(end)-->
 
 ### Prepping for Offline Distribution
 
 If we want to release source in a distribution then we can use cvs
 for a special export such as:
 
-<pre class="command-line">
+<!--(block|syntax("bash"))-->
 USERNAME=samt
 HOSTNAME=fw
 DIRECTORY=/var/cvs
@@ -59,11 +59,11 @@ for SRC in ${SRCLIST}; do
         cvs -d${CVSROOT} -q export -r${BUILDVER} -d ${SRC} ${SRC};
 done
 
-</pre>
+<!--(end)-->
 
 ### Building the Kernel
 
-<pre class="command-line">
+<!--(block|syntax("bash"))-->
 #!/bin/sh
 ARCH=amd64
 
@@ -72,7 +72,7 @@ config GENERIC
 cd ../compile/GENERIC
 make clean &amp;&amp; make depend &amp;&amp; make
 make install
-</pre>
+<!--(end)-->
 
 ### Building Userland
 
@@ -139,5 +139,5 @@ make release
 </pre>
 
 <!--( block | syntax("bash") )-->
-$!showsrc("build/compiling/mkopenbsd.sh")!$
+$!showsrc("toolkit/build/mkopenbsd.sh")!$
 <!--(end)-->

@@ -21,12 +21,7 @@ pages = [
         title="Install", 
         pageTitle="Base Install"),
     Directory("install"),
-    
-    Page("compiling.md", 
-        title="Compiling", 
-        pageTitle="Compiling from Src"),
-    Directory("compiling"),
-    
+        
     Page("consistency.md",
         title="Consistency", 
         pageTitle="Consistency"),

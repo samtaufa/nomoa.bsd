@@ -5,6 +5,10 @@ this.layout = ns.tpl_layout
 
 this.titlePrefix = ns.titlePrefix + "[Monitoring - Network Traffic] "
 
+ns.blk_sidemenu = countershape.widgets.SiblingPageIndex(
+                '/toolkit/monitoring/announcements.html',
+        )
+
 pages = [
 
     Page("announcements.md", 
